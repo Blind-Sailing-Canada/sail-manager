@@ -1,0 +1,13 @@
+.app-file-select {
+  display: flex;
+  flex-direction: column;
+}
+
+/* .app-file-select button {
+  align-self: center;
+} */
+
+.file-select-controls {
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,107 @@
+<mat-card *ngIf="user">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>cloud_upload</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >{{title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions *ngIf="shouldShowControls">
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="details"></ng-container>
+    <ng-container *ngTemplateOutlet="status"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        (click)="update()"
+        *ngIf="!creating && !shouldDisableUpdateButton"
+        [disabled]="shouldDisableUpdateButton"
+        mat-raised-button
+      >Update</button>
+      <button
+        (click)="create()"
+        *ngIf="creating && !shouldDisableCreateButton"
+        [disabled]="shouldDisableCreateButton"
+        mat-raised-button
+      >Create</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #controls>
+  <button
+    (click)="cancelRequest()"
+    *ngIf="shouldShowCancellButton"
+    mat-raised-button
+    title="Mark this request as cancelled"
+  >Cancel</button>
+</ng-template>
+
+<ng-template #details>
+  <form [formGroup]="form">
+    <h4
+      tabindex="-1"
+      aria-hidden="true"
+      id="stepLabelDetails"
+    >Step 1 of {{sailRequestId ? '2' : '1'}}: Request details (required)</h4>
+    <mat-form-field aria-required="true">
+      <mat-label
+        tabindex="-1"
+        aria-hidden="true"
+      >Request details</mat-label>
+      <textarea
+        aria-labelledby="stepLabelDetails"
+        aria-required="true"
+        cdkAutosizeMaxRows="10"
+        cdkAutosizeMinRows="2"
+        cdkTextareaAutosize
+        formControlName="details"
+        required
+        matInput
+      ></textarea>
+    </mat-form-field>
+    <mat-error
+      tabindex="0"
+      *ngFor="let error of (form.pristine ? []: formErrors('details'))"
+    >{{error}}</mat-error>
+  </form>
+</ng-template>
+
+<ng-template #status>
+  <form
+    [formGroup]="form"
+    *ngIf="!!sailRequestId"
+  >
+    <h4
+      tabindex="-1"
+      aria-hidden="true"
+      id="stepLabelStatus"
+    >Step 2 of 2: Request status</h4>
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        tabindex="-1"
+      >Status</mat-label>
+      <select
+        [attr.aria-disabled]="!shouldShowStatusInput"
+        [attr.aria-hidden]="!shouldShowStatusInput"
+        aria-labelledby="stepLabelStatus"
+        aria-required="true"
+        formControlName="status"
+        matNativeControl
+        required
+      >
+        <option
+          *ngFor="let status of requestStatusValues"
+          [value]="status"
+        >{{status}}</option>
+      </select>
+    </mat-form-field>
+  </form>
+</ng-template>

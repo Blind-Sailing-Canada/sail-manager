@@ -1,0 +1,39 @@
+<div [formGroup]="form">
+  <app-table>
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Presence</th>
+    </tr>
+    <tr
+      [formArrayName]="manifestFormControlName"
+      *ngFor="let item of manifestControls; let i = index;"
+    >
+      <ng-container [formGroupName]="i">
+        <td *ngIf="!item.value.profile">
+          <div class="name-cell">
+            {{item.value.personName}}
+          </div>
+        </td>
+        <td
+          class="clickable"
+          (click)="showProfileDialog(item.value.profile)"
+          *ngIf="item.value.profile"
+        >{{item.value.personName}}</td>
+        <td>
+          {{item.value.sailorRole}}
+          <span *ngIf="item.value.sailorRole === SAILOR_ROLE.Guest">
+            <mat-label>of</mat-label>
+           {{item.value.guestOfName}}
+          </span>
+        </td>
+        <td>
+          <mat-slide-toggle formControlName="attended">
+            Yes
+          </mat-slide-toggle>
+        </td>
+      </ng-container>
+
+    </tr>
+  </app-table>
+</div>

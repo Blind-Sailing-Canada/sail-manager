@@ -1,0 +1,47 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>assignment</mat-icon>
+    </div>
+    <mat-card-title
+      role="heading"
+      tabindex="0"
+      id="pageTitle"
+    >{{title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <app-instructions-form
+      (addMore)="addDepartureInstruction()"
+      (deleteFile)="deleteFile($event)"
+      (processFile)="uploadDepartureInstructionsPictureToCDN($event)"
+      (remove)="removeDepartureInstruction($event)"
+      [cdn]="cdn"
+      [controls]="departureInstructionsControls"
+      [form]="departureInstructionsForm"
+      arrayName="instructions"
+      instructionType="departure"
+      subtitle="Before Departure Instructions"
+    ></app-instructions-form>
+    <app-instructions-form
+      (addMore)="addArrivalInstruction()"
+      (deleteFile)="deleteFile($event)"
+      (processFile)="uploadArrivalInstructionsPictureToCDN($event)"
+      (remove)="removeArrivalInstruction($event)"
+      [cdn]="cdn"
+      [controls]="arrivalInstructionsControls"
+      [form]="arrivalInstructionsForm"
+      arrayName="instructions"
+      instructionType="arrival"
+      subtitle="After Arrival Instructions"
+    ></app-instructions-form>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        *ngIf="shouldEnableSaveButton"
+        mat-raised-button
+        (click)="submitForm()"
+      >save</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>

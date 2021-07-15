@@ -1,0 +1,48 @@
+<mat-list role="list">
+  <h4 tabindex="0">Comments</h4>
+  <p
+    tabindex="0"
+    *ngIf="!comments || !comments.length"
+  >There are no comments.</p>
+  <mat-list-item
+    class="mat-list-item-word-wrap"
+    *ngFor="let comment of comments; let i = index;"
+  >
+    <mat-icon
+      mat-list-icon
+      tabindex="-1"
+      aria-hidden="true"
+    >comment</mat-icon>
+    <h4
+      mat-line
+      tabindex="-1"
+      aria-hidden="true"
+      class="clickable"
+      (click)="clickProfile(comment.author)"
+    >
+      <app-profile-bullet [profile]="comment.author"></app-profile-bullet>
+    </h4>
+    <h5
+      mat-line
+      tabindex="-1"
+      aria-hidden="true"
+    > {{comment.createdAt | humanDateWithTime: true}} </h5>
+    <p
+      [attr.aria-label]="generateCommentAriaLabel(i, comment)"
+      class="break-all"
+      mat-line
+      role="listitem"
+      tabindex="0"
+    >{{comment.comment}}</p>
+    <button
+      class="delete-comment"
+      (click)="deleteComment(comment.id)"
+      *ngIf="canDeleteComment(comment)"
+      color="accent"
+      mat-button
+      title="delete this comment"
+    >
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-list>

@@ -1,0 +1,57 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>help</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    > Help </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-accordion>
+      <ng-container *ngTemplateOutlet="TemplateRequestSailsHelp"></ng-container>
+      <ng-container *ngTemplateOutlet="TemplateJoinSailsHelp"></ng-container>
+    </mat-accordion>
+  </mat-card-content>
+  <p tabindex="0">Still have trouble? Contact us at <a href="mailto:CONTACT_US_EMAIL">CONTACT_US_EMAIL</a>!</p>
+</mat-card>
+
+<ng-template #TemplateRequestSailsHelp>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Requesting a new sail
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>
+      Before requesting a new sail, please check if a similar request was submitted by someone else.
+      You can check latest sail requests by going to <a routerLink="/sail-requests"><strong>dashboard > my sails > sail request</strong></a>.
+      If you find a sail request that matches your needs, you can join it by clicking <strong>I'm interested</strong> button.
+    </p>
+    <p>
+      To request a new sail go <a routerLink="/sail-requests/create"><strong>dashboard > my sails > request a sail</strong></a>.
+      Fill out the form by providing details about the sail. Provide information such as date and time of the sail.
+    </p>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #TemplateJoinSailsHelp>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Joining a sail
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>
+      From <a routerLink="/"><strong>main dashboard</strong></a> you can view the next 10 availabe sail.
+      From the available sails list click on a sail which will take you to sail's details page.
+      Review sail's details carefully to make sure it matches your needs. To join this sail click on one of the <strong>join as</strong> buttons located at the bottom of the page.
+      The type of <strong>join as</strong> button depends on your membership type.
+    </p>
+    <p>
+      If you have a question about the sail then you can leave a comment in the sail's details page. Your comment will be sent via email to all participants of this sail.
+    </p>
+  </mat-expansion-panel>
+</ng-template>

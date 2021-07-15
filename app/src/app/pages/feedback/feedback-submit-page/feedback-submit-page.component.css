@@ -1,0 +1,19 @@
+.selected-option {
+  background-color: lightskyblue;
+}
+
+.fieldset button {
+  margin: 5px;
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 790px) {
+  .fieldset {
+    display: flex;
+    flex-direction: column;
+  }
+}

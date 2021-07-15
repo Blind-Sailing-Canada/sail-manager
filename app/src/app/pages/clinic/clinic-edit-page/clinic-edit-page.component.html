@@ -1,0 +1,157 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>local_hospital</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >{{formTitle}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="CONTENT_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-action-row>
+      <button
+        (click)="createClinic()"
+        *ngIf="shouldEnableCreateButton"
+        mat-raised-button
+      >Create</button>
+      <button
+        (click)="saveClinic()"
+        *ngIf="shouldEnableSaveButton"
+        mat-raised-button
+      >Save</button>
+    </mat-action-row>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #CONTROLS_TEMPLATE>
+</ng-template>
+
+<ng-template #CONTENT_TEMPLATE>
+  <form
+    *ngIf="form"
+    [formGroup]="form"
+  >
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        id="nameInputLabel"
+      >Clinic name</mat-label>
+      <input
+        formControlName="name"
+        aria-labelledby="nameInputLabel"
+        matInput
+        type="text"
+      >
+    </mat-form-field>
+    <mat-error
+      tabindex="0"
+      *ngFor="let error of (form.pristine ? []: formErrors('name'))"
+    >{{error}}</mat-error>
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        id="descriptionInputLabel"
+      >Clinic description</mat-label>
+      <textarea
+        formControlName="description"
+        aria-labelledby="descriptionInputLabel"
+        matInput
+      ></textarea>
+    </mat-form-field>
+    <mat-error
+      tabindex="0"
+      *ngFor="let error of (form.pristine ? []: formErrors('description'))"
+    >{{error}}</mat-error>
+    <h4 tabindex="0">Badge</h4>
+    <mat-selection-list
+      [multiple]="false"
+      formControlName="badge"
+    >
+      <mat-list-option
+        *ngFor="let icon of icons;"
+        [value]="icon"
+      >
+        <img
+          [alt]="icon.split('/').slice(-1)[0]"
+          [src]="icon"
+          async
+          height="50px"
+          width="50px"
+        />
+      </mat-list-option>
+    </mat-selection-list>
+    <mat-error
+      tabindex="0"
+      *ngFor="let error of (form.pristine ? []: formErrors('badge'))"
+    >{{error}}</mat-error>
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        id="startDateInputLabel"
+      >Start date</mat-label>
+      <input
+        aria-labelledby="startDateInputLabel"
+        formControlName="startDate"
+        matInput
+        type="date"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        id="endDateInputLabel"
+      >End date</mat-label>
+      <input
+        aria-labelledby="endDateInputLabel"
+        formControlName="endDate"
+        matInput
+        type="date"
+      />
+    </mat-form-field>
+    <mat-action-list
+      role='list'
+      id="available_instructors"
+    >
+      <h3 tabindex="0">Instructor</h3>
+      <p
+        aria-live="polite"
+        tabindex="0"
+      >Current instructor: {{instructorName || 'not assigned'}}</p>
+      <button
+        (click)="setInstructor()"
+        *ngIf="form.controls.instructorId.value"
+        mat-raised-button
+        title="Unset instructor"
+      >
+        <app-icon-text
+          icon="remove_circle"
+          text="Unset"
+        ></app-icon-text>
+      </button>
+      <div class="form">
+        <app-list-filter
+          label="Search instructors by name or email"
+          ariaLabel="Search instructors by name email"
+          tooltip="Search instructors by name or email"
+          (filter)="instructorFilterListener($event)"
+        ></app-list-filter>
+      </div>
+      <mat-list-item
+        (click)="setInstructor(instructor.id)"
+        (keydown)="setInstructorByKey($event, instructor.id)"
+        *ngFor="let instructor of filteredInstructors; let i = index"
+        attr.aria-label="Instructor {{i + 1}} of {{filteredInstructors.length}} {{instructor.name}}. Click to assign as clinic's instructor."
+        role="listitem"
+        tabindex="0"
+      >
+        <mat-icon matListIcon>add</mat-icon>{{i + 1 }}. {{instructor.name}}
+      </mat-list-item>
+    </mat-action-list>
+  </form>
+</ng-template>

@@ -1,0 +1,25 @@
+<div class="profile-bullet">
+  <img
+    *ngIf="!profile?.photo"
+    aria-hidden="true"
+    async
+    src="assets/icons/icon-person.png"
+  />
+  <img
+    *ngIf="profile?.photo"
+    aria-hidden="true"
+    async
+    src="{{profile.photo}}?width=100&height=100"
+  />
+  <span
+    *ngIf="profile"
+    attr.aria-label="user: {{profile?.name}}"
+    class="mobile-screen"
+  >{{profile?.name.split(' ')[0]}}</span>
+  <span
+    *ngIf="profile"
+    aria-label="user: unknown"
+    class="full-screen"
+  >{{profile?.name}}</span>
+  <span *ngIf="!profile">unknown</span>
+</div>

@@ -1,0 +1,191 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>cloud_queue</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+    >Sails</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container
+      *ngIf="shouldShowControls"
+      [ngTemplateOutlet]="controls"
+    ></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <section>
+      <mat-accordion>
+        <mat-expansion-panel #filterAccordion>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon inline="true">search</mat-icon>
+              Search
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ng-container *ngTemplateOutlet="sailFilter"></ng-container>
+          <mat-action-row>
+            <button
+              (click)="resetFilter()"
+              mat-raised-button
+              title="Reset sail filter"
+              type="reset"
+            >Reset</button>
+            <button
+              (click)="fetchSails(true); filterAccordion.close(); sailsFound?.focus();"
+              mat-raised-button
+              matpTooltip="Apply sail filter"
+            >Apply</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </section>
+    <section>
+      <h4
+        #sailsFound
+        aria-live="assertive"
+        tabindex="0"
+      >Found {{sailsSearchResults?.length}} sails.</h4>
+      <app-sail-list
+        (clicked)="goToViewSail($event.id)"
+        (refreshRequest)="fetchSails(true)"
+        [sails]="sailsSearchResults"
+        emptyMessage="No sails."
+        title="Sails"
+      ></app-sail-list>
+    </section>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #sailFilter>
+  <div class="sail-filter-container">
+    <div>
+      <mat-form-field>
+        <mat-label
+          aria-hidden="true"
+          id="filterLabelName"
+          tabindex="-1"
+        >Sail name</mat-label>
+        <input
+          [(ngModel)]="sailName"
+          [ngModelOptions]="{standalone: true}"
+          aria-labelledby="filterLabelName"
+          matInput
+          type="text"
+        >
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label
+          aria-hidden="true"
+          id="filterLabelStatus"
+          tabindex="-1"
+        >Sail status</mat-label>
+        <select
+          [(ngModel)]="sailStatus"
+          [ngModelOptions]="{standalone: true}"
+          aria-labelledby="filterLabelStatus"
+          matNativeControl
+          name="sailStatus"
+        >
+          <option
+            *ngFor="let status of sailStatusValues | keyvalue"
+            [value]="status.value"
+          >{{status.key}}</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label
+          aria-hidden="true"
+          id="filterLabelStartDate"
+          tabindex="-1"
+        >Sail start date</mat-label>
+        <input
+          [(ngModel)]="sailStart"
+          [ngModelOptions]="{standalone: true}"
+          aria-labelledby="filterLabelStartDate"
+          matInput
+          type="date"
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label
+          aria-hidden="true"
+          id="filterLabelEndDate"
+          tabindex="-1"
+        >Sail end date</mat-label>
+        <input
+          [(ngModel)]="sailEnd"
+          [ngModelOptions]="{standalone: true}"
+          aria-labelledby="filterLabelEndDate"
+          matInput
+          type="date"
+        >
+      </mat-form-field>
+    </div>
+    <div>
+      <form>
+        <mat-form-field>
+          <mat-label
+            aria-hidden="true"
+            id="filterLabelBoat"
+            tabindex="-1"
+          >Boat name</mat-label>
+          <input
+            [(ngModel)]="boatName"
+            [ngModelOptions]="{standalone: true}"
+            aria-labelledby="filterLabelBoat"
+            matInput
+            type="text"
+          >
+        </mat-form-field>
+      </form>
+    </div>
+    <div>
+      <form>
+        <mat-form-field>
+          <mat-label
+            aria-hidden="true"
+            id="filterLabelSailor"
+            tabindex="-1"
+          >Sailor names (comma separated for multiple sailors on same sail)</mat-label>
+          <input
+            [(ngModel)]="sailorName"
+            [ngModelOptions]="{standalone: true}"
+            aria-labelledby="filterLabelSailor"
+            title="Sailor names (comma separated for multiple sailors on same sail)"
+            matInput
+            type="text"
+          >
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+</ng-template>
+<ng-template #controls>
+  <a
+    [routerLink]="CREATE_SAIL_ROUTE"
+    mat-raised-button
+    title="Click to create a new sail."
+  >New</a>
+  <a
+    [routerLink]="VIEW_SAIL_REQUESTS_ROUTE"
+    mat-raised-button
+    title="Click to sail requests page."
+  >Requests</a>
+  <a
+    [routerLink]="VIEW_SAIL_CHECKLISTS_ROUTE"
+    mat-raised-button
+    title="Click to view all sail checklists."
+  >Checklists</a>
+  <button
+    (click)="download()"
+    *ngIf="canDownload"
+    mat-raised-button
+    title="Click to download sails as csv file."
+  >.CSV</button>
+</ng-template>

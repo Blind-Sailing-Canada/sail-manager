@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>lock</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >Login</mat-card-title>
+    <mat-card-subtitle tabindex="0"> Use one of the methods below to log in. </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <a
+      (click)="authenticateWithGoogle()"
+      mat-stroked-button
+      title="Login with your google account."
+    > Google Account </a>
+    <a
+      mat-stroked-button
+      title="Login with your email/password account."
+      [routerLink]="emailAndPasswordLink"
+    > Email and Password </a>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <p tabindex="0">Questions? Contact us at <a href="mailto:CONTACT_US_EMAIL">CONTACT_US_EMAIL</a>!</p>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>

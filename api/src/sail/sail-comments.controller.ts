@@ -1,0 +1,63 @@
+import { InjectQueue } from '@nestjs/bull';
+import {
+  Body,
+  Controller,   Delete,   Param, Post, UseGuards
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Queue } from 'bull';
+import { CommentEntity } from '../comment/comment.entity';
+import { ApprovedUserGuard } from '../guards/approved-profile.guard';
+import { JwtGuard } from '../guards/jwt.guard';
+import { LoginGuard } from '../guards/login.guard';
+import { ProfileRole } from '../types/profile/profile-role';
+import { JwtObject } from '../types/token/jwt-object';
+import { UserAccessFields } from '../types/user-access/user-access-fields';
+import { User } from '../user/user.decorator';
+import { SailEntity } from './sail.entity';
+
+@Controller('sail')
+@ApiTags('sail')
+@UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
+export class SailCommentsController {
+
+  constructor(@InjectQueue('sail') private readonly sailQueue: Queue) { }
+
+  @Post('/:id/comments')
+  async postComment(@User() user: JwtObject, @Param('id') id: string, @Body() commentInfo: Partial<Comment>) {
+    const comment = CommentEntity.create(commentInfo);
+
+    comment.authorId = user.profileId;
+    comment.createdAt = new Date();
+    comment.commentableId = id;
+    comment.commentableType = SailEntity.name;
+
+    const savedComment = await comment.save();
+
+    this.sailQueue.add('new-comment', {
+      sailId: id,
+      commentId: savedComment.id,
+    });
+
+    return SailEntity.findOne({ where: { id } });
+  }
+
+  @Delete('/:id/comments/:commentId')
+  async deleteComment(@User() user: JwtObject, @Param('id') id: string, @Param('commentId') commentId: string) {
+    if (
+      user.roles.includes(ProfileRole.Admin) ||
+      user.access.access[UserAccessFields.CreateSail] ||
+      user.access.access[UserAccessFields.EditSail]
+    ) {
+      await CommentEntity.delete(commentId);
+    } else {
+      await CommentEntity.delete({
+        authorId: user.profileId,
+        commentableId: id,
+        id: commentId,
+      });
+    }
+
+    return SailEntity.findOne({ where: { id } });
+
+  }
+}

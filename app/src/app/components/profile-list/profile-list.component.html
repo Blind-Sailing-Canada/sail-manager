@@ -1,0 +1,42 @@
+<app-table
+  [title]="title"
+  [captionActions]="captionActions"
+  (captionAction)="refresh()"
+>
+  <thead>
+    <tr
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <th>Name</th>
+      <th>Email</th>
+      <th>Sign-up date</th>
+    </tr>
+  </thead>
+  <tbody role="list">
+    <tr *ngIf="!profiles || !profiles.length">
+      <td colspan="3">{{emptyMessage}}</td>
+    </tr>
+    <tr
+      (click)="clickProfile(profile)"
+      *ngFor="let profile of profiles; let i = index;"
+      attr.aria-label="Profile {{i + 1}} of {{profiles.length}}: {{profile.name}} {{profile.email}}. Click to edit permissions."
+      class="clickable"
+      role="listitem"
+      tabindex="0"
+    >
+      <td
+        tabindex="-1"
+        aria-hidden="true"
+      >{{profile.name}}</td>
+      <td
+        tabindex="-1"
+        aria-hidden="true"
+      >{{profile.email}}</td>
+      <td
+        tabindex="-1"
+        aria-hidden="true"
+      >{{profile.createdAt | humanDateWithTime:true}}</td>
+    </tr>
+  </tbody>
+</app-table>

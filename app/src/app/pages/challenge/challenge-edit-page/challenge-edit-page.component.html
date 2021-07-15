@@ -1,0 +1,155 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>golf_course</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >{{title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="CHALLENGE_TITLE_TEMPLATE"></ng-container>
+    <ng-container *ngTemplateOutlet="CHALLENGE_DESCRIPTION_TEMPLATE"></ng-container>
+    <ng-container *ngTemplateOutlet="CHALLENGE_START_DATE_TEMPLATE"></ng-container>
+    <ng-container *ngTemplateOutlet="CHALLENGE_END_DATE_TEMPLATE"></ng-container>
+    <ng-container *ngTemplateOutlet="CHALLENGE_BADGE_TEMPLATE"></ng-container>
+    <ng-container *ngTemplateOutlet="CHALLEGE_STATUS_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        (click)="updateChallenge()"
+        *ngIf="shouldEnableUpdateButton"
+        mat-raised-button
+        mtTooltip="Save challenge changes"
+      >Save</button>
+      <button
+        (click)="createChallenge()"
+        *ngIf="shouldEnableCreateButton"
+        mat-raised-button
+        mtTooltip="Create new challenge"
+      >Create</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #CHALLENGE_TITLE_TEMPLATE>
+  <h4
+    aria-hidden="true"
+    id="step1"
+    tabindex="-1"
+  >Step 1 of 4: Challenge Name</h4>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label aria-hidden="true">Challenge name</mat-label>
+      <input
+        formControlName="name"
+        aria-labelledby="step1"
+        matInput
+        title="Challenge name"
+      >
+    </mat-form-field>
+  </form>
+  <mat-error tabindex="0" *ngFor="let error of (form.pristine ? []: formErrors('name'))">{{error}}</mat-error>
+</ng-template>
+
+<ng-template #CHALLENGE_DESCRIPTION_TEMPLATE>
+  <h4
+    aria-hidden="true"
+    id="step2"
+    tabindex="-1"
+  >Step 2 of 4: Challenge Description</h4>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label aria-hidden="true">Challenge description</mat-label>
+      <textarea
+        formControlName="description"
+        aria-labeledby="step2"
+        matInput
+        title="Challenge description"
+      ></textarea>
+    </mat-form-field>
+  </form>
+  <mat-error tabindex="0" *ngFor="let error of (form.pristine ? []: formErrors('description'))">{{error}}</mat-error>
+</ng-template>
+
+<ng-template #CHALLENGE_START_DATE_TEMPLATE>
+  <h4
+    aria-hidden="true"
+    id="step3"
+    tabindex="-1"
+  >Step 3 of 6: Challenge Start Date</h4>
+  <form [formGroup]="form">
+    <app-date-picker
+      controlName="startDate"
+      [form]="form"
+      ariaLabel="Step 3 of 6: Challenge Start Date"
+      tooltip="Challenge Start date"
+    ></app-date-picker>
+  </form>
+  <p>Start date preview: {{this.form.controls.startDate.value | formatDate}}</p>
+</ng-template>
+
+<ng-template #CHALLENGE_END_DATE_TEMPLATE>
+  <h4
+    aria-hidden="true"
+    id="step4"
+    tabindex="-1"
+  >Step 4 of 6: Challenge End Date</h4>
+  <form [formGroup]="form">
+    <app-date-picker
+      controlName="endDate"
+      [form]="form"
+      ariaLabel="Step 4 of 6: Challenge End Date"
+      tooltip="Challenge End date"
+    ></app-date-picker>
+  </form>
+  <p>End date preview: {{this.form.controls.endDate.value | formatDate}}</p>
+</ng-template>
+
+<ng-template #CHALLENGE_BADGE_TEMPLATE>
+  <h4
+    aria-hidden="true"
+    id="step5"
+    tabindex="-1"
+  >Step 4 of 6: Challenge Badge</h4>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label aria-hidden="true">Challenge badge</mat-label>
+      <textarea
+        formControlName="badge"
+        aria-labeledby="step5"
+        matInput
+        title="Challenge badge"
+      ></textarea>
+    </mat-form-field>
+  </form>
+</ng-template>
+
+<ng-template #CHALLEGE_STATUS_TEMPLATE>
+  <h4
+    aria-hidden="true"
+    id="step4"
+    tabindex="-1"
+  >Step 6 of 6: Challenge Status</h4>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        tabindex="-1"
+      >Status</mat-label>
+      <select
+        formControlName="status"
+        aria-labelledby="step4"
+        matNativeControl
+      >
+        <option
+          *ngFor="let status of ChallengeStatus | keyvalue"
+          [value]="status.value"
+        >{{status.value}}</option>
+      </select>
+    </mat-form-field>
+  </form>
+</ng-template>

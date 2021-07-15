@@ -1,0 +1,68 @@
+<h3 *ngIf="sail === null">Looks like this sail does not exist.</h3>
+<mat-card *ngIf="sail">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>stars</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >
+      {{title}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="HEADER_CONTROLS"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="SUBMIT_FORM_CONTENT"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <ng-container [ngTemplateOutlet]="FOOTER_CONTROLS"></ng-container>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #HEADER_CONTROLS>
+  <a
+    (click)="goToSail()"
+    mat-raised-button
+  >View Sail</a>
+</ng-template>
+
+<ng-template #FOOTER_CONTROLS>
+  <button
+    (click)="submitForm()"
+    *ngIf="shouldEnableSubmitButton"
+    mat-raised-button
+  >Submit</button>
+</ng-template>
+
+<ng-template #SUBMIT_FORM_CONTENT>
+  <form [formGroup]="submitFeedbackForm">
+    <fieldset>
+      <legend>Rate this sail</legend>
+      <div class="fieldset">
+        <button
+          (click)="setRating(FEEDBACK_RATING[rating])"
+          *ngFor="let rating of feedbackRatingKeys;"
+          [class.selected-option]="FEEDBACK_RATING[rating] === currentRating"
+          mat-raised-button
+        >{{rating}}</button>
+      </div>
+    </fieldset>
+    <p aria-live="polite"><b>You rated this sail as</b> "{{FEEDBACK_RATING[currentRating] || 'n/a'}}"</p>
+    <mat-form-field>
+      <mat-label>Feedback (praises and any constructive feedback)</mat-label>
+      <textarea
+        cdkAutosizeMaxRows="10"
+        cdkAutosizeMinRows="1"
+        cdkTextareaAutosize
+        formControlName="feedback"
+        matInput
+      ></textarea>
+    </mat-form-field>
+  </form>
+</ng-template>

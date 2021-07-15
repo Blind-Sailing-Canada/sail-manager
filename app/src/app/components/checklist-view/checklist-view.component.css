@@ -1,0 +1,13 @@
+.checklist-item {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.checklist-item-comments {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+}

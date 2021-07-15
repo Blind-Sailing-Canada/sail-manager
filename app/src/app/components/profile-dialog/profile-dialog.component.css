@@ -1,0 +1,36 @@
+.mat-dialog-actions {
+  justify-content: center;
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.mat-action-list {
+  text-align: center;
+}
+
+.mat-card {
+  margin-bottom: 1rem;
+}
+
+.mat-list-item:hover {
+  background-color: rgba(200, 200, 200, 0.3);
+}
+
+h1 {
+  text-align: center;
+}
+
+.profile-pictures {
+  text-align: center;
+}
+
+img {
+  align-self: center;
+  max-width: 200px;
+  max-height: 150px;
+  min-height: 150px;
+}

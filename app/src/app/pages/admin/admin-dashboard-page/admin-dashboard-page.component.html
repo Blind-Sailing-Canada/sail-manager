@@ -1,0 +1,97 @@
+<mat-card *ngIf="user">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>group_add</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="header"
+      tabindex="0"
+    >Admin Dashboard</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <section>
+      <app-profile-list
+        [profiles]="pendingApproval"
+        (refreshAction)="fetchPendingProfiles(true)"
+        (profileClick)="editProfilePrivileges($event)"
+        title="Profiles awaiting review"
+        emptyMessage="There are no profiles awaiting review."
+      ></app-profile-list>
+    </section>
+    <section role="search">
+      <h3>Total users in the system: {{totalProfileCount}}</h3>
+      <mat-form-field>
+        <mat-label
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <mat-icon>search</mat-icon>Search users by name or email (min 3 characters)
+        </mat-label>
+        <input
+          #profileSearchInput
+          (keyup)="$event.keyCode === 13? searchCount?.focus() : false"
+          (keyup.enter)="searchCount?.focus(); false"
+          aria-controls="users_table"
+          aria-label="Search users by name or email (minimum 3 characters)."
+          matInput
+          title="Search user by name or email (minimum 3 characters)."
+          type="text"
+        >
+      </mat-form-field>
+      <h3
+        #searchCount
+        tabindex="0"
+      >{{searchedProfiles? "Found " + searchedProfiles.length + " users.": ""}}</h3>
+      <app-table
+        id="users_table"
+        *ngIf="searchedProfiles?.length"
+      >
+        <thead>
+          <tr
+            aria-hidden="true"
+            tabindex="-1"
+          >
+            <th>Name</th>
+            <th>Roles</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tr
+          (click)="editProfilePrivileges(profile)"
+          *ngFor="let profile of searchedProfiles; let i = index;"
+          attr.aria-label="Profile {{i + 1}} of {{searchedProfiles.length}}"
+          attr.aria-posinset="{{i + 1}}"
+          attr.aria-setsize="{{searchedProfiles.length}}"
+          class="clickable"
+          title="{{profile.name}} has {{(profile.roles||[]).join(', ')}} roles and status of {{profile.status}}. Click to edit permissions."
+          role="listitem"
+          tabindex="0"
+        >
+          <td
+            aria-hidden="true"
+            tabindex="-1"
+          >{{profile.name}}</td>
+          <td
+            aria-hidden="true"
+            tabindex="-1"
+          >{{profile.roles?.join(', ')}}</td>
+          <td
+            aria-hidden="true"
+            tabindex="-1"
+          >{{profile.status}}</td>
+        </tr>
+      </app-table>
+    </section>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #controls>
+  <button
+    mat-raised-button
+    (click)="fetchAllUsers()"
+  >Get All Users</button>
+</ng-template>

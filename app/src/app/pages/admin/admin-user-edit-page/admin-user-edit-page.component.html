@@ -1,0 +1,117 @@
+<mat-card *ngIf="user && profile">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>group_add</mat-icon>
+    </div>
+    <mat-card-title
+      role="heading"
+      tabindex="0"
+      id="pageTitle"
+    >Edit User Privileges</mat-card-title>
+    <mat-card-subtitle
+      role="heading"
+      aria-level="2"
+      tabindex="0"
+    >{{profile?.name}} {{profile?.email}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <a
+      attr.aria-label="View {{profile?.name}} profile"
+      mat-raised-button
+      [routerLink]="viewProfile(profileId)"
+    >View Profile</a>
+    <button
+      attr.aria-label="Clear roles and access"
+      mat-raised-button
+      (click)="clearRolesAccess()"
+    >Clear Roles/Access</button>
+  </mat-card-actions>
+  <mat-card-content>
+    <div *ngIf="requiredAction">
+      <h3 tabindex="0">Pending action: {{requiredAction.title}}</h3>
+      <button
+        mat-raised-button
+        (click)="dismissRequiredAction()"
+        title="dismiss {{requiredAction.title}} action"
+      >Dismiss</button>
+    </div>
+    <form [formGroup]="profileForm">
+      <mat-accordion>
+        <mat-expansion-panel
+          [expanded]="true"
+          #statusPanel
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Status
+            </mat-panel-title>
+            <mat-panel-description *ngIf="!statusPanel.expanded">
+              Expand to edit user's status
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-radio-group
+            formControlName="status"
+            aria-label="Select status for this profile."
+          >
+            <mat-radio-button
+              *ngFor="let stat of profileStatus | keyvalue"
+              id="status_{{stat.value}}"
+              (click)="setStatus(stat.value)"
+              [value]="stat.value"
+              tabindex="0"
+            >{{stat.value}}</mat-radio-button>
+          </mat-radio-group>
+        </mat-expansion-panel>
+        <mat-expansion-panel #rolesPanel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Roles
+            </mat-panel-title>
+            <mat-panel-description *ngIf="!rolesPanel.expanded">
+              Expand to edit user's roles
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-selection-list
+            formControlName="roles"
+            role="none"
+          >
+            <mat-list-option
+              checkboxPosition="before"
+              *ngFor="let role of profileRoles | keyvalue; let i = index"
+              [value]="role.value"
+              tabindex="0"
+              role="option"
+            >{{role.value}}</mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel #accessPanel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Access
+            </mat-panel-title>
+            <mat-panel-description *ngIf="!accessPanel.expanded">
+              Expand to edit user access permissions
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-selection-list formControlName="access">
+            <mat-list-option
+              checkboxPosition="before"
+              *ngFor="let accessField of UserAccessFields | keyvalue; let i = index"
+              [value]="accessField.value"
+            >{{accessField.key}}</mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        (click)="saveProfile()"
+        [disabled]="shouldDisableSave"
+        *ngIf="!shouldDisableSave"
+        mat-raised-button
+      >Save</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>

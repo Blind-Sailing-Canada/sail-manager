@@ -1,0 +1,16 @@
+.long {
+  display: unset;
+}
+
+.short {
+  display: none;
+}
+
+@media screen and (max-width: 670px) {
+  .long {
+    display: none;
+  }
+  .short {
+    display: unset;
+  }
+}

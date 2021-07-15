@@ -1,0 +1,10 @@
+.enrollment-list-item-conent {
+  display: flex;
+  justify-content: space-between !important;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.clinic-badge {
+  vertical-align: middle;
+}

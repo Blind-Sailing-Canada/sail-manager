@@ -1,0 +1,74 @@
+<section>
+  <app-table [title]="title">
+    <thead
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >When</th>
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >Name</th>
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >Boat</th>
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >Occupancy</th>
+    </thead>
+    <tr *ngIf="!sails || !sails.length">
+      <td
+        colspan="4"
+        tabindex="0"
+      >{{emptyMessage}}</td>
+    </tr>
+    <tr
+      (click)="clickSail(sail)"
+      (keyup.enter)="clickSail(sail)"
+      *ngFor="let sail of sails; let i = index"
+      attr.aria-label="Sail {{ i + 1 }} of {{sails.length}}: {{generateSailDiscription(sail)}}"
+      attr.aria-posinset="{{ i + 1 }}"
+      attr.aria-setsize="{{sails.length}}"
+      class="clickable"
+      role="listitem"
+      tabindex="0"
+    >
+      <td
+        aria-hidden="true"
+      >
+        {{sail.start | humanDateWithTime:true }}
+      </td>
+      <td
+        aria-hidden="true"
+        class="break-all"
+      >
+        {{sail.name}}
+      </td>
+      <td
+        aria-hidden="true"
+      >
+        {{sail.boat?.name || 'n/a'}}
+      </td>
+      <td
+        aria-hidden="true"
+      >
+        <div
+          class="sail-occupancy"
+          aria-hidden="true"
+        >
+          <span class="sail-skipper long">{{skipper(sail) ? "1" : "0"}} Skipper </span>
+          <span class="sail-skipper short">{{skipper(sail) ? "1" : "0"}} ☸ </span>
+          <span class="sail-crew long">{{crew(sail) ? "1" : "0"}} Crew </span>
+          <span class="sail-crew short">{{crew(sail) ? "1" : "0"}} ⚒ </span>
+          <span class="sail-passengers long">{{passengers(sail).length}} Passengers</span>
+          <span class="sail-passengers short">{{passengers(sail).length}} ☺</span>
+        </div>
+      </td>
+    </tr>
+  </app-table>
+</section>

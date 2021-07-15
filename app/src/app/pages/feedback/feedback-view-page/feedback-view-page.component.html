@@ -1,0 +1,114 @@
+<mat-card *ngIf="feedback">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>stars</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    > {{title}} </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="HEADER_CONTROLS"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="CONTENT"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <ng-container [ngTemplateOutlet]="FOOTER_CONTROLS"></ng-container>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+<ng-template #HEADER_CONTROLS>
+  <a
+    (click)="goToSail()"
+    mat-raised-button
+    aria-label="Click to go to sail view page."
+  >View Sail</a>
+</ng-template>
+<ng-template #FOOTER_CONTROLS>
+</ng-template>
+<ng-template #CONTENT>
+  <app-table>
+    <tr
+      (click)="goToSail()"
+      attr.aria-label="Sail name {{feedback?.sail?.name}}. Click to go to sail view page."
+      class="clickable"
+      role="listitem"
+      tabindex="0"
+    >
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >Sail</th>
+      <td
+        aria-hidden="true"
+        tabindex="-1"
+      >{{feedback.sail?.name}}</td>
+    </tr>
+    <tr
+      attr.aria-label="Submitted on {{feedback.createdAt | humanDateWithTime}}"
+      role="listitem"
+      tabindex="0"
+    >
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >Submitted on</th>
+      <td
+        aria-hidden="true"
+        tabindex="-1"
+      >{{feedback.createdAt | humanDateWithTime: true}}</td>
+    </tr>
+    <tr
+      attr.aria-label="Rating {{feedbackRatings[feedback.rating]}}"
+      role="listitem"
+      tabindex="0"
+    >
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >Rating</th>
+      <td
+        aria-hidden="true"
+        tabindex="-1"
+      >{{feedbackRatings[feedback.rating]}}</td>
+    </tr>
+    <tr
+      aria-hidden="true"
+      class="table-spacer"
+      tabindex="-1"
+    >
+      <td
+        aria-hidden="true"
+        tabindex="-1"
+      ></td>
+    </tr>
+    <tr
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <th
+        aria-hidden="true"
+        colspan="2"
+        tabindex="-1"
+      >Feedback</th>
+    </tr>
+    <tr
+      attr.aria-label="Rating {{feedback.feedback || 'not provided'}}"
+      role="listitem"
+      tabindex="0"
+    >
+      <td
+        aria-hidden="true"
+        class="table-description"
+        colspan="2"
+        tabindex="-1"
+      >
+        <pre>{{feedback.feedback}}</pre>
+      </td>
+    </tr>
+  </app-table>
+</ng-template>

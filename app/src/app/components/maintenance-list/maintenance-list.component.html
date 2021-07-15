@@ -1,0 +1,44 @@
+<app-table
+  [title]="title"
+  (captionAction)="refresh()"
+>
+  <thead aria-hidden="true">
+    <th aria-hidden="true">Date</th>
+    <th aria-hidden="true">Boat</th>
+    <th aria-hidden="true">By</th>
+    <th aria-hidden="true">Request</th>
+  </thead>
+  <tr *ngIf="!requests || !requests.length">
+    <td
+      colspan="4"
+      tabindex="0"
+    >{{emptyMessage}}</td>
+  </tr>
+  <tr
+    *ngFor="let request of requests; let i = index"
+    (click)="clickRequest(request)"
+    (keyup.enter)="clickRequest(request)"
+    role="listitem"
+    class="clickable"
+    tabindex="0"
+    attr.aria-setsize="{{requests.length}}"
+    attr.aria-posinset="{{ i + 1 }}"
+    attr.aria-label="Request {{ i + 1 }} of {{requests.length}}: {{generateRequestDiscription(request)}}"
+  >
+    <td
+      class="sail-cell"
+      aria-hidden="true"
+    >
+      {{request.createdAt | humanDateWithTime: true }}
+    </td>
+    <td aria-hidden="true">
+      {{request.boat.name}}
+    </td>
+    <td aria-hidden="true">
+      {{request.requestedBy.name}}
+    </td>
+    <td aria-hidden="true">
+      {{request.requestDetails}}
+    </td>
+  </tr>
+</app-table>

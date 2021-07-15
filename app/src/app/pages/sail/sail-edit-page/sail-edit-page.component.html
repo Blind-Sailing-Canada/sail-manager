@@ -1,0 +1,222 @@
+<h4 *ngIf="!creatingNewSail && sails[sailId] === null">Looks like this sail is missing.</h4>
+<mat-card *ngIf="creatingNewSail || sails[sailId]">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>cloud_queue</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >{{title}}</mat-card-title>
+    <mat-card-subtitle
+      *ngIf="sailRequestId"
+      tabindex="0"
+    >
+      You are creating a sail from a sail request. Description and sailors from the sail request will be copied over
+      when saved.
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="sailname"></ng-container>
+    <ng-container *ngTemplateOutlet="saildescription"></ng-container>
+    <ng-container *ngTemplateOutlet="sailstart"></ng-container>
+    <ng-container *ngTemplateOutlet="sailend"></ng-container>
+    <ng-container *ngTemplateOutlet="sailboat"></ng-container>
+    <ng-container *ngTemplateOutlet="sailmaxoccupancy"></ng-container>
+    <ng-container *ngTemplateOutlet="sailskipper"></ng-container>
+    <ng-container *ngTemplateOutlet="sailcrew"></ng-container>
+    <ng-container *ngTemplateOutlet="sailpassengers"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        (click)="updateSail()"
+        *ngIf="shouldEnableUpdateButton"
+        id="updateButton"
+        mat-raised-button
+        mtTooltip="Save sail changes"
+      >Update</button>
+      <button
+        (click)="createSail()"
+        *ngIf="shouldEnableCreateButton"
+        id="createButton"
+        mat-raised-button
+        mtTooltip="Save new sail"
+      >Create</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+<ng-template #sailname>
+  <h4
+    aria-hidden="true"
+    id="step1"
+    tabindex="-1"
+  >Step 1 of 9: Sail's Name{{sailId ? ' (required)' : ' (leave blank for default name)'}}</h4>
+  <form [formGroup]="sailForm">
+    <mat-form-field>
+      <input
+        aria-labelledby="step1"
+        formControlName="name"
+        matInput
+        title="Sail Name"
+      >
+    </mat-form-field>
+    <mat-error
+      tabindex="0"
+      *ngFor="let error of (sailForm.pristine ? []: nameErrors)"
+    >{{error}}</mat-error>
+  </form>
+</ng-template>
+<ng-template #saildescription>
+  <h4
+    aria-hidden="true"
+    id="step2"
+    tabindex="-1"
+  >Step 2 of 9: Sail's Description</h4>
+  <form [formGroup]="sailForm">
+    <mat-form-field>
+      <textarea
+        aria-labeledby="step2"
+        cdkAutosizeMaxRows="10"
+        cdkAutosizeMinRows="1"
+        cdkTextareaAutosize
+        formControlName="description"
+        matInput
+        title="Sail Description"
+      ></textarea>
+    </mat-form-field>
+  </form>
+</ng-template>
+<ng-template #sailstart>
+  <h4 tabindex="0">Step 3 of 9: Sail's Start</h4>
+  <app-date-time-form
+    [form]="sailStartDateTimeForm"
+    formType="Start"
+    id="sail-start-date-time"
+  ></app-date-time-form>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of startDateErrors"
+  >{{error}}</mat-error>
+  <p tabindex="0">Start date preview: {{getTime("start")}}</p>
+</ng-template>
+<ng-template #sailend>
+  <h4 tabindex="0">Step 4 of 9: Sail's End</h4>
+  <app-date-time-form
+    [form]="sailEndDateTimeForm"
+    formType="End"
+    id="sail-end-date-time"
+  ></app-date-time-form>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of endDateErrors"
+  >{{error}}</mat-error>
+  <p tabindex="0">End date preview: {{getTime("end")}}</p>
+</ng-template>
+<ng-template #sailboat>
+  <h4 tabindex="0">Step 5 of 9: Sail's Boat (required)</h4>
+  <p
+    aria-live="polite"
+    tabindex="0"
+  >Current boat: {{boatName || 'not assigned'}}</p>
+  <button
+    (click)="setSailBoat()"
+    *ngIf="sailForm.controls['boatId']?.value"
+    mat-raised-button
+    title="Unset sail's boat"
+  >Unset</button>
+  <mat-action-list role='list'>
+    <h3
+      mat-subheader
+      tabindex="0"
+    >List of Available Boats During This Time</h3>
+    <mat-list-item
+      tabindex="0"
+      (click)="setSailBoat(boat.id)"
+      (keydown)="setSailBoatOnKey($event, boat.id)"
+      *ngFor="let boat of availableBoats; let i = index"
+      attr.aria-label="Boat {{i + 1}} of {{availableBoats.length}} {{boat.name}}. Click to assign as sail's boat."
+      role="listitem"
+    >{{i + 1 }}. {{boat.name}}</mat-list-item>
+    <mat-list-item *ngIf="!availableBoats || availableBoats.length === 0">No boats are available during this time.
+    </mat-list-item>
+  </mat-action-list>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of boatErrors"
+  >{{error}}</mat-error>
+</ng-template>
+<ng-template #sailmaxoccupancy>
+  <h4
+    aria-hidden="true"
+    id="step6"
+    tabindex="-1"
+  >Step 6 of 9: Sail's Maximum Occupancy (required)</h4>
+  <form [formGroup]="sailForm">
+    <mat-form-field>
+      <input
+        [max]="maxOccupancy"
+        aria-labeledby="step6"
+        formControlName="maxOccupancy"
+        matInput
+        title="Sail's maxium number of people"
+        min="2"
+        required
+        type="number"
+      >
+    </mat-form-field>
+  </form>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of maxOccupancyErrors"
+  >{{error}}</mat-error>
+</ng-template>
+<ng-template #sailskipper>
+  <h4>Step 7 of 9: Sail's Skipper</h4>
+  <p
+    tabindex="0"
+    *ngIf="creatingNewSail"
+  >Skipper can be assigned after sail creation.</p>
+  <p
+    tabindex="0"
+    *ngIf="!creatingNewSail"
+  >Current skipper: {{skipperName || 'not assigned'}}</p>
+  <a
+    (click)="editManifest()"
+    *ngIf="!creatingNewSail && !sailForm.dirty"
+    mat-raised-button
+  >Edit Manifest</a>
+</ng-template>
+<ng-template #sailcrew>
+  <h4>Step 8 of 9: Sail's Crew</h4>
+  <p
+    tabindex="0"
+    *ngIf="creatingNewSail"
+  >Crew can be assigned after sail creation.</p>
+  <p
+    tabindex="0"
+    *ngIf="!creatingNewSail"
+  >Current crew: {{crewName || 'not assigned'}}</p>
+  <a
+    (click)="editManifest()"
+    *ngIf="!creatingNewSail && !sailForm.dirty"
+    mat-raised-button
+  >Edit Manifest</a>
+</ng-template>
+<ng-template #sailpassengers>
+  <h4>Step 9 of 9: Sail's Passengers</h4>
+  <p
+    tabindex="0"
+    *ngIf="creatingNewSail"
+  >Passengers can be assigned after sail creation.</p>
+  <p
+    tabindex="0"
+    *ngIf="!creatingNewSail"
+  >Current passengers: {{passengerNames || 'not assigned'}}</p>
+  <a
+    (click)="editManifest()"
+    *ngIf="!creatingNewSail && !sailForm.dirty"
+    mat-raised-button
+  >Edit Manifest</a>
+</ng-template>

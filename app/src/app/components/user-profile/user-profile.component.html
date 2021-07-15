@@ -1,0 +1,160 @@
+<app-table
+  *ngIf="profile"
+  title="{{profile?.name}}"
+  [captionActions]="actions"
+  (captionAction)="actionClicked($event)"
+>
+  <tbody role="list">
+    <tr
+      *ngIf="profile.photo"
+      aria-hidden="true"
+    >
+      <td
+        colspan="2"
+        aria-hidden="true"
+      >
+        <div class="user-profile-picture">
+          <a
+            target="_blank"
+            href="{{profile.photo}}"
+          >
+            <img
+              aria-hidden="true"
+              async
+              height="128px"
+              src="{{profile.photo}}?width=128&height=128"
+              width="128px"
+            >
+          </a>
+        </div>
+      </td>
+    </tr>
+    <tr
+      role="listitem"
+      attr.aria-label="User's roles are {{roles}}"
+      tabindex="0"
+    >
+      <th aria-hidden="true">Association</th>
+      <td
+        tabindex="-1"
+        aria-hidden="true"
+      >{{roles}}</td>
+    </tr>
+    <tr
+      role="listitem"
+      attr.aria-label="User's status is {{profile.status}}"
+      tabindex="0"
+    >
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >Status</th>
+      <td
+        aria-hidden="true"
+        tabindex="-1"
+      >{{profile.status}}</td>
+    </tr>
+    <tr
+      role="listitem"
+      attr.aria-label="User's phone number is {{profile.phone?.split('').join(' ') || 'Not provided'}}"
+      tabindex="0"
+      (click)="triggerClick('phone')"
+    >
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        Phone
+      </th>
+      <td><a
+          *ngIf="profile.phone"
+          matLine
+          id="phone"
+          target="_blank"
+          href="tel:{{profile?.phone}}"
+        >{{profile.phone}}</a></td>
+    </tr>
+    <tr
+      role="listitem"
+      attr.aria-label="User's email address is {{profile.email || 'Not provided'}}"
+      tabindex="0"
+      (click)="triggerClick('email')"
+    >
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        Email
+      </th>
+      <td><a
+          role="listitem"
+          *ngIf="profile.email"
+          matLine
+          id="email"
+          target="_blank"
+          aria-label="Email"
+          href="mailto:{{profile?.email}}"
+        >{{profile.email}}</a></td>
+    </tr>
+
+    <tr
+      class="table-spacer"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <td colspan="2"></td>
+    </tr>
+    <tr
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <th colspan="2">Achievements</th>
+    </tr>
+    <tr *ngFor="let achievement of profile?.achievements; let i = index;">
+      <td
+        tabindex="0"
+        role="listitem"
+        attr.aria-label="Achievement {{i+1}} of {{profile.achievements.length}}: {{achievement.name}} ({{achievement.description}}), achieved on {{achievement.createdAt | humanDate}}."
+      >
+        <img
+          class="achievement-badge"
+          *ngIf="achievement.badge"
+          [src]="achievement.badge"
+          height="50px"
+          width="50px"
+        >
+        {{achievement.name}}
+      </td>
+      <td
+        aria-hidden="true"
+        tabindex="-1"
+      >{{achievement.createdAt | humanDate}}</td>
+    </tr>
+    <tr
+      class="table-spacer"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <td colspan="2"></td>
+    </tr>
+    <tr
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <th colspan="2">About</th>
+    </tr>
+    <tr
+      tabindex="0"
+      role="listitem"
+      aria-label="Additional Information"
+      title="User's additional information: {{profile.bio || 'Not provided'}}"
+    >
+      <td
+        class="table-description"
+        colspan="2"
+        aria-hidden="true"
+        tabindex="-1"
+      >{{profile?.bio}}</td>
+    </tr>
+  </tbody>
+</app-table>

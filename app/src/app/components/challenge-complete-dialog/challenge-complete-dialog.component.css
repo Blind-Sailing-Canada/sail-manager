@@ -1,0 +1,22 @@
+.mat-dialog-actions {
+  justify-content: center;
+}
+
+.mat-card {
+  margin-bottom: 1rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+.result-input {
+  width: 100%;
+}
+
+img {
+  align-self: center;
+  max-width: 200px;
+  max-height: 150px;
+  min-height: 150px;
+}

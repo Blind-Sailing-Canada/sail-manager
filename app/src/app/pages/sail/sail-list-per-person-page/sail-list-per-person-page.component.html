@@ -1,0 +1,43 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>cloud_queue</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >Sail List for {{profile?.name}}</mat-card-title>
+    <mat-card-subtitle>
+      <h4 #searchCount>Showing {{currentCount}} of {{totalCount}} sails.</h4>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="CONTENT_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #CONTROLS_TEMPLATE>
+  <a
+    mat-raised-button
+    [routerLink]="createSailRequestRoute"
+  >Request a sail</a>
+  <a
+    mat-raised-button
+    [routerLink]="listSailRequestRoute"
+  >Sail requests</a>
+</ng-template>
+
+<ng-template #CONTENT_TEMPLATE>
+  <mat-accordion>
+    <app-sail-list
+      (clicked)="goToSail($event)"
+      [sails]="profileSails"
+      emptyMessage="There are no sails."
+      title="{{profile?.name}}'s sails"
+    ></app-sail-list>
+  </mat-accordion>
+</ng-template>

@@ -1,0 +1,121 @@
+<mat-list>
+  <mat-list-item>
+    <div
+      class="checklist-item"
+      tabindex="0"
+      role="listitem"
+      attr.aria-label="Fuel state {{checklist?.fuel}}"
+    >
+      <label
+        tabindex="-1"
+        aria-hidden="true"
+      >Fuel</label>
+      <span
+        tabindex="-1"
+        aria-hidden="true"
+      >{{checklist?.fuel}}</span>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div
+      class="checklist-item"
+      tabindex="0"
+      role="listitem"
+      attr.aria-label="Bilge state {{checklist?.bilge}}"
+    >
+      <label
+        tabindex="-1"
+        aria-hidden="true"
+      >Bilge</label>
+      <span
+        tabindex="-1"
+        aria-hidden="true"
+      >{{checklist?.bilge}}</span>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div
+      class="checklist-item"
+      tabindex="0"
+      role="listitem"
+      attr.aria-label="Flares state {{checklist?.flares}}"
+    >
+      <label
+        tabindex="-1"
+        aria-hidden="true"
+      >Flares</label>
+      <span
+        tabindex="-1"
+        aria-hidden="true"
+      >{{checklist?.flares}}</span>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div
+      class="checklist-item"
+      tabindex="0"
+      role="listitem"
+      attr.aria-label="Fire extinguisher state {{checklist?.fireExtinguisher}}"
+    >
+      <label
+        tabindex="-1"
+        aria-hidden="true"
+      >Extingnuisher</label>
+      <span
+        tabindex="-1"
+        aria-hidden="true"
+      >{{checklist?.fireExtinguisher}}</span>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div
+      class="checklist-item"
+      tabindex="0"
+      role="listitem"
+      attr.aria-label="{{checklist?.signedByCrew? 'Signed by crew': 'Not signed by crew'}}"
+    >
+      <label
+        tabindex="-1"
+        aria-hidden="true"
+      >Signed By Crew</label>
+      <span
+        tabindex="-1"
+        aria-hidden="true"
+      >{{checklist?.signedByCrew ? "Yes" : "No"}}</span>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div
+      class="checklist-item"
+      tabindex="0"
+      role="listitem"
+      attr.aria-label="{{checklist?.signedBySkipper? 'Signed by skipper': 'Not signed by skipper'}}"
+    >
+      <label
+        tabindex="-1"
+        aria-hidden="true"
+      >Signed By Skipper</label>
+      <span
+        tabindex="-1"
+        aria-hidden="true"
+      >{{checklist?.signedBySkipper ? "Yes" : "No"}}</span>
+    </div>
+  </mat-list-item>
+  <!-- <mat-list-item>
+    <div
+      class="checklist-item-comments"
+      tabindex="0"
+      role="listitem"
+      attr.aria-label="Comments: {{checklist?.comments || 'none'}}"
+    >
+      <label
+        tabindex="-1"
+        aria-hidden="true"
+      >Comments</label>
+      <p
+        tabindex="-1"
+        aria-hidden="true"
+      >{{checklist?.comments || "none"}}</p>
+    </div>
+  </mat-list-item> -->
+</mat-list>

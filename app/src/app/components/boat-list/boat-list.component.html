@@ -1,0 +1,50 @@
+<app-table
+  [title]="title"
+  [captionActions]="captionActions"
+  (captionAction)="refresh()"
+>
+  <thead>
+    <tr
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <th>Name</th>
+      <th>Max Occupancy</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tr
+    *ngIf="!boats || !boats.length"
+    tabindex="0"
+    [attr.aria-label]="emptyMessage"
+  >
+    <td
+      colspan="3"
+      aria-hidden="true"
+      tabindex="-1"
+    >{{emptyMessage}}</td>
+  </tr>
+  <tr
+    (click)="clickBoat(boat)"
+    (keyup.enter)="clickBoat(boat)"
+    *ngFor="let boat of boats; let i = index;"
+    attr.aria-label="Boat {{i + 1}} of {{boats?.length}}: name {{boat?.name}}, status {{boat?.status}}"
+    class="clickable"
+    title="Click to view boat details of {{boat?.name}}"
+    role="listitem"
+    tabindex="0"
+  >
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.name}}</td>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.maxOccupancy}}</td>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.status}}</td>
+  </tr>
+</app-table>

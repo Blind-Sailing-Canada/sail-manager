@@ -1,0 +1,166 @@
+<app-table *ngIf="boat">
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Boat name {{boat.name}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Name</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.name}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Boat status {{boat.status}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Status</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.status}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Boat max occupancy {{boat.maxOccupancy}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Max Occupancy</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.maxOccupancy}}</td>
+  </tr>
+  <tr
+    (click)="wikiLink?.click()"
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Boat wiki page {{boat.wiki}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Wiki</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <a
+        *ngIf="boat.wiki"
+        target="_blank"
+        #wikiLink
+        href={{boat.wiki}}
+      >{{boat.wiki}}</a>
+      {{!boat.wiki ? "Not provided": ""}}
+    </td>
+  </tr>
+  <tr
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <td colspan="2">Hull</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Hull type {{boat.hullType}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Type</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.hullType}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Hull draft {{boat.draft}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Draft</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.draft}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Hull beam {{boat.beam}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Beam</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.beam}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Hull length overall {{boat.loa}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Length overall</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.loa}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Hull length waterline {{boat.lwl}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Length waterline</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.lwl}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Hull material {{boat.material}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Material</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.material}}</td>
+  </tr>
+  <tr
+    *ngIf="showPictures && boat.pictures && boat.pictures.length"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <td colspan="2">
+      <app-image-list [pictures]="boat.pictures"></app-image-list>
+    </td>
+  </tr>
+</app-table>

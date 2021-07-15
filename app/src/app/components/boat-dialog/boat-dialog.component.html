@@ -1,0 +1,46 @@
+<h1
+  attr.aria-label="Boat Dialog for {{data.boat.name}}"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Boat Dialog</h1>
+<mat-dialog-content>
+  <a
+    *ngIf="data.boat.pictures?.length"
+    [href]="data.boat.pictures[0]"
+    aria-hidden="true"
+    class="boat-pictures"
+    tabindex="-1"
+    target="_blank"
+  >
+    <img
+      aria-hidden="true"
+      async
+      src="{{data.boat.pictures[0]}}?width=200&height=150"
+      tabindex="-1"
+    >
+  </a>
+  <h1
+    tabIndex="0"
+    attr.aria-label="Boats's name {{data.boat.name}}"
+  >{{data.boat.name}}</h1>
+  <mat-card>
+    <app-boat-table
+      [boat]="data.boat"
+      [showPictures]="false"
+    ></app-boat-table>
+  </mat-card>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    (click)="viewBoat()"
+    mat-raised-button
+    title="Go to boat page"
+  >FULL VIEW</button>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close boat dialog"
+  >CLOSE</button>
+</div>

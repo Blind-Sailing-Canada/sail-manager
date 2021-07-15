@@ -1,0 +1,80 @@
+<h5>{{subtitle}}</h5>
+<mat-card-actions>
+  <button
+    mat-button
+    (click)="addMoreHandler()"
+    mat-raised-button
+    color="primary"
+    attr.aria-label="Add More {{subtitle}}"
+  >
+    <mat-icon>add</mat-icon>
+    <span>Add</span>
+  </button>
+</mat-card-actions>
+<div
+  [formGroup]="form"
+  aria-live="polite"
+>
+  <div [formArrayName]="arrayName">
+    <fieldset
+      *ngFor="let instruction of controls; let i = index;"
+      [formGroupName]="i"
+    >
+      <legend>{{subtitle}} {{i + 1}} of {{controls.length}}</legend>
+      <mat-form-field>
+        <mat-label
+          id="labelTitle{{subtitleWithoutSpaces}}{{i}}"
+          aria-hidden="true"
+          tabindex="-1"
+        >Instruction Title</mat-label>
+        <input
+          attr.aria-labelledby="labelTitle{{subtitleWithoutSpaces}}{{i}}"
+          matInput
+          type="text"
+          formControlName="title"
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label
+          id="labelDetails{{subtitleWithoutSpaces}}{{i}}"
+          aria-hidden="true"
+          tabindex="-1"
+        >Instruction Details</mat-label>
+        <textarea
+          attr.aria-labelledby="labelDetails{{subtitleWithoutSpaces}}{{i}}"
+          cdkAutosizeMaxRows="10"
+          cdkAutosizeMinRows="1"
+          cdkTextareaAutosize
+          formControlName="description"
+          matInput
+          type="text"
+        ></textarea>
+      </mat-form-field>
+      <app-image-form
+        (deleteClick)="deletePicture($event, i)"
+        [allowDelete]="true"
+        [allowDescription]="true"
+        [form]="instruction"
+        controlArrayName="media"
+      ></app-image-form>
+      <app-file-select
+        (action)="uploadFileToCDN($event, i)"
+        [id]="instructionFileInput(i)"
+        [progress]="uploadProgress(i)"
+        actionDescription="Choose image file to upload:"
+        actionName="Upload"
+        fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp"
+        [multiple]="false"
+        title="New Image Upload Form"
+      ></app-file-select>
+      <div>
+        <button
+          (click)="remove.emit(i)"
+          mat-raised-button
+          color="warn"
+          title="Delete instruction"
+        >Delete instruction</button>
+      </div>
+    </fieldset>
+  </div>
+</div>

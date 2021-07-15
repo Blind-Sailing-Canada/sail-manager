@@ -1,0 +1,151 @@
+<h4 *ngIf="!creatingNewMaintenance && maintenances[maintenanceId] === null">Looks like this maintenance request is
+  missing.</h4>
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>build</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >
+      {{title}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <form [formGroup]="maintenanceForm">
+      <ng-container [ngTemplateOutlet]="TemplateRequestStatus"></ng-container>
+      <ng-container [ngTemplateOutlet]="TemplateRequestBoat"></ng-container>
+      <ng-container [ngTemplateOutlet]="TemplateRequestDetails"></ng-container>
+      <ng-container [ngTemplateOutlet]="TemplateRequestServiceDetails"></ng-container>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        *ngIf="shouldEnableSubmitButton"
+        mat-raised-button
+        (click)="submitForm()"
+      >submit</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+<ng-template #controls>
+  <a
+    (click)="goToViewMaintenance()"
+    *ngIf="!creatingNewMaintenance"
+    mat-raised-button
+  >
+    <mat-icon>photo_camera</mat-icon>
+    Add pictures
+  </a>
+</ng-template>
+<ng-template #TemplateRequestStatus>
+  <h4
+    aria-hidden="true"
+    tabindex="-1"
+    id="stepStatus"
+  >Step 1 of 5: Request Status</h4>
+  <mat-form-field [formGroup]="maintenanceForm">
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Status</mat-label>
+    <select
+      aria-labelledby="stepStatus"
+      aria-required="true"
+      formControlName="status"
+      matNativeControl
+      required
+    >
+      <option
+        *ngFor="let status of maintenanceStatus | keyvalue"
+        [value]="status.value"
+      >{{status.value}}</option>
+    </select>
+  </mat-form-field>
+</ng-template>
+<ng-template #TemplateRequestBoat>
+  <h4
+    aria-hidden="true"
+    tabindex="-1"
+    id="step1"
+  >Step 2 of 5: Boat</h4>
+  <mat-form-field [formGroup]="maintenanceForm">
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Boat</mat-label>
+    <select
+      [compareWith]="compareBoats"
+      aria-labelledby="step1"
+      aria-required="true"
+      formControlName="boatId"
+      matNativeControl
+      required
+    >
+      <option
+        *ngFor="let boat of boatsArray"
+        [value]="boat.id"
+      >{{boat.name}}</option>
+    </select>
+  </mat-form-field>
+  <mat-error
+      tabindex="0"
+      *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('boatId'))"
+    >{{error}}</mat-error>
+</ng-template>
+<ng-template #TemplateRequestDetails>
+  <h4
+    aria-hidden="true"
+    tabindex="-1"
+    id="step2"
+  >Step 3 of 5: Maintenance Details</h4>
+  <mat-form-field [formGroup]="maintenanceForm">
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Request details</mat-label>
+    <textarea
+      aria-labeledby="step2"
+      cdkAutosizeMaxRows="10"
+      cdkAutosizeMinRows="1"
+      cdkTextareaAutosize
+      formControlName="requestDetails"
+      matInput
+      title="Request Details"
+      required
+    ></textarea>
+  </mat-form-field>
+  <mat-error
+      tabindex="0"
+      *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('requestDetails'))"
+    >{{error}}</mat-error>
+</ng-template>
+<ng-template #TemplateRequestServiceDetails>
+  <h4
+    aria-hidden="true"
+    tabindex="-1"
+    id="step2"
+  >Step 4 of 5: Maintenance Service Details</h4>
+  <mat-form-field [formGroup]="maintenanceForm">
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Service details (fill out when resolving this request)</mat-label>
+    <textarea
+      [required]="isServiceDetailsRequired"
+      aria-labeledby="step2"
+      cdkAutosizeMaxRows="10"
+      cdkAutosizeMinRows="1"
+      cdkTextareaAutosize
+      formControlName="serviceDetails"
+      matInput
+      title="Service Details"
+    >{{isServiceDetailsRequired}}</textarea>
+  </mat-form-field>
+</ng-template>

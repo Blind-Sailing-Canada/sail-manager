@@ -1,0 +1,45 @@
+<h4 *ngIf="sails[sailId] === null">Looks like this sail is missing.</h4>
+<mat-card *ngIf="sails[sailId]">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>cloud_queue</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >Sail Cancel Form</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container>
+      <ng-container *ngTemplateOutlet="TEMPLATE_CANCEL_FORM"></ng-container>
+    </ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        (click)="submitCancelForm()"
+        *ngIf="shouldEnableSubmitButton"
+        mat-raised-button
+        mtTooltip="Save sail changes"
+      >Submit</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #TEMPLATE_CANCEL_FORM>
+  <form [formGroup]="sailCancelForm">
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        tabindex="-1"
+      >Cancel Reason</mat-label>
+      <textarea
+        formControlName="cancelReason"
+        matInput
+        title="Reason for cancelling this sail"
+        required
+      ></textarea>
+    </mat-form-field>
+  </form>
+</ng-template>

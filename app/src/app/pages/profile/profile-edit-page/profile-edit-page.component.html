@@ -1,0 +1,195 @@
+<mat-card *ngIf="profile">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>person</mat-icon>
+    </div>
+    <mat-card-title
+      *ngIf="isNewRegistration"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Account Registration Form</mat-card-title>
+    <mat-card-title
+      *ngIf="!isNewRegistration"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Edit Profile Form</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="formContent"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <ng-container [ngTemplateOutlet]="formControls"></ng-container>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+<ng-template #formControls>
+  <button
+    (click)="save()"
+    *ngIf="!shouldHideUpdateButton && !isNewRegistration"
+    [disabled]="shouldHideUpdateButton"
+    mat-raised-button
+    title="Save your profile changes"
+  >Update</button>
+  <button
+    (click)="save()"
+    *ngIf="!shouldHideUpdateButton && isNewRegistration"
+    [disabled]="shouldHideUpdateButton"
+    mat-raised-button
+    title="Submit your account registration"
+  >Register</button>
+</ng-template>
+<ng-template #formContent>
+  <form [formGroup]="profileForm">
+    <ng-container>
+      <ng-container *ngTemplateOutlet="profileName"></ng-container>
+    </ng-container>
+    <ng-container>
+      <ng-container *ngTemplateOutlet="profileEmail"></ng-container>
+    </ng-container>
+    <ng-container>
+      <ng-container *ngTemplateOutlet="profilePhone"></ng-container>
+    </ng-container>
+    <ng-container>
+      <ng-container *ngTemplateOutlet="profilePicture"></ng-container>
+    </ng-container>
+    <ng-container>
+      <ng-container *ngTemplateOutlet="profileBio"></ng-container>
+    </ng-container>
+  </form>
+</ng-template>
+<ng-template #profileName>
+  <h4
+    aria-hidden="true"
+    id="formStepName"
+    tabindex="-1"
+  >Step 1 of 5: Your Name</h4>
+  <mat-form-field [formGroup]="profileForm">
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Name</mat-label>
+    <input
+      aria-labelledby="formStepName"
+      aria-required="true"
+      formControlName="name"
+      matInput
+      required
+      type="text"
+    >
+  </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (profileForm.pristine ? []: formErrors('name'))"
+  >{{error}}</mat-error>
+</ng-template>
+<ng-template #profileEmail>
+  <h4
+    aria-hidden="true"
+    id="formStepEmail"
+    tabindex="-1"
+  >Step 2 of 5: Your Email Address</h4>
+  <mat-form-field [formGroup]="profileForm">
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Email</mat-label>
+    <input
+      aria-labelledby="formStepEmail"
+      aria-required="true"
+      formControlName="email"
+      matInput
+      required
+      type="email"
+    >
+  </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (profileForm.pristine ? []: formErrors('email'))"
+  >{{error}}</mat-error>
+</ng-template>
+<ng-template #profilePhone>
+  <h4
+    aria-hidden="true"
+    id="formStepPhone"
+    tabindex="-1"
+  >Step 3 of 5: Your Phone Number</h4>
+  <mat-form-field [formGroup]="profileForm">
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Phone Number</mat-label>
+    <input
+      aria-labelledby="formStepPhone"
+      formControlName="phone"
+      matInput
+      type="tel"
+    >
+  </mat-form-field>
+</ng-template>
+<ng-template #profilePicture>
+  <h4
+    aria-hidden="true"
+    id="formStepPicture"
+    tabindex="-1"
+  >Step 4 of 5: URL to Your Profile Picture</h4>
+  <mat-form-field [formGroup]="profileForm">
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Photo URL</mat-label>
+    <input
+      aria-labelledby="formStepPicture"
+      formControlName="photo"
+      matInput
+      type="url"
+    >
+  </mat-form-field>
+  <app-file-select
+    (action)="uploadFileToCDN($event)"
+    *ngIf="profile.status === ProfileStatus.Approved"
+    [id]="profilePictureInputId"
+    [multiple]="false"
+    [progress]="uploadProgress"
+    actionDescription="Choose image file to upload:"
+    actionName="Upload"
+    fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp"
+    title="New Image Upload Form"
+  ></app-file-select>
+</ng-template>
+<ng-template #profileBio>
+  <h4
+    *ngIf="!isNewRegistration"
+    aria-hidden="true"
+    id="formStepBio"
+    tabindex="-1"
+  >Step 5 of 5: Your Self Description</h4>
+  <h4
+    *ngIf="isNewRegistration"
+    aria-hidden="true"
+    id="formStepBio"
+    tabindex="-1"
+  >Step 5 of 5: Indicate your role</h4>
+  <mat-form-field [formGroup]="profileForm">
+    <mat-label
+      aria-hidden="true"
+      *ngIf="!isNewRegistration"
+      tabindex="-1"
+    >Description</mat-label>
+    <mat-label
+      *ngIf="isNewRegistration"
+      aria-hidden="true"
+      tabindex="-1"
+    >Please indicate if you're a skipper, crew, member, or someone new.</mat-label>
+    <textarea
+      aria-labelledby="formStepBio"
+      cdkAutosizeMaxRows="10"
+      cdkAutosizeMinRows="1"
+      cdkTextareaAutosize
+      formControlName="bio"
+      matInput
+    ></textarea>
+  </mat-form-field>
+</ng-template>

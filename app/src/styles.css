@@ -1,0 +1,405 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  line-height: 150%;
+  /* this prevents text over lap when font size is large */
+}
+
+pre {
+  overflow-x: auto;
+  padding-bottom: 10px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+mat-icon {
+  vertical-align: middle;
+}
+
+.profile-bullet {
+  margin-right: 20px;
+}
+
+mat-label {
+  display: flex;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.mat-button-base {
+  margin-bottom: 10px !important;
+  margin-left: 0 !important;
+  margin-right: 10px !important;
+}
+
+form, .form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  justify-items: stretch;
+  align-content: stretch;
+  align-items: stretch;
+}
+
+footer {
+  display: flex;
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+}
+
+footer span {
+  display: flex;
+  margin-right: 2px;
+}
+
+html {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  word-break: break-all !important;
+}
+
+.break-all {
+  word-break: break-all !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+.break-space {
+  word-break: normal !important;
+  word-wrap: normal !important;
+  white-space: normal !important;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+.app-container {
+  min-width: 100%;
+  min-height: 100%;
+  align-content: stretch;
+  align-items: start;
+  display: grid;
+  grid-template-columns: 20% auto 20%;
+  grid-template-rows: 55px 10px auto 30px;
+  grid-template-areas: "header header header" "loader loader loader" "sidebar-left main sidebar-right" "footer footer footer";
+}
+
+app-header {
+  grid-area: header;
+}
+
+nav {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.header-title {
+  grid-area: header-title;
+}
+
+.header-actions {
+  grid-area: header-actions;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.header-actions :first-child {
+  margin-right: 2px;
+}
+
+.header-actions :last-child {
+  margin-right: 0px;
+}
+
+.header-actions * {
+  margin-right: 10px;
+}
+
+.clickable:focus {
+  outline: auto;
+}
+
+.clickable:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.form-controls {
+  display: flex;
+  justify-content: center;
+}
+
+.card-heading {
+  margin: unset;
+  padding: unset;
+  font-size: unset;
+  font-weight: unset;
+}
+
+mat-card-title h2 {
+  margin: unset;
+  padding: unset;
+  font-size: unset;
+  font-weight: unset;
+}
+
+mat-card-subtitle h3 {
+  margin: unset;
+  padding: unset;
+  font-size: unset;
+  font-weight: unset;
+}
+
+.form-controls * {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.instructions-pictures {
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+}
+
+.instructions-pictures a {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.instructions-pictures img {
+  height: 200px;
+  max-width: 300px;
+}
+
+.controls {
+  grid-area: controls;
+  display: flex;
+  justify-content: space-around;
+}
+
+main {
+  grid-area: main;
+  padding: 20px 8px 20px 8px;
+  overflow-x: auto;
+}
+
+.mat-card {
+  overflow-x: auto;
+}
+
+mat-expansion-panel {
+  margin-bottom: 2px !important;
+}
+
+.mat-expansion-panel-content {
+  overflow-x: auto !important;
+}
+
+.mat-content {
+  justify-content: space-between;
+}
+
+.mat-expansion-panel-header-title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: auto;
+  flex-grow: 10000 !important;
+  flex-shrink: 0;
+}
+
+.mat-expansion-panel-header-description {
+  flex-grow: 0;
+  flex-shrink: 1;
+  overflow: auto;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+app-footer {
+  grid-area: footer;
+  margin-top: 10px;
+  align-self: end;
+}
+
+app-footer * {
+  margin: 0;
+  justify-content: center;
+}
+
+mat-card-actions {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+mat-card-actions button, a {
+  margin-left: 5px;
+  margin-right: 5px !important;
+}
+
+mat-card-actions *:first {
+  margin-left: 0 !important;
+}
+
+mat-action-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap-reverse !important;
+  justify-content: center !important;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
+mat-action-row * {
+  margin-left: 8px !important;
+  margin-right: 8px !important;
+}
+
+mat-card-footer {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+mat-card-footer mat-card-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.mobile-screen {
+  display: none;
+}
+
+.full-screen {
+  display: initial;
+}
+
+@media screen and (max-width: 670px) {
+  .mobile-screen {
+    display: initial;
+  }
+  .full-screen {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .mat-expansion-panel-body {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+  mat-card {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+  mat-card-actions {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 5px !important;
+  }
+  mat-card-actions button, a {
+    margin-left: 3px;
+    margin-right: 3px !important;
+  }
+  mat-card-actions *:first {
+    margin-left: 0 !important;
+  }
+  mat-card-header {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+  mat-card-footer {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  mat-card-footer mat-card-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .instructions-pictures {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .instructions-pictures img {
+    height: 200px;
+    max-width: 250px;
+  }
+  h1, h2, h3, h4 {
+    padding: 0 !important;
+    margin: 5px !important;
+    font-size: 1rem !important;
+  }
+  .app-container {
+    grid-template-columns: auto;
+    grid-template-rows: 55px 10px auto 30px;
+    grid-template-areas: "header" "loader" "main" "footer";
+  }
+  footer {
+    display: flex;
+    flex-direction: row;
+  }
+  article section {
+    margin-bottom: 20px;
+    padding: 1px;
+  }
+  table {
+    overflow-x: hidden;
+    z-index: -1;
+  }
+}
+
+@media screen and (min-width: 671px) and (max-width: 1024px) {
+  .app-container {
+    grid-template-columns: 10% auto 10%;
+    grid-template-rows: 55px 10px auto 30px;
+    grid-template-areas: "header header header" "loader loader loader" "sidebar-left main sidebar-right" "footer footer footer";
+  }
+  .instructions-pictures {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .instructions-pictures img {
+    height: 200px;
+    max-width: 250px;
+  }
+}
+
+*:focus {
+  outline: auto; /* set to auto to see outline */
+}
+
+*::-moz-focus-inner {
+  border: none;
+}
+
+article section {
+  margin-bottom: 20px;
+  padding: 1px;
+}

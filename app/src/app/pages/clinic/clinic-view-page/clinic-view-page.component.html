@@ -1,0 +1,115 @@
+<mat-card *ngIf="clinic">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>local_hospital</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >Clinic: {{clinic?.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="CONTENT_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #CONTROLS_TEMPLATE>
+  <button
+    (click)="editClinic()"
+    *ngIf="shouldEnableEditButton"
+    mat-raised-button
+    title="Go to edit clinic page"
+  >Edit</button>
+  <button
+    *ngIf="shouldEnableEnrollButton"
+    (click)="enrollInClinic()"
+    title="Enroll in this clinic"
+    mat-raised-button
+  >Enroll</button>
+  <button
+    (click)="disenrollFromClinic()"
+    *ngIf="shouldEnableDisenrollButton"
+    mat-raised-button
+    title="Disenroll from this clinic"
+  >Disenroll</button>
+</ng-template>
+
+<ng-template #CONTENT_TEMPLATE>
+  <app-table>
+    <tr aria-hidden="true">
+      <th aria-hidden="true">Clinic</th>
+      <th aria-hidden="true">Instructor</th>
+    </tr>
+    <tr
+      attr.aria-label="{{clinic.name}}, lead by {{clinic.instructor?.name || 'no one'}}."
+      role="listitem"
+      tabindex="0"
+    >
+      <td aria-hidden="true">
+        <img
+          *ngIf="clinic.badge"
+          [src]="clinic.badge"
+          class="clinic-badge"
+          height="50px"
+          width="50px"
+        >
+        {{clinic.name}}</td>
+      <td
+        (click)="showProfileDialog(clinic.instructor)"
+        *ngIf="clinic.instructor"
+        aria-hidden="true"
+        class="clickable"
+      >
+        <app-profile-bullet [profile]="clinic.instructor"></app-profile-bullet>
+      </td>
+      <td
+        aria-hidden="true"
+        *ngIf="!clinic.instructor"
+      >not assigned</td>
+    </tr>
+    <tr class="table-spacer">
+      <td colspan="2"></td>
+    </tr>
+    <tr>
+      <th colspan="2">Description</th>
+    </tr>
+    <tr>
+      <td
+        colspan="2"
+        class="table-description"
+      >
+        <pre>{{clinic.description}}</pre>
+      </td>
+    </tr>
+  </app-table>
+  <h3>Enrollment</h3>
+  <mat-list>
+    <mat-list-item *ngFor="let student of clinic?.attendance">
+      <div class="enrollment-list-item-conent">
+        <app-profile-bullet
+          class="clickable"
+          (click)="showProfileDialog(student.attendant)"
+          [profile]="student.attendant"
+        ></app-profile-bullet>
+        <div>
+          <button
+            (click)="removeUserFromClinic(student.attendant.id)"
+            *ngIf="shouldEnableRemoveButton"
+            mat-raised-button
+            title="Remove {{student.attendant.name}} from this clinic."
+          >remove</button>
+          <button
+            (click)="graduateUserFromClinic(student.attendant.id)"
+            *ngIf="shouldEnableGraduateButton"
+            mat-raised-button
+            title="Graduate {{student.attendant.name}} from this clinic."
+          >graduate</button>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</ng-template>

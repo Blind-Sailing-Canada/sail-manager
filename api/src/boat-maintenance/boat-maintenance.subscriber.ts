@@ -1,0 +1,36 @@
+import { InjectQueue } from '@nestjs/bull';
+import { Injectable } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/typeorm';
+import { Queue } from 'bull';
+import {
+  Connection, EntitySubscriberInterface, InsertEvent, UpdateEvent
+} from 'typeorm';
+import { BoatMaintenanceEntity } from './boat-maintenance.entity';
+
+@Injectable()
+export class BoatMaintenanceSubscriber implements EntitySubscriberInterface<BoatMaintenanceEntity> {
+
+  constructor(
+    @InjectConnection() readonly connection: Connection,
+    @InjectQueue('boat-maintenance') private readonly boatMaintenanceQueue: Queue
+  ) {
+    connection.subscribers.push(this);
+  }
+
+  listenTo() {
+    return BoatMaintenanceEntity;
+  }
+
+  afterUpdate(event: UpdateEvent<BoatMaintenanceEntity>) {
+    if (!event.entity) {
+      return;
+    }
+
+    this.boatMaintenanceQueue.add('update-request', { maintenanceId: event.entity.id });
+  }
+
+  afterInsert(event: InsertEvent<BoatMaintenanceEntity>) {
+    this.boatMaintenanceQueue.add('new-request', { maintenanceId: event.entity.id });
+  }
+
+}

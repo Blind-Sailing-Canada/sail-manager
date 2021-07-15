@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>error</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >Error</mat-card-title>
+    <mat-card-subtitle> There was a problem with your request </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p><b>Reason:</b> {{errorMessage}}</p>
+    <p>Contact us <a href="mailto:CONTACT_US_EMAIL">CONTACT_US_EMAIL</a> if you experience this problem again.</p>
+  </mat-card-content>
+</mat-card>

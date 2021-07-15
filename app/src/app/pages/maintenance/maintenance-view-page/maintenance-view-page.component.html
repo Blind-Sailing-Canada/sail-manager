@@ -1,0 +1,242 @@
+<h4 *ngIf="maintenances[maintenanceId] === null">
+  Looks like this maintenance request is missing.
+</h4>
+<mat-card *ngIf="maintenance">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>build</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >
+      {{title}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="TemplateRequest"></ng-container>
+    <ng-container [ngTemplateOutlet]="TemplateRequestPictures"></ng-container>
+    <ng-container [ngTemplateOutlet]="TemplateRequestComments"></ng-container>
+    <ng-container [ngTemplateOutlet]="TemplateNewComment"></ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #controls>
+  <a
+    *ngIf="shouldEnableEditButton"
+    mat-raised-button
+    [routerLink]="editMaintenanceLink"
+  >Edit</a>
+  <a
+    *ngIf="shouldEnableResolveButton"
+    mat-raised-button
+    [routerLink]="resolveMaintenanceLink"
+  >Resolve</a>
+</ng-template>
+
+<ng-template #TemplateRequest>
+  <app-table>
+    <tr>
+      <th
+        tabindex="-1"
+        aria-hidden="true"
+      >Requested For</th>
+      <td
+        (click)="showBoatDialog(maintenance?.boat)"
+        attr.aria-label="Requested for: {{maintenance?.boat?.name}}"
+        class="break-all clickable"
+        role="listitem"
+        tabindex="0"
+      >{{maintenance?.boat?.name}}</td>
+    </tr>
+    <tr>
+      <th
+        tabindex="-1"
+        aria-hidden="true"
+      >Requested On</th>
+      <td
+        role="listitem"
+        tabindex="0"
+        attr.aria-label="Requested on: {{maintenance.createdAt | humanDateWithTime}}"
+      >{{maintenance.createdAt| humanDateWithTime: true}}</td>
+    </tr>
+    <tr>
+      <th
+        tabindex="-1"
+        aria-hidden="true"
+      >Requested By</th>
+      <td
+        (click)="showProfileDialog(maintenance?.requestedBy)"
+        attr.aria-label="Requested by: {{maintenance?.requestedBy?.name}}"
+        class="break-all clickable"
+        role="listitem"
+        tabindex="0"
+      >
+        <app-profile-bullet [profile]="maintenance.requestedBy"></app-profile-bullet>
+      </td>
+    </tr>
+    <tr>
+      <th
+        tabindex="-1"
+        aria-hidden="true"
+      >Request Status</th>
+      <td
+        role="listitem"
+        tabindex="0"
+        attr.aria-label="Request status: {{maintenance?.status}}"
+      >{{maintenance?.status}}</td>
+    </tr>
+    <tr
+      class="table-spacer"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <td colspan="2"></td>
+    </tr>
+    <tr
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <th colspan="2">Request Details</th>
+    </tr>
+    <tr>
+      <td
+        class="break-all"
+        colspan="2"
+        role="listitem"
+        tabindex="0"
+        attr.aria-label="Request details: {{maintenance.requestDetails}}"
+      >{{maintenance.requestDetails}}</td>
+    </tr>
+    <tr
+      class="table-spacer"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <td colspan="2"></td>
+    </tr>
+    <ng-container *ngIf="isMaintenanceResolved">
+      <tr
+        tabindex="-"
+        aria-hidden="true"
+      >
+        <th colspan="2">Service Summary</th>
+      </tr>
+      <tr>
+        <th
+          tabindex="-1"
+          aria-hidden="true"
+        >Serviced By</th>
+        <td
+          (click)="showProfileDialog(maintenance.resolvedBy)"
+          attr.aria-label="Serviced by: {{maintenance?.resolvedBy?.name}}"
+          class="break-all clickable"
+          role="listitem"
+          tabindex="0"
+        >
+          <app-profile-bullet [profile]="maintenance.resolvedBy"></app-profile-bullet>
+        </td>
+      </tr>
+      <tr>
+        <th
+          tabindex="-1"
+          aria-hidden="true"
+        >Serviced On</th>
+        <td
+          role="listitem"
+          tabindex="0"
+          attr.aria-label="Serviced on: {{maintenance.servicedAt | humanDateWithTime}}"
+        >{{maintenance.servicedAt | humanDateWithTime:true}}</td>
+      </tr>
+      <tr
+        class="table-spacer"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <td colspan="2"></td>
+      </tr>
+      <tr
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <th colspan="2">Service Details</th>
+      </tr>
+      <tr>
+        <td
+          class="break-all"
+          colspan="2"
+          role="listitem"
+          tabindex="0"
+          attr.aria-label="Service details: {{maintenance?.serviceDetails}}"
+        >{{maintenance?.serviceDetails}}</td>
+      </tr>
+    </ng-container>
+  </app-table>
+</ng-template>
+
+<ng-template #TemplateRequestPictures>
+  <mat-accordion>
+    <mat-expansion-panel>
+  <mat-expansion-panel-header><h4 tabindex="0">Pictures</h4></mat-expansion-panel-header>
+  <div>
+    <mat-slide-toggle
+      color="warn"
+      [(ngModel)]="allowDelete"
+    >Delete Mode</mat-slide-toggle>
+  </div>
+  <app-image-list
+    (deleteClick)="deletePicture($event)"
+    (goToProfile)="showProfileDialog(getProfile($event))"
+    [allowDelete]="allowDelete"
+    [pictures]="maintenance.pictures"
+    [showAuthor]="true"
+    [user]="user"
+  ></app-image-list>
+  <app-image-form
+    (deleteClick)="deleteCDNFile($event)"
+    [allowDescription]="true"
+    [allowTitle]="true"
+    [allowDelete]="true"
+    [form]="picturesForm"
+    controlArrayName="pictures"
+  ></app-image-form>
+  <app-file-select
+    (action)="uploadNewPicture($event)"
+    [id]="maintenancePictureInput"
+    [multiple]="false"
+    [progress]="uploadProgress"
+    actionDescription="Upload pictures of related to this boat maintenance"
+    actionName="Upload"
+    fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp"
+    title="Upload pictures of related to this boat maintenance"
+  ></app-file-select>
+  <mat-action-row>
+    <button
+      (click)="save()"
+      *ngIf="shouldAllowSaveButton"
+      mat-raised-button
+    >Post pictures</button>
+  </mat-action-row>
+</mat-expansion-panel>
+</mat-accordion>
+</ng-template>
+
+<ng-template #TemplateRequestComments>
+  <app-comment-list
+    (profileClick)="showProfileDialog($event, ($event)?.roles)"
+    [user]="user"
+    (commentDelete)="deleteComment($event)"
+    [comments]="maintenance?.comments"
+  ></app-comment-list>
+</ng-template>
+
+<ng-template #TemplateNewComment>
+  <app-new-comment-form
+    (postNewComment)="postNewComment($event)"
+    [currentUser]="user"
+  ></app-new-comment-form>
+</ng-template>

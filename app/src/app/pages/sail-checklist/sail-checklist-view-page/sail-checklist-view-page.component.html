@@ -1,0 +1,52 @@
+<mat-card *ngIf="sail && user">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>playlist_add_check</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Sail Checklist: {{sail?.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="checklistContent"></ng-container>
+  </mat-card-content>
+</mat-card>
+<ng-template #controls>
+  <a
+    *ngIf="shouldAllowEdit"
+    [routerLink]="editSailchecklistRouteLink"
+    aria-label="Edit entire checklist"
+    mat-raised-button
+  >Edit</a>
+  <a
+    *ngIf="shouldAllowEdit"
+    [routerLink]="departureSailchecklistRouteLink"
+    aria-label="Edit departure checklist"
+    mat-raised-button
+  >Departure</a>
+  <a
+    *ngIf="shouldAllowEdit"
+    [routerLink]="arrivalSailchecklistRouteLink"
+    aria-label="Edit arrival checklist"
+    mat-raised-button
+  >Arrival</a>
+  <a
+    (click)="gotToPeopleManifestRouteLink()"
+    *ngIf="shouldAllowEdit"
+    aria-label="View people manifest"
+    mat-raised-button
+  >Manifest</a>
+</ng-template>
+<ng-template #checklistContent>
+  <app-checklist-summary
+    (openProfileDialog)="showProfileDialog($event)"
+    (sailFetcher)="getSail($event)"
+    (sailViewer)="viewSail($event)"
+    [sail]="sail"
+  ></app-checklist-summary>
+</ng-template>

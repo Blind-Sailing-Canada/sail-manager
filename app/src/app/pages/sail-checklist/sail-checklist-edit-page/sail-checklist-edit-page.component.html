@@ -1,0 +1,113 @@
+<mat-card *ngIf="sail && user">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>playlist_add_check</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Edit Sail Checklist Form</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="checklistFormContent"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        *ngIf="!shouldDisableUpdateButton"
+        mat-raised-button
+        [disabled]="shouldDisableUpdateButton"
+        (click)="save()"
+      >Update</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+<ng-template #checklistFormContent>
+  <form [formGroup]="checklistForm">
+    <ng-container>
+      <ng-container *ngTemplateOutlet="sailDestination"></ng-container>
+    </ng-container>
+    <ng-container>
+      <ng-container *ngTemplateOutlet="weather"></ng-container>
+    </ng-container>
+    <ng-container>
+      <ng-container *ngTemplateOutlet="before"></ng-container>
+    </ng-container>
+    <ng-container>
+      <ng-container *ngTemplateOutlet="after"></ng-container>
+    </ng-container>
+  </form>
+</ng-template>
+
+<ng-template #sailDestination>
+  <h4
+    aria-hidden="true"
+    aria-level="3"
+    id="stepLabelDestination"
+    role="heading"
+    tabindex="-1"
+  >Step 1 of 4: Sail Destination</h4>
+  <mat-form-field [formGroup]="beforeFormControls">
+    <mat-label
+      tabindex="-1"
+      aria-hidden="true"
+    >Sail Destination</mat-label>
+    <textarea
+      aria-labelledby="stepLabelDestination"
+      formControlName="sailDestination"
+      matInput
+    ></textarea>
+  </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (beforeFormControls.pristine ? []: beforeFormErrors('sailDestination'))"
+  >{{error}}</mat-error>
+</ng-template>
+
+<ng-template #weather>
+  <h4
+    aria-hidden="true"
+    aria-level="3"
+    id="stepLabelWeather"
+    role="heading"
+    tabindex="-1"
+  >Step 2 of 4: Weather (Forcasted and Observed)</h4>
+  <mat-form-field [formGroup]="beforeFormControls">
+    <mat-label
+      tabindex="-1"
+      aria-hidden="true"
+    >Weather</mat-label>
+    <textarea
+      aria-labelledby="stepLabelWeather"
+      formControlName="weather"
+      matInput
+    ></textarea>
+  </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (beforeFormControls.pristine ? []: beforeFormErrors('weather'))"
+  >{{error}}</mat-error>
+</ng-template>
+
+<ng-template #before>
+  <h4
+    role="heading"
+    aria-level="3"
+  >Step 3 of 4: Before Departure</h4>
+  <app-checklist-form
+    [form]="beforeFormControls"
+    when="Before"
+  ></app-checklist-form>
+</ng-template>
+
+<ng-template #after>
+  <h4
+    role="heading"
+    aria-level="3"
+  >Step 4 of 4: After Arrival</h4>
+  <app-checklist-form
+    [form]="afterFormControls"
+    when="After"
+  ></app-checklist-form>
+</ng-template>

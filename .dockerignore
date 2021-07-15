@@ -1,0 +1,12 @@
+.eslintrc.js
+.git
+.gitignore
+.vscode
+/app/node_modules
+/app/app
+/api/node_modules
+/api/api
+README.md
+docker-clean.sh
+.env
+/**/.env

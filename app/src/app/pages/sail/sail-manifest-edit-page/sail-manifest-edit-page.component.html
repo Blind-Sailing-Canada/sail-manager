@@ -1,0 +1,132 @@
+<h4 *ngIf="!sail === null">Looks like this sail is missing.</h4>
+<mat-card *ngIf="sail">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>emoji_people</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      aria-level="1"
+      tabindex="0"
+    >{{title}}</mat-card-title>
+    <mat-card-subtitle
+      role="heading"
+      aria-level="1"
+      tabindex="0"
+    >{{subtitle}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="MANIFEST_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <ng-template *ngTemplateOutlet="CARD_FOOTER"></ng-template>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #MANIFEST_TEMPLATE>
+  <div
+    role='list'
+    id="sail_manifest_list"
+  >
+    <h3 tabindex="0">Sailors on this sail</h3>
+    <fieldset
+      class="manifest-list"
+      *ngFor="let sailor of manifestControls; let i = index"
+      tabindex="0"
+      attr.aria-label="Sailor {{i + 1}} of {{manifestControls.length}} {{sailor.controls.personName.value}}."
+    >
+      <legend>Sailor {{i + 1}} of {{manifestControls.length}} {{sailor.controls.personName.value}}.</legend>
+      <mat-form-field [formGroup]="sailor">
+        <mat-label
+          id="labelName"
+          aria-hidden="true"
+          tabindex="-1"
+        >Sailor's Name</mat-label>
+        <input
+          aria-labelledby="labelName"
+          aria-required="true"
+          formControlName="personName"
+          matInput
+          required
+          type="text"
+        >
+      </mat-form-field>
+      <mat-form-field [formGroup]="sailor">
+        <mat-label
+          id="labelRole"
+          aria-hidden="true"
+          tabindex="-1"
+        >Sailor's Role</mat-label>
+        <select
+          matNativeControl
+          required
+          formControlName="sailorRole"
+        >
+          <option
+            *ngFor="let role of sailorRoles[i]"
+            [value]="role[1]"
+          >{{role[0]}}</option>
+        </select>
+      </mat-form-field>
+      <mat-form-field
+        [formGroup]="sailor"
+        *ngIf="isGuest(sailor.controls.sailorRole.value)"
+      >
+        <mat-label
+          id="labelRole"
+          aria-hidden="true"
+          tabindex="-1"
+        >Guest of</mat-label>
+        <select
+          matNativeControl
+          required
+          formControlName="guestOfId"
+        >
+          <option
+            *ngFor="let user of usersOnSail"
+            [value]="user.id"
+          >{{user.name}}</option>
+        </select>
+      </mat-form-field>
+
+      <div class="manifest-controls">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="removeSailor(i)"
+        >remove</button>
+      </div>
+    </fieldset>
+    <mat-list-item *ngIf="!manifestControls.length">No sailors on this sail.</mat-list-item>
+  </div>
+  <div *ngIf="occupanyExceeded">
+    <span>Sail max occupany exceeded!</span>
+  </div>
+</ng-template>
+
+<ng-template #CARD_FOOTER>
+  <mat-card-actions>
+    <button
+      *ngIf="shoulEnableSubmitButton"
+      mat-raised-button
+      (click)="submitForm()"
+    >Submit</button>
+  </mat-card-actions>
+</ng-template>
+
+<ng-template #controls>
+  <button
+    mat-raised-button
+    title="Click to add a sailor to this sail."
+    (click)="showAddSailorDialog()"
+  >Add sailor</button>
+  <button
+    mat-raised-button
+    title="Click to a guest to this sail."
+    (click)="showAddGuestDialog()"
+  >Add guest</button>
+</ng-template>

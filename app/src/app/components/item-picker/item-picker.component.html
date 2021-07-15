@@ -1,0 +1,53 @@
+<section>
+  <div class="filter">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        placeholder="Filter {{itemType}}"
+        #itemFilter
+      >
+    </mat-form-field>
+  </div>
+  <div class="available">
+    <label>Available :</label>
+    <mat-selection-list
+      role="list"
+      #availableList
+      (selectionChange)="selectionListener($event)"
+    >
+      <mat-list-option
+        *ngFor="let itemId of availableItemIds"
+        role="listitem"
+        value={{itemId}}
+      >{{getItemProperty(itemId, displayProperty)}}</mat-list-option>
+    </mat-selection-list>
+  </div>
+  <div class="selected">
+    <label>Selected ({{selectedItemIds.length}}/{{max}}):</label>
+    <mat-selection-list
+      role="list"
+      #selectedList
+    >
+      <mat-list-option
+        *ngFor="let itemId of selectedItemIds"
+        role="listitem"
+        value={{itemId}}
+      >{{getItemProperty(itemId, displayProperty)}}</mat-list-option>
+    </mat-selection-list>
+  </div>
+  <div class="controls">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="addItem()"
+      [disabled]="shouldDisabledAdd()"
+    >Add</button>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="removeItem()"
+      [disabled]="shouldDisabledRemove()"
+    >Remove</button>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+<mat-form-field [formGroup]="form">
+  <input
+    [attr.aria-label]="ariaLabel + ' ' + timePickerControl.value"
+    [attr.title]="tooltip + ' ' + timePickerControl.value"
+    [id]="id"
+    [placeholder]="placeholder"
+    [required]="required"
+    formControlName="{{controlName}}"
+    matInput
+    type="time"
+    #timePickerControl
+  >
+</mat-form-field>

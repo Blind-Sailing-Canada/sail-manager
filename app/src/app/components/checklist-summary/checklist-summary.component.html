@@ -1,0 +1,146 @@
+<app-table>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Sail name: {{sailName}}. Click to go to this sail."
+    (click)="viewSail()"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Sail</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+      class="clickable"
+    >{{sailName}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Sail start date: {{formatDate(sail.start)}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Start</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{formatDate(sail.start)}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Sail end date: {{formatDate(sail.end)}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >End</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{formatDate(sail.end)}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Sail destination: {{destination}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Destination</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{destination}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Weather: {{weather}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Weather</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{weather}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h4 tabindex="0">People Manifest</h4>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ng-container *ngTemplateOutlet="MANIFEST_TEMPLATE"></ng-container>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h4 tabindex="0">Before Departure</h4>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-checklist-view [checklist]="beforeDeparture"></app-checklist-view>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h4 tabindex="0">After Arrival</h4>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-checklist-view [checklist]="afterArrival"></app-checklist-view>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </td>
+  </tr>
+</app-table>
+
+<ng-template #MANIFEST_TEMPLATE>
+  <app-table>
+    <tr aria-hidden="true">
+      <th aria-hidden="true">Name</th>
+      <th aria-hidden="true">Role</th>
+      <th aria-hidden="true">Present</th>
+    </tr>
+    <tr
+      role="listitem"
+      *ngFor="let sailor of sail.manifest; let i = index;"
+    >
+      <td
+        *ngIf="!sailor.profile"
+        tabindex="0"
+      >{{sailor.personName}}</td>
+      <td
+        (click)="showProfileDialog(sailor.profile)"
+        *ngIf="sailor.profile"
+        class="clickable"
+        tabindex="0"
+      >{{sailor.personName}}</td>
+      <td *ngIf="sailor.sailorRole !== SAILOR_ROLE.Guest">{{sailor.sailorRole}}</td>
+      <td *ngIf="sailor.sailorRole === SAILOR_ROLE.Guest">
+        guest of {{sailor.guestOf.name}}
+      </td>
+      <td>{{sailor.attended? "Yes" : "No"}}</td>
+    </tr>
+  </app-table>
+</ng-template>

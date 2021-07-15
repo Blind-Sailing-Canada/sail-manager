@@ -1,0 +1,109 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>build</mat-icon>
+    </div>
+    <mat-card-title
+      *ngIf="!boatId"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >
+      Maintenance
+    </mat-card-title>
+    <mat-card-title
+      *ngIf="boatId"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >
+      Maintenance for {{boatName}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <mat-accordion>
+      <mat-expansion-panel
+        [expanded]="true"
+        #myUpcomingSailPanel
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            New Maintenance Requests
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container *ngTemplateOutlet="TemplateNewRequests"></ng-container>
+        <mat-action-row>
+          <button
+            (click)="fetchRecentNewRequests(boatId, true)"
+            mat-raised-button
+            title="Refresh new maintenance requests list"
+          >Refresh</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+      <mat-expansion-panel #availableSailsPanel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            In Progress Maintenance Requests
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container *ngTemplateOutlet="TemplateInprogressRequests"></ng-container>
+        <mat-action-row>
+          <button
+            (click)="fetchRecentInProgressRequests(boatId, true)"
+            mat-raised-button
+            title="Refresh in progress maintenance requests list"
+          >Refresh</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+      <mat-expansion-panel #myPastSailsPanel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Resolved Maintenance Requests
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container *ngTemplateOutlet="TemplateResolvedRequests"></ng-container>
+        <mat-action-row>
+          <button
+            (click)="fetchRecentResolvedRequests(boatId, true)"
+            mat-raised-button
+            title="Refresh resolved maintenance requests list"
+          >Refresh</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #controls>
+  <a
+    (click)="goToCreateNewMaintenance()"
+    mat-raised-button
+    title="Go to create new maintenance request"
+  >New</a>
+</ng-template>
+<ng-template #TemplateNewRequests>
+  <app-maintenance-list
+    (clicked)="goToViewMaintenance($event)"
+    [requests]="newRequests"
+    emptyMessage="There are no new requests"
+  ></app-maintenance-list>
+</ng-template>
+
+<ng-template #TemplateInprogressRequests>
+  <app-maintenance-list
+    (clicked)="goToViewMaintenance($event)"
+    [requests]="inProgressRequests"
+    emptyMessage="There are no requests in progress"
+  ></app-maintenance-list>
+</ng-template>
+
+<ng-template #TemplateResolvedRequests>
+  <app-maintenance-list
+    (clicked)="goToViewMaintenance($event)"
+    [requests]="resolvedRequests"
+    emptyMessage="There are no resolved requests"
+  ></app-maintenance-list>
+</ng-template>

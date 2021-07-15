@@ -1,0 +1,17 @@
+.accomplist-by-list-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.add-result {
+  justify-self: right;
+}
+
+.finish-result {
+  text-align: left;
+}
+
+.finish-time {
+  text-align: right;
+}

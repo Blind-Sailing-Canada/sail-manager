@@ -1,0 +1,14 @@
+<mat-form-field [formGroup]="form">
+  <input
+    [attr.aria-label]="ariaLabel + ' ' + datePickerControl.value"
+    [attr.title]="tooltip + ' ' + datePickerControl.value"
+    [formControlName]="controlName"
+    [id]="id"
+    [placeholder]="placeholder"
+    [required]="required"
+    matInput
+    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+    type="date"
+    #datePickerControl
+  >
+</mat-form-field>

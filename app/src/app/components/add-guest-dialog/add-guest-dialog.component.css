@@ -1,0 +1,22 @@
+.mat-dialog-actions {
+  justify-content: center;
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.mat-action-list {
+  text-align: center;
+}
+
+.mat-card {
+  margin-bottom: 1rem;
+}
+
+
+h1 {
+  text-align: center;
+}

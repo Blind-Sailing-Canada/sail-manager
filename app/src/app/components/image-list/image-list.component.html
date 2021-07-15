@@ -1,0 +1,35 @@
+<div class="image-list">
+  <div
+    *ngFor="let picture of picturesArray; let i = index;"
+    class="image-list-item"
+  >
+    <h5>{{picture.title}}</h5>
+    <a
+      [href]="picture.url"
+      target="_blank"
+    >
+      <img
+        [height]="height"
+        [width]="width"
+        async
+        attr.aria-label="picture {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
+        src="{{picture.url}}?width={{width}}&height={{height}}"
+      >
+    </a>
+    <div *ngIf="allowDelete && canDelete(picture)">
+      <button
+        (click)="deleteClick.emit(picture)"
+        aria-lael="Click to delete this picture"
+        mat-raised-button
+      >Delete</button>
+    </div>
+    <div
+      (click)="goToProfile.emit(picture.postedBy)"
+      *ngIf="showAuthor"
+      class="clickable"
+    >
+      <label>by: </label> {{picture.postedBy.name}}
+    </div>
+    <pre *ngIf="picture.description" tabindex="0">{{picture.description}}</pre>
+  </div>
+</div>

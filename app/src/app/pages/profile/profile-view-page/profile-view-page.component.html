@@ -1,0 +1,52 @@
+<mat-card *ngIf="profile">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>person</mat-icon>
+    </div>
+    <mat-card-title
+      role="heading"
+      tabindex="0"
+      id="pageTitle"
+    >User Profile</mat-card-title>
+    <mat-card-subtitle
+      role="heading"
+      aria-level="3"
+      tabindex="0"
+    >{{profile.name}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <app-user-profile
+      (viewClinic)="goToClinic($event)"
+      [profile]="profile"
+    ></app-user-profile>
+  </mat-card-content>
+</mat-card>
+<ng-template #controls>
+  <a
+    *ngIf="canEditInfo"
+    [routerLink]="editProfileInfoLink(profile?.id)"
+    mat-raised-button
+    title="Edit your profile information"
+  >
+    Edit Info
+  </a>
+  <a
+    *ngIf="canEditPrivileges"
+    [routerLink]="editProfilePrivilegesLink(profile?.id)"
+    mat-raised-button
+    title="Edit profile privileges"
+  >
+    Edit Privileges
+  </a>
+  <a
+    *ngIf="canViewSails"
+    [routerLink]="viewUserSailsRouteLink(profile?.id)"
+    mat-raised-button
+    title="view users's sails"
+  >
+    View Sails
+  </a>
+</ng-template>

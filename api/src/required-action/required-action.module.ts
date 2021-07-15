@@ -1,0 +1,16 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '../auth/auth.module';
+import { RequiredActionController } from './required-action.controller';
+import { RequiredActionEntity } from './required-action.entity';
+import { RequiredActionService } from './required-action.service';
+
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([RequiredActionEntity]),
+    AuthModule,
+  ],
+  controllers: [RequiredActionController],
+  providers: [RequiredActionService],
+})
+export class RequiredActionModule { }

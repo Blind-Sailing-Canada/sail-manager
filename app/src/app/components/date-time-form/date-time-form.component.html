@@ -1,0 +1,61 @@
+<form
+    [formGroup]="form"
+    id={{id}}
+    ngClass="sail-date-time-form"
+>
+    <mat-form-field required>
+        <mat-label tabindex="-1">{{formType}} Date</mat-label>
+        <input
+            formControlName="date"
+            matInput
+            max={{31}}
+            min={{1}}
+            type="number"
+        />
+    </mat-form-field>
+    <mat-form-field
+        appearance="fill"
+        appearance="standard"
+    >
+        <mat-label tabindex="-1">{{formType}} Month</mat-label>
+        <mat-select
+            required
+            formControlName="month"
+            aria-label="{{formType}} month: {{months[form.controls.month.value]}}"
+        >
+            <mat-option
+                *ngFor="let month of months; let i = index;"
+                [value]="i"
+            >{{month}}</mat-option>
+
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field required>
+        <mat-label tabindex="-1">{{formType}} Year</mat-label>
+        <input
+            formControlName="year"
+            matInput
+            type="number"
+        />
+    </mat-form-field>
+    <mat-form-field required>
+        <mat-label tabindex="-1">{{formType}} Hour</mat-label>
+        <input
+            formControlName="hour"
+            matInput
+            max={{23}}
+            min={{0}}
+            type="number"
+        />
+    </mat-form-field>
+    <mat-form-field required>
+        <mat-label tabindex="-1">{{formType}} Minute</mat-label>
+        <input
+            formControlName="minute"
+            matInput
+            max={{59}}
+            min={{0}}
+            type="number"
+        />
+    </mat-form-field>
+</form>

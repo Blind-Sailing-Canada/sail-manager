@@ -1,0 +1,21 @@
+{
+  "/api": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/cdn": {
+    "target": "http://localhost:3000/fba",
+    "secure": false,
+    "pathRewrite": {
+      "^/cdn/upload/": "/upload/test/",
+      "^/cdn": ""
+    },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

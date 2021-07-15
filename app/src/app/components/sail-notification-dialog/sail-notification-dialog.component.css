@@ -1,0 +1,22 @@
+.mat-dialog-actions {
+  justify-content: center;
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.mat-card {
+  margin-bottom: 1rem;
+}
+
+.mat-radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  text-align: center;
+}

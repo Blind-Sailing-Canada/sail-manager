@@ -1,0 +1,254 @@
+<mat-card *ngIf="user">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>dashboard</mat-icon>
+    </div>
+    <mat-card-title>
+      <h2 class="card-heading">Main Dashboard</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <app-required-actions-list
+      *ngIf="myRequiredActions && myRequiredActions?.length"
+      [actions]="myRequiredActions"
+      (actionClick)="gotToRequiredAction($event)"
+    ></app-required-actions-list>
+    <mat-accordion>
+      <ng-container *ngTemplateOutlet="TemplateAllInProgressSails"></ng-container>
+      <ng-container *ngTemplateOutlet="TemplateMyTodaySails"></ng-container>
+      <ng-container *ngTemplateOutlet="TemplateAllTodaySails"></ng-container>
+      <ng-container *ngTemplateOutlet="TemplateMyInProgressSails"></ng-container>
+      <ng-container *ngTemplateOutlet="TemplateMyFutureSails"></ng-container>
+      <ng-container *ngTemplateOutlet="TemplateAvailableSails"></ng-container>
+      <ng-container *ngTemplateOutlet="TemplateMyPastSails"></ng-container>
+      <ng-container *ngTemplateOutlet="TempalteOtherPastSails"></ng-container>
+    </mat-accordion>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #TemplateAllInProgressSails>
+  <mat-expansion-panel *ngIf="shouldDisplayAllInProgressSails">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        All In-Progress Sails
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-sail-list
+      (clicked)="viewSail($event)"
+      [sails]="allInProgressSails"
+      emptyMessage="There are no sails in progress."
+      title="All In-Progress Sails"
+    ></app-sail-list>
+    <mat-action-row>
+      <button
+        mat-raised-button
+        (click)="fetchAllInProgressSails(true)"
+        title="Refresh all in-progress sails list"
+      >Refresh</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #TemplateMyInProgressSails>
+  <mat-expansion-panel *ngIf="myInProgressSails.length >  0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        My In-Progress Sails
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-sail-list
+      (clicked)="viewSail($event)"
+      [sails]="myInProgressSails"
+      emptyMessage="You have no sails in progress."
+      title="My In-Progress Sails"
+    ></app-sail-list>
+    <mat-action-row>
+      <button
+        mat-raised-button
+        (click)="fetchMyInProgressSails(true)"
+        title="Refresh your in-progress sails list"
+      >Refresh</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #TemplateAllTodaySails>
+  <mat-expansion-panel *ngIf="allTodaySails.length > 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        All Today's Sails
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-sail-list
+      (clicked)="viewSail($event)"
+      [sails]="allTodaySails"
+      emptyMessage="There are no sails today."
+      title="All today's sails"
+    ></app-sail-list>
+    <mat-action-row>
+      <button
+        mat-raised-button
+        (click)="fetchAllTodaySails(true)"
+        title="Refresh all today's sails list"
+      >Refresh</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #TemplateMyTodaySails>
+  <mat-expansion-panel *ngIf="myTodaySails.length > 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        My sails for today
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-sail-list
+      (clicked)="viewSail($event)"
+      [sails]="myTodaySails"
+      emptyMessage="You have no sails today."
+      title="My sails today"
+    ></app-sail-list>
+    <mat-action-row>
+      <button
+        mat-raised-button
+        (click)="fetchMyTodaySails(true)"
+        title="Refresh my today's sails list"
+      >Refresh</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #TemplateMyFutureSails>
+  <mat-expansion-panel *ngIf="myFutureSails.length > 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        My Future Sails
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-sail-list
+      (clicked)="viewSail($event)"
+      [sails]="myFutureSails"
+      emptyMessage="You have no future sails."
+      title="My Future Sails"
+    ></app-sail-list>
+    <mat-action-row>
+      <button
+        mat-raised-button
+        (click)="fetchMyFutureSails(true)"
+        title="Refresh your future sails list"
+      >Refresh</button>
+      <a
+        *ngIf="shouldShowSailRequestsControls"
+        mat-raised-button
+        [routerLink]="createSailRequestRoute"
+        title="Request a new sail"
+      >Request</a>
+    </mat-action-row>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #TemplateAvailableSails>
+  <mat-expansion-panel #availableSailsPanel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Available Sails
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-sail-list
+      (clicked)="viewSail($event)"
+      [sails]="availableSails"
+      emptyMessage="No available sails."
+      title="Available Sails"
+    ></app-sail-list>
+    <mat-action-row>
+      <button
+        mat-raised-button
+        (click)="fetchAvailableSails(true)"
+        title="Refresh available sails list"
+      >Refresh</button>
+      <a
+        *ngIf="shouldShowSailRequestsControls"
+        mat-raised-button
+        [routerLink]="createSailRequestRoute"
+        title="Request a new sail"
+      >Request</a>
+    </mat-action-row>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #TemplateMyPastSails>
+  <mat-expansion-panel *ngIf="myPastSails.length > 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        My Past Sails
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-sail-list
+      (clicked)="viewSail($event)"
+      [sails]="myPastSails"
+      emptyMessage="You have no past sails."
+      title="My Past Sails"
+    ></app-sail-list>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #TempalteOtherPastSails>
+  <mat-expansion-panel *ngIf="allPastSails.length > 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Other Past Sails
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-sail-list
+      (clicked)="viewSail($event)"
+      [sails]="allPastSails"
+      emptyMessage="No past sails."
+      title="Other Past Sails"
+    ></app-sail-list>
+  </mat-expansion-panel>
+</ng-template>
+
+<ng-template #controls>
+  <a
+    *ngIf="shouldShowAdminControls"
+    [routerLink]="ADMIN_ROUTE"
+    mat-raised-button
+    title="Go to admin dashboard"
+  >Admin</a>
+  <a
+    *ngIf="shouldShowBoatsControls"
+    [routerLink]="BOATS_ROUTE"
+    mat-raised-button
+    title="Go to boats dashboard"
+  >Boats</a>
+  <a
+    *ngIf="shouldShowSailsControls"
+    mat-raised-button
+    [routerLink]="SAILS_ROUTE"
+    title="Go to sails dashboard"
+  >Sails</a>
+  <a
+    [routerLink]="viewUserSailsRouteLink(user?.profile?.id)"
+    mat-raised-button
+    title="view all my sails"
+  >
+    My sails
+  </a>
+  <a
+    [routerLink]="listChallengesLink"
+    mat-raised-button
+    title="view challenges"
+  >
+    Challenges
+  </a>
+  <a
+    [routerLink]="clinicsLink()"
+    mat-raised-button
+    title="view clinics"
+  >
+    Clinics
+  </a>
+</ng-template>

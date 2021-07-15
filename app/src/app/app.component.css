@@ -1,0 +1,20 @@
+::ng-deep simple-snack-bar {
+  justify-content: center !important;
+}
+
+::ng-deep simple-snack-bar span {
+  flex-grow: 1 !important;
+  text-align: center !important;
+}
+
+mat-progress-bar {
+  margin-top: 2px;
+}
+
+.loader {
+  grid-area: loader;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}

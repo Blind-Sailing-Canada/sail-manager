@@ -1,0 +1,53 @@
+<mat-toolbar color="primary">
+  <a
+    *ngIf="!windowServer.isSmallWidth"
+    aria-label="Go back to dashboard."
+    routerLink="/"
+  >
+    COMPANY_NAME_HEADER
+  </a>
+  <a
+    *ngIf="windowServer.isSmallWidth"
+    aria-label="Go back to dashboard."
+    routerLink="/"
+  >
+    COMPANY_NAME_SHORT_HEADER
+  </a>
+  <div
+    *ngIf="userProfile"
+    class="header-controls"
+  >
+    <a
+      [routerLink]="viewProfileLink"
+      aria-label="your profile"
+      title="Click to go to your profile"
+    >
+      <app-profile-bullet [profile]="userProfile"></app-profile-bullet>
+    </a>
+    <a
+      [routerLink]="viewProfileSettingsLink"
+      aria-label="your settings"
+      class="mat-button"
+      title="Click to go to your settings"
+    >
+      <mat-icon>settings</mat-icon>
+    </a>
+    <a
+      [routerLink]="viewHelpLink"
+      aria-label="help"
+      class="mat-button"
+      title="Click to go to help"
+    >
+      <mat-icon>help_outline</mat-icon>
+    </a>
+    <button
+      (click)="logout()"
+      aria-label="log out"
+      mat-button
+      title="log out"
+    >
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+<ng-content></ng-content>

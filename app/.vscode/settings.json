@@ -1,0 +1,41 @@
+{
+  "debug.node.autoAttach": "on",
+  "files.autoSave": "onFocusChange",
+  "debug.openDebug": "neverOpen",
+  "editor.rulers": [
+    100,
+    120,
+    140
+  ],
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "words",
+  "importSorter.importStringConfiguration.tabSize": 2,
+  "importSorter.importStringConfiguration.trailingComma": "multiLine",
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 1,
+  "importSorter.importStringConfiguration.numberOfEmptyLinesAfterAllImports": 1,
+  "importSorter.importStringConfiguration.spacingPerImportExpression.afterStartingBracket": 1,
+  "importSorter.generalConfiguration.sortImportsInDirectory": true,
+  "importSorter.sortConfiguration.customOrderingRules.defaultNumberOfEmptyLinesAfterGroup": 0,
+  "importSorter.sortConfiguration.customOrderingRules.disableDefaultOrderSort": true,
+  "editor.tabSize": 2,
+  "editor.renderWhitespace": "all",
+  "files.trimFinalNewlines": true,
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "workbench.colorCustomizations": {
+    "editorWarning.foreground": "#ff0000",
+    "editorError.foreground": "#ff0000",
+  },
+  "html.format.endWithNewline": true,
+  "html.format.indentHandlebars": true,
+  "html.format.indentInnerHtml": true,
+  "html.format.maxPreserveNewLines": 1,
+  "html.format.wrapAttributes": "force-expand-multiline",
+  "files.trimTrailingWhitespace": true,
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  }
+}

@@ -1,0 +1,47 @@
+<h4 tabindex="0">{{title}}</h4>
+<p
+  *ngIf="!instructions || !instructions.length"
+  tabindex="0"
+>There are no instructions.</p>
+<mat-accordion
+  cdkDropList
+  (cdkDropListDropped)="drop($event)"
+>
+  <mat-expansion-panel
+    *ngFor="let instruction of instructions; let i = index"
+    [hideToggle]="canReorder"
+    cdkDrag
+  >
+    <div *ngIf="canReorder">
+      <div
+        class="custom-placeholder"
+        *cdkDragPlaceholder
+      ></div>
+    </div>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{i + 1}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{instruction.title}}
+      </mat-panel-description>
+      <span
+        cdkDragHandle
+        class="drag-handle"
+        [class.hidden]="!canReorder"
+        title="Drag here into a new position."
+      >
+        <mat-icon *ngIf="canReorder">swap_vert</mat-icon>
+      </span>
+    </mat-expansion-panel-header>
+    <div
+      *ngIf="!canReorder"
+      [innerHTML]="instruction.description | markdown"
+      tabindex="0"
+    ></div>
+    <app-image-list
+      *ngIf="!canReorder"
+      [pictures]="instruction.media"
+    ></app-image-list>
+  </mat-expansion-panel>
+</mat-accordion>

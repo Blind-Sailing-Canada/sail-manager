@@ -1,0 +1,159 @@
+import {
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
+import { Store } from '@ngrx/store';
+import { SailRequest } from '../../../../../../api/src/types/sail-request/sail-request';
+import { SailRequestStatus } from '../../../../../../api/src/types/sail-request/sail-request-status';
+import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
+import {
+  cancelSailRequest,
+  createSailRequest,
+  expireSailRequest,
+  updateSailRequest,
+} from '../../../store/actions/sail-request.actions';
+import { STORE_SLICES } from '../../../store/store';
+import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-request-base-page.component';
+
+@Component({
+  selector: 'app-sail-request-edit-page',
+  templateUrl: './sail-request-edit-page.component.html',
+  styleUrls: ['./sail-request-edit-page.component.css']
+})
+export class SailRequestEditPageComponent extends SailRequestBasePageComponent implements OnInit {
+
+  public form: FormGroup;
+  public requestStatusValues = Object.values(SailRequestStatus);
+
+  constructor(
+    @Inject(Store) store: Store<any>,
+    @Inject(ActivatedRoute) route: ActivatedRoute,
+    @Inject(Router) router: Router,
+    @Inject(FormBuilder) private fb: FormBuilder,
+  ) {
+    super(store, route, router);
+  }
+
+  ngOnInit() {
+    if (!this.user) {
+      return;
+    }
+
+    super.ngOnInit();
+    this.buildForm();
+
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.SAIL_REQUESTS, () => {
+      const sailRequest = this.sailRequest;
+
+      if (sailRequest) {
+        this.updateForm(sailRequest);
+      }
+    });
+
+  }
+
+  public get title(): string {
+    return this.sailRequestId ? 'Edit Sail Request Form' : 'New Sail Request Form';
+  }
+
+  private buildForm(): void {
+    this.form = this.fb.group({
+      requestedById: this.fb.control(this.user.profile.id, Validators.required),
+      details: this.fb.control(undefined, Validators.required),
+      status: this.fb
+        .control({ value: SailRequestStatus.New, disabled: this.creating || !this.shouldShowStatusInput }, Validators.required),
+    });
+  }
+
+  public formErrors(controlName: string): string[] {
+    const errors = Object.keys(this.form.controls[controlName].errors || {});
+    return errors;
+  }
+
+  private updateForm(sailRequest: SailRequest): void {
+    this.form.patchValue(sailRequest);
+    this.form.markAsUntouched();
+    this.form.markAsPristine();
+  }
+
+  public get shouldDisableUpdateButton(): boolean {
+    const should = !this.form
+      || !this.form.valid
+      || !this.form.dirty;
+
+    return !!should;
+  }
+
+  public get shouldDisableCreateButton(): boolean {
+    const should = !this.form || !this.form.valid || !this.form.dirty;
+
+    return should;
+  }
+
+  public get creating(): boolean {
+    return !this.sailRequestId;
+  }
+
+  public create(): void {
+    const data: SailRequest = this.form.getRawValue();
+
+    this.dispatchAction(createSailRequest({ sailRequest: data }));
+  }
+
+  public update(): void {
+    const formControls = this.form.controls;
+    const formKeys = Object.keys(formControls);
+    const changedValue = formKeys
+      .filter(key => !formControls[key].pristine)
+      .reduce(
+        (red, key) => {
+          const value = formControls[key].value;
+
+          if (typeof value === 'string') {
+            red[key] = value.trim();
+          } else {
+            red[key] = value ? value : null;
+          }
+
+          return red;
+        },
+        {}
+      ) as any;
+
+    this.dispatchAction(updateSailRequest({ id: this.sailRequestId, sailRequest: changedValue }));
+  }
+
+  public cancelRequest(): void {
+    this.dispatchAction(cancelSailRequest({ id: this.sailRequestId }));
+  }
+
+  public expireRequest(): void {
+    this.dispatchAction(expireSailRequest({ id: this.sailRequestId }));
+  }
+
+  public get shouldShowControls(): boolean {
+    return !!this.sailRequestId;
+  }
+
+  public get shouldShowCancellButton() {
+    if (this.sailRequest.status !== SailRequestStatus.New) {
+      return false;
+    }
+
+    return this.shouldShowControls && this.user.profile.id === this.sailRequest.requestedById;
+  }
+
+  public get shouldShowStatusInput() {
+    return this.shouldShowControls && this.user.access[UserAccessFields.EditSailRequest];
+  }
+}

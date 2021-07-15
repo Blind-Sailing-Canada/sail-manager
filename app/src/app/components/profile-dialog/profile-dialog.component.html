@@ -1,0 +1,82 @@
+<h1
+  attr.aria-label="Profile Dialog for {{data.profile.name}}"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Profile Dialog</h1>
+<mat-dialog-content>
+  <a
+    *ngIf="data.profile.photo"
+    [href]="data.profile.photo"
+    aria-hidden="true"
+    class="profile-pictures"
+    tabindex="-1"
+    target="_blank"
+  >
+    <img
+      *ngIf="data.profile.photo"
+      aria-hidden="true"
+      async
+      src="{{data.profile.photo}}?width=200&height=150&salt=23452345"
+      tabindex="-1"
+    >
+  </a>
+  <h1
+    tabIndex="0"
+    attr.aria-label="User's name {{data.profile.name}}"
+  >{{data.profile.name}}</h1>
+  <mat-card>
+    <mat-action-list role="list">
+      <mat-list-item>
+        <mat-icon matListIcon>assignment_ind</mat-icon>
+        <span
+          matLine
+          attr.aria-label="User's role {{data.type || data.profile.roles.join(', ')}}"
+          role="listitem"
+          class="break-space"
+        >{{data.type || data.profile.roles.join(', ')}}</span>
+      </mat-list-item>
+      <mat-list-item
+        (click)="phone.click()"
+        *ngIf="data.profile.phone"
+      >
+        <mat-icon matListIcon>phone</mat-icon>
+        <a
+          #phone
+          attr.aria-label="User's phone number is {{data.profile.phone?.split('').join(' ') || 'Not provided'}}"
+          class="break-all"
+          href="tel:{{data.profile.phone}}"
+          matLine
+          target="_blank"
+        >{{data.profile.phone}}</a>
+      </mat-list-item>
+      <mat-list-item
+        (click)="email.click()"
+        *ngIf="data.profile.email"
+      >
+        <mat-icon matListIcon>email</mat-icon>
+        <a
+          #email
+          attr.aria-label="User's email is {{data.profile.email}}"
+          class="break-all"
+          href="mailto:{{data.profile.email}}"
+          matLine
+          target="_blank"
+        >{{data.profile.email}}</a>
+      </mat-list-item>
+    </mat-action-list>
+  </mat-card>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    (click)="viewProfile()"
+    mat-raised-button
+    title="Go to profile page"
+  >FULL VIEW</button>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close profile dialog"
+  >CLOSE</button>
+</div>

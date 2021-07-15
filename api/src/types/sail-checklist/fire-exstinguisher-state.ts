@@ -1,0 +1,9 @@
+export enum FireExtinguisherState {
+  VALID = 'VALID',
+  EXPIRED = 'EXPIRED',
+  UNDER_CHARGE = 'LOW CHARGE',
+  OVER_CHARGE = 'OVER CHARGE',
+  USED = 'USED',
+  DID_NOT_CHECK = 'DID NOT CHECK',
+  NOT_APPLICABLE = 'NOT APPLICABLE',
+}

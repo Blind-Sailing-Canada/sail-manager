@@ -1,0 +1,153 @@
+import { InjectQueue } from '@nestjs/bull';
+import {
+  Body, Controller, Delete, Param, Patch, Post, UseGuards
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Crud } from '@nestjsx/crud';
+import { Queue } from 'bull';
+import { CommentEntity } from '../comment/comment.entity';
+import { FirebaseAdminService } from '../firebase-admin/firebase-admin.service';
+import { ApprovedUserGuard } from '../guards/approved-profile.guard';
+import { JwtGuard } from '../guards/jwt.guard';
+import { LoginGuard } from '../guards/login.guard';
+import { MediaEntity } from '../media/media.entity';
+import { Comment } from '../types/comment/comment';
+import { Media } from '../types/media/media';
+import { ProfileRole } from '../types/profile/profile-role';
+import { JwtObject } from '../types/token/jwt-object';
+import { UserAccessFields } from '../types/user-access/user-access-fields';
+import { User } from '../user/user.decorator';
+import { BoatMaintenanceEntity } from './boat-maintenance.entity';
+import { BoatMaintenanceService } from './boat-maintenance.service';
+
+@Crud({
+  model: { type: BoatMaintenanceEntity },
+  params: { id: {
+    field: 'id',
+    type: 'uuid',
+    primary: true,
+  } },
+  routes: { only: [
+    'createOneBase',
+    'getManyBase',
+    'getOneBase',
+    'updateOneBase',
+  ] },
+  query: {
+    alwaysPaginate: false,
+    join: {
+      boat: { eager: true },
+      requestedBy: { eager: true },
+      resolvedBy: { eager: true },
+      comments: { eager: true },
+      pictures: { eager: true },
+      'pictures.postedBy': { eager: true },
+      'comments.author': {
+        eager: true,
+        alias: 'comment_author',
+      },
+      'comments.replies': {
+        eager: true,
+        alias: 'comment_replies',
+      },
+      'comments.replies.author': {
+        eager: true,
+        alias: 'comment_replies_author',
+      },
+    },
+  },
+})
+@Controller('boat-maintenance')
+@ApiTags('boat-maintenance')
+@UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
+export class BoatMaintenanceController {
+  constructor(
+    public service: BoatMaintenanceService,
+    private firebaseService: FirebaseAdminService,
+    @InjectQueue('boat-maintenance') private readonly boatMaintenanceQueue: Queue
+  ) { }
+
+  @Patch('/:id/pictures')
+  async addPictures(@User() user: JwtObject, @Param('id') id: string, @Body() pictures: Partial<Media>[]) {
+    const newPictures = MediaEntity.create(pictures);
+
+    newPictures.forEach(picture => {
+      picture.mediaForId = id;
+      picture.mediaForType = BoatMaintenanceEntity.name;
+      picture.postedById = user.profileId;
+    });
+
+    await MediaEntity.save(newPictures);
+
+    return BoatMaintenanceEntity.findOne({ where: { id } });
+  }
+
+  @Delete('/:id/pictures/:pictureId')
+  async removePicture(@User() user: JwtObject, @Param('id') id: string, @Param('pictureId') pictureId: string) {
+    const picture = await MediaEntity.findOneOrFail(pictureId);
+
+    let shouldDelete = false;
+
+    if (
+      user.roles.includes(ProfileRole.Admin) ||
+      user.access.access[UserAccessFields.DeletePictures] ||
+      user.access.access[UserAccessFields.CreateBoat] ||
+      user.access.access[UserAccessFields.EditBoat] ||
+      user.access.access[UserAccessFields.EditMaintentanceRequest]
+    ) {
+      shouldDelete = true;
+    } else {
+      shouldDelete = picture.postedById === user.profileId;
+    }
+
+    if (shouldDelete) {
+      if (picture.url.startsWith('cdn/')) {
+        await this.firebaseService.deleteFile(picture.url);
+      }
+
+      await MediaEntity.delete(pictureId);
+    }
+
+    return BoatMaintenanceEntity.findOne({ where: { id } });
+  }
+
+  @Post('/:id/comments')
+  async postComment(@User() user: JwtObject, @Param('id') id: string, @Body() commentInfo: Partial<Comment>) {
+    const comment = CommentEntity.create(commentInfo);
+
+    comment.authorId = user.profileId;
+    comment.createdAt = new Date();
+    comment.commentableId = id;
+    comment.commentableType = BoatMaintenanceEntity.name;
+
+    const savedComment = await comment.save();
+
+    this.boatMaintenanceQueue
+      .add('new-comment', {
+        maintenanceId: id,
+        commendId: savedComment.id,
+      });
+
+    return BoatMaintenanceEntity.findOne({ where: { id } });
+  }
+
+  @Delete('/:id/comments/:commentId')
+  async deleteComment(@User() user: JwtObject, @Param('id') id: string, @Param('commentId') commentId: string) {
+    if (
+      user.roles.includes(ProfileRole.Admin) ||
+      user.access.access[UserAccessFields.CreateBoat] ||
+      user.access.access[UserAccessFields.EditBoat] ||
+      user.access.access[UserAccessFields.EditMaintentanceRequest]
+    ) {
+      await CommentEntity.delete(commentId);
+    } else {
+      await CommentEntity.delete({
+        authorId: user.profileId,
+        commentableId: id,
+        id: commentId,
+      });
+    }
+
+    return BoatMaintenanceEntity.findOne({ where: { id } });
+  }
+}

@@ -1,0 +1,169 @@
+<mat-accordion multi>
+  <mat-expansion-panel
+    *ngFor="let request of sailRequests; let i = index;"
+    [expanded]="request.id === expandedId"
+    (opened)="setExpandedId.emit(request.id)"
+  >
+    <mat-expansion-panel-header
+      attr.aria-label="Sail request #{{request.entityNumber}} {{i + 1}} of {{sailRequests.length}}"
+      title="Requested by {{request.requestedBy.name}} on  {{request.createdAt | humanDateWithTime}}. Request description: {{request.details}}; Request status: {{request.status}}."
+    >
+      <mat-panel-title> {{i + 1}}. {{request.requestedBy.name}} {{request.createdAt | humanDateWithTime}}
+        #{{request.entityNumber}}
+      </mat-panel-title>
+      <mat-panel-description> {{request.status}} </mat-panel-description>
+    </mat-expansion-panel-header>
+    <app-table>
+      <tr
+        tabindex="0"
+        role="listitem"
+        attr.aria-label="Request number {{request.entityNumber}}"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Request #</th>
+        <td
+          tabindex="-1"
+          aria-hidden="true"
+        >{{request.entityNumber}}</td>
+      </tr>
+      <tr
+        tabindex="0"
+        role="listitem"
+        attr.aria-label="Request status {{request.status}}"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Request Status</th>
+        <td
+          tabindex="-1"
+          aria-hidden="true"
+        >{{request.status}}</td>
+      </tr>
+      <tr
+        (click)="showProfileDialog(request.requestedBy)"
+        attr.aria-label="Requested by {{request.requestedBy.name}}"
+        class="clickable"
+        role="listitem"
+        tabindex="0"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Requested by</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        >
+          <app-profile-bullet [profile]="request.requestedBy"></app-profile-bullet>
+        </td>
+      </tr>
+      <tr
+        *ngIf="request.sailId"
+        (click)="viewSailRoute.emit(request.sailId)"
+        attr.aria-label="Go to view sail {{request.sail.name}}"
+        class="clickable"
+        role="listitem"
+        tabindex="0"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Scheduled sail</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        >
+          {{request.sail.name}}
+        </td>
+      </tr>
+      <tr
+        role="list"
+        *ngIf="!!request.interest?.length"
+
+      >
+        <th
+          [attr.rowspan]="request.interest.length + 1"
+          aria-hidden="true"
+          tabindex="-1"
+        >Interested</th>
+      </tr>
+      <tr
+        (click)="showProfileDialog(interested.profile)"
+        (keyup.enter)="showProfileDialog(interested.profile)"
+        *ngFor="let interested of request.interest; let i = index;"
+        [title]="interested.profile.name"
+        attr.aria-label="Interested sailor {{i + 1}} of {{request.interest.length}}"
+        role="listitem"
+        tabindex="0"
+      >
+        <td
+          class="clickable"
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        >
+          <app-profile-bullet [profile]="interested.profile"></app-profile-bullet>
+        </td>
+      </tr>
+      <tr
+        role="listitem"
+        tabindex="0"
+        attr.aria-label="Request description {{request.details}}"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+          colspan="2"
+        >Request description</th>
+      </tr>
+      <tr
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <td
+          aria-label="Sail Request Description"
+          colspan="2"
+          title="Description: {{request.details}}"
+          tabindex="0"
+        >
+          <pre>{{request.details}}</pre>
+        </td>
+      </tr>
+    </app-table>
+    <mat-action-row>
+      <a
+        *ngIf="canCreateSail(request)"
+        (click)="createSail.emit(request.id)"
+        mat-raised-button
+        title="Create sail for this request #{{request.entityNumber}}"
+      >Create sail</a>
+      <a
+        *ngIf="canEditRequest(request)"
+        (click)="editSailRequest.emit(request.id)"
+        mat-raised-button
+        title="Edit sail request #{{request.entityNumber}}"
+      >Edit</a>
+      <button
+        (click)="cancelSailRequest.emit(request.id)"
+        *ngIf="canCancelRequest(request)"
+        mat-raised-button
+        title="Cancel sail request #{{request.entityNumber}}"
+      >Cancel</button>
+      <button
+        *ngIf="canJoinRequest(request)"
+        (click)="joinSailRequest.emit(request.id)"
+        mat-raised-button
+        title="I would like to go on this sail #{{request.entityNumber}}"
+      >Interested</button>
+      <button
+        *ngIf="canLeaveRequest(request)"
+        (click)="leaveSailRequest.emit(request.id)"
+        mat-raised-button
+        title="I'm not longer interested in sail request #{{request.entityNumber}}"
+      >Uninterested</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

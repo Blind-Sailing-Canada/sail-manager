@@ -1,0 +1,76 @@
+<form [formGroup]="formGroup">
+  <div [formArrayName]="controlArrayName">
+    <div
+      *ngFor="let imageControl of controlsArray; let i = index;"
+      [formGroupName]="i"
+      class="image-form"
+    >
+      <div class="image-form-image">
+        <img
+          *ngIf="imageControl.value.url"
+          alt="Image {{i+1}} of {{controlsArray.length}}"
+          async
+          src="{{imageControl.value.url}}?width=100&height=100"
+        >
+      </div>
+      <div class="image-form-inputs">
+        <mat-form-field>
+          <mat-label
+            aria-hidden="true"
+            tabindex="-1"
+          >URL</mat-label>
+          <input
+            attr.aria-label="Url for image {{i+1}} of {{controlsArray.length}}"
+            formControlName="url"
+            matInput
+            type="text"
+          >
+        </mat-form-field>
+        <mat-form-field *ngIf="allowTitle">
+          <mat-label
+            aria-hidden="true"
+            tabindex="-1"
+          >Title</mat-label>
+          <textarea
+            attr.aria-label="Title for image {{i+1}} of {{controlsArray.length}}"
+            cdkAutosizeMaxRows="10"
+            cdkAutosizeMinRows="1"
+            cdkTextareaAutosize
+            formControlName="title"
+            matInput
+            type="text"
+          ></textarea>
+        </mat-form-field>
+        <mat-form-field *ngIf="allowDescription">
+          <mat-label
+            aria-hidden="true"
+            tabindex="-1"
+          >Description</mat-label>
+          <textarea
+            attr.aria-label="Description for image {{i+1}} of {{controlsArray.length}}"
+            cdkAutosizeMaxRows="10"
+            cdkAutosizeMinRows="1"
+            cdkTextareaAutosize
+            formControlName="description"
+            matInput
+            type="text"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <div class="image-form-actions">
+        <button
+          *ngIf="allowDelete"
+          mat-raised-button
+          color="accent"
+          (click)="deleteImage(i)"
+          attr.aria-label="Delete image {{i+1}}."
+        >
+          <app-icon-text
+            icon="delete"
+            text="Delete"
+          ></app-icon-text>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

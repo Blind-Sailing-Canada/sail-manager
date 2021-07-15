@@ -1,0 +1,8 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "eslint.format.enable": true,
+    "editor.renderWhitespace": "all",
+    "editor.trimAutoWhitespace": true,
+    "typescript.preferences.importModuleSpecifier": "relative"
+}

@@ -1,0 +1,100 @@
+<form [formGroup]="form">
+  <mat-form-field>
+    <mat-label
+      id="formLabelFuel{{when}}"
+      tabindex="-1"
+      aria-hidden="true"
+    >Fuel Level</mat-label>
+    <select
+      attr.aria-labelledby="formLabelFuel{{when}}"
+      aria-required="true"
+      formControlName="fuel"
+      matNativeControl
+      required
+    >
+      <option
+        *ngFor="let level of fuelLevel | keyvalue"
+        [value]="level.value"
+      >
+        {{level.value}}
+      </option>
+    </select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label
+      id="formLabelBilge{{when}}"
+      tabindex="-1"
+      aria-hidden="true"
+    >Bilge</mat-label>
+    <select
+      attr.aria-labelledby="formLabelBilge{{when}}"
+      aria-required="true"
+      formControlName="bilge"
+      matNativeControl
+      required
+    >
+      <option
+        *ngFor="let level of bilgeState | keyvalue"
+        [value]="level.value"
+      >
+        {{level.value}}
+      </option>
+    </select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label
+      id="formLabelFlares{{when}}"
+      tabindex="-1"
+      aria-hidden="true"
+    >Flares</mat-label>
+    <select
+      attr.aria-labelledby="formLabelFlares{{when}}"
+      aria-required="true"
+      formControlName="flares"
+      matNativeControl
+      required
+    >
+      <option
+        *ngFor="let level of flaresState | keyvalue"
+        [value]="level.value"
+      >
+        {{level.value}}
+      </option>
+    </select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label
+      id="formLabelFireExtinguisher{{when}}"
+      tabindex="-1"
+      aria-hidden="true"
+    >Fire Extinguisher</mat-label>
+    <select
+      attr.aria-labelledby="formLabelFireExtinguisher{{when}}"
+      aria-required="true"
+      formControlName="fireExtinguisher"
+      matNativeControl
+      required
+    >
+      <option
+        *ngFor="let level of fireExtinguisherState | keyvalue"
+        [value]="level.value"
+      >
+        {{level.value}}
+      </option>
+    </select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label
+      tabindex="-1"
+      aria-hidden="true"
+      id="formLabelComments{{when}}"
+    >Comments</mat-label>
+    <textarea
+      attr.aria-labelledby="formLabelComments{{when}}"
+      formControlName="comments"
+      matInput
+    ></textarea>
+  </mat-form-field>
+  <mat-checkbox formControlName="signedBySkipper">Signed by skipper</mat-checkbox>
+  <mat-checkbox formControlName="signedByCrew">Signed by crew</mat-checkbox>
+</form>

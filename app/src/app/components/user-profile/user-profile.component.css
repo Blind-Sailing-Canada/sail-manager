@@ -1,0 +1,9 @@
+.user-profile-picture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.achievement-badge {
+  vertical-align: middle;
+}

@@ -1,0 +1,120 @@
+<mat-card *ngIf="sail && user && checklist">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>playlist_add_check</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Before Departure Checklist Form</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      (click)="goToPreviousChecklists()"
+    >
+      Past Checklists
+    </button>
+    <button
+      mat-raised-button
+      (click)="goToMaintenance()"
+    >
+      Maintenance
+    </button>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="departureFormContent"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        *ngIf="!shouldDisableUpdateButton"
+        mat-raised-button
+        [disabled]="shouldDisableUpdateButton"
+        (click)="save()"
+      >Update</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+<ng-template #departureFormContent>
+  <form [formGroup]="checklistForm">
+    <ng-container *ngTemplateOutlet="sailDestination"></ng-container>
+    <ng-container *ngTemplateOutlet="weather"></ng-container>
+    <ng-container *ngTemplateOutlet="PEOPLE_MANIFEST_TEMPLATE"></ng-container>
+    <ng-container *ngTemplateOutlet="instructions"></ng-container>
+    <ng-container *ngTemplateOutlet="checklist"></ng-container>
+  </form>
+</ng-template>
+
+<ng-template #sailDestination>
+  <h4
+    id="stepLabelDestination"
+    tabindex="-1"
+    aria-hidden="true"
+  >Step 1 of 5: Sail Destination</h4>
+  <mat-form-field [formGroup]="beforeFormControls">
+    <mat-label
+      tabindex="-1"
+      aria-hidden="true"
+    >Sail Destination</mat-label>
+    <textarea
+      aria-labelledby="stepLabelDestination"
+      formControlName="sailDestination"
+      matInput
+      required
+    ></textarea>
+  </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (checklistForm.pristine ? []: beforeFormErrors('sailDestination'))"
+  >{{error}}</mat-error>
+</ng-template>
+
+<ng-template #weather>
+  <h4
+    id="stepLabelWeather"
+    tabindex="-1"
+    aria-hidden="true"
+  >Step 2 of 5: Weather Forcast and Current</h4>
+  <mat-form-field [formGroup]="beforeFormControls">
+    <mat-label
+      tabindex="-1"
+      aria-hidden="true"
+    >Weather</mat-label>
+    <textarea
+      aria-labelledby="stepLabelWeather"
+      formControlName="weather"
+      matInput
+      required
+    ></textarea>
+  </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (checklistForm.pristine ? []: beforeFormErrors('weather'))"
+  >{{error}}</mat-error>
+</ng-template>
+
+<ng-template #PEOPLE_MANIFEST_TEMPLATE>
+  <h4 tabindex="0">Step 3 of 5: People Manifest</h4>
+  <mat-card-actions>
+  </mat-card-actions>
+  <app-manifest-edit
+    (openProfileDialog)="showProfileDialog($event)"
+    [form]="checklistForm"
+    manifestFormControlName="peopleManifest"
+  ></app-manifest-edit>
+</ng-template>
+
+<ng-template #instructions>
+  <h4 tabindex="0">Step 4 of 5: Departure Instructions</h4>
+  <app-instructions-list [instructions]="departureInstructions"></app-instructions-list>
+</ng-template>
+
+<ng-template #checklist>
+  <h4 tabindex="0">Step 5 of 5: Departure Checklist</h4>
+  <app-checklist-form
+    [form]="beforeFormControls"
+    when="Before"
+  ></app-checklist-form>
+</ng-template>

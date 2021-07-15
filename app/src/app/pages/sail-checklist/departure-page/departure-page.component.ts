@@ -1,0 +1,66 @@
+import {
+  Component,
+  Inject,
+} from '@angular/core';
+import {
+  FormBuilder,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
+import { Store } from '@ngrx/store';
+import {
+  maintenanceRoute,
+  sailChecklistsRoute,
+} from '../../../routes/routes';
+import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail-checklist-base-page';
+
+@Component({
+  selector: 'app-departure-page',
+  templateUrl: './departure-page.component.html',
+  styleUrls: ['./departure-page.component.css']
+})
+export class DeparturePageComponent extends SailChecklistBasePageComponent {
+
+  public showNewGuestForm = false;
+
+  constructor(
+    @Inject(Store) store: Store<any>,
+    @Inject(ActivatedRoute) route: ActivatedRoute,
+    @Inject(Router) router: Router,
+    @Inject(FormBuilder) fb: FormBuilder,
+    @Inject(MatDialog) dialog: MatDialog,
+  ) {
+    super(store, route, router, fb, dialog);
+    this.checklistType = 'before';
+
+    if (fb) {
+      this.buildForm();
+    }
+  }
+
+  public goToMaintenance(): void {
+    this.goTo(
+      [maintenanceRoute],
+      {
+        queryParams: { boatId: this.sail.boat.id },
+      }
+    );
+  }
+
+  public goToPreviousChecklists(): void {
+    this.goTo(
+      [sailChecklistsRoute],
+      {
+        queryParams: {
+          boatId: this.sail.boat.id,
+          boatName: this.sail.boat.name,
+          excludeSailId: this.sailId
+        },
+      }
+    );
+  }
+
+}

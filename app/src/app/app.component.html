@@ -1,0 +1,20 @@
+<div class="app-container">
+  <app-header
+    [userProfile]="userProfile"
+    (logoutListner)="logout()"
+  >
+  </app-header>
+  <mat-progress-bar
+    *ngIf="isLoading"
+    class="loader"
+    color="silver"
+    mode="indeterminate"
+  ></mat-progress-bar>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+  <app-footer
+    (changeFontSize)="changeFontSize($event)"
+    [changingAppFont]="changingAppFont"
+  ></app-footer>
+</div>

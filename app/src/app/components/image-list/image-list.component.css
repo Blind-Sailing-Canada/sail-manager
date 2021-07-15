@@ -1,0 +1,26 @@
+.image-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.image-list-item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  margin: 5px 5px 5px 5px;
+}
+
+.image-list-item img {
+  border: 1px solid black;
+  margin: 0;
+}
+
+.image-list-item button {
+  margin: 0;
+}
+
+.image-list-item img:hover {
+  opacity: 0.5;
+}

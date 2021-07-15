@@ -1,0 +1,19 @@
+<mat-action-list>
+  <h4 mat-header>{{title}}</h4>
+  <a
+    (click)="clicked(action)"
+    (keydown)="clickedViaKey($event, action)"
+    *ngFor="let action of actions; let i = index;"
+    attr.aria-label="{{i + 1}} of {{actions.length}} {{action.title}}"
+    mat-list-item
+    role="option"
+    tabindex="0"
+  >
+    <mat-icon
+      arie-hidden="true"
+      mat-list-icon
+    >{{actionIcon(action.requiredActionType)}}</mat-icon>
+    {{action.title}}
+    <mat-icon>navigate_next</mat-icon>
+  </a>
+</mat-action-list>

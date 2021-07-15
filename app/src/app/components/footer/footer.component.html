@@ -1,0 +1,25 @@
+<footer>
+  <button
+    (click)="decreaseFontSize()"
+    [disabled]="changingAppFont || currentFontSize === min"
+    mat-button
+    aria-label="Click to decreese font size"
+  >
+    <mat-icon [inline]="true">remove</mat-icon>
+  </button>
+  <span tabindex="0" tabindex="-1">
+    <mat-icon [inline]="true">copyright</mat-icon>
+    <span
+      aria-label="End of page"
+      aria-details="end of page"
+    >COMPANY_NAME_COPYRIGHT</span>
+  </span>
+  <button
+    (click)="increaseFontSize()"
+    [disabled]="changingAppFont || currentFontSize === max"
+    mat-button
+    aria-label="Click to increasefont size"
+  >
+    <mat-icon [inline]="true">add</mat-icon>
+  </button>
+</footer>

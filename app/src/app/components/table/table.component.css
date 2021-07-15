@@ -1,0 +1,70 @@
+:host {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+}
+
+::ng-deep td, ::ng-deep th, ::ng-deep tr {
+  border: 1px solid #dddddd;
+  font-family: arial, sans-serif;
+  padding: 8px;
+}
+
+::ng-deep th {
+  background-color: #c1d3e2;
+}
+
+::ng-deep .table-spacer, ::ng-deep .table-spacer td {
+  border: none;
+}
+
+::ng-deep .table-description {
+  text-align: left;
+}
+
+ table caption {
+  position: relative;
+}
+
+table caption h4 {
+  display: inline;
+}
+
+.caption-controls {
+  align-items: flex-end;
+  display: flex;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.caption-control {
+  background: none;
+  border: none;
+  display: flex;
+  font-size: inherit;
+}
+
+.caption-control:focus {
+  outline: none;
+}
+
+.caption-control:active {
+  outline: none;
+}
+
+.caption-control:hover {
+  cursor: pointer;
+  background-color: paleturquoise;
+}
+
+@media screen and (max-width: 670px) {
+  table {
+    text-align: center;
+  }
+}

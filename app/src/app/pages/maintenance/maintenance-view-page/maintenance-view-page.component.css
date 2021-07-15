@@ -1,0 +1,29 @@
+.mat-list-item.mat-list-item-word-wrap {
+  height: initial !important;
+  margin-bottom: 10px;
+  border-bottom: solid 1px;
+}
+
+.mat-list-item-word-wrap .mat-line {
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
+  margin-bottom: 5px;
+}
+
+.mat-icon {
+  align-self: normal;
+}
+
+.image-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.image-list-item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  margin: 5px 5px 5px 5px;
+}

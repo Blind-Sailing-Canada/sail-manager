@@ -1,0 +1,45 @@
+
+.image-form {
+  display: grid;
+  grid-template-areas: "image inputs" "actions actions";
+  grid-template-columns: min-content auto;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid;
+}
+
+.image-form-inputs {
+  grid-area: inputs;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-form-actions {
+  grid-area: actions;
+  display: flex;
+  justify-content: center;
+}
+
+.image-form-image {
+  grid-area: image;
+  align-self: center;
+  padding-right: 10px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.image-form-image img {
+  width: 100px;
+  height: 100px;
+}
+
+@media screen and (max-width: 670px) {
+  .image-form {
+    grid-template-areas: "image" "inputs" "actions";
+    grid-template-columns: auto;
+
+  }
+}
+
+@media screen and (min-width: 671px) and (max-width: 1024px) {}

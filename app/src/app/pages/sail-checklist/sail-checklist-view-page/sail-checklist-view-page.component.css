@@ -1,0 +1,88 @@
+/* table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+
+th {
+  text-align: left;
+}
+
+td {
+  text-align: center;
+}
+
+th {
+  background-color: #dddddd;
+}
+
+[hidden] {
+  display: none;
+}
+
+.table-spacer td {
+  border: none;
+}
+
+.table-description {
+  text-align: left;
+}
+
+.cell-button:hover {
+  background-color: aquamarine;
+  cursor: pointer;
+}
+
+caption {
+  position: relative;
+}
+
+caption h4 {
+  display: inline;
+}
+
+@media screen and (max-width: 670px) {
+  .caption-text {
+    max-width: 250px;
+    text-align: center;
+  }
+}
+
+.caption-container {
+  display: flex;
+  justify-content: center;
+}
+
+.caption-controls {
+  align-items: flex-end;
+  display: flex;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+caption button {
+  background: none;
+  border: none;
+  display: flex;
+  font-size: inherit;
+}
+
+caption button:focus {
+  outline: none;
+}
+
+caption button:active {
+  outline: none;
+}
+
+caption button:hover {
+  cursor: pointer;
+  background-color: paleturquoise;
+} */

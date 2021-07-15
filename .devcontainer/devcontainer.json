@@ -1,0 +1,27 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.155.1/containers/javascript-node
+{
+	"name": "Node.js",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspace",
+
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"aeschli.vscode-css-formatter",
+		"angular.ng-template",
+		"dbaeumer.vscode-eslint",
+		"eamodio.gitlens",
+		"mike-co.import-sorter",
+		"mongodb.mongodb-vscode",
+		"ms-azuretools.vscode-docker",
+		"ms-vscode.vscode-typescript-tslint-plugin",
+		"orta.vscode-jest",
+		"tyriar.sort-lines"
+	],
+}

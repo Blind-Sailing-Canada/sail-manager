@@ -1,0 +1,401 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>directions_boat</mat-icon>
+    </div>
+    <mat-card-title
+      role="heading"
+      tabindex="0"
+      id="pageTitle"
+    >{{title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <a
+      *ngIf="boatId"
+      mat-raised-button
+      (click)="goToBoatInstructions()"
+      title="Click to edit boat's instructions"
+    >Instructions</a>
+  </mat-card-actions>
+  <mat-card-content>
+    <form [formGroup]="boatForm">
+        <ng-container *ngTemplateOutlet="boatName"></ng-container>
+        <ng-container *ngTemplateOutlet="boatModel"></ng-container>
+        <ng-container *ngTemplateOutlet="boatMaxOccupancy"></ng-container>
+        <ng-container *ngTemplateOutlet="boatPicture"></ng-container>
+        <ng-container *ngTemplateOutlet="boatStatus"></ng-container>
+        <ng-container *ngTemplateOutlet="boatWiki"></ng-container>
+        <ng-container *ngTemplateOutlet="boatCalendarResourceId"></ng-container>
+        <ng-container *ngTemplateOutlet="boatHull"></ng-container>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-action-row>
+      <button
+        (click)="save()"
+        *ngIf="!shouldDisableUpdateButton"
+        [attr.aria-label]="shouldDisableUpdateButton? '': 'Save boat information.'"
+        [disabled]="shouldDisableUpdateButton"
+        [title]="shouldDisableUpdateButton? '': 'Save boat information.'"
+        mat-raised-button
+      >{{boatId? "Update" : "Create"}}</button>
+    </mat-action-row>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #boatName>
+  <h4
+    aria-hidden="true"
+    id="formStepName"
+    tabindex="-1"
+  >Step 1 of 8: Boat's Name</h4>
+  <mat-form-field [formGroup]="boatForm">
+    <mat-label
+      id="labelName"
+      aria-hidden="true"
+      tabindex="-1"
+    >Name</mat-label>
+    <input
+      aria-labelledby="formStepName"
+      aria-required="true"
+      formControlName="name"
+      matInput
+      required
+      type="text"
+    >
+  </mat-form-field>
+</ng-template>
+
+<ng-template #boatModel>
+  <h4
+    aria-hidden="true"
+    id="formStepModel"
+    tabindex="-1"
+  >Step 2 of 8: Boat's Model</h4>
+  <mat-form-field [formGroup]="boatForm">
+    <mat-label
+      id="labelModel"
+      aria-hidden="true"
+      tabindex="-1"
+    >Model</mat-label>
+    <input
+      aria-labelledby="formStepModel"
+      formControlName="model"
+      matInput
+      type="text"
+    >
+  </mat-form-field>
+</ng-template>
+<ng-template #boatMaxOccupancy>
+  <h4
+    aria-hidden="true"
+    id="formStepOccupancy"
+    tabindex="-1"
+  >Step 3 of 8: Boat's Maximum Person Occupancy</h4>
+  <mat-form-field [formGroup]="boatForm">
+    <mat-label
+      id="labelOccupancy"
+      aria-hidden="true"
+      tabindex="-1"
+    >Max Occupancy</mat-label>
+    <input
+      aria-labelledby="formStepOccupancy"
+      aria-required="true"
+      formControlName="maxOccupancy"
+      matInput
+      max="15"
+      min="2"
+      required
+      type="number"
+    >
+  </mat-form-field>
+</ng-template>
+
+<ng-template #boatPicture>
+  <h4
+    aria-hidden="true"
+    id="formStepPictures"
+    tabindex="-1"
+  >Step 4 of 8: Boat's Pictures</h4>
+  <p
+    *ngIf="!boatId"
+    tabindex="0"
+  >You can upload boat pictures after creating this boat.</p>
+  <app-image-form
+    *ngIf="boatId"
+    (deleteClick)="deletePicture($event)"
+    [form]="boatForm"
+    [allowDelete]="true"
+    controlArrayName="pictures"
+  >
+  </app-image-form>
+  <app-file-select
+    *ngIf="boatId"
+    (action)="uploadFileToCDN($event)"
+    [id]="boatPictureInputId"
+    [progress]="uploadProgress"
+    actionDescription="Choose image file to upload:"
+    actionName="Upload"
+    fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp"
+    [multiple]="false"
+    title="New Image Upload Form"
+  ></app-file-select>
+</ng-template>
+
+<ng-template #boatStatus>
+  <h4
+    aria-hidden="true"
+    id="formStepStatus"
+    tabindex="-1"
+  >Step 5 of 8: Boat's Status</h4>
+  <mat-form-field [formGroup]="boatForm">
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Status</mat-label>
+    <select
+      aria-labelledby="formStepStatus"
+      aria-required="true"
+      formControlName="status"
+      matNativeControl
+      required
+    >
+      <option
+        *ngFor="let stat of boatStatusValues"
+        [value]="stat"
+      >{{stat}}</option>
+    </select>
+  </mat-form-field>
+</ng-template>
+
+<ng-template #boatWiki>
+  <h4
+    aria-hidden="true"
+    id="formStepWiki"
+    tabindex="-1"
+  >Step 6 of 8: Boat's Wiki Url</h4>
+  <mat-form-field [formGroup]="boatForm">
+    <mat-label
+      id="labelWiki"
+      aria-hidden="true"
+      tabindex="-1"
+    >Wiki Url</mat-label>
+    <input
+      aria-labelledby="formStepWiki"
+      formControlName="wiki"
+      matInput
+      type="url"
+    >
+  </mat-form-field>
+</ng-template>
+
+<ng-template #boatCalendarResourceId>
+  <h4
+    aria-hidden="true"
+    id="formStepCalendarResourceId"
+    tabindex="-1"
+  >Step 7 of 8: Boat's Calendar Resource Id</h4>
+  <mat-form-field [formGroup]="boatForm">
+    <mat-label
+      id="labelCalendarResourceId"
+      aria-hidden="true"
+      tabindex="-1"
+    >Calendar Resource Id</mat-label>
+    <input
+      aria-labelledby="formStepCalendarResourceId"
+      formControlName="calendarResourceId"
+      matInput
+      type="text"
+    >
+  </mat-form-field>
+</ng-template>
+
+<ng-template #boatHull>
+  <h4
+    aria-hidden="true"
+    id="formStepHull"
+    tabindex="-1"
+  >Step 8 of 8: Boat's Hull</h4>
+  <form [formGroup]="boatForm">
+    <mat-form-field>
+      <mat-label
+        id="labelDraft"
+        aria-hidden="true"
+        tabindex="-1"
+      >Draft</mat-label>
+      <input
+        aria-labelledby="formStepHull labelDraft"
+        aria-required="true"
+        formControlName="draft"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelBeam"
+        aria-hidden="true"
+        tabindex="-1"
+      >Beam</mat-label>
+      <input
+        aria-labelledby="formStepHull labelBeam"
+        aria-required="true"
+        formControlName="beam"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelLOA"
+        aria-hidden="true"
+        tabindex="-1"
+      >Length overall</mat-label>
+      <input
+        aria-labelledby="formStepHull labelLOA"
+        aria-required="true"
+        formControlName="loa"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelLWL"
+        aria-hidden="true"
+        tabindex="-1"
+      >Length waterline</mat-label>
+      <input
+        aria-labelledby="formStepHull labelLWL"
+        aria-required="true"
+        formControlName="lwl"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelType"
+        aria-hidden="true"
+        tabindex="-1"
+      >Hull type</mat-label>
+      <input
+        aria-labelledby="formStepHull labelType"
+        aria-required="true"
+        formControlName="hullType"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelBallast"
+        aria-hidden="true"
+        tabindex="-1"
+      >ballast</mat-label>
+      <input
+        aria-labelledby="formStepHull labelBallast"
+        aria-required="true"
+        formControlName="ballast"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelMaterial"
+        aria-hidden="true"
+        tabindex="-1"
+      >Material</mat-label>
+      <input
+        aria-labelledby="formStepHull labelMaterial"
+        aria-required="true"
+        formControlName="material"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelJibSailArea"
+        aria-hidden="true"
+        tabindex="-1"
+      >Jib sail area</mat-label>
+      <input
+        aria-labelledby="formStepHull labelJibSailArea"
+        aria-required="true"
+        formControlName="jibSailArea"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelMainSailArea"
+        aria-hidden="true"
+        tabindex="-1"
+      >Main sail area</mat-label>
+      <input
+        aria-labelledby="formStepHull labelMainSailArea"
+        aria-required="true"
+        formControlName="mainSailArea"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelMainSailArea"
+        aria-hidden="true"
+        tabindex="-1"
+      >Main sail area</mat-label>
+      <input
+        aria-labelledby="formStepHull labelMainSailArea"
+        aria-required="true"
+        formControlName="mainSailArea"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelPhrf"
+        aria-hidden="true"
+        tabindex="-1"
+      >PHRF</mat-label>
+      <input
+        aria-labelledby="formStepHull labelPhrf"
+        aria-required="true"
+        formControlName="phrf"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="labelRig"
+        aria-hidden="true"
+        tabindex="-1"
+      >Rig</mat-label>
+      <input
+        aria-labelledby="formStepHull labelRig"
+        aria-required="true"
+        formControlName="rig"
+        matInput
+        required
+        type="text"
+      >
+    </mat-form-field>
+  </form>
+</ng-template>

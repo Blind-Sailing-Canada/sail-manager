@@ -1,0 +1,85 @@
+<h3 *ngIf="sail === null">Looks like this sail does not exist.</h3>
+<mat-card *ngIf="sail">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>stars</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >
+      {{title}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="HEADER_CONTROLS"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="CONTENT"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <ng-container [ngTemplateOutlet]="FOOTER_CONTROLS"></ng-container>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #HEADER_CONTROLS>
+  <a
+    (click)="goToSail()"
+    mat-raised-button
+  >View Sail</a>
+</ng-template>
+
+<ng-template #FOOTER_CONTROLS>
+  <h4
+    tabindex="0"
+    *ngIf="feedbacks?.length"
+  >Overall rating is: {{averageRating}}</h4>
+</ng-template>
+
+<ng-template #CONTENT>
+  <app-table>
+    <tr
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <th
+        class="feedback"
+        aria-hidden="true"
+        tabindex="-1"
+      >Feedback</th>
+      <th
+        aria-hidden="true"
+        tabindex="-1"
+      >Rating</th>
+    </tr>
+    <tr
+      *ngIf="!feedbacks || !feedbacks.length"
+      attr.aria-label="There are no feedbacks."
+      role="listitem"
+      tabindex="0"
+    >
+      <td colspan="2">There are no feedbacks.</td>
+    </tr>
+    <tr
+      (click)="viewFeedback(feedback.id)"
+      *ngFor="let feedback of feedbacks; let i = index;"
+      class="clickable"
+      attr.aria-label="{{feedbackAriaLabel(feedback, i)}}"
+      role="listitem"
+      tabindex="0"
+    >
+      <td
+        aria-hidden="true"
+        tabindex="-1"
+        class="feedback"
+      >{{feedback.feedback || 'no feedback'}}</td>
+      <td
+        aria-hidden="true"
+        tabindex="-1"
+      >{{feedbackRatings[feedback.rating]}}</td>
+    </tr>
+  </app-table>
+</ng-template>

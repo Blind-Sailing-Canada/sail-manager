@@ -1,0 +1,41 @@
+<fieldset class="app-file-select">
+  <legend>{{title}}</legend>
+  <div *ngFor="let file of selectedFiles">
+    <p>File size: {{file.size | filesize}}.</p>
+    <p>File name: {{file.name}}</p>
+  </div>
+  <mat-progress-bar
+    *ngIf="progress"
+    [value]="progress"
+    aria-live="polite"
+    attr.aria-label="{{actionName}}ed {{progress}}%"
+    mode="determinate"
+  >
+  </mat-progress-bar>
+  <input
+    #original_file_input
+    class="hidden"
+    (change)="handleFileInput($event.target.files)"
+    [accept]="fileFilter"
+    [id]="id"
+    [multiple]="multiple"
+    type="file"
+  >
+  <div class="file-select-controls">
+    <button
+      mat-raised-button
+      (click)="original_file_input.click()"
+      title="Click to select a new photo"
+    >
+      <app-icon-text
+        icon="add_a_photo"
+        text="Add new photo"
+      ></app-icon-text>
+    </button>
+    <button
+      *ngIf="shouldEnableActionButton"
+      mat-raised-button
+      (click)="performAction()"
+    >{{actionName}}</button>
+  </div>
+</fieldset>

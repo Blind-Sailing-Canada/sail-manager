@@ -1,0 +1,54 @@
+<mat-card *ngIf="sail && user && checklist">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>playlist_add_check</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >After Arrival Checklist Form</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <a
+      mat-raised-button
+      (click)="goToMaintenanceRequest()"
+    >
+      maintenace request
+    </a>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="arrivalFormContent"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        *ngIf="!shouldDisableUpdateButton"
+        mat-raised-button
+        (click)="save()"
+      >Update</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #arrivalFormContent>
+  <ng-container>
+    <ng-container *ngTemplateOutlet="instructions"></ng-container>
+  </ng-container>
+  <ng-container>
+    <ng-container *ngTemplateOutlet="checklist"></ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #instructions>
+  <h4 tabindex="0">Step 1 of 2: Arrival Instructions</h4>
+  <app-instructions-list [instructions]="arrivalInstructions"></app-instructions-list>
+</ng-template>
+
+<ng-template #checklist>
+  <h4 tabindex="0">Step 2 of 2: Arrival Checklist</h4>
+  <app-checklist-form
+    [form]="afterFormControls"
+    when="After"
+  ></app-checklist-form>
+</ng-template>

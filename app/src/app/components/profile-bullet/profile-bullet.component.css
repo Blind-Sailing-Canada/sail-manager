@@ -1,0 +1,17 @@
+img {
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  border: 1px solid silver;
+  display: inline-block;
+  font-size: 32px;
+  height: 32px;
+  overflow: hidden;
+  vertical-align: middle;
+  width: 32px;
+  margin-right: 5px
+}
+
+.profile-bullet {
+  display: block;
+}

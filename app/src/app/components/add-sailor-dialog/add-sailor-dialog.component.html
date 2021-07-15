@@ -1,0 +1,44 @@
+<h1
+  attr.aria-label="Add sailor to {{data.sail.name}} sail"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Add Sailor Dialog</h1>
+<mat-dialog-content>
+  <mat-action-list
+    role='list'
+    id="available_sailor_list"
+  >
+    <div class="form">
+      <app-list-filter
+        label="Search sailors by name or email"
+        ariaLabel="Search sailors by name email"
+        tooltip="Search sailors by name or email"
+        (filter)="data.fetchAvailableSailor($event)"
+      ></app-list-filter>
+    </div>
+    <mat-list-item
+      (click)="addAndClose(sailor)"
+      *ngFor="let sailor of data.availableSailors; let i = index"
+      attr.aria-label="Sailor {{i + 1}} of {{data.availableSailors.length}} {{sailor.name}}. Click to add to sail."
+      role="listitem"
+      tabindex="0"
+    >
+      <mat-icon matListIcon>add</mat-icon>{{i + 1 }}. {{sailor.name}}
+    </mat-list-item>
+    <mat-list-item
+      *ngIf="!data.availableSailors || data.availableSailors.length === 0"
+      tabindex="0"
+    >No sailors are
+      available during this
+      time.</mat-list-item>
+  </mat-action-list>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close dialog"
+  >CLOSE</button>
+</div>

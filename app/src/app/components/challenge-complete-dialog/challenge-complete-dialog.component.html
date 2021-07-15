@@ -1,0 +1,45 @@
+<h1
+  attr.aria-label="Challenge Complete Dialog for {{data.challenger.name}}"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Challenge Complete Dialog for {{data.challenger.name}}</h1>
+<mat-dialog-content>
+  <img
+    aria-hidden="true"
+    async
+    *ngIf="!!data.challenge.badge"
+    src="{{data.challenge.badge}}?width=200&height=150"
+    tabindex="-1"
+  >
+  <h1
+    tabIndex="0"
+    attr.aria-label="Challenge name {{data.challenge.name}}"
+  >Submit results for {{data.challenge.name}}</h1>
+  <mat-card>
+    <mat-form-field
+      class="result-input"
+      [(ngModel)]="data.result"
+      ngDefaultControl
+    >
+      <mat-label aria-hidden="true">Result</mat-label>
+      <input
+        matInput
+        title="enter individual result for this challenge"
+      >
+    </mat-form-field>
+  </mat-card>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    (click)="submit()"
+    mat-raised-button
+    title="Submit challenge results."
+  >Submit</button>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close dialog"
+  >Cancel</button>
+</div>

@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>local_hospital</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >Clinics</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="CONTENT_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #CONTROLS_TEMPLATE>
+  <button
+    *ngIf="shouldEnableNewButton"
+    (click)="goToNewClinic()"
+    title="Go to new clinic page"
+    mat-raised-button
+  >New</button>
+</ng-template>
+
+<ng-template #CONTENT_TEMPLATE>
+  <app-table>
+    <tr aria-hidden="true">
+      <th aria-hidden="true">Clinic</th>
+      <th aria-hidden="true">Instructor</th>
+    </tr>
+    <tr
+      *ngFor="let clinic of clinicsArray; let i = index;"
+      attr.aria-label="Clinic {{i+1}} of {{clinicsArray.length}}: {{clinic.name}}, lead by {{clinic.instructor?.name || 'no one'}}."
+      role="listitem"
+      tabindex="0"
+      class="clickable"
+      (click)="viewClinic(clinic.id)"
+    >
+      <td aria-hidden="true">{{clinic.name}}</td>
+      <td aria-hidden="true">{{clinic.instructor?.name || 'not assigned'}}</td>
+    </tr>
+    <tr *ngIf="!clinicsArray?.length">
+      <td
+        colspan="2"
+        tabindex="0"
+      >There are no clinics.</td>
+    </tr>
+  </app-table>
+</ng-template>
