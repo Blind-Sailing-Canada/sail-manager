@@ -143,6 +143,62 @@
   <tr
     tabindex="0"
     role="listitem"
+    attr.aria-label="Ballast {{boat.lwl}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Ballast</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.ballast}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Jib sail area {{boat.jibSailArea}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Jib sail area</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.jibSailArea}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Main sail area {{boat.mainSailArea}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Main sail area</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.mainSailArea}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="PHRF {{boat.phrf}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >PHRF</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat.phrf}}</td>
+  </tr>
+  <tr
+    tabindex="0"
+    role="listitem"
     attr.aria-label="Hull material {{boat.material}}"
   >
     <th
@@ -154,6 +210,20 @@
       aria-hidden="true"
     >{{boat.material}}</td>
   </tr>
+  <tr
+  tabindex="0"
+  role="listitem"
+  attr.aria-label="Rig {{boat.rig}}"
+>
+  <th
+    tabindex="-1"
+    aria-hidden="true"
+  >Rig</th>
+  <td
+    tabindex="-1"
+    aria-hidden="true"
+  >{{boat.rig}}</td>
+</tr>
   <tr
     *ngIf="showPictures && boat.pictures && boat.pictures.length"
     tabindex="-1"

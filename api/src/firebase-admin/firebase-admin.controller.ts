@@ -112,7 +112,7 @@ export class FirebaseAdminController {
       .getFileUrl(scaledPath)
       .then(foundUrl => response.redirect(foundUrl))
       .catch((error) => {
-        if (error.message !== '404') {
+        if (error.status !== 404) {
           response.status(500).send('failed to get cdn file');
           return;
         }
