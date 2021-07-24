@@ -42,7 +42,6 @@
     >{{boat.maxOccupancy}}</td>
   </tr>
   <tr
-    (click)="wikiLink?.click()"
     tabindex="0"
     role="listitem"
     attr.aria-label="Boat wiki page {{boat.wiki}}"
@@ -52,13 +51,12 @@
       aria-hidden="true"
     >Wiki</th>
     <td
-      tabindex="-1"
+      tabindex="0"
       aria-hidden="true"
     >
       <a
         *ngIf="boat.wiki"
         target="_blank"
-        #wikiLink
         href={{boat.wiki}}
       >{{boat.wiki}}</a>
       {{!boat.wiki ? "Not provided": ""}}

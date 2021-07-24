@@ -15,7 +15,7 @@
   <input
     #original_file_input
     class="hidden"
-    (change)="handleFileInput($event.target.files)"
+    (change)="handleFileInput($event)"
     [accept]="fileFilter"
     [id]="id"
     [multiple]="multiple"

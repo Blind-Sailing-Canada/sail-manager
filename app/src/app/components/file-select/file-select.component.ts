@@ -18,15 +18,15 @@ export class FileSelectComponent {
 
   public selectedFiles: File[] = [];
 
-  public handleFileInput(files: File[]): void {
-    this.selectedFiles = files;
+  public handleFileInput(event): void {
+    this.selectedFiles = (event.target as any).files as File[];
   }
 
   public get shouldEnableActionButton(): boolean {
     return this.selectedFiles && this.selectedFiles.length !== 0 && this.progress === 0;
   }
 
-  protected performAction(): void {
+  public performAction(): void {
     this.action.emit(this.selectedFiles);
   }
 }

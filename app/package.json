@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn build:app && yarn build:server",
-    "build:app": "ng build --stats-json",
+    "build:app": "ng build --configuration production --stats-json",
     "build:server": "webpack --config ./src/server/webpack-server.config.js",
     "debug:server": "node --inspect ./src/server/server.js",
     "lint": "ng lint",

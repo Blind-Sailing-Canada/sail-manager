@@ -190,7 +190,7 @@
   </div>
   <app-image-list
     (deleteClick)="deletePicture($event)"
-    (goToProfile)="showProfileDialog(getProfile($event))"
+    (goToProfile)="showProfileDialog($event)"
     [allowDelete]="allowDelete"
     [pictures]="maintenance.pictures"
     [showAuthor]="true"

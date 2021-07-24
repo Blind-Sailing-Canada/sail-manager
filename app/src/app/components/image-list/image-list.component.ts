@@ -26,7 +26,7 @@ export class ImageListComponent implements OnChanges {
   @Input() showAuthor = false;
   @Input() user: User;
   @Input() width = 100;
-  @Output() deleteClick: EventEmitter<Media | string> = new EventEmitter<Media | string>();
+  @Output() deleteClick: EventEmitter<Media> = new EventEmitter<Media>();
   @Output() goToProfile: EventEmitter<Profile> = new EventEmitter<Profile>();
 
   public picturesArray: Media[] = [];

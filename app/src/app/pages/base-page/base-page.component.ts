@@ -70,6 +70,7 @@ import { Profile } from '../../../../../api/src/types/profile/profile';
 import { BoatMaintenance } from '../../../../../api/src/types/boat-maintenance/boat-maintenance';
 import { SailRequest } from '../../../../../api/src/types/sail-request/sail-request';
 import { Clinic } from '../../../../../api/src/types/clinic/clinic';
+import { ProfileRole } from '../../../../../api/src/types/profile/profile-role';
 
 @Component({
   template: ''
@@ -451,7 +452,7 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
       });
   }
 
-  public showProfileDialog(profile: Profile, type?: string) {
+  public showProfileDialog(profile: Profile, type?: string | ProfileRole[]) {
     if (!profile) {
       return;
     }

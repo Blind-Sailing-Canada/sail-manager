@@ -31,10 +31,10 @@
         <mat-icon matListIcon>assignment_ind</mat-icon>
         <span
           matLine
-          attr.aria-label="User's role {{data.type || data.profile.roles.join(', ')}}"
+          attr.aria-label="User's role {{[data.type || data.profile.roles].join(', ')}}"
           role="listitem"
           class="break-space"
-        >{{data.type || data.profile.roles.join(', ')}}</span>
+        >{{[data.type || data.profile.roles].join(', ')}}</span>
       </mat-list-item>
       <mat-list-item
         (click)="phone.click()"
