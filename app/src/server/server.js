@@ -77,6 +77,7 @@ app
     switch(req.files.file.mimetype) {
       case 'image/jpeg':
       case 'image/jpg':
+      case 'image/png':
       case 'image/gif':
         allowed = true;
         break;
@@ -129,9 +130,6 @@ app
       return `/fba${redirect}`;
     }
   }))
-  // DOCUMENTATION
-  .use('/docs/app', express.static(`${DIST_DIR}/../docs/app`))
-  .use('/docs/api', express.static(`${DIST_DIR}/../docs/api`))
   // Static content
   .use(express.static(DIST_DIR))
   // for everything else serve index.html
