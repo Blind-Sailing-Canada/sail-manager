@@ -20,16 +20,19 @@ jobs:
           password: $DOCKER_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
-      # ... steps for building/testing app ...
-
-      # - setup_remote_docker:
-      #     version: 19.03.13
-      #     docker_layer_caching: true
-
+  
       # build and push Docker image
       - run: chmod +x ./build-docker.sh
       - run: ./build-docker.sh
-          # TAG=0.1.$CIRCLE_BUILD_NUM
-          # docker build -t CircleCI-Public/circleci-demo-docker:$TAG .
-          # echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          # docker push CircleCI-Public/circleci-demo-docker:$TAG
+      - run:
+          name: Push to DockerHub
+          command: |
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            docker push bsac/sail-manager:$CIRCLE_SHA1
+      - run:
+          name: Deploy to Heroku
+          command: |
+            docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+            docker tag bsac/sail-manager:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
+            docker push registry.heroku.com/$HEROKU_APP_NAME web
+            
