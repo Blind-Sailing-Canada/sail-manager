@@ -41,3 +41,8 @@ jobs:
             docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
             docker tag bsac/sail-manager:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
             docker push registry.heroku.com/$HEROKU_APP_NAME/web
+      - run:
+          name: Release Heroku App
+          command: |
+            heroku container:login
+            heroku container:release -a bsac-sail-manager web
