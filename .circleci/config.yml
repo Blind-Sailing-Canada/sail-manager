@@ -34,7 +34,7 @@ jobs:
           name: Push to DockerHub
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-            docker push bsac/sail-manager:$CIRCLE_SHA1
+            docker image push bsac/sail-manager:$CIRCLE_SHA1
       - run:
           name: Deploy to Heroku
           command: |
