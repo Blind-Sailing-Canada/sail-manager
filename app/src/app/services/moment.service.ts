@@ -1,4 +1,3 @@
-import * as moment from 'moment';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -6,87 +5,71 @@ import { Injectable } from '@angular/core';
 })
 export class MomentService {
 
-  constructor() {
-    moment.updateLocale('en', {
-      calendar: {
-        lastDay: 'hh:mm A [Yesterday]',
-        sameDay: '[Today] @ hh:mm A',
-        nextDay: 'hh:mm A [Tomorrow]',
-        lastWeek: 'hh:mm A [Last] dddd',
-        nextWeek: 'hh:mm A [Next] dddd',
-        sameElse: 'hh:mm A dddd, DD MMMM, YYYY'
-      }
-    });
-  }
-
-  public moment(date: string | Date): moment.Moment {
-    return moment(date);
-  }
-
   public format(date: string | Date): string {
-    const mnt = moment(date);
-    const formatedString = mnt.format('MMMM Do YYYY, h:mm a');
+    const formatedString = new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true });
 
     return formatedString;
   }
 
   public describeDate(date: string | Date, short?: boolean): string {
-    const mnt = moment(date);
-
     if (short) {
-      return mnt.format('ddd, MMM DD, YY');
+      return new Date(date).toLocaleString([], { weekday: 'short', month: 'short', day: '2-digit', year: '2-digit' });
     }
 
-    return mnt.format('dddd, MMMM DD, YYYY');
-
+    return new Date(date).toLocaleString([], { weekday: 'long', month: 'long', day: '2-digit', year: 'numeric' });
   }
 
   public yyyymmdd(date: string | Date): string {
-    const mnt = moment(date);
 
-    const formatedValue = mnt.format('YYYY-MM-DD');
+    const formatedValue = new Date(date)
+      .toLocaleString('en-us', { year: 'numeric', month: '2-digit', day: '2-digit' })
+      .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2');
 
     return formatedValue;
   }
 
   public humanizeDateWithTime(date: string | Date, short: boolean): string {
-    const mnt = moment(date);
-    const format = {
-      lastDay: 'hh:mm A [Yesterday]',
-      sameDay: '[Today] @ hh:mm A',
-      nextDay: 'hh:mm A [Tomorrow]',
-      lastWeek: 'hh:mm A [Last] dddd',
-      nextWeek: 'hh:mm A [Next] dddd',
-      sameElse: short ? 'hh:mm A ddd, DD MMM, YYYY' : 'hh:mm A dddd, DD MMMM, YYYY',
-    };
-    const humanDateWithTime = mnt.calendar(undefined, format);
+    // const mnt = moment(new Date(date));
+    // const format = {
+    //   lastDay: 'hh:mm A [Yesterday]',
+    //   sameDay: '[Today] @ hh:mm A',
+    //   nextDay: 'hh:mm A [Tomorrow]',
+    //   lastWeek: 'hh:mm A [Last] dddd',
+    //   nextWeek: 'hh:mm A [Next] dddd',
+    //   sameElse: short ? 'hh:mm A ddd, DD MMM, YYYY' : 'hh:mm A dddd, DD MMMM, YYYY',
+    // };
+    // const humanDateWithTime = mnt.calendar(undefined, format);
 
-    return humanDateWithTime;
+    // return humanDateWithTime;
+
+    return new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true });
   }
 
   public humanizeDate(date: string | Date, short?: boolean): string {
-    const mnt = moment(date);
-    const format = {
-      lastDay: '[Yesterday]',
-      sameDay: '[Today]',
-      nextDay: '[Tomorrow]',
-      lastWeek: '[Last] dddd',
-      nextWeek: '[Next] dddd',
-      sameElse: short ? 'ddd, DD MMM, YYYY' : 'dddd, DD MMMM, YYYY',
-    };
+    // const mnt = moment(date);
+    // const format = {
+    //   lastDay: '[Yesterday]',
+    //   sameDay: '[Today]',
+    //   nextDay: '[Tomorrow]',
+    //   lastWeek: '[Last] dddd',
+    //   nextWeek: '[Next] dddd',
+    //   sameElse: short ? 'ddd, DD MMM, YYYY' : 'dddd, DD MMMM, YYYY',
+    // };
 
-    const humanDateWithTime = mnt.calendar(undefined, format);
+    // const humanDateWithTime = mnt.calendar(undefined, format);
 
-    return humanDateWithTime;
+    // return humanDateWithTime;
+    return new Date(date).toLocaleString([], { weekday: 'short', month: 'short', day: '2-digit', year: '2-digit' });
   }
 
   public duration(start: string | Date, finish: string | Date): string {
-    const foo = moment(start);
-    const bar = moment(finish);
-    const duration = moment.duration(foo.diff(bar));
-    const humanString = duration.humanize();
+    // const foo = moment(start);
+    // const bar = moment(finish);
+    // const duration = moment.duration(foo.diff(bar));
+    // const humanString = duration.humanize();
 
-    return humanString;
+    // return humanString;
+    return '';
   }
 
 }

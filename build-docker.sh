@@ -3,7 +3,6 @@ set -e
 
 # BUILD APP
 echo "=========BUILDING APP========="
-export NODE_OPTIONS=--max_old_space_size=4096
 mv ./app ./app_src
 cd ./app_src
 yarn -silent install --frozen-lockfile

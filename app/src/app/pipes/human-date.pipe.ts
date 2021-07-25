@@ -52,7 +52,7 @@ export class FormatDateYYYYMMDDPipe implements PipeTransform {
   constructor(
     @Inject(MomentService) private momentService: MomentService,
   ) { }
-  transform(date: string | Date, short?: boolean): string {
+  transform(date: string | Date): string {
     if (!date) {
       return 'n/a';
     }

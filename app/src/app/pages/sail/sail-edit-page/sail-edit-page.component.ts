@@ -115,7 +115,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.sailForm.controls.name.setValue(formValues.name || sail.name);
     this.sailForm.controls.description.setValue(formValues.description || sail.description);
 
-    const start = this.momentService.moment(sail.start).toDate();
+    const start = new Date(sail.start);
 
     this.sailStartDateTimeForm.patchValue({
       date: start.getDate(),
@@ -125,7 +125,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       year: start.getFullYear(),
     });
 
-    const end = this.momentService.moment(sail.end).toDate();
+    const end = new Date(sail.end);
 
     this.sailStartDateTimeForm.patchValue({
       date: end.getDate(),
@@ -158,7 +158,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       this.sailForm.controls.start.markAsDirty();
       this.sailForm.controls.start.updateValueAndValidity();
 
-      const endDateTime = this.momentService.moment(startDateTime).add(3, 'hours').toDate();
+      const endDateTime =  new Date(startDateTime);
+      endDateTime.setHours(endDateTime.getHours() + 3);
 
       this.sailEndDateTimeForm.patchValue({
         date: endDateTime.getDate(),
@@ -254,11 +255,11 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.fetchBoatsOnSailDateChanges();
 
     if (this.creatingNewSail) {
-      const startMoment = this.momentService.moment(new Date());
+      const startMoment = new Date();
 
-      startMoment.add(1, 'day');
+      startMoment.setDate(startMoment.getDate() + 1);
 
-      const startDate = startMoment.toDate();
+      const startDate = new Date(startMoment);
 
       this.sailStartDateTimeForm.controls.date.setValue(startDate.getDate());
       this.sailStartDateTimeForm.controls.month.setValue(startDate.getMonth());
@@ -266,9 +267,9 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       this.sailStartDateTimeForm.controls.hour.setValue(startDate.getHours());
       this.sailStartDateTimeForm.controls.minute.setValue(startDate.getMinutes());
 
-      startMoment.add(3, 'hours');
+      startMoment.setHours(startMoment.getHours() + 3);
 
-      const sailEnd = startMoment.toDate();
+      const sailEnd = new Date(startMoment);
 
       this.sailEndDateTimeForm.controls.date.setValue(sailEnd.getDate());
       this.sailEndDateTimeForm.controls.month.setValue(sailEnd.getMonth());
@@ -440,7 +441,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     }
     const dateString = this.sailForm.controls[`${type}`].value as string;
 
-    const formatedDateString = this.momentService.moment(dateString).format('MMMM Do YYYY, h:mm a');
+    const formatedDateString = this.momentService.humanizeDateWithTime(dateString, false);
     return formatedDateString;
   }
 
@@ -462,7 +463,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
   private buildDate(date: Date, time: string) {
     const [hours, minutes] = (time || '0:0').split(':');
-    const newDate = this.momentService.moment(date).toDate();
+    const newDate = new Date(date);
 
     newDate.setHours(+hours);
     newDate.setMinutes(+minutes);

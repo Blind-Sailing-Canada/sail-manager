@@ -74,6 +74,13 @@ async function bootstrap() {
     next();
   });
   app.use(morgan('combined'));
+  app.use((req, res, next) => {
+    if (req.originalUrl.startsWith('/time')){
+      return res.send(new Date());
+    }
+
+    return next();
+  });
 
   const options = new DocumentBuilder()
     .setTitle('Mysql typeorm')

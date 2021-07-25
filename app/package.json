@@ -41,13 +41,13 @@
     "form-data": "3.0.0",
     "heroku-ssl-redirect": "0.1.1",
     "marked": "1.1.1",
-    "moment": "2.27.0",
-    "ngx-filesize": "2.0.15",
+    "ngx-filesize": "2.0.16",
     "rxjs": "6.5.3",
-    "tslib": "^2.0.0",
+    "tslib": "2.3.0",
     "web-animations-js": "2.3.2",
     "zone.js": "~0.11.4",
-    "webpack": "5.46.0"
+    "webpack": "5.46.0",
+    "@formatjs/intl-relativetimeformat": "9.2.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "12.1.3",

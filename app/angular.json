@@ -25,7 +25,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["firebase/app", "marked", "@sentry/browser", "moment"],
+            "allowedCommonJsDependencies": ["firebase/app", "marked", "@sentry/browser"],
             "outputPath": "app",
             "index": "src/index.html",
             "main": "src/main.ts",

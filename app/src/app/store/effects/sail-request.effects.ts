@@ -17,7 +17,7 @@ import {
 import { Store } from '@ngrx/store';
 import { SailRequestStatus } from '../../../../../api/src/types/sail-request/sail-request-status';
 import { SnackType } from '../../models/snack-state.interface';
-import { editSailRequestRoute } from '../../routes/routes';
+import { viewSailRequestRoute } from '../../routes/routes';
 import { SailRequestService } from '../../services/sail-request.service';
 import { errorCatcher } from '../../utils/error-catcher';
 import {
@@ -52,7 +52,7 @@ export class SailRequestEffects {
               mergeMap(sailRequest => of(
                 putSailRequest({ sailRequest, id: sailRequest.id }),
                 putSnack({ snack: { type: SnackType.INFO, message: 'Sail Request created.' } }),
-                goTo({ route: editSailRequestRoute(sailRequest.id) }),
+                goTo({ route: viewSailRequestRoute(sailRequest.id) }),
               )),
               catchError(errorCatcher('Failed to create a sail request.'))
             )
