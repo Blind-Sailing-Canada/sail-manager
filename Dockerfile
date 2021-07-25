@@ -1,4 +1,4 @@
-FROM node:12.20.1-alpine
+FROM node:14-alpine
 WORKDIR /app_root
 COPY . .
 RUN apk --update add redis
