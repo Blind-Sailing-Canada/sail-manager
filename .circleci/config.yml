@@ -20,6 +20,7 @@ jobs:
           password: $DOCKER_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
+      - run: docker --version
   
       # build and push Docker image
       - run: chmod +x ./build-docker.sh
