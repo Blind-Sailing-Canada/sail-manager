@@ -14,15 +14,12 @@ orbs:
 jobs:
   build:
     docker:
-      # replace with your preferred image
-      - image: cimg/base
+      - image: cimg/node:14.17.3
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
-      - node/install:
-          install-yarn: true 
-          install-npm: false 
-          node-version: '14.0.0' 
-          yarn-version: '1.19.1'
       # ... steps for building/testing app ...
 
       # - setup_remote_docker:
