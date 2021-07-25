@@ -27,8 +27,8 @@ jobs:
       #     docker_layer_caching: true
 
       # build and push Docker image
-      - run: |
-          ./build-docker.sh
+      - run: chmod +x ./build-docker.sh
+      - run: ./build-docker.sh
           # TAG=0.1.$CIRCLE_BUILD_NUM
           # docker build -t CircleCI-Public/circleci-demo-docker:$TAG .
           # echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
