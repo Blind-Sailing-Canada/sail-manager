@@ -27,7 +27,9 @@ jobs:
   
       # build and push Docker image
       - run: chmod +x ./build-docker.sh
-      - run: ./build-docker.sh
+      - run: 
+          name: Build docker image
+          command: docker build -t bsac/sail-manager:$CIRCLE_SHA1 .
       - run:
           name: Push to DockerHub
           command: |
