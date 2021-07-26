@@ -6,7 +6,7 @@ echo "=========BUILDING APP========="
 mv ./app ./app_src
 cd ./app_src
 yarn -silent install --frozen-lockfile
-yarn build:app
+yarn build
 mv ./app ../app
 cd ../
 rm -rf ./app_src
