@@ -42,6 +42,10 @@ export class MomentService {
 
     // return humanDateWithTime;
 
+    console.log('humanizeDateWithTime', date);
+    console.log(
+      `new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true })`,
+      new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true }));
     return new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true });
   }
 
