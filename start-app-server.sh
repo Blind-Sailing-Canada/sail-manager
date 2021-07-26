@@ -1,5 +1,8 @@
 startAPP() {
   echo "starting app..."
+  echo 'CURRENT WORKING DIRECTORY'
+  pwd
+  ls -a -l
   return $(node ./app/server/server.js)
 }
 
