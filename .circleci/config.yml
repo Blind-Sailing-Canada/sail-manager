@@ -1,0 +1,56 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+orbs:
+  node: circleci/node@4.1
+  # The heroku orb contains a set of prepackaged CircleCI configuration you can utilize to deploy applications to heroku
+  # Orbs reduce the amount of configuration required for common tasks.
+  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/heroku
+  # NOTE: Environment variables containing the necessary secrets can be setup in the CircleCI UI
+  # See here https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+  heroku: circleci/heroku@1.2
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:14.17.3
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - heroku/install
+
+      - setup_remote_docker:
+          version: 19.03.13
+
+      - run: docker --version
+  
+      # build and push Docker image
+      - run: chmod +x ./build-docker.sh
+      - run: 
+          name: Build docker image
+          command: docker build -t bsac/sail-manager:$CIRCLE_SHA1 .
+      - run:
+          name: Push to DockerHub
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+            docker image push bsac/sail-manager:$CIRCLE_SHA1
+
+      - heroku/push-docker-image:
+          process-types: web
+      - heroku/release-docker-image:
+          process-types: web
+      # - run:
+      #     name: Deploy to Heroku
+      #     command: |
+      #       docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+      #       docker tag bsac/sail-manager:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
+      #       docker push registry.heroku.com/$HEROKU_APP_NAME/web
+      # - run:
+      #     name: Release Heroku App
+      #     command: |
+      #       curl https://cli-assets.heroku.com/install.sh | sh
+      #       heroku container:login
+      #       heroku container:release -a bsac-sail-manager web
