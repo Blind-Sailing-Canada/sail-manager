@@ -3,6 +3,7 @@ startAPP() {
   echo 'CURRENT WORKING DIRECTORY'
   pwd
   ls -a -l
+  ls -a -l ./app
   return $(node ./app/server/server.js)
 }
 
