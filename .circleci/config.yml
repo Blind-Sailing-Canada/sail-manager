@@ -20,6 +20,8 @@ jobs:
           password: $DOCKER_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
+      - heroku/install
+
       - setup_remote_docker:
           version: 19.03.13
 
@@ -35,15 +37,18 @@ jobs:
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
             docker image push bsac/sail-manager:$CIRCLE_SHA1
-      - run:
-          name: Deploy to Heroku
-          command: |
-            docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
-            docker tag bsac/sail-manager:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
-            docker push registry.heroku.com/$HEROKU_APP_NAME/web
-      - run:
-          name: Release Heroku App
-          command: |
-            curl https://cli-assets.heroku.com/install.sh | sh
-            heroku container:login
-            heroku container:release -a bsac-sail-manager web
+
+      - heroku/push-docker-image
+      - heroku/release-docker-image
+      # - run:
+      #     name: Deploy to Heroku
+      #     command: |
+      #       docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+      #       docker tag bsac/sail-manager:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
+      #       docker push registry.heroku.com/$HEROKU_APP_NAME/web
+      # - run:
+      #     name: Release Heroku App
+      #     command: |
+      #       curl https://cli-assets.heroku.com/install.sh | sh
+      #       heroku container:login
+      #       heroku container:release -a bsac-sail-manager web
