@@ -44,5 +44,6 @@ jobs:
       - run:
           name: Release Heroku App
           command: |
+            curl https://cli-assets.heroku.com/install.sh | sh
             heroku container:login
             heroku container:release -a bsac-sail-manager web
