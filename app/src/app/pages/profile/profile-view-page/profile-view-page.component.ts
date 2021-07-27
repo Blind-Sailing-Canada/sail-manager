@@ -17,6 +17,7 @@ import {
   viewClinicRoute,
   viewUserSailsRoute,
 } from '../../../routes/routes';
+import { FirebaseService } from '../../../services/firebase.service';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 
@@ -48,6 +49,7 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
+    @Inject(FirebaseService) private firebaseService: FirebaseService,
   ) {
     super(store, route, router);
   }
@@ -105,5 +107,9 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
 
   public goToClinic(clinicId: string): void {
     this.goTo([viewClinicRoute(clinicId)]);
+  }
+
+  public linkGoogleAccount(): void {
+    this.firebaseService.linkGoogleAccount()
   }
 }

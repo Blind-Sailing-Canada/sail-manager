@@ -34,6 +34,14 @@
     Edit Info
   </a>
   <a
+    *ngIf="canEditInfo"
+    (click)="linkGoogleAccount()"
+    mat-raised-button
+    title="Link to another account"
+  >
+    Link to another account
+  </a>
+  <a
     *ngIf="canEditPrivileges"
     [routerLink]="editProfilePrivilegesLink(profile?.id)"
     mat-raised-button

@@ -35,6 +35,10 @@ export class FirebaseService {
     return firebase.auth().currentUser;
   }
 
+  public linkGoogleAccount() {
+    return firebase.auth().currentUser.linkWithRedirect({providerId: firebase.auth.GoogleAuthProvider.PROVIDER_ID});
+  }
+
   public sendPasswordResetEmail(email: string) {
     return firebase.auth().sendPasswordResetEmail(email);
   }
