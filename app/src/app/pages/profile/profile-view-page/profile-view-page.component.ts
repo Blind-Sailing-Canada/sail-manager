@@ -110,6 +110,6 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
   }
 
   public linkGoogleAccount(): void {
-    this.firebaseService.linkGoogleAccount()
+    this.firebaseService.linkGoogleAccount();
   }
 }
