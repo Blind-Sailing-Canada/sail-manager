@@ -37,7 +37,7 @@ export class FirebaseService {
 
   public linkGoogleAccount() {
     return firebase.auth().currentUser.linkWithRedirect(new firebase.auth.GoogleAuthProvider()).then((response) => {
-      console.log('link with redirect response', response)
+      console.log('link with redirect response', response);
     });
   }
 

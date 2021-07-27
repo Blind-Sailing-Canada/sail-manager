@@ -67,7 +67,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "yarn lint"
+      "pre-commit": "yarn lint"
     }
   },
   "engines": {
