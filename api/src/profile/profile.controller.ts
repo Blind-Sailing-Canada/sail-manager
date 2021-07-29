@@ -1,12 +1,15 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
+  BadRequestException,
   Body,
   Controller, Get, Param, Patch, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { Queue } from 'bull';
-import { getManager } from 'typeorm';
+import {
+  getManager, UpdateResult
+} from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
@@ -23,9 +26,12 @@ import { RequiredActionStatus } from '../types/required-action/required-action-s
 import { RequiredActionType } from '../types/required-action/required-action-type';
 import { JwtObject } from '../types/token/jwt-object';
 import { UserAccessFields } from '../types/user-access/user-access-fields';
+import { ProfileLink } from '../types/user/profile-link';
+import { ProfileLinkInfo } from '../types/user/profile-link-info';
 import { UserAccess } from '../user-access/user-access.decorator';
 import { UserAccessEntity } from '../user-access/user-access.entity';
 import { User } from '../user/user.decorator';
+import { UserEntity } from '../user/user.entity';
 import { ProfileUpdateSanitizer } from './pipes/profile-update.sanitizer';
 import { ProfileEntity } from './profile.entity';
 import { ProfileService } from './profile.service';
@@ -59,6 +65,31 @@ export class ProfileController {
 
     if (count === 0) {
       await this.authService.createAdminUser();
+    }
+  }
+
+  @Patch('/link-accounts')
+  @UserAccess(UserAccessFields.LinkAccounts)
+  @UseGuards(UserAccessGuard)
+  async linkAccounts(@User() user: JwtObject, @Body() linkInfo: ProfileLinkInfo) {
+    let updated:UpdateResult;
+
+    if (linkInfo.linkType == ProfileLink.Primary) {
+      updated = await UserEntity.update({ profileId: linkInfo.profileIdB }, {
+        profileId: linkInfo.profileIdA,
+        originalProfileId: linkInfo.profileIdB,
+        linkedByProfileId: user.profileId,
+      });
+    } else {
+      updated = await UserEntity.update({ profileId: linkInfo.profileIdA }, {
+        profileId: linkInfo.profileIdB,
+        originalProfileId: linkInfo.profileIdA,
+        linkedByProfileId: user.profileId,
+      });
+    }
+
+    if (updated.affected !== 1) {
+      throw new BadRequestException(`failed to link accounts (${updated.affected})`);
     }
   }
 

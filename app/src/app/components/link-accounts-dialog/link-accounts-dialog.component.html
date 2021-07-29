@@ -1,0 +1,48 @@
+<h1
+  attr.aria-label="Link account {{data.account.name}} ({{data.account.email}})"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Link accounts dialog</h1>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-radio-group
+      aria-label="Link type"
+      formControlName="linkType"
+    >
+      <mat-radio-button value="primary">Primary</mat-radio-button>
+      <mat-radio-button value="secondary">Secondary</mat-radio-button>
+    </mat-radio-group>
+  </form>
+  <mat-action-list role='list'>
+    <div class="form">
+      <app-list-filter
+        label="Search accounts by name or email"
+        ariaLabel="Search accounts by name email"
+        tooltip="Search accounts by name or email"
+        (filter)="data.fetchAccounts($event)"
+      ></app-list-filter>
+    </div>
+    <mat-list-item
+      (click)="linkAndClose(account)"
+      *ngFor="let account of data.accounts; let i = index"
+      attr.aria-label="Account {{i + 1}} of {{data.accounts.length}} {{account.name}} ({{account.email}}). Click to add to link."
+      role="listitem"
+      tabindex="0"
+    >
+      <mat-icon matListIcon>link</mat-icon>{{i + 1 }}. {{account.name}} ({{account.email}})
+    </mat-list-item>
+    <mat-list-item
+      *ngIf="!data.accounts || data.accounts.length === 0"
+      tabindex="0"
+    >No accounts found.</mat-list-item>
+  </mat-action-list>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close dialog"
+  >CLOSE</button>
+</div>

@@ -217,7 +217,6 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   }
 
   public fetchAvailableSailor(sailorName: string): void {
-
     this.sailManifestService
       .getAvailableSailors(this.sail.start, this.sail.end, sailorName)
       .pipe(takeWhile(() => this.active))

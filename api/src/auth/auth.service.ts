@@ -1,6 +1,7 @@
 import {
   ConflictException,
-  Injectable
+  Injectable,
+  Logger
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DeleteResult } from 'typeorm';
@@ -44,11 +45,13 @@ interface ProviderUser {
 export class AuthService {
 
   private readonly tokens: TokenCache = {};
+  private readonly logger: Logger;
 
   constructor(
     private readonly jwtService: JwtService,
     private readonly firebaseAdminService: FirebaseAdminService
   ) {
+    this.logger = new Logger(this.constructor.name);
   }
 
   public async createAdminUser() {
@@ -133,7 +136,7 @@ export class AuthService {
     return TokenEntity
       .delete({ profileId } )
       .catch(error => {
-        console.error(error);
+        this.logger.error(error);
         return null;
       });
   }
@@ -218,7 +221,7 @@ export class AuthService {
 
   private async createNewUser(user: ProviderUser, expires = true): Promise<UserEntity> {
 
-    console.log('CREATING NEW USER', user);
+    this.logger.log(`CREATING NEW USER ${JSON.stringify(user, null, 2)}`);
 
     const expiresAt = expires ? new Date(new Date().getTime() + (30 * 60 * 1000)): null;
 
@@ -248,6 +251,7 @@ export class AuthService {
         provider: user.provider,
         providerUserId: user.id,
         profile: newProfile,
+        originalProfileId: newProfile.id,
       });
 
     await getConnection().transaction(async transactionalEntityManager => {

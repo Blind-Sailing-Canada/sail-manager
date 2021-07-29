@@ -8,6 +8,7 @@ import { ProfileRole } from '../../../../api/src/types/profile/profile-role';
 import { Profile } from '../../../../api/src/types/profile/profile';
 import { ProfileReview } from '../../../../api/src/types/profile/profile-review';
 import { UserAccess } from '../../../../api/src/types/user-access/user-access';
+import { ProfileLinkInfo } from '../../../../api/src/types/user/profile-link-info';
 import { RequiredAction } from '../../../../api/src/types/required-action/required-action';
 
 interface ProfileReviewReturn {
@@ -24,6 +25,10 @@ export class ProfileService {
   private readonly API_URL = '/api/profile';
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
+
+  linkAccounts(info: ProfileLinkInfo): Observable<void> {
+    return this.http.patch<void>(`${this.API_URL}/link-accounts`, info);
+  }
 
   fetchTotalProfileCount(): Observable<number> {
     return this.http.get<number>(`${this.API_URL}/count`);

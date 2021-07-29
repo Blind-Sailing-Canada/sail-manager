@@ -22,10 +22,20 @@ export class UserEntity extends BaseModelEntity implements User {
   @Column()
   profileId: string;
 
+  @Column()
+  originalProfileId: string;
+
+  @Column({
+    default: null,
+    nullable: true,
+  })
+  linkedByProfileId: string;
+
   @OneToOne(() => ProfileEntity, undefined, {
     eager: true,
     onDelete: 'CASCADE',
+    createForeignKeyConstraints: false,
   })
-  @JoinColumn()
+  @JoinColumn({ referencedColumnName: 'id' })
   profile: ProfileEntity
 }

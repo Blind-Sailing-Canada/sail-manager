@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { FileSelectModule } from '../../components/file-select/file-select.module';
+import { LinkAccountsDialogModule } from '../../components/link-accounts-dialog/link-accounts-dialog.module';
 import { UserProfileModule } from '../../components/user-profile/user-profile.module';
 import { BasePageModule } from '../base-page/base-page.module';
 import { ProfileEditPageComponent } from './profile-edit-page/profile-edit-page.component';
@@ -21,6 +22,7 @@ import { ProfileViewPageComponent } from './profile-view-page/profile-view-page.
     BasePageModule,
     CommonModule,
     FileSelectModule,
+    LinkAccountsDialogModule,
     ProfileRoutingModule,
     ReactiveFormsModule,
     UserProfileModule,
