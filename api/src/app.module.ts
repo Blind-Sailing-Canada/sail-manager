@@ -51,6 +51,7 @@ const DB_CONNECTION_META: ConnectionOptions = {
     '**/*.entity.js',
   ],
   synchronize: process.env.DB_SYNCHRONIZE === 'true',
+  extra: { ssl: true },
 };
 
 @Module({
