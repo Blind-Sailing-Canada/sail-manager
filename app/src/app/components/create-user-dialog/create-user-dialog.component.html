@@ -1,0 +1,44 @@
+<h1
+  attr.aria-label="Create a new user dialog"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Create new user dialog</h1>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label tabindex="-1">Name</mat-label>
+      <input
+        type="text"
+        formControlName="name"
+      matInput
+      required
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label tabindex="-1">Email</mat-label>
+      <input
+      matInput
+      type="email"
+        formControlName="email"
+        required
+      >
+    </mat-form-field>
+  </form>
+  <div *ngIf="!!form.controls.error.value">
+    <span>Error:</span><span>{{form.controls.error.value}}</span>
+  </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close dialog"
+  >CLOSE</button>
+  <button
+    mat-raised-button
+    title="Create user"
+    (click)="createAndClose()"
+  >CREATE</button>
+</div>

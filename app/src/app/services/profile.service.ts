@@ -10,6 +10,7 @@ import { ProfileReview } from '../../../../api/src/types/profile/profile-review'
 import { UserAccess } from '../../../../api/src/types/user-access/user-access';
 import { ProfileLinkInfo } from '../../../../api/src/types/user/profile-link-info';
 import { RequiredAction } from '../../../../api/src/types/required-action/required-action';
+import { User } from '../../../../api/src/types/user/user';
 
 interface ProfileReviewReturn {
   profile: Profile;
@@ -25,6 +26,10 @@ export class ProfileService {
   private readonly API_URL = '/api/profile';
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
+
+  createUser(name: string, email: string): Observable<User> {
+    return this.http.post<User>(`${this.API_URL}/create-user`, { name, email });
+  }
 
   linkAccounts(info: ProfileLinkInfo): Observable<void> {
     return this.http.patch<void>(`${this.API_URL}/link-accounts`, info);

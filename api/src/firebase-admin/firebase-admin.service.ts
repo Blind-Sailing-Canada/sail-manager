@@ -11,6 +11,7 @@ import {
   Injectable, NotFoundException
 } from '@nestjs/common';
 import { ServiceAccount } from 'firebase-admin';
+import { DOMAIN } from '../auth/constants';
 
 @Injectable()
 export class FirebaseAdminService {
@@ -38,6 +39,19 @@ export class FirebaseAdminService {
       .createUser({
         email: process.env.ADMIN_USER_EMAIL || 'admin@admin.admin',
         password: process.env.ADMIN_USER_PASSWORD || 'password',
+      });
+  }
+
+  public generatePasswordResetLink(email) {
+    return admin.auth().generatePasswordResetLink(email, { url: `${DOMAIN}/login` });
+  }
+
+  public createUser(name: string, email: string, password: string) {
+    return admin.auth()
+      .createUser({
+        displayName: name,
+        email: email,
+        password: password,
       });
   }
 

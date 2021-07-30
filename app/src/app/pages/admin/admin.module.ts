@@ -8,6 +8,7 @@ import { AdminDashboardPageComponent } from './admin-dashboard-page/admin-dashbo
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminUserEditPageComponent } from './admin-user-edit-page/admin-user-edit-page.component';
 import { BasePageModule } from '../base-page/base-page.module';
+import { CreateUserDialogModule } from '../../components/create-user-dialog/create-user-dialog.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { BasePageModule } from '../base-page/base-page.module';
     AngularMaterialModule,
     BasePageModule,
     CommonModule,
+    CreateUserDialogModule,
     FormsModule,
     ProfileListModule,
     ReactiveFormsModule,

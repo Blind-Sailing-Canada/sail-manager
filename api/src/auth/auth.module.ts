@@ -5,6 +5,7 @@ import {
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { FirebaseAdminModule } from '../firebase-admin/firebase-admin.module';
+import { GoogleEmailService } from '../google-api/google-email.service';
 import { ProfileModule } from '../profile/profile.module';
 import { TokenModule } from '../token/token.module';
 import { UserAccessModule } from '../user-access/user-access.module';
@@ -34,6 +35,7 @@ import { JwtStrategy } from './jwt.strategy';
     AuthService,
     GoogleStrategy,
     JwtStrategy,
+    GoogleEmailService,
   ],
 })
 export class AuthModule { }

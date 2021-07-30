@@ -2,7 +2,7 @@ import { InjectQueue } from '@nestjs/bull';
 import {
   BadRequestException,
   Body,
-  Controller, Get, Param, Patch, UnauthorizedException, UseGuards
+  Controller, Get, Param, Patch, Post, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
@@ -35,6 +35,7 @@ import { UserEntity } from '../user/user.entity';
 import { ProfileUpdateSanitizer } from './pipes/profile-update.sanitizer';
 import { ProfileEntity } from './profile.entity';
 import { ProfileService } from './profile.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Crud({
   model: { type: ProfileEntity },
@@ -66,6 +67,13 @@ export class ProfileController {
     if (count === 0) {
       await this.authService.createAdminUser();
     }
+  }
+
+  @Post('/create-user')
+  @UserAccess(UserAccessFields.CreateAccounts)
+  @UseGuards(UserAccessGuard)
+  createUser(@Body('name') name: string, @Body('email') email: string) {
+    return this.authService.createEmailPasswordUser(name, email, uuidv4());
   }
 
   @Patch('/link-accounts')

@@ -16,6 +16,7 @@ export enum UserAccessFields {
   EditUserAccess = 'editUserAccess',
   EditUserProfile = 'editUserProfile',
   JudgeChallenge = 'judgeChallenge',
+  CreateAccounts = 'createAccounts',
   LinkAccounts = 'linkAccounts',
   ResolveMaintenanceRequest = 'resolveMaintenanceRequest',
   ViewChallengeAccomplishments = 'viewChallengeAccomplishments',

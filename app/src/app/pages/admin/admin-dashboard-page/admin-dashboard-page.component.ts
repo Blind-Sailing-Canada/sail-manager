@@ -34,6 +34,10 @@ import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
 import { ProfileStatus } from '../../../../../../api/src/types/profile/profile-status';
+import { CreateUserDialogComponent } from '../../../components/create-user-dialog/create-user-dialog.component';
+import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateUserDialogData } from '../../../models/create-user-dialog-data.interface';
 
 @Component({
   selector: 'app-admin-dashboard-page',
@@ -44,13 +48,15 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   public searchedProfiles: Profile[];
   @ViewChild('profileSearchInput', { static: false }) private profileSearchInput;
+  public createUserDialogRef: MatDialogRef<CreateUserDialogComponent>;
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ProfileService) private profileService: ProfileService,
     @Inject(Router) router: Router,
+    @Inject(MatDialog) dialog: MatDialog,
   ) {
-    super(store, undefined, router);
+    super(store, undefined, router, dialog);
   }
 
   ngOnInit() {
@@ -124,6 +130,30 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   public editProfilePrivileges(profile: Profile): void {
     this.goTo([editProfilePrivilegesRoute(profile.id)]);
+  }
+
+  public openCreateUserDialog(): void {
+    const dialogData: CreateUserDialogData = {
+      createUser: (name, email) => this.createUser(name, email)
+    };
+
+    this.createUserDialogRef = this.dialog
+      .open(CreateUserDialogComponent, {
+        width: '90%',
+        maxWidth: 500,
+        data: dialogData,
+      });
+  }
+
+  private createUser(name: string, email: string): Promise<void> {
+    return this.profileService.createUser(name, email).toPromise()
+      .then(createdUser => this.editProfilePrivileges({ id: createdUser.profileId } as Profile))
+      .then(() => this.dispatchMessage('User created.'))
+      .catch((error) => {
+        console.error(error);
+        this.dispatchError(`Failed to create user. ${error.error?.message || ''}.`);
+        throw new Error(error.error?.message || error.message);
+      });
   }
 
 }

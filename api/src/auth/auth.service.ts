@@ -20,6 +20,7 @@ import { ProfileStatus } from '../types/profile/profile-status';
 import { Access } from '../types/user-access/access';
 import { DefaultUserAccess } from '../types/user-access/default-user-access';
 import { v4 as uuidv4 } from 'uuid';
+import { GoogleEmailService } from '../google-api/google-email.service';
 
 export interface CachedToken {
   token: string;
@@ -49,7 +50,8 @@ export class AuthService {
 
   constructor(
     private readonly jwtService: JwtService,
-    private readonly firebaseAdminService: FirebaseAdminService
+    private readonly firebaseAdminService: FirebaseAdminService,
+    private readonly emailService: GoogleEmailService
   ) {
     this.logger = new Logger(this.constructor.name);
   }
@@ -71,6 +73,44 @@ export class AuthService {
     };
 
     return this.createNewUser(providerUser, false);
+  }
+
+  public async createEmailPasswordUser(name: string, email: string, password: string) {
+    const existingUser = await ProfileEntity.findOne({ email });
+
+    if (existingUser) {
+      throw new Error(`User with email ${email} already exists`);
+    }
+
+    const user = await this.firebaseAdminService.createUser(name, email, password);
+
+    const providerUser: ProviderUser = {
+      id: user.uid,
+      email: user.email,
+      name: user.displayName,
+      photo: user.photoURL,
+      roles: [],
+      provider: 'firebase',
+      status: ProfileStatus.Approved,
+      access: { ...DefaultUserAccess },
+    };
+
+    const resetPasswordLink = await this.firebaseAdminService.generatePasswordResetLink(email);
+
+    const createdUser = await this.createNewUser(providerUser, false);
+
+    await this.emailService.sendToEmail({
+      to: [email],
+      subject: 'BSAC: reset password',
+      content: `
+        <h1>Hello, ${name}!</h1>
+        <p>Blind Sailing of Canada Association has create a new account for created for you which you can use to sign up for sails.</p>
+        <p>Please follow the following link to reset your password.</p>
+        <p><a href="${resetPasswordLink}">Reset password.</a></p>
+      `,
+    });
+
+    return createdUser;
   }
 
   public getCachedToken(profileId: string): CachedToken {
