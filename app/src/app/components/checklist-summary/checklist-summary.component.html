@@ -18,7 +18,7 @@
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Sail start date: {{formatDate(sail.start)}}"
+    attr.aria-label="Sail start date: {{formatDate(sail.start_at)}}"
   >
     <th
       tabindex="-1"
@@ -27,12 +27,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{formatDate(sail.start)}}</td>
+    >{{formatDate(sail.start_at)}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Sail end date: {{formatDate(sail.end)}}"
+    attr.aria-label="Sail end date: {{formatDate(sail.end_at)}}"
   >
     <th
       tabindex="-1"
@@ -41,7 +41,7 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{formatDate(sail.end)}}</td>
+    >{{formatDate(sail.end_at)}}</td>
   </tr>
   <tr
     tabindex="0"
@@ -129,16 +129,16 @@
       <td
         *ngIf="!sailor.profile"
         tabindex="0"
-      >{{sailor.personName}}</td>
+      >{{sailor.person_name}}</td>
       <td
         (click)="showProfileDialog(sailor.profile)"
         *ngIf="sailor.profile"
         class="clickable"
         tabindex="0"
-      >{{sailor.personName}}</td>
-      <td *ngIf="sailor.sailorRole !== SAILOR_ROLE.Guest">{{sailor.sailorRole}}</td>
-      <td *ngIf="sailor.sailorRole === SAILOR_ROLE.Guest">
-        guest of {{sailor.guestOf.name}}
+      >{{sailor.person_name}}</td>
+      <td *ngIf="sailor.sailor_role !== SAILOR_ROLE.Guest">{{sailor.sailor_role}}</td>
+      <td *ngIf="sailor.sailor_role === SAILOR_ROLE.Guest">
+        guest of {{sailor.guest_of.name}}
       </td>
       <td>{{sailor.attended? "Yes" : "No"}}</td>
     </tr>

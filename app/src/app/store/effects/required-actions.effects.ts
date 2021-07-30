@@ -55,13 +55,13 @@ export class RequiredActionsEffects {
       ofType(completeRequiredAction),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.service.completeRequiredAction(action.actionId)
+        action => this.service.completeRequiredAction(action.action_id)
           .pipe(
             concatMap(returnedAction => of(
               action.notify && putSnack({ snack: { message: 'Action completed', type: SnackType.INFO } }),
-              putRequiredAction({ actionId: action.actionId, action: returnedAction }),
+              putRequiredAction({ action_id: action.action_id, action: returnedAction }),
             )),
-            catchError(errorCatcher(`Failed to complete required actions ${action.actionId}.`))
+            catchError(errorCatcher(`Failed to complete required actions ${action.action_id}.`))
           )
       ),
       filter(action => action && action.type),
@@ -74,13 +74,13 @@ export class RequiredActionsEffects {
       ofType(dismissRequiredAction),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.service.dismissRequiredAction(action.actionId)
+        action => this.service.dismissRequiredAction(action.action_id)
           .pipe(
             concatMap(returnedAction => of(
               action.notify && putSnack({ snack: { message: 'Action dismissed', type: SnackType.INFO } }),
-              putRequiredAction({ actionId: action.actionId, action: returnedAction }),
+              putRequiredAction({ action_id: action.action_id, action: returnedAction }),
             )),
-            catchError(errorCatcher(`Failed to dismiss required actions ${action.actionId}.`))
+            catchError(errorCatcher(`Failed to dismiss required actions ${action.action_id}.`))
           )
       ),
       filter(action => action && action.type),

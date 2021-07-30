@@ -65,13 +65,13 @@
 
 <ng-template #CONTENT_TEMPLATE>
   <h3 tabindex="0">Challenge Details:</h3>
-  <div *ngIf="!!challenge.startDate">
+  <div *ngIf="!!challenge.start_date">
     <label>Start date: </label>
-    <span>{{challenge.startDate | humanDate}}</span>
+    <span>{{challenge.start_date | humanDate}}</span>
   </div>
-  <div *ngIf="!!challenge.endDate">
+  <div *ngIf="!!challenge.end_date">
     <label>End date: </label>
-    <span>{{challenge.endDate| humanDate}}</span>
+    <span>{{challenge.end_date| humanDate}}</span>
   </div>
   <pre>{{challenge?.description}}</pre>
 </ng-template>
@@ -197,7 +197,7 @@
       <mat-list role="list">
         <mat-list-item
           *ngFor="let participant of challengeFinishedParticipants; let i = index;"
-          attr.aria-label="{{i+1}} of {{challengeFinishedParticipants.length}}. {{participant.participant.name}} {{participant.finishedAt | humanDateWithTime}}"
+          attr.aria-label="{{i+1}} of {{challengeFinishedParticipants.length}}. {{participant.participant.name}} {{participant.finished_at | humanDateWithTime}}"
           role="listitem"
           tabindex="0"
         >
@@ -211,7 +211,7 @@
               class="clickable"
             ></app-profile-bullet>
             <span class="finish-result">{{participant.note}}</span>
-            <span class="finish-time">{{participant.finishedAt | humanDateWithTime}}</span>
+            <span class="finish-time">{{participant.finished_at | humanDateWithTime}}</span>
           </div>
         </mat-list-item>
       </mat-list>

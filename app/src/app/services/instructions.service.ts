@@ -25,16 +25,16 @@ export class InstructionsService {
     return this.http.patch<BoatInstructions>(`${this.API_URL}/${id}`, instructions);
   }
 
-  public updateBoatInstructions(boatId, instructions): Observable<Boat> {
-    return this.http.patch<Boat>(`${this.API_URL}/update-boat-instructions/${boatId}`, instructions);
+  public updateBoatInstructions(boat_id, instructions): Observable<Boat> {
+    return this.http.patch<Boat>(`${this.API_URL}/update-boat-instructions/${boat_id}`, instructions);
   }
 
-  public fetchInstructionsByBoat(boatId: string): Observable<BoatInstructions[]> {
-    return this.http.get<BoatInstructions[]>(`${this.API_URL}?boatId=${boatId}`);
+  public fetchInstructionsByBoat(boat_id: string): Observable<BoatInstructions[]> {
+    return this.http.get<BoatInstructions[]>(`${this.API_URL}?boat_id=${boat_id}`);
   }
 
-  public fetchInstructionsByType(boatId: string, instructionsType: BoatInstructionType): Observable<BoatInstructions[]> {
-    return this.http.get<BoatInstructions[]>(`${this.API_URL}?boatId=${boatId}&instructionType=${instructionsType}`);
+  public fetchInstructionsByType(boat_id: string, instructionsType: BoatInstructionType): Observable<BoatInstructions[]> {
+    return this.http.get<BoatInstructions[]>(`${this.API_URL}?boat_id=${boat_id}&instruction_type=${instructionsType}`);
   }
 
 }

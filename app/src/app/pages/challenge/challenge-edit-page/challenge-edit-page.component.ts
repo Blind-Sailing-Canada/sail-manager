@@ -74,8 +74,8 @@ export class ChallengeEditPageComponent extends BasePageComponent implements OnI
 
   private updateForm(challenge: Challenge): void {
     this.form.patchValue(challenge);
-    this.form.controls.endDate.setValue(this.momentService.yyyymmdd(challenge.endDate));
-    this.form.controls.startDate.setValue(this.momentService.yyyymmdd(challenge.startDate));
+    this.form.controls.end_date.setValue(this.momentService.yyyymmdd(challenge.end_date));
+    this.form.controls.start_date.setValue(this.momentService.yyyymmdd(challenge.start_date));
     this.form.controls.status.enable();
 
     this.form.updateValueAndValidity();
@@ -86,8 +86,8 @@ export class ChallengeEditPageComponent extends BasePageComponent implements OnI
     this.form = this.fb.group({
       name: this.fb.control(undefined, Validators.required),
       description: this.fb.control(undefined, Validators.required),
-      startDate: this.fb.control(undefined),
-      endDate: this.fb.control(undefined),
+      start_date: this.fb.control(undefined),
+      end_date: this.fb.control(undefined),
       badge: this.fb.control(undefined),
       status: this.fb.control({ value: ChallengeStatus.Active, disabled: true }),
     });
@@ -124,26 +124,26 @@ export class ChallengeEditPageComponent extends BasePageComponent implements OnI
         {},
       ) as Challenge;
 
-    if (challenge.endDate) {
-      const time = challenge.endDate.toString().split('-');
+    if (challenge.end_date) {
+      const time = challenge.end_date.toString().split('-');
       const date = new Date();
       date.setHours(0);
       date.setMinutes(0);
       date.setSeconds(0);
       date.setMilliseconds(0);
       date.setFullYear(+time[0], +time[1] - 1, +time[2]);
-      challenge.endDate = date;
+      challenge.end_date = date;
     }
 
-    if (challenge.startDate) {
-      const time = challenge.startDate.toString().split('-');
+    if (challenge.start_date) {
+      const time = challenge.start_date.toString().split('-');
       const date = new Date();
       date.setHours(0);
       date.setMinutes(0);
       date.setSeconds(0);
       date.setMilliseconds(0);
       date.setFullYear(+time[0], +time[1] - 1, +time[2]);
-      challenge.startDate = date;
+      challenge.start_date = date;
     }
 
     this.dispatchAction(updateChallenge({ challenge, challengeId: this.challengeId, notify: true }));

@@ -18,39 +18,39 @@ import { SailRequestInterestService } from './sail-request-interest.service';
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class SailRequestInterestController {
   constructor(public service: SailRequestInterestService,
-    @InjectQueue('sail-request-interest') private readonly sailRequestInterestQueue: Queue) { }
+    @InjectQueue('sail-request-interest') private readonly sail_requestInterestQueue: Queue) { }
 
-  @Post(':sailRequestId')
-  async interested(@User() user: JwtObject, @Param('sailRequestId') sailRequestId: string) {
+  @Post(':sail_request_id')
+  async interested(@User() user: JwtObject, @Param('sail_request_id') sail_request_id: string) {
 
     const newInterest = await SailRequestInterestEntity
       .create({
-        sailRequestId,
-        profileId: user.profileId,
+        sail_request_id,
+        profile_id: user.profile_id,
         reload: true,
       })
       .save();
 
-    this.sailRequestInterestQueue.add('new-sail-request-interest', { sailRequestInterestId: newInterest.id });
+    this.sail_requestInterestQueue.add('new-sail-request-interest', { sail_requestInterestId: newInterest.id });
 
     return SailRequestEntity
-      .findOne(sailRequestId, { relations: [
+      .findOne(sail_request_id, { relations: [
         'interest',
-        'requestedBy',
+        'requested_by',
         'sail',
       ] });
   }
 
-  @Delete(':sailRequestId')
-  async uninterested(@User() user: JwtObject, @Param('sailRequestId') sailRequestId: string) {
+  @Delete(':sail_request_id')
+  async uninterested(@User() user: JwtObject, @Param('sail_request_id') sail_request_id: string) {
     await SailRequestInterestEntity.delete({
-      sailRequestId,
-      profileId: user.profileId,
+      sail_request_id,
+      profile_id: user.profile_id,
     });
 
-    return SailRequestEntity.findOne(sailRequestId, { relations: [
+    return SailRequestEntity.findOne(sail_request_id, { relations: [
       'interest',
-      'requestedBy',
+      'requested_by',
       'sail',
     ] });
   }

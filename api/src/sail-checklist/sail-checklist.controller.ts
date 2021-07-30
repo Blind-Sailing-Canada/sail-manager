@@ -33,7 +33,7 @@ import { SailChecklistService } from './sail-checklist.service';
         alias: 'manifest',
       },
       'sail.manifest.profile': { eager: true },
-      'sail.manifest.guestOf': { eager: true },
+      'sail.manifest.guest_of': { eager: true },
     },
   },
 })
@@ -43,8 +43,8 @@ import { SailChecklistService } from './sail-checklist.service';
 export class SailChecklistController {
   constructor(public service: SailChecklistService) { }
 
-  @Patch('/sail/:sailId/update')
-  async updateSailChecklist(@Param('sailId') sailId: string, @Body() checklistInfo) {
+  @Patch('/sail/:sail_id/update')
+  async updateSailChecklist(@Param('sail_id') sail_id: string, @Body() checklistInfo) {
     const before = checklistInfo.before;
 
     if (before) {
@@ -66,7 +66,7 @@ export class SailChecklistController {
           const entity = new SailManifestEntity();
 
           entity.id = sailor.id;
-          entity.sailId = sailId;
+          entity.sail_id = sail_id;
           entity.attended = sailor.attended;
 
           return entity;
@@ -77,6 +77,6 @@ export class SailChecklistController {
       }
     }
 
-    return SailEntity.findOne(sailId);
+    return SailEntity.findOne(sail_id);
   }
 }

@@ -32,9 +32,9 @@ import { BoatInstructionsService } from './boat-instructions.service';
 export class BoatInstructionsController {
   constructor(public service: BoatInstructionsService) { }
 
-  @Patch('/update-boat-instructions/:boatId')
-  async updateBoatInstructions(@Param('boatId') boatId: string, @Body() instructions) {
-    const boat = await BoatEntity.findOne(boatId);
+  @Patch('/update-boat-instructions/:boat_id')
+  async updateBoatInstructions(@Param('boat_id') boat_id: string, @Body() instructions) {
+    const boat = await BoatEntity.findOne(boat_id);
 
     await getManager().transaction(async transactionalEntityManager => {
       await Promise.all(boat.instructions
@@ -42,6 +42,6 @@ export class BoatInstructionsController {
         .map((instruction) => transactionalEntityManager.update(BoatInstructionsEntity, { id: instruction.id }, instructions[instruction.id])));
     });
 
-    return BoatEntity.findOne(boatId);
+    return BoatEntity.findOne(boat_id);
   }
 }

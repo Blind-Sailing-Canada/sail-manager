@@ -17,17 +17,17 @@ export class SailManifestService {
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  public getAvailableSailors(start: Date | string, end: Date | string, sailorName: string): Observable<Profile[]> {
+  public getAvailableSailors(start_at: Date | string, end_at: Date | string, sailorName: string): Observable<Profile[]> {
     return this.http.get<Profile[]>(`${this.API_URL}/available-sailors`, {
       params: {
         sailorName,
-        start: start.toString(),
-        end: end.toString(),
+        start_at: start_at.toString(),
+        end_at: end_at.toString(),
       }
     });
   }
 
-  public updateManifest(sailId: string, manifest: SailManifest[]): Observable<Sail> {
-    return this.http.post<Sail>(`${this.API_URL}/update-sail-manifest/${sailId}`, manifest);
+  public updateManifest(sail_id: string, manifest: SailManifest[]): Observable<Sail> {
+    return this.http.post<Sail>(`${this.API_URL}/update-sail-manifest/${sail_id}`, manifest);
   }
 }

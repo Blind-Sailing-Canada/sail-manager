@@ -22,14 +22,14 @@ export class BoatMaintenanceEmail {
               <label>Boat: </label> <span>${report.boat.name}</span>
             </div>
             <div>
-              <label>Requested by: </label> <span>${report.requestedBy.name}</span>
+              <label>Requested by: </label> <span>${report.requested_by.name}</span>
             </div>
             <div>
-              <label>Requested on: </label> <span>${toLocalDate(report.createdAt)}</span>
+              <label>Requested on: </label> <span>${toLocalDate(report.created_at)}</span>
             </div>
             <div>
               <label>Request details: </label>
-              <pre>${report.requestDetails}</pre>
+              <pre>${report.request_details}</pre>
             </div>
             <br/>
             <div>${this.picturesHTML(report.pictures)}</div>
@@ -55,14 +55,14 @@ export class BoatMaintenanceEmail {
               <label>Boat: </label> <span>${report.boat.name}</span>
             </div>
             <div>
-              <label>Requested by: </label> <span>${report.requestedBy.name}</span>
+              <label>Requested by: </label> <span>${report.requested_by.name}</span>
             </div>
             <div>
-              <label>Requested on: </label> <span>${toLocalDate(report.createdAt)}</span>
+              <label>Requested on: </label> <span>${toLocalDate(report.created_at)}</span>
             </div>
             <div>
               <label>Request details: </label>
-              <pre>${report.requestDetails}</pre>
+              <pre>${report.request_details}</pre>
             </div>
             <br/>
             <div>${this.picturesHTML(report.pictures)}</div>
@@ -80,7 +80,7 @@ export class BoatMaintenanceEmail {
   newMaintenanceRequestCommentEmail(report: BoatMaintenance, comment: Comment): EmailInfo {
     const sendTo: Set<string> = new Set<string>();
 
-    sendTo.add(report.requestedBy.email);
+    sendTo.add(report.requested_by.email);
 
     report
       .comments
@@ -100,17 +100,17 @@ export class BoatMaintenanceEmail {
               <label>Author: </label> <span>${comment.author.name}</span>
             </div>
             <div>
-              <label>Posted on: </label> <span>${toLocalDate(comment.createdAt)}</span>
+              <label>Posted on: </label> <span>${toLocalDate(comment.created_at)}</span>
             </div>
             <br/>
             <div>
               <label>Boat: </label> <span>${report.boat.name}</span>
             </div>
             <div>
-              <label>Requested by: </label> <span>${report.requestedBy.name}</span>
+              <label>Requested by: </label> <span>${report.requested_by.name}</span>
             </div>
             <div>
-              <label>Requested on: </label> <span>${toLocalDate(report.createdAt)}</span>
+              <label>Requested on: </label> <span>${toLocalDate(report.created_at)}</span>
             </div>
             <br/>
             <br/>

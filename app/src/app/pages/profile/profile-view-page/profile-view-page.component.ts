@@ -72,15 +72,15 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
   }
 
   public get canViewSails(): boolean {
-    return this.user.profile.id === this.profileId || this.user.access[UserAccessFields.ViewUserSails];
+    return this.user.profile.id === this.profile_id || this.user.access[UserAccessFields.ViewUserSails];
   }
 
-  public get profileId(): string {
+  public get profile_id(): string {
     return this.route.snapshot.params.id;
   }
 
   public get profile(): Profile {
-    return this.getProfile(this.profileId);
+    return this.getProfile(this.profile_id);
   }
 
   public get canEditPrivileges(): boolean {
@@ -90,7 +90,7 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
   }
 
   public get canEditInfo(): boolean {
-    const can = this.user.profile.id === this.profileId || this.user.access[UserAccessFields.EditUserProfile];
+    const can = this.user.profile.id === this.profile_id || this.user.access[UserAccessFields.EditUserProfile];
 
     return !!can;
   }
@@ -98,24 +98,24 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
   public actionsClicked(event): void {
     switch (event) {
       case EDIT_ACTIONS.UPDATE_INFO:
-        this.goTo([this.editProfileInfoLink(this.profileId)]);
+        this.goTo([this.editProfileInfoLink(this.profile_id)]);
         break;
       case EDIT_ACTIONS.UPDATE_ACCESS:
-        this.goTo([this.editProfilePrivilegesLink(this.profileId)]);
+        this.goTo([this.editProfilePrivilegesLink(this.profile_id)]);
         break;
     }
   }
 
-  public editProfileInfoLink(profileId: string): string {
-    return editProfileRoute(profileId);
+  public editProfileInfoLink(profile_id: string): string {
+    return editProfileRoute(profile_id);
   }
 
-  public editProfilePrivilegesLink(profileId: string): string {
-    return editProfilePrivilegesRoute(profileId);
+  public editProfilePrivilegesLink(profile_id: string): string {
+    return editProfilePrivilegesRoute(profile_id);
   }
 
-  public viewUserSailsRouteLink(profileId: string): string {
-    return viewUserSailsRoute(profileId);
+  public viewUserSailsRouteLink(profile_id: string): string {
+    return viewUserSailsRoute(profile_id);
   }
 
   public goToClinic(clinicId: string): void {
@@ -125,8 +125,8 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
   public linkAccounts(profileA: Profile, profileB: Profile, linkType: ProfileLink): void {
     this.profileService.linkAccounts({
       linkType,
-      profileIdA: profileA.id,
-      profileIdB: profileB.id,
+      profile_idA: profileA.id,
+      profile_idB: profileB.id,
     }).toPromise()
     .then(() => this.dispatchMessage('Linked'))
     .catch((error) => {

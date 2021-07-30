@@ -15,7 +15,7 @@ export enum PAST_SAILS_ACTION_TYPES {
 export const fetchPastSailsForAll = createAction(PAST_SAILS_ACTION_TYPES.FETCH_ALL, props<{ query?: string, notify?: boolean }>());
 export const fetchPastSailsForUser = createAction(
   PAST_SAILS_ACTION_TYPES.FETCH_USER,
-  props<{ profileId: string, query?: string, notify?: boolean }>());
+  props<{ profile_id: string, query?: string, notify?: boolean }>());
 export const putPastSailsForAll = createAction(PAST_SAILS_ACTION_TYPES.PUT_ALL, props<{ sails: Sail[] }>());
-export const putPastSailsForUser = createAction(PAST_SAILS_ACTION_TYPES.PUT_USER, props<{ profileId: string, sails: Sail[] }>());
+export const putPastSailsForUser = createAction(PAST_SAILS_ACTION_TYPES.PUT_USER, props<{ profile_id: string, sails: Sail[] }>());
 export const resetPastSails = createAction(PAST_SAILS_ACTION_TYPES.RESET);

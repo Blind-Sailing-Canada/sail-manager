@@ -15,8 +15,8 @@ export class UserAccessService {
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  public getUserAccess(profileId: string): Observable<UserAccess> {
-    return this.http.get<UserAccess>(`${this.API_URL}/${profileId}`);
+  public getUserAccess(profile_id: string): Observable<UserAccess> {
+    return this.http.get<UserAccess>(`${this.API_URL}/${profile_id}`);
   }
 
 }

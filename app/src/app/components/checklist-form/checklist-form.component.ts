@@ -15,7 +15,7 @@ export class ChecklistFormComponent {
   @Input() form: FormGroup;
   @Input() when: string;
   public bilgeState = BilgeState;
-  public fireExtinguisherState = FireExtinguisherState;
+  public fire_extinguisherState = FireExtinguisherState;
   public flaresState = FlaresState;
   public fuelLevel = FuelState;
 

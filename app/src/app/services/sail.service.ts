@@ -17,23 +17,23 @@ export class SailService {
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  public sendNotification(sailId: string, notificationType: string, notificationMessage: string): Observable<void> {
+  public sendNotification(sail_id: string, notificationType: string, notificationMessage: string): Observable<void> {
     switch (notificationType) {
       case 'new':
-        return this.http.post<void>(`${this.API_URL}/${sailId}/new-sail-notification`, { message: notificationMessage });
+        return this.http.post<void>(`${this.API_URL}/${sail_id}/new-sail-notification`, { message: notificationMessage });
       case 'update':
-        return this.http.post<void>(`${this.API_URL}/${sailId}/update-sail-notification`, { message: notificationMessage });
+        return this.http.post<void>(`${this.API_URL}/${sail_id}/update-sail-notification`, { message: notificationMessage });
       default:
         return null;
     }
   }
 
-  public postNewComment(sailId: string, comment: Comment): Observable<Sail> {
-    return this.http.post<Sail>(`${this.API_URL}/${sailId}/comments`, comment);
+  public postNewComment(sail_id: string, comment: Comment): Observable<Sail> {
+    return this.http.post<Sail>(`${this.API_URL}/${sail_id}/comments`, comment);
   }
 
-  public deleteComment(sailId: string, commentId: string): Observable<Sail> {
-    return this.http.delete<Sail>(`${this.API_URL}/${sailId}/comments/${commentId}`);
+  public deleteComment(sail_id: string, commentId: string): Observable<Sail> {
+    return this.http.delete<Sail>(`${this.API_URL}/${sail_id}/comments/${commentId}`);
   }
 
   public startSail(id: string): Observable<Sail> {
@@ -48,8 +48,8 @@ export class SailService {
     return this.http.patch<Sail>(`${this.API_URL}/${id}/cancel`, sail);
   }
 
-  public fetchAvailableBoats(startDate: string | Date, endDate: string | Date): Observable<Boat[]> {
-    return this.http.get<Boat[]>(`${this.API_URL}/available-boats?start=${startDate}&end=${endDate}`);
+  public fetchAvailableBoats(start_date: string | Date, end_date: string | Date): Observable<Boat[]> {
+    return this.http.get<Boat[]>(`${this.API_URL}/available-boats?start=${start_date}&end=${end_date}`);
   }
 
   public fetchTodaySailsForAll(query?: string): Observable<Sail[]> {
@@ -60,12 +60,12 @@ export class SailService {
     return this.http.get<Sail[]>(`${this.API_URL}/user/today`);
   }
 
-  public fetchTodaySailsForUser(profileId: string, query?: string): Observable<Sail[]> {
+  public fetchTodaySailsForUser(profile_id: string, query?: string): Observable<Sail[]> {
     if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/today?${query}&profileId=${profileId}`);
+      return this.http.get<Sail[]>(`${this.API_URL}/user/today?${query}&profile_id=${profile_id}`);
     }
 
-    return this.http.get<Sail[]>(`${this.API_URL}/user/today?profileId=${profileId}`);
+    return this.http.get<Sail[]>(`${this.API_URL}/user/today?profile_id=${profile_id}`);
   }
 
   public fetchPastSailsForAll(query?: string): Observable<Sail[]> {
@@ -76,12 +76,12 @@ export class SailService {
     return this.http.get<Sail[]>(`${this.API_URL}/user/past`);
   }
 
-  public fetchPastSailsForUser(profileId: string, query?: string): Observable<Sail[]> {
+  public fetchPastSailsForUser(profile_id: string, query?: string): Observable<Sail[]> {
     if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/past?${query}&profileId=${profileId}`);
+      return this.http.get<Sail[]>(`${this.API_URL}/user/past?${query}&profile_id=${profile_id}`);
     }
 
-    return this.http.get<Sail[]>(`${this.API_URL}/user/past?profileId=${profileId}`);
+    return this.http.get<Sail[]>(`${this.API_URL}/user/past?profile_id=${profile_id}`);
   }
 
   public fetchAvailableSails(query?: string): Observable<Sail[]> {
@@ -100,20 +100,20 @@ export class SailService {
     return this.http.get<Sail[]>(`${this.API_URL}/user/in-progress`);
   }
 
-  public fetchInProgressSailsForUser(profileId: string, query?: string): Observable<Sail[]> {
+  public fetchInProgressSailsForUser(profile_id: string, query?: string): Observable<Sail[]> {
     if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/in-progress?${query}&profileId=${profileId}`);
+      return this.http.get<Sail[]>(`${this.API_URL}/user/in-progress?${query}&profile_id=${profile_id}`);
     }
 
-    return this.http.get<Sail[]>(`${this.API_URL}/user/in-progress?profileId=${profileId}`);
+    return this.http.get<Sail[]>(`${this.API_URL}/user/in-progress?profile_id=${profile_id}`);
   }
 
-  public fetchFutureSailsForUser(profileId: string, query?: string): Observable<Sail[]> {
+  public fetchFutureSailsForUser(profile_id: string, query?: string): Observable<Sail[]> {
     if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/future?${query}&profileId=${profileId}`);
+      return this.http.get<Sail[]>(`${this.API_URL}/user/future?${query}&profile_id=${profile_id}`);
     }
 
-    return this.http.get<Sail[]>(`${this.API_URL}/user/future?profileId=${profileId}`);
+    return this.http.get<Sail[]>(`${this.API_URL}/user/future?profile_id=${profile_id}`);
   }
 
   public fetchOne(id: string): Observable<Sail> {
@@ -128,20 +128,20 @@ export class SailService {
     return this.http.get<number>(`${this.API_URL}/count`);
   }
 
-  public countUserSail(profileId: string, query?: string): Observable<number> {
+  public countUserSail(profile_id: string, query?: string): Observable<number> {
     if (query) {
-      return this.http.get<number>(`${this.API_URL}/user/${profileId}/count?${query}`);
+      return this.http.get<number>(`${this.API_URL}/user/${profile_id}/count?${query}`);
     }
 
-    return this.http.get<number>(`${this.API_URL}/user/${profileId}/count`);
+    return this.http.get<number>(`${this.API_URL}/user/${profile_id}/count`);
   }
 
-  public fetchUserSail(profileId: string, query?: string): Observable<Sail[]> {
+  public fetchUserSail(profile_id: string, query?: string): Observable<Sail[]> {
     if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/all?${query}&profileId=${profileId}`);
+      return this.http.get<Sail[]>(`${this.API_URL}/user/all?${query}&profile_id=${profile_id}`);
     }
 
-    return this.http.get<Sail[]>(`${this.API_URL}/user/all?profileId=${profileId}`);
+    return this.http.get<Sail[]>(`${this.API_URL}/user/all?profile_id=${profile_id}`);
   }
 
   public fetchAll(query?: string): Observable<Sail[]> {
@@ -176,23 +176,23 @@ export class SailService {
     return this.http.post<Sail>(`${this.API_URL}/sail-request`, { sail, sailRequestId });
   }
 
-  public joinAsCrew(sailId: string): Observable<Sail> {
-    return this.joinSail('crew', sailId);
+  public joinAsCrew(sail_id: string): Observable<Sail> {
+    return this.joinSail('crew', sail_id);
   }
 
-  public joinAsPassenger(sailId: string): Observable<Sail> {
-    return this.joinSail('sailor', sailId);
+  public joinAsPassenger(sail_id: string): Observable<Sail> {
+    return this.joinSail('sailor', sail_id);
   }
 
-  public joinAsSkipper(sailId: string): Observable<Sail> {
-    return this.joinSail('skipper', sailId);
+  public joinAsSkipper(sail_id: string): Observable<Sail> {
+    return this.joinSail('skipper', sail_id);
   }
 
-  public leaveSail(sailId: string): Observable<Sail> {
-    return this.http.delete<Sail>(`${this.API_URL}/${sailId}/leave`);
+  public leaveSail(sail_id: string): Observable<Sail> {
+    return this.http.delete<Sail>(`${this.API_URL}/${sail_id}/leave`);
   }
 
-  private joinSail(as: string, sailId: string): Observable<Sail> {
-    return this.http.put<Sail>(`${this.API_URL}/${sailId}/join/${as}`, null);
+  private joinSail(as: string, sail_id: string): Observable<Sail> {
+    return this.http.put<Sail>(`${this.API_URL}/${sail_id}/join/${as}`, null);
   }
 }

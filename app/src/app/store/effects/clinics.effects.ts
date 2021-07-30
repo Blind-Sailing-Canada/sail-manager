@@ -130,7 +130,7 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .enrollInClinic(action.clinicId, action.profileId)
+          .enrollInClinic(action.clinicId, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
@@ -150,7 +150,7 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .leaveClinic(action.clinicId, action.profileId)
+          .leaveClinic(action.clinicId, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
@@ -170,7 +170,7 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .addUserToClinic(action.clinicId, action.profileId)
+          .addUserToClinic(action.clinicId, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
@@ -190,7 +190,7 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .removeUserToClinic(action.clinicId, action.profileId)
+          .removeUserToClinic(action.clinicId, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
@@ -210,7 +210,7 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .graduateUserFromClinic(action.clinicId, action.profileId)
+          .graduateUserFromClinic(action.clinicId, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),

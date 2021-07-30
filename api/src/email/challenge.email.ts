@@ -57,7 +57,7 @@ export class ChallengeEmail {
               <label>Posted by: </label> <span>${comment.author.name}</span>
             </div>
             <div>
-              <label>Posted at: </label> <span>${toLocalDate(comment.createdAt)}</span>
+              <label>Posted at: </label> <span>${toLocalDate(comment.created_at)}</span>
             </div>
             <br>
             <a href="${DOMAIN}/challenges/view/${challenge.id}">View challenge</a>

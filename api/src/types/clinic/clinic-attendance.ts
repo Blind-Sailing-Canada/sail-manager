@@ -4,9 +4,9 @@ import { Clinic } from './clinic';
 
 export interface ClinicAttendance extends Base {
   attendant: Profile;
-  attendantId: string;
+  attendant_id: string;
   clinic: Clinic;
-  clinicId: string;
-  finishedAt: Date;
+  clinic_id: string;
+  finished_at: Date;
   note: string;
 }

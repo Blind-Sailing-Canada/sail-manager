@@ -41,10 +41,10 @@ export class InstructionsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.instructionsService
-          .fetchInstructionsByBoat(action.boatId)
+          .fetchInstructionsByBoat(action.boat_id)
           .pipe(
             mergeMap(instructions => of(putInstructions({ instructions }))),
-            catchError(errorCatcher(`Failed to fetch instructions for boat ${action.boatId}.`))
+            catchError(errorCatcher(`Failed to fetch instructions for boat ${action.boat_id}.`))
           )
       ),
       tap(() => this.store.dispatch(finishLoading())),
@@ -57,7 +57,7 @@ export class InstructionsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.instructionsService
-          .fetchInstructionsByType(action.boatId, action.instructionsType)
+          .fetchInstructionsByType(action.boat_id, action.instructionsType)
           .pipe(
             mergeMap(instructions => of(putInstructions({ instructions }))),
             catchError(errorCatcher(`Failed to fetch instructions by type ${action.instructionsType}.`))
@@ -97,18 +97,18 @@ export class InstructionsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.instructionsService
-          .updateBoatInstructions(action.boatId, action.instructions)
+          .updateBoatInstructions(action.boat_id, action.instructions)
           .pipe(
             mergeMap((boat) => {
               if (action.notify) {
                 return of(
                   putSnack({ snack: { message: 'Updated boat instructions', type: SnackType.INFO } }),
-                  putBoat({ boat, id: action.boatId }),
+                  putBoat({ boat, id: action.boat_id }),
                 );
               }
-              return of(putBoat({ boat, id: action.boatId }));
+              return of(putBoat({ boat, id: action.boat_id }));
             }),
-            catchError(errorCatcher(`Failed to update boat instructions ${action.boatId}.`))
+            catchError(errorCatcher(`Failed to update boat instructions ${action.boat_id}.`))
           )
       ),
       tap(() => this.store.dispatch(finishLoading())),

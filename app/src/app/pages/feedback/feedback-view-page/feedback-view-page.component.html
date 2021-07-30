@@ -49,7 +49,7 @@
       >{{feedback.sail?.name}}</td>
     </tr>
     <tr
-      attr.aria-label="Submitted on {{feedback.createdAt | humanDateWithTime}}"
+      attr.aria-label="Submitted on {{feedback.created_at | humanDateWithTime}}"
       role="listitem"
       tabindex="0"
     >
@@ -60,7 +60,7 @@
       <td
         aria-hidden="true"
         tabindex="-1"
-      >{{feedback.createdAt | humanDateWithTime: true}}</td>
+      >{{feedback.created_at | humanDateWithTime: true}}</td>
     </tr>
     <tr
       attr.aria-label="Rating {{feedbackRatings[feedback.rating]}}"

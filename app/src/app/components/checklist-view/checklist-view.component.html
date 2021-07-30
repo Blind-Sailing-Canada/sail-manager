@@ -55,7 +55,7 @@
       class="checklist-item"
       tabindex="0"
       role="listitem"
-      attr.aria-label="Fire extinguisher state {{checklist?.fireExtinguisher}}"
+      attr.aria-label="Fire extinguisher state {{checklist?.fire_extinguisher}}"
     >
       <label
         tabindex="-1"
@@ -64,7 +64,7 @@
       <span
         tabindex="-1"
         aria-hidden="true"
-      >{{checklist?.fireExtinguisher}}</span>
+      >{{checklist?.fire_extinguisher}}</span>
     </div>
   </mat-list-item>
   <mat-list-item>
@@ -72,7 +72,7 @@
       class="checklist-item"
       tabindex="0"
       role="listitem"
-      attr.aria-label="{{checklist?.signedByCrew? 'Signed by crew': 'Not signed by crew'}}"
+      attr.aria-label="{{checklist?.signed_by_crew? 'Signed by crew': 'Not signed by crew'}}"
     >
       <label
         tabindex="-1"
@@ -81,7 +81,7 @@
       <span
         tabindex="-1"
         aria-hidden="true"
-      >{{checklist?.signedByCrew ? "Yes" : "No"}}</span>
+      >{{checklist?.signed_by_crew ? "Yes" : "No"}}</span>
     </div>
   </mat-list-item>
   <mat-list-item>
@@ -89,7 +89,7 @@
       class="checklist-item"
       tabindex="0"
       role="listitem"
-      attr.aria-label="{{checklist?.signedBySkipper? 'Signed by skipper': 'Not signed by skipper'}}"
+      attr.aria-label="{{checklist?.signed_by_skipper? 'Signed by skipper': 'Not signed by skipper'}}"
     >
       <label
         tabindex="-1"
@@ -98,7 +98,7 @@
       <span
         tabindex="-1"
         aria-hidden="true"
-      >{{checklist?.signedBySkipper ? "Yes" : "No"}}</span>
+      >{{checklist?.signed_by_skipper ? "Yes" : "No"}}</span>
     </div>
   </mat-list-item>
   <!-- <mat-list-item>

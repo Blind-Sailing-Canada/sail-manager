@@ -113,12 +113,12 @@ export class AuthService {
     return createdUser;
   }
 
-  public getCachedToken(profileId: string): CachedToken {
-    return this.tokens[profileId];
+  public getCachedToken(profile_id: string): CachedToken {
+    return this.tokens[profile_id];
   }
 
-  public getStoredToken(profileId: string): Promise<TokenEntity> {
-    return TokenEntity.findOne({ where: { profileId } });
+  public getStoredToken(profile_id: string): Promise<TokenEntity> {
+    return TokenEntity.findOne({ where: { profile_id } });
   }
 
   /**
@@ -151,7 +151,7 @@ export class AuthService {
     }
 
     const existingUser = await UserEntity
-      .findOne({ where: { providerUserId: providerUser.id } });
+      .findOne({ where: { provider_user_id: providerUser.id } });
 
     if (existingUser) {
       return existingUser;
@@ -170,26 +170,26 @@ export class AuthService {
     return this.createNewUser(providerUser);
   }
 
-  logout(profileId: string): Promise<DeleteResult> {
-    delete this.tokens[profileId];
+  logout(profile_id: string): Promise<DeleteResult> {
+    delete this.tokens[profile_id];
 
     return TokenEntity
-      .delete({ profileId } )
+      .delete({ profile_id } )
       .catch(error => {
         this.logger.error(error);
         return null;
       });
   }
 
-  public cacheToken(profileId: string, token: string, expireAt: Date): void {
-    this.tokens[profileId] = {
+  public cacheToken(profile_id: string, token: string, expireAt: Date): void {
+    this.tokens[profile_id] = {
       expireAt,
       token,
     };
   }
 
-  public deleteCacheToken(profileId: string): void {
-    delete this.tokens[profileId];
+  public deleteCacheToken(profile_id: string): void {
+    delete this.tokens[profile_id];
 
   }
 
@@ -208,7 +208,7 @@ export class AuthService {
     if (!cachedToken) {
       // this is skipped if cached token is expired
       // try db stored token
-      const dbToken:TokenEntity = await TokenEntity.findOne({ where: { profileId: user.profile.id } });
+      const dbToken:TokenEntity = await TokenEntity.findOne({ where: { profile_id: user.profile.id } });
 
       if (dbToken && dbToken.expireAt.getTime() > Date.now()) {
         this.cacheToken(user.profile.id, dbToken.token, dbToken.expireAt);
@@ -236,7 +236,7 @@ export class AuthService {
       access,
       email: profile.email,
       expireAt: expireAtDate.getTime(),
-      profileId: profile.id,
+      profile_id: profile.id,
       roles: profile.roles,
       status: profile.status,
       sub: profile.id,
@@ -248,7 +248,7 @@ export class AuthService {
     const dbToken = TokenEntity.create({
       token,
       provider,
-      profileId: profile.id,
+      profile_id: profile.id,
       expireAt: expireAtDate,
     });
 
@@ -263,13 +263,13 @@ export class AuthService {
 
     this.logger.log(`CREATING NEW USER ${JSON.stringify(user, null, 2)}`);
 
-    const expiresAt = expires ? new Date(new Date().getTime() + (30 * 60 * 1000)): null;
+    const expires_at = expires ? new Date(new Date().getTime() + (30 * 60 * 1000)): null;
 
     const newProfile = ProfileEntity
       .create({
         id: uuidv4(),
         email: user.email,
-        expiresAt: expiresAt,
+        expires_at: expires_at,
         name: user.name,
         photo: user.photo,
         roles: user.roles || [],
@@ -289,9 +289,9 @@ export class AuthService {
       .create({
         id: uuidv4(),
         provider: user.provider,
-        providerUserId: user.id,
+        provider_user_id: user.id,
         profile: newProfile,
-        originalProfileId: newProfile.id,
+        original_profile_id: newProfile.id,
       });
 
     await getConnection().transaction(async transactionalEntityManager => {

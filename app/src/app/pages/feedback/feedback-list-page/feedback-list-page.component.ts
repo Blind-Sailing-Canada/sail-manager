@@ -38,11 +38,11 @@ export class FeedbackListPageComponent extends BasePageComponent implements OnIn
   ngOnInit() {
     this.subscribeToStoreSliceWithUser(STORE_SLICES.FEEDBACKS);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS);
-    this.dispatchAction(fetchFeedbacksForSail({ sailId: this.sailId }));
+    this.dispatchAction(fetchFeedbacksForSail({ sail_id: this.sail_id }));
   }
 
-  public get sailId(): string {
-    return this.route.snapshot.params.sailId;
+  public get sail_id(): string {
+    return this.route.snapshot.params.sail_id;
   }
 
   public viewFeedback(id: string): void {
@@ -50,11 +50,11 @@ export class FeedbackListPageComponent extends BasePageComponent implements OnIn
   }
 
   public goToSail(): void {
-    this.viewSail(this.sailId);
+    this.viewSail(this.sail_id);
   }
 
   public get sail(): Sail {
-    return this.getSail(this.sailId);
+    return this.getSail(this.sail_id);
   }
 
   public get title(): string {
@@ -65,7 +65,7 @@ export class FeedbackListPageComponent extends BasePageComponent implements OnIn
     const feedbackState: FeedbackState = this.store[STORE_SLICES.FEEDBACKS];
     const allFeedback = feedbackState.feedbacks;
 
-    return Object.values(allFeedback).filter(feedback => feedback.sailId === this.sailId);
+    return Object.values(allFeedback).filter(feedback => feedback.sail_id === this.sail_id);
   }
 
   public feedbackAriaLabel(feedback: SailFeedback, index: number) {

@@ -6,11 +6,11 @@ import { SailRequestInterest } from '../sail-request-interest/sail-request-inter
 
 export interface SailRequest extends Base {
   details: string;
-  entityNumber: number;
+  entity_number: number;
   interest: SailRequestInterest[];
-  requestedBy: Profile;
-  requestedById: string;
+  requested_by: Profile;
+  requested_by_id: string;
   sail: Sail;
-  sailId: string;
+  sail_id: string;
   status: SailRequestStatus;
 }

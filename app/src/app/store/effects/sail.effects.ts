@@ -63,7 +63,7 @@ export class SailEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.sailService
-          .sendNotification(action.sailId, action.notificationType, action.notificationMessage)
+          .sendNotification(action.sail_id, action.notificationType, action.notificationMessage)
           .pipe(
             mergeMap(sail => of(
               action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Notification sent!' } }),
@@ -145,11 +145,11 @@ export class SailEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.sailService
-          .joinAsCrew(action.sailId)
+          .joinAsCrew(action.sail_id)
           .pipe(
             mergeMap(sail => of(
               action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'You joined the sail as crew!' } }),
-              putSail({ sail, id: action.sailId })
+              putSail({ sail, id: action.sail_id })
             )),
             catchError(errorCatcher('Failed to join sail as crew'))
           ),
@@ -165,11 +165,11 @@ export class SailEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.sailService
-          .joinAsPassenger(action.sailId)
+          .joinAsPassenger(action.sail_id)
           .pipe(
             mergeMap(sail => of(
               putSnack({ snack: { type: SnackType.INFO, message: 'You joined the sail as a passanger!' } }),
-              putSail({ sail, id: action.sailId })
+              putSail({ sail, id: action.sail_id })
             )),
             catchError(errorCatcher('Failed to join sail as passenger'))
           ),
@@ -184,11 +184,11 @@ export class SailEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.sailService
-          .joinAsSkipper(action.sailId)
+          .joinAsSkipper(action.sail_id)
           .pipe(
             mergeMap(sail => of(
               putSnack({ snack: { type: SnackType.INFO, message: 'You joined the sail as a skipper!' } }),
-              putSail({ sail, id: action.sailId })
+              putSail({ sail, id: action.sail_id })
             )),
             catchError(errorCatcher('Failed to join sail as skipper'))
           ),
@@ -203,11 +203,11 @@ export class SailEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.sailService
-          .leaveSail(action.sailId)
+          .leaveSail(action.sail_id)
           .pipe(
             mergeMap(sail => of(
               putSnack({ snack: { type: SnackType.INFO, message: 'You left the sail!' } }),
-              putSail({ sail, id: action.sailId })
+              putSail({ sail, id: action.sail_id })
             )),
             catchError(errorCatcher('Failed to leave sail'))
           ),
@@ -221,13 +221,13 @@ export class SailEffects {
       ofType(postSailComment),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.postNewComment(action.sailId, action.comment)
+        action => this.sailService.postNewComment(action.sail_id, action.comment)
           .pipe(
             mergeMap(sail => of(
               (action.notify ? putSnack({ snack: { type: SnackType.INFO, message: 'Comment posted' } }) : EMPTY),
-              putSail({ sail, id: action.sailId }),
+              putSail({ sail, id: action.sail_id }),
             )),
-            catchError(errorCatcher(`Failed to post comment to sail: ${action.sailId}`)),
+            catchError(errorCatcher(`Failed to post comment to sail: ${action.sail_id}`)),
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),
@@ -238,13 +238,13 @@ export class SailEffects {
       ofType(deleteSailComment),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.deleteComment(action.sailId, action.commentId)
+        action => this.sailService.deleteComment(action.sail_id, action.commentId)
           .pipe(
             mergeMap(sail => of(
               (action.notify ? putSnack({ snack: { type: SnackType.INFO, message: 'Comment deleted' } }) : EMPTY),
-              putSail({ sail, id: action.sailId }),
+              putSail({ sail, id: action.sail_id }),
             )),
-            catchError(errorCatcher(`Failed to delete comment to sail: ${action.sailId}`)),
+            catchError(errorCatcher(`Failed to delete comment to sail: ${action.sail_id}`)),
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

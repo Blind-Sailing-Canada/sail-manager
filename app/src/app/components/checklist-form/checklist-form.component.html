@@ -71,12 +71,12 @@
     <select
       attr.aria-labelledby="formLabelFireExtinguisher{{when}}"
       aria-required="true"
-      formControlName="fireExtinguisher"
+      formControlName="fire_extinguisher"
       matNativeControl
       required
     >
       <option
-        *ngFor="let level of fireExtinguisherState | keyvalue"
+        *ngFor="let level of fire_extinguisherState | keyvalue"
         [value]="level.value"
       >
         {{level.value}}
@@ -95,6 +95,6 @@
       matInput
     ></textarea>
   </mat-form-field>
-  <mat-checkbox formControlName="signedBySkipper">Signed by skipper</mat-checkbox>
-  <mat-checkbox formControlName="signedByCrew">Signed by crew</mat-checkbox>
+  <mat-checkbox formControlName="signed_by_skipper">Signed by skipper</mat-checkbox>
+  <mat-checkbox formControlName="signed_by_crew">Signed by crew</mat-checkbox>
 </form>

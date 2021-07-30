@@ -17,19 +17,19 @@ export class UserEntity extends BaseModelEntity implements User {
     length: 150,
     unique: true,
   })
-  providerUserId: string;
+  provider_user_id: string;
 
   @Column()
-  profileId: string;
+  profile_id: string;
 
   @Column()
-  originalProfileId: string;
+  original_profile_id: string;
 
   @Column({
     default: null,
     nullable: true,
   })
-  linkedByProfileId: string;
+  linked_by_profile_id: string;
 
   @OneToOne(() => ProfileEntity, undefined, {
     eager: true,

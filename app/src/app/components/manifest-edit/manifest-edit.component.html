@@ -12,19 +12,19 @@
       <ng-container [formGroupName]="i">
         <td *ngIf="!item.value.profile">
           <div class="name-cell">
-            {{item.value.personName}}
+            {{item.value.person_name}}
           </div>
         </td>
         <td
           class="clickable"
           (click)="showProfileDialog(item.value.profile)"
           *ngIf="item.value.profile"
-        >{{item.value.personName}}</td>
+        >{{item.value.person_name}}</td>
         <td>
-          {{item.value.sailorRole}}
-          <span *ngIf="item.value.sailorRole === SAILOR_ROLE.Guest">
+          {{item.value.sailor_role}}
+          <span *ngIf="item.value.sailor_role === SAILOR_ROLE.Guest">
             <mat-label>of</mat-label>
-           {{item.value.guestOfName}}
+           {{item.value.guest_ofName}}
           </span>
         </td>
         <td>

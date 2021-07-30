@@ -16,18 +16,18 @@ export class BoatInstructionsEntity extends BaseModelEntity implements BoatInstr
   boat: BoatEntity;
 
   @Column()
-  boatId: string;
+  boat_id: string;
 
   @Column()
   description: string;
 
   @Column()
-  instructionType: BoatInstructionType;
+  instruction_type: BoatInstructionType;
 
   @Column({
-    type: 'json',
+    type: 'jsonb',
     array: false,
-    default: () => '("[]")',
+    default: [],
     nullable: false,
   })
   instructions: BoatInstruction[];

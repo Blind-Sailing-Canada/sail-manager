@@ -83,13 +83,13 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
         return;
       }
 
-      this.challengeActiveParticipants = this.challenge.participants.filter(participant => !participant.finishedAt);
-      this.challengeFinishedParticipants = this.challenge.participants.filter(participant => !!participant.finishedAt);
+      this.challengeActiveParticipants = this.challenge.participants.filter(participant => !participant.finished_at);
+      this.challengeFinishedParticipants = this.challenge.participants.filter(participant => !!participant.finished_at);
 
       const notesControls = this.challengeActiveParticipants
         .reduce(
           (red, participant) => {
-            red[participant.participantId] = this.fb.control(undefined);
+            red[participant.participant_id] = this.fb.control(undefined);
             return red;
           },
           {}
@@ -198,16 +198,16 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
   }
 
   public canSubmitResult(participant: ChallengeParticipant): boolean {
-    return participant.participantId === this.user.profile.id ||
+    return participant.participant_id === this.user.profile.id ||
       this.user.access[UserAccessFields.JudgeChallenge];
   }
 
   public get userAccompliedChallenge(): boolean {
-    return this.challenge.participants.some(participant => participant.participantId === this.user.profile.id && !!participant.finishedAt);
+    return this.challenge.participants.some(participant => participant.participant_id === this.user.profile.id && !!participant.finished_at);
   }
 
   public get userJoinedChallenge(): boolean {
-    return this.challenge.participants.some(participant => participant.participantId === this.user.profile.id);
+    return this.challenge.participants.some(participant => participant.participant_id === this.user.profile.id);
   }
 
   public deleteCDNFile(formArrayIndex: number): void {

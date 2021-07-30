@@ -39,7 +39,7 @@
 </mat-card>
 <ng-template #departureFormContent>
   <form [formGroup]="checklistForm">
-    <ng-container *ngTemplateOutlet="sailDestination"></ng-container>
+    <ng-container *ngTemplateOutlet="sail_destination"></ng-container>
     <ng-container *ngTemplateOutlet="weather"></ng-container>
     <ng-container *ngTemplateOutlet="PEOPLE_MANIFEST_TEMPLATE"></ng-container>
     <ng-container *ngTemplateOutlet="instructions"></ng-container>
@@ -47,7 +47,7 @@
   </form>
 </ng-template>
 
-<ng-template #sailDestination>
+<ng-template #sail_destination>
   <h4
     id="stepLabelDestination"
     tabindex="-1"
@@ -60,14 +60,14 @@
     >Sail Destination</mat-label>
     <textarea
       aria-labelledby="stepLabelDestination"
-      formControlName="sailDestination"
+      formControlName="sail_destination"
       matInput
       required
     ></textarea>
   </mat-form-field>
   <mat-error
     tabindex="0"
-    *ngFor="let error of (checklistForm.pristine ? []: beforeFormErrors('sailDestination'))"
+    *ngFor="let error of (checklistForm.pristine ? []: beforeFormErrors('sail_destination'))"
   >{{error}}</mat-error>
 </ng-template>
 

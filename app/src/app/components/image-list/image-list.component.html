@@ -24,11 +24,11 @@
       >Delete</button>
     </div>
     <div
-      (click)="goToProfile.emit(picture.postedBy)"
+      (click)="goToProfile.emit(picture.posted_by)"
       *ngIf="showAuthor"
       class="clickable"
     >
-      <label>by: </label> {{picture.postedBy.name}}
+      <label>by: </label> {{picture.posted_by.name}}
     </div>
     <pre *ngIf="picture.description" tabindex="0">{{picture.description}}</pre>
   </div>

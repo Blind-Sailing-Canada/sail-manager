@@ -7,11 +7,11 @@ export interface Clinic extends Base {
   attendance: ClinicAttendance[];
   badge: string;
   description: string;
-  endDate: Date;
+  end_date: Date;
   instructor: Profile;
-  instructorId: string;
-  maxOccupancy: number;
+  instructor_id: string;
+  max_occupancy: number;
   name: string;
-  startDate: Date;
+  start_date: Date;
   status: ClinicStatus;
 }

@@ -68,7 +68,7 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
 
   private buildForm(): void {
     this.form = this.fb.group({
-      requestedById: this.fb.control(this.user.profile.id, Validators.required),
+      requested_by_id: this.fb.control(this.user.profile.id, Validators.required),
       details: this.fb.control(undefined, Validators.required),
       status: this.fb
         .control({ value: SailRequestStatus.New, disabled: this.creating || !this.shouldShowStatusInput }, Validators.required),
@@ -150,7 +150,7 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
       return false;
     }
 
-    return this.shouldShowControls && this.user.profile.id === this.sailRequest.requestedById;
+    return this.shouldShowControls && this.user.profile.id === this.sailRequest.requested_by_id;
   }
 
   public get shouldShowStatusInput() {

@@ -10,6 +10,6 @@ export class UserJob {
 
   @Cron(CronExpression.EVERY_30_MINUTES)
   async deleteUnregisteredAccounts() {
-    ProfileEntity.delete({ expiresAt: LessThanOrEqual(new Date()) });
+    ProfileEntity.delete({ expires_at: LessThanOrEqual(new Date()) });
   }
 }

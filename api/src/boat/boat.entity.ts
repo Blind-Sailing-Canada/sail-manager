@@ -27,7 +27,7 @@ export class BoatEntity extends BaseModelEntity implements Boat {
     nullable: true,
     default: null,
   })
-  calendarResourceId: string;
+  calendar_resource_id: string;
 
   @Column({
     default: BoatStatus.OutOfService,
@@ -39,7 +39,7 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   status: BoatStatus;
 
   @Column({ default: 6 })
-  maxOccupancy: number;
+  max_occupancy: number;
 
   @Column({ length: 50 })
   draft: string;
@@ -51,7 +51,7 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   lwl: string;
 
   @Column({ length: 50 })
-  hullType: string;
+  hull_type: string;
 
   @Column({ length: 50 })
   material: string;
@@ -66,10 +66,10 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   rig: string;
 
   @Column({ length: 50 })
-  mainSailArea: string;
+  main_sail_area: string;
 
   @Column({ length: 50 })
-  jibSailArea: string;
+  jib_sail_area: string;
 
   @Column({ length: 50 })
   phrf: string;
@@ -81,7 +81,7 @@ export class BoatEntity extends BaseModelEntity implements Boat {
     default: BoatEntity.name,
     nullable: false,
   })
-  entityType: string
+  entity_type: string
 
   @OneToMany(() => SailEntity, sail => sail.boat)
   sails: SailEntity[]
@@ -90,9 +90,9 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   instructions: BoatInstructions[]
 
   @Column({
-    type: 'json',
+    type: 'jsonb',
     array: false,
-    default: () => '("[]")',
+    default: [],
     nullable: false,
   })
   pictures: string[];
@@ -100,16 +100,16 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   @AfterInsert()
   createInstructions() {
     const departure = BoatInstructionsEntity.create({
-      boatId: this.id,
-      instructionType: BoatInstructionType.Departure,
+      boat_id: this.id,
+      instruction_type: BoatInstructionType.Departure,
       instructions: [],
       title: 'On Departure',
       description: 'Follow these instructions before leaving the dock.',
     });
 
     const arrival = BoatInstructionsEntity.create({
-      boatId: this.id,
-      instructionType: BoatInstructionType.Arrival,
+      boat_id: this.id,
+      instruction_type: BoatInstructionType.Arrival,
       instructions: [],
       title: 'On Arrival',
       description: 'Follow these instructions after docking.',

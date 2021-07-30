@@ -52,10 +52,10 @@ export class FutureSailsEffects {
       ofType(fetchFutureSailsForUser),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchFutureSailsForUser(action.profileId, action.query)
+        action => this.sailService.fetchFutureSailsForUser(action.profile_id, action.query)
           .pipe(
             mergeMap(sails => of(
-              putFutureSailsForUser({ sails, profileId: action.profileId }),
+              putFutureSailsForUser({ sails, profile_id: action.profile_id }),
               action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'refreshed' } }),
             )),
             catchError(errorCatcher('Failed to get your upcoming sails.'))

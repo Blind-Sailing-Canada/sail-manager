@@ -61,8 +61,8 @@
       <td
         role="listitem"
         tabindex="0"
-        attr.aria-label="Requested on: {{maintenance.createdAt | humanDateWithTime}}"
-      >{{maintenance.createdAt| humanDateWithTime: true}}</td>
+        attr.aria-label="Requested on: {{maintenance.created_at | humanDateWithTime}}"
+      >{{maintenance.created_at| humanDateWithTime: true}}</td>
     </tr>
     <tr>
       <th
@@ -70,13 +70,13 @@
         aria-hidden="true"
       >Requested By</th>
       <td
-        (click)="showProfileDialog(maintenance?.requestedBy)"
-        attr.aria-label="Requested by: {{maintenance?.requestedBy?.name}}"
+        (click)="showProfileDialog(maintenance?.requested_by)"
+        attr.aria-label="Requested by: {{maintenance?.requested_by?.name}}"
         class="break-all clickable"
         role="listitem"
         tabindex="0"
       >
-        <app-profile-bullet [profile]="maintenance.requestedBy"></app-profile-bullet>
+        <app-profile-bullet [profile]="maintenance.requested_by"></app-profile-bullet>
       </td>
     </tr>
     <tr>
@@ -109,8 +109,8 @@
         colspan="2"
         role="listitem"
         tabindex="0"
-        attr.aria-label="Request details: {{maintenance.requestDetails}}"
-      >{{maintenance.requestDetails}}</td>
+        attr.aria-label="Request details: {{maintenance.request_details}}"
+      >{{maintenance.request_details}}</td>
     </tr>
     <tr
       class="table-spacer"
@@ -132,13 +132,13 @@
           aria-hidden="true"
         >Serviced By</th>
         <td
-          (click)="showProfileDialog(maintenance.resolvedBy)"
-          attr.aria-label="Serviced by: {{maintenance?.resolvedBy?.name}}"
+          (click)="showProfileDialog(maintenance.resolved_by)"
+          attr.aria-label="Serviced by: {{maintenance?.resolved_by?.name}}"
           class="break-all clickable"
           role="listitem"
           tabindex="0"
         >
-          <app-profile-bullet [profile]="maintenance.resolvedBy"></app-profile-bullet>
+          <app-profile-bullet [profile]="maintenance.resolved_by"></app-profile-bullet>
         </td>
       </tr>
       <tr>
@@ -149,8 +149,8 @@
         <td
           role="listitem"
           tabindex="0"
-          attr.aria-label="Serviced on: {{maintenance.servicedAt | humanDateWithTime}}"
-        >{{maintenance.servicedAt | humanDateWithTime:true}}</td>
+          attr.aria-label="Serviced on: {{maintenance.serviced_at | humanDateWithTime}}"
+        >{{maintenance.serviced_at | humanDateWithTime:true}}</td>
       </tr>
       <tr
         class="table-spacer"
@@ -171,8 +171,8 @@
           colspan="2"
           role="listitem"
           tabindex="0"
-          attr.aria-label="Service details: {{maintenance?.serviceDetails}}"
-        >{{maintenance?.serviceDetails}}</td>
+          attr.aria-label="Service details: {{maintenance?.service_details}}"
+        >{{maintenance?.service_details}}</td>
       </tr>
     </ng-container>
   </app-table>

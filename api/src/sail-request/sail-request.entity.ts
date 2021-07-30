@@ -21,14 +21,14 @@ export class SailRequestEntity extends BaseModelEntity implements SailRequest {
     nullable: true,
     unique: true,
   })
-  entityNumber: number;
+  entity_number: number;
 
   @Column()
   details: string;
 
   @Column({ nullable: true })
   @Index()
-  sailId: string;
+  sail_id: string;
 
   @Column({
     default: SailRequestStatus.New,
@@ -38,26 +38,26 @@ export class SailRequestEntity extends BaseModelEntity implements SailRequest {
   })
   status: SailRequestStatus;
 
-  @ManyToOne(() => SailEntity, sail => sail.sailRequest, { eager: true })
+  @ManyToOne(() => SailEntity, sail => sail.sail_request, { eager: true })
   @JoinColumn()
   sail: SailEntity
 
   @Column()
   @Index()
-  requestedById: string;
+  requested_by_id: string;
 
   @ManyToOne(() => ProfileEntity, undefined, { eager: true })
   @JoinColumn()
-  requestedBy: ProfileEntity;
+  requested_by: ProfileEntity;
 
-  @OneToMany(() => SailRequestInterestEntity, (interest) => interest.sailRequest, { eager: true })
+  @OneToMany(() => SailRequestInterestEntity, (interest) => interest.sail_request, { eager: true })
   interest: SailRequestInterestEntity[];
 
   @AfterInsert()
   createInterest() {
     SailRequestInterestEntity.create({
-      profileId: this.requestedById,
-      sailRequestId: this.id,
+      profile_id: this.requested_by_id,
+      sail_request_id: this.id,
     }).save();
   }
 
@@ -65,12 +65,12 @@ export class SailRequestEntity extends BaseModelEntity implements SailRequest {
   async addEntityNumber() {
     const tableName = `"${SailRequestEntity.getRepository().metadata.tableName}"`;
 
-    const entityNumber = await SailRequestEntity
+    const entity_number = await SailRequestEntity
       .getRepository()
       .createQueryBuilder(tableName)
-      .select(`MAX(${tableName}.entityNumber)`, 'max')
+      .select(`MAX(${tableName}.entity_number)`, 'max')
       .getRawOne();
 
-    this.entityNumber = entityNumber.max + 1;
+    this.entity_number = entity_number.max + 1;
   }
 }

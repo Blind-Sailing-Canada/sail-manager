@@ -21,25 +21,26 @@ export class RequiredActionEntity extends BaseModelEntity implements RequiredAct
   details: string;
 
   @Column()
-  actionableId: string;
+  actionable_id: string;
 
   @Column()
-  actionableType: string;
+  actionable_type: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  assignedById: string;
+  assigned_by_id: string;
 
   @Column()
-  assignedToId: string;
+  assigned_to_id: string;
 
   @Column({
     nullable: true,
     default: null,
+    type: 'timestamptz',
   })
-  dueDate: Date;
+  due_date: Date;
 
   @Column({
     default: RequiredActionType.ReviewNewUser,
@@ -47,7 +48,7 @@ export class RequiredActionEntity extends BaseModelEntity implements RequiredAct
     type: 'enum',
     nullable: false,
   })
-  requiredActionType: RequiredActionType;
+  required_action_type: RequiredActionType;
 
   @Column({
     default: RequiredActionStatus.New,
@@ -58,8 +59,8 @@ export class RequiredActionEntity extends BaseModelEntity implements RequiredAct
   status: RequiredActionStatus;
 
   @ManyToOne(() => ProfileEntity)
-  assignedBy: ProfileEntity;
+  assigned_by: ProfileEntity;
 
   @ManyToOne(() => ProfileEntity)
-  assignedTo: ProfileEntity;
+  assigned_to: ProfileEntity;
 }

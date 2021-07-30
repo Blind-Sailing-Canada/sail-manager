@@ -19,34 +19,34 @@ export class SailPicturesController {
 
   constructor(private firebaseAdminService: FirebaseAdminService) {}
 
-  @Get('/:sailId/pictures')
-  async getSailPictures(@Param('sailId') sailId) {
+  @Get('/:sail_id/pictures')
+  async getSailPictures(@Param('sail_id') sail_id) {
     return MediaEntity.find({
-      relations: ['postedBy'],
-      where : { mediaForId: sailId },
+      relations: ['posted_by'],
+      where : { media_for_id: sail_id },
     });
   }
 
-  @Put('/:sailId/pictures')
-  async addSailPictures(@User() user: JwtObject, @Param('sailId') sailId, @Body(new SailPicturesCreateSanitizer()) pictures: Partial<Media[]>) {
+  @Put('/:sail_id/pictures')
+  async addSailPictures(@User() user: JwtObject, @Param('sail_id') sail_id, @Body(new SailPicturesCreateSanitizer()) pictures: Partial<Media[]>) {
 
     pictures.forEach(picture =>{
-      picture.mediaForId = sailId;
-      picture.mediaForType = 'SailEntity';
-      picture.postedById = user.profileId;
+      picture.media_for_id = sail_id;
+      picture.media_for_type = 'SailEntity';
+      picture.posted_by_id = user.profile_id;
     });
 
     const media = MediaEntity.create(pictures);
     await MediaEntity.save(media);
 
     return MediaEntity.find({
-      relations: ['postedBy'],
-      where : { mediaForId: sailId },
+      relations: ['posted_by'],
+      where : { media_for_id: sail_id },
     });
   }
 
-  @Delete('/:sailId/pictures/:pictureId')
-  async deleteSailPictures(@Param('sailId') sailId, @Param('pictureId') pictureId) {
+  @Delete('/:sail_id/pictures/:pictureId')
+  async deleteSailPictures(@Param('sail_id') sail_id, @Param('pictureId') pictureId) {
     const picture = await MediaEntity.findOne(pictureId);
 
     if (picture.url.startsWith('cdn/')) {
@@ -56,8 +56,8 @@ export class SailPicturesController {
     await picture.remove();
 
     return MediaEntity.find({
-      relations: ['postedBy'],
-      where : { mediaForId: sailId },
+      relations: ['posted_by'],
+      where : { media_for_id: sail_id },
     });
   }
 

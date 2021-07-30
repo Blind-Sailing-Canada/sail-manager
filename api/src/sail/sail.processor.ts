@@ -22,37 +22,37 @@ export class SailProcessor extends BaseQueueProcessor {
 
   @Process('new-sail')
   async sendNewSailEmail(job: Job) {
-    const sail = await SailEntity.findOneOrFail(job.data.sailId);
+    const sail = await SailEntity.findOneOrFail(job.data.sail_id);
 
     await this.calendarService.createSailEvent(sail, job.data.message);
   }
 
   @Process('update-sail')
   async sendUpdateSailEmail(job: Job) {
-    const sail = await SailEntity.findOneOrFail(job.data.sailId);
+    const sail = await SailEntity.findOneOrFail(job.data.sail_id);
 
     await this.calendarService.updateSailEvent(sail, job.data.message);
   }
 
   @Process('join-sail')
   async sendJoinSailEmail(job: Job) {
-    const sail = await SailEntity.findOneOrFail(job.data.sailId);
-    const profile = await ProfileEntity.findOneOrFail(job.data.profileId);
+    const sail = await SailEntity.findOneOrFail(job.data.sail_id);
+    const profile = await ProfileEntity.findOneOrFail(job.data.profile_id);
 
     await this.calendarService.joinSailEvent(sail, profile);
   }
 
   @Process('leave-sail')
   async sendLeaveSailEmail(job: Job) {
-    const sail = await SailEntity.findOneOrFail(job.data.sailId);
-    const profile = await ProfileEntity.findOneOrFail(job.data.profileId);
+    const sail = await SailEntity.findOneOrFail(job.data.sail_id);
+    const profile = await ProfileEntity.findOneOrFail(job.data.profile_id);
 
     await this.calendarService.leaveSailEvent(sail, profile);
   }
 
   @Process('cancel-sail')
   async sendCancelSailEmail(job: Job) {
-    const sail = await SailEntity.findOneOrFail(job.data.sailId);
+    const sail = await SailEntity.findOneOrFail(job.data.sail_id);
     const sailCoordinators = await ProfileEntity.coordinators();
 
     const emailInfo = this.sailEmail.cancelSailEmail(sail, sailCoordinators);
@@ -63,7 +63,7 @@ export class SailProcessor extends BaseQueueProcessor {
 
   @Process('new-comment')
   async sendNewCommentEmail(job: Job) {
-    const sail = await SailEntity.findOneOrFail(job.data.sailId);
+    const sail = await SailEntity.findOneOrFail(job.data.sail_id);
     const comment = await CommentEntity.findOneOrFail(job.data.commentId);
     const sailCoordinators = await ProfileEntity.coordinators();
 

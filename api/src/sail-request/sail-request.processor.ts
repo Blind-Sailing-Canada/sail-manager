@@ -11,7 +11,7 @@ import { SailRequestEntity } from './sail-request.entity';
 export class SailRequestProcessor extends BaseQueueProcessor {
 
   constructor(
-    private sailRequestEmail: SailRequestEmail,
+    private sail_requestEmail: SailRequestEmail,
     private emailService: GoogleEmailService
   ) {
     super();
@@ -19,18 +19,18 @@ export class SailRequestProcessor extends BaseQueueProcessor {
 
   @Process('new-sail-request')
   async sendNewRequest(job: Job) {
-    const sailRequest = await SailRequestEntity.findOneOrFail(job.data.sailRequestId);
+    const sail_request = await SailRequestEntity.findOneOrFail(job.data.sail_request_id);
 
-    const email = await this.sailRequestEmail.newSailRequest(sailRequest);
+    const email = await this.sail_requestEmail.newSailRequest(sail_request);
 
     await this.emailService.sendBccEmail(email);
   }
 
   @Process('cancel-sail-request')
   async sendCancelledRequest(job: Job) {
-    const sailRequest = await SailRequestEntity.findOneOrFail(job.data.sailRequestId);
+    const sail_request = await SailRequestEntity.findOneOrFail(job.data.sail_request_id);
 
-    const email = await this.sailRequestEmail.cancelSailRequest(sailRequest);
+    const email = await this.sail_requestEmail.cancelSailRequest(sail_request);
 
     await this.emailService.sendBccEmail(email);
   }

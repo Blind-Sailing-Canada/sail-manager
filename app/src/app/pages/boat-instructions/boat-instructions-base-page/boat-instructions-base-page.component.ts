@@ -41,10 +41,10 @@ export class BoatInstructionsBasePageComponent extends BasePageComponent impleme
   }
 
   public get boat(): Boat {
-    return this.getBoat(this.boatId);
+    return this.getBoat(this.boat_id);
   }
 
-  public get boatId(): string {
+  public get boat_id(): string {
     return this.route.snapshot.params.id;
   }
 
@@ -53,23 +53,23 @@ export class BoatInstructionsBasePageComponent extends BasePageComponent impleme
   }
 
   public get departure(): BoatInstructions {
-    return this.boat?.instructions.find(instruction => instruction.instructionType === BoatInstructionType.Departure);
+    return this.boat?.instructions.find(instruction => instruction.instruction_type === BoatInstructionType.Departure);
   }
 
   public get arrival(): BoatInstructions {
-    return this.boat?.instructions.find(instruction => instruction.instructionType === BoatInstructionType.Arrival);
+    return this.boat?.instructions.find(instruction => instruction.instruction_type === BoatInstructionType.Arrival);
   }
 
   public get departureInstructions(): BoatInstruction[] {
-    return this.boat?.instructions.find(instruction => instruction.instructionType === BoatInstructionType.Departure)?.instructions || [];
+    return this.boat?.instructions.find(instruction => instruction.instruction_type === BoatInstructionType.Departure)?.instructions || [];
   }
 
   public get arrivalInstructions(): BoatInstruction[] {
-    return this.boat?.instructions.find(instruction => instruction.instructionType === BoatInstructionType.Arrival)?.instructions || [];
+    return this.boat?.instructions.find(instruction => instruction.instruction_type === BoatInstructionType.Arrival)?.instructions || [];
   }
 
   public goToBoatInstructions(): void {
-    this.goTo([editBoatInstructionsRoute(this.boatId)]);
+    this.goTo([editBoatInstructionsRoute(this.boat_id)]);
   }
 
   public get shouldEnableEditButton(): boolean {

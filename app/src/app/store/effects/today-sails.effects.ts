@@ -54,16 +54,16 @@ export class TodaySailsEffects {
       ofType(fetchTodaySailsForUser),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchTodaySailsForUser(action.profileId, action.query)
+        action => this.sailService.fetchTodaySailsForUser(action.profile_id, action.query)
           .pipe(
             mergeMap((sails) => {
               if (action.notify) {
                 return of(
-                  putTodaySailsForUser({ sails, profileId: action.profileId }),
+                  putTodaySailsForUser({ sails, profile_id: action.profile_id }),
                   putSnack({ snack: { type: SnackType.INFO, message: 'Refreshed' } }),
                 );
               }
-              return of(putTodaySailsForUser({ sails, profileId: action.profileId }));
+              return of(putTodaySailsForUser({ sails, profile_id: action.profile_id }));
             }),
             catchError(errorCatcher("Failed to get your today's sails."))
           )),

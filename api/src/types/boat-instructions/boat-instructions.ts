@@ -5,9 +5,9 @@ import { BoatInstructionType } from './boat-instruction-type';
 
 export interface BoatInstructions extends Base {
   boat: Boat;
-  boatId: string;
+  boat_id: string;
   description: string;
-  instructionType: BoatInstructionType;
+  instruction_type: BoatInstructionType;
   instructions: BoatInstruction[];
   title: string;
 }

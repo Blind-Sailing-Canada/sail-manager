@@ -28,5 +28,5 @@ export const updateSailChecklist = createAction(
   SAIL_CHECKLIST_ACTION_TYPES.UPDATE_ONE, props<{ id: string, checklist: Partial<SailChecklist>, updateActions?: TypedAction<any>[] }>());
 export const updateSailChecklists = createAction(
     SAIL_CHECKLIST_ACTION_TYPES.UPDATE_SAIL_CHECKLISTS,
-    props<{ sailId: string, checklistsData}>(),
+    props<{ sail_id: string, checklistsData}>(),
   );

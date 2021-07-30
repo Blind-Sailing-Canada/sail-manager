@@ -26,8 +26,8 @@ export class SailListComponent {
   ) { }
 
   public generateSailDiscription(sail: Sail): string {
-    const duration = this.duration(sail.start, sail.end);
-    const start = this.humanizeDateWithTime(sail.start);
+    const duration = this.duration(sail.start_at, sail.end_at);
+    const start = this.humanizeDateWithTime(sail.start_at);
     const name = sail.name;
 
     const description = `
@@ -51,19 +51,19 @@ export class SailListComponent {
   }
 
   public skipper(sail: Sail): string {
-    return sail.manifest.find(sailor => sailor.sailorRole === SailorRole.Skipper)?.profile?.name;
+    return sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.profile?.name;
   }
 
   public crew(sail: Sail): string {
-    return sail.manifest.find(sailor => sailor.sailorRole === SailorRole.Crew)?.profile?.name;
+    return sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Crew)?.profile?.name;
   }
 
   public passengers(sail: Sail): string[] {
     return sail
       .manifest
-      .filter(sailor => sailor.sailorRole !== SailorRole.Skipper)
-      .filter(sailor => sailor.sailorRole !== SailorRole.Crew)
-      .map(sailor => sailor.personName);
+      .filter(sailor => sailor.sailor_role !== SailorRole.Skipper)
+      .filter(sailor => sailor.sailor_role !== SailorRole.Crew)
+      .map(sailor => sailor.person_name);
   }
 
 }

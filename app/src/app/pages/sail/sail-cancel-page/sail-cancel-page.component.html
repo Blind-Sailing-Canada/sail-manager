@@ -1,5 +1,5 @@
-<h4 *ngIf="sails[sailId] === null">Looks like this sail is missing.</h4>
-<mat-card *ngIf="sails[sailId]">
+<h4 *ngIf="sails[sail_id] === null">Looks like this sail is missing.</h4>
+<mat-card *ngIf="sails[sail_id]">
   <mat-card-header>
     <div mat-card-avatar>
       <mat-icon>cloud_queue</mat-icon>
@@ -35,7 +35,7 @@
         tabindex="-1"
       >Cancel Reason</mat-label>
       <textarea
-        formControlName="cancelReason"
+        formControlName="cancel_reason"
         matInput
         title="Reason for cancelling this sail"
         required

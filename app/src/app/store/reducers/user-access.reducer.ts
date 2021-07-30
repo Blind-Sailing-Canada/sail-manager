@@ -15,7 +15,7 @@ const reducerHandler = createReducer(
   initialState,
   on(resetUserAccess, () => initialState),
   on(putUserAccess, (state, action) => {
-    return Object.assign({}, state, { [action.profileId]: action.access });
+    return Object.assign({}, state, { [action.profile_id]: action.access });
   }),
 );
 

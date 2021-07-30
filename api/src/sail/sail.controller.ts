@@ -40,7 +40,7 @@ import { SailStatus } from '../types/sail/sail-status';
       checklists: { eager: true },
       manifest: { eager: true },
       'manifest.profile': { eager: true },
-      'manifest.guestOf': { eager: true },
+      'manifest.guest_of': { eager: true },
       comments: { eager: true },
       'comments.author': {
         eager: true,
@@ -74,12 +74,12 @@ export class SailController {
   async availableSails(@User() user: JwtObject ) {
     const futureSails = await SailEntity.find({ where: {
       status: SailStatus.New,
-      start: MoreThanOrEqual(new Date()),
+      start_at: MoreThanOrEqual(new Date()),
     } });
 
     return futureSails
-      .filter(sail => !sail.manifest.some(sailor => sailor.profileId === user.profileId))
-      .filter(sail => sail.manifest.length < sail.maxOccupancy);
+      .filter(sail => !sail.manifest.some(sailor => sailor.profile_id === user.profile_id))
+      .filter(sail => sail.manifest.length < sail.max_occupancy);
   }
 
   @Get('/download')
@@ -102,20 +102,20 @@ export class SailController {
     const opts = { fields };
 
     const data = sails.map(sail => ({
-      '#': sail.entityNumber,
+      '#': sail.entity_number,
       name: sail.name,
       description: sail.description,
       boat: sail.boat.name,
-      start: sail.start,
-      end: sail.end,
+      start: sail.start_at,
+      end:sail.end_at,
       sailors: sail
         .manifest
-        .filter(manifest => !manifest.guestOfId)
-        .map(manifest => `${manifest.personName}(${manifest.sailorRole})`),
+        .filter(manifest => !manifest.guest_of_id)
+        .map(manifest => `${manifest.person_name}(${manifest.sailor_role})`),
       guests: sail
         .manifest
-        .filter(manifest => !!manifest.guestOfId)
-        .map(manifest => `${manifest.personName}(${manifest.guestOf.name})`),
+        .filter(manifest => !!manifest.guest_of_id)
+        .map(manifest => `${manifest.person_name}(${manifest.guest_of.name})`),
       status: sail.status,
     }));
 
@@ -140,37 +140,37 @@ export class SailController {
     const sailsDuringThisTime = await SailEntity
       .find(
         { where: `
-          (start <= "${times.start}" AND end >= "${times.start}") OR
-          (start <= "${times.end}" AND end >= "${times.end}")
+          (start_at <= "${times.start}" AND end_at >= "${times.start}") OR
+          (start_at <= "${times.end}" AND end_at >= "${times.end}")
           ` }
       );
 
-    const boatIdsInUse = sailsDuringThisTime.map(sail => sail.boatId);
+    const boat_idsInUse = sailsDuringThisTime.map(sail => sail.boat_id);
 
-    if (boatIdsInUse.length) {
-      return BoatEntity.find({ where: { id: Not(In(boatIdsInUse)) } });
+    if (boat_idsInUse.length) {
+      return BoatEntity.find({ where: { id: Not(In(boat_idsInUse)) } });
     } else {
       return BoatEntity.find();
     }
   }
 
   @Post('/sail-request')
-  async createFromSailRequest(@Body() sailInfo: {sail: Partial<Sail>, sailRequestId: string}) {
+  async createFromSailRequest(@Body() sailInfo: {sail: Partial<Sail>, sail_request_id: string}) {
     const createdSailId = await getManager()
       .transaction(async transactionalEntityManager => {
-        const sailRequest = await SailRequestEntity
+        const sail_request = await SailRequestEntity
           .findOne(
-            sailInfo.sailRequestId,
+            sailInfo.sail_request_id,
             { relations: [
-              'requestedBy',
+              'requested_by',
               'interest',
               'interest.profile',
             ] });
 
         let sail = SailEntity.create({
           ...sailInfo.sail,
-          description: sailRequest.details,
-          sailRequestId: sailInfo.sailRequestId,
+          description: sail_request.details,
+          sail_request_id: sailInfo.sail_request_id,
         });
 
         sail = await transactionalEntityManager.save(sail);
@@ -178,18 +178,18 @@ export class SailController {
         await transactionalEntityManager
           .update(
             SailRequestEntity,
-            { id: sailInfo.sailRequestId },{
-              sailId: sail.id,
+            { id: sailInfo.sail_request_id },{
+              sail_id: sail.id,
               status: SailRequestStatus.Scheduled,
             });
 
-        const manifest = sailRequest
+        const manifest = sail_request
           .interest
           .map(sailor => SailManifestEntity.create({
-            profileId: sailor.profileId,
-            personName: sailor.profile.name,
-            sailId: sail.id,
-            sailorRole: SailorRole.Member,
+            profile_id: sailor.profile_id,
+            person_name: sailor.profile.name,
+            sail_id: sail.id,
+            sailor_role: SailorRole.Member,
           }));
 
         await transactionalEntityManager.save(manifest);
@@ -222,12 +222,12 @@ export class SailController {
 
     if (start) {
       searchQuery = searchQuery
-        .andWhere(`sail.start >= '${start}'`);
+        .andWhere(`sail.start_at >= '${start}'`);
     }
 
     if (end) {
       searchQuery = searchQuery
-        .andWhere(`sail.end <= '${end}'`);
+        .andWhere(`sail.end_at <= '${end}'`);
     }
 
     if (boatName) {
@@ -240,11 +240,11 @@ export class SailController {
       searchQuery = searchQuery
         .leftJoin('sail.manifest', 'manifest')
         .leftJoin('manifest.profile', 'profile')
-        .groupBy('manifest.sailId, sail.id')
+        .groupBy('manifest.sail_id, sail.id')
         .having(`COUNT(*) = ${sailorNames.length}`);
 
       const sailorSearchQuery = sailorNames
-        .map(sailorName => `manifest.personName LIKE '${sailorName}%' OR profile.name LIKE '${sailorName}%'`)
+        .map(sailorName => `manifest.person_name LIKE '${sailorName}%' OR profile.name LIKE '${sailorName}%'`)
         .join(' OR ');
 
       searchQuery = searchQuery
@@ -253,13 +253,13 @@ export class SailController {
 
     const foundSails = await searchQuery.select('sail.id').getMany();
 
-    const sailIds = foundSails.map(sail => sail.id);
+    const sail_ids = foundSails.map(sail => sail.id);
 
-    if (sailIds.length) {
+    if (sail_ids.length) {
       return SailEntity
         .find({
-          where: { id: In(sailIds) },
-          order: { end: 'DESC' },
+          where: { id: In(sail_ids) },
+          order: { end_at: 'DESC' },
         });
     }
 

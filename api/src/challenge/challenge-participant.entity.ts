@@ -11,16 +11,17 @@ import { ChallengeParticipant } from '../types/challenge/challenge-participant';
 @Entity('challenge-participant')
 export class ChallengeParticipantEntity extends BaseModelEntity implements ChallengeParticipant {
   @Column()
-  participantId: string;
+  participant_id: string;
 
   @Column()
-  challengeId: string;
+  challenge_id: string;
 
   @Column({
     nullable: true,
     default: null,
+    type: 'timestamptz',
   })
-  finishedAt: Date;
+  finished_at: Date;
 
   @Column({
     nullable: true,

@@ -23,7 +23,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 export class SailChecklistListPageComponent extends BasePageComponent implements OnInit {
 
   public checklistIds: string[] = [];
-  public boatId: string = null;
+  public boat_id: string = null;
   public boatName: string = null;
   public excludeSailId: string = null;
 
@@ -38,33 +38,33 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
 
   ngOnInit() {
     this.checklistIds = this.route.snapshot.queryParams.checklistIds;
-    this.boatId = this.route.snapshot.queryParams.boatId;
+    this.boat_id = this.route.snapshot.queryParams.boat_id;
     this.boatName = this.route.snapshot.queryParams.boatName;
     this.excludeSailId = this.route.snapshot.queryParams.excludeSailId;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CHECKLISTS);
 
-    if (this.boatId) {
+    if (this.boat_id) {
       if (this.excludeSailId) {
         const query = JSON.stringify({
-          checklistType: SailChecklistType.Before,
-          sailId: { $ne: this.excludeSailId },
-          'sail.boatId': this.boatId,
+          checklist_type: SailChecklistType.Before,
+          sail_id: { $ne: this.excludeSailId },
+          'sail.boat_id': this.boat_id,
         });
-        this.dispatchAction(findSailChecklists({ query: `s=${query}&limit=10&sort=sail.start,DESC` }));
+        this.dispatchAction(findSailChecklists({ query: `s=${query}&limit=10&sort=sail.start_at,DESC` }));
       } else {
         const query = JSON.stringify({
-          'sail.boatId': this.boatId,
-          checklistType: SailChecklistType.Before,
+          'sail.boat_id': this.boat_id,
+          checklist_type: SailChecklistType.Before,
         });
-        this.dispatchAction(findSailChecklists({ query: `s=${query}&limit=10&sort=sail.start,DESC` }));
+        this.dispatchAction(findSailChecklists({ query: `s=${query}&limit=10&sort=sail.start_at,DESC` }));
       }
     } else {
       const query = JSON.stringify({
-        checklistType: SailChecklistType.Before,
+        checklist_type: SailChecklistType.Before,
       });
-      this.dispatchAction(findSailChecklists({ query: `s=${query}&limit=10&sort=sail.start,DESC` }));
+      this.dispatchAction(findSailChecklists({ query: `s=${query}&limit=10&sort=sail.start_at,DESC` }));
     }
   }
 
@@ -73,7 +73,7 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
     const list: SailChecklist[] = ids
       .filter(id => id !== this.excludeSailId)
       .map(id => this.sailChecklists[id])
-      .filter(checklist => this.boatId ? checklist.sail.boatId === this.boatId : true);
+      .filter(checklist => this.boat_id ? checklist.sail.boat_id === this.boat_id : true);
 
     return list;
   }

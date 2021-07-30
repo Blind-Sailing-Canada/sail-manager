@@ -60,8 +60,8 @@ export class ChallengeService {
     return this.http.patch<Challenge>(`${this.API_URL}/${challengeId}`, challenge);
   }
 
-  public completeUserChallenge(challengeId: string, profileId: string, note?: string): Observable<Challenge> {
-    return this.http.patch<Challenge>(`${this.API_URL}/${challengeId}/accomplished-by/${profileId}`, { note });
+  public completeUserChallenge(challengeId: string, profile_id: string, note?: string): Observable<Challenge> {
+    return this.http.patch<Challenge>(`${this.API_URL}/${challengeId}/accomplished-by/${profile_id}`, { note });
   }
 
   public fetchCount(query?: string): Observable<number> {

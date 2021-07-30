@@ -30,7 +30,7 @@ const reducerHandler = createReducer(
   }),
   on(putRequiredAction, (state, action) => {
     const existingActions = Object.assign({}, state.actions);
-    existingActions[action.actionId] = action.action as RequiredAction;
+    existingActions[action.action_id] = action.action as RequiredAction;
     return Object.assign({}, state, { actions: existingActions } as RequiredActionsState);
   }),
 );

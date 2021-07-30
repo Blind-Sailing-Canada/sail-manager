@@ -45,18 +45,18 @@ export class ChecklistSummaryComponent {
     return this
       .sail
       .checklists
-      .find(checklist => checklist.checklistType === SailChecklistType.Before);
+      .find(checklist => checklist.checklist_type === SailChecklistType.Before);
   }
 
   public get afterArrival(): SailChecklist {
     return this
       .sail
       .checklists
-      .find(checklist => checklist.checklistType === SailChecklistType.After);
+      .find(checklist => checklist.checklist_type === SailChecklistType.After);
   }
 
   public get destination(): string {
-    return this.beforeDeparture.sailDestination;
+    return this.beforeDeparture.sail_destination;
   }
 
   public get weather(): string {

@@ -51,7 +51,7 @@ const routes: Routes = [
     component: SailPicturesPageComponent,
   },
   {
-    path: `${SUB_ROUTES.VIEW_SAIL_PER_PERSON}/:profileId`,
+    path: `${SUB_ROUTES.VIEW_SAIL_PER_PERSON}/:profile_id`,
     canActivate: [ViewUserSailsGuard],
     component: SailListPerPersonPageComponent,
   },

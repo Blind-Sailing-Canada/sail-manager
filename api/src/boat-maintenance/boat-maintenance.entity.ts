@@ -18,7 +18,7 @@ import { MediaEntity } from '../media/media.entity';
 
 @Entity('boat-maintenance')
 export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMaintenance {
-  @OneToMany(() => CommentEntity, (comment) => comment.boatMaintenance, {
+  @OneToMany(() => CommentEntity, (comment) => comment.boat_maintenance, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
@@ -29,27 +29,26 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
     default: BoatMaintenanceEntity.name,
     nullable: false,
   })
-  entityType: string;
+  entity_type: string;
 
   @Column()
-  requestDetails: string;
+  request_details: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  serviceDetails: string;
+  service_details: string;
 
-  @Column(
-    {
-      nullable: true,
-      default: null,
-    }
-  )
-  servicedAt: Date;
+  @Column({
+    nullable: true,
+    default: null,
+    type: 'timestamptz',
+  })
+  serviced_at: Date;
 
   @Column()
-  requestedById: string;
+  requested_by_id: string;
 
   @Column(
     {
@@ -57,7 +56,7 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
       default: null,
     }
   )
-  resolutionDetails: string;
+  resolution_details: string;
 
   @Column(
     {
@@ -65,7 +64,7 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
       default: null,
     }
   )
-  resolvedById: string;
+  resolved_by_id: string;
 
   @Column({
     default: BoatMaintenanceStatus.New,
@@ -77,7 +76,7 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
   status: BoatMaintenanceStatus;
 
   @Column()
-  boatId: string;
+  boat_id: string;
 
   @Column(
     {
@@ -85,38 +84,38 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
       default: null,
     }
   )
-  sailId: string;
+  sail_id: string;
 
   @ManyToOne(() => SailEntity, {
     nullable: true,
     eager: true,
   })
   @JoinColumn({
-    name: 'sailId',
+    name: 'sail_id',
     referencedColumnName: 'id',
   })
   sail: SailEntity
 
   @ManyToOne(() => ProfileEntity, { eager: true })
   @JoinColumn({
-    name: 'requestedById',
+    name: 'requested_by_id',
     referencedColumnName: 'id',
   })
-  requestedBy: ProfileEntity;
+  requested_by: ProfileEntity;
 
   @ManyToOne(() => BoatEntity, { eager: true })
   @JoinColumn({
-    name: 'boatId',
+    name: 'boat_id',
     referencedColumnName: 'id',
   })
   boat: BoatEntity
 
   @ManyToOne(() => ProfileEntity, { eager: true })
   @JoinColumn({
-    name: 'resolvedById',
+    name: 'resolved_by_id',
     referencedColumnName: 'id',
   })
-  resolvedBy: Profile;
+  resolved_by: Profile;
 
   @OneToMany(() => MediaEntity, (picture) => picture.boatMaintenance, {
     createForeignKeyConstraints: false,

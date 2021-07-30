@@ -32,7 +32,7 @@ export class SailListPerPersonPageComponent extends BasePageComponent implements
   public fetching = false;
   public paginationSize = 10;
   public profile: Profile;
-  public profileId: string;
+  public profile_id: string;
   public profileSails: Sail[] = [];
   public totalCount = 0;
 
@@ -46,10 +46,10 @@ export class SailListPerPersonPageComponent extends BasePageComponent implements
   }
 
   ngOnInit() {
-    this.profileId = this.route.snapshot.params.profileId;
+    this.profile_id = this.route.snapshot.params.profile_id;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES, () => {
-      this.profile = this.getProfile(this.profileId);
+      this.profile = this.getProfile(this.profile_id);
     });
 
     this.getLatestSails();
@@ -61,7 +61,7 @@ export class SailListPerPersonPageComponent extends BasePageComponent implements
     const queryString = `limit=${this.paginationSize}&sort=start,DESC`;
 
     this.sailService
-      .fetchUserSail(this.profileId, queryString)
+      .fetchUserSail(this.profile_id, queryString)
       .pipe(take(1))
       .subscribe((sails) => {
         this.profileSails = sails;

@@ -47,7 +47,7 @@ export class SailRequestListComponent {
       return false;
     }
 
-    if (this.user.profile.id === request.requestedById) {
+    if (this.user.profile.id === request.requested_by_id) {
       return true;
     }
 
@@ -60,7 +60,7 @@ export class SailRequestListComponent {
       return false;
     }
 
-    if (request.interest.some(interest => interest.profileId === this.user.profile.id)) {
+    if (request.interest.some(interest => interest.profile_id === this.user.profile.id)) {
       return false;
     }
 
@@ -72,7 +72,7 @@ export class SailRequestListComponent {
       return false;
     }
 
-    return request.interest.some(interest => interest.profileId === this.user.profile.id);
+    return request.interest.some(interest => interest.profile_id === this.user.profile.id);
   }
 
 }

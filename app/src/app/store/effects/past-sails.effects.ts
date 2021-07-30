@@ -59,16 +59,16 @@ export class PastSailsEffects {
       ofType(fetchPastSailsForUser),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchPastSailsForUser(action.profileId, action.query)
+        action => this.sailService.fetchPastSailsForUser(action.profile_id, action.query)
           .pipe(
             mergeMap((sails) => {
               if (action.notify) {
                 return of(
-                  putPastSailsForUser({ sails, profileId: action.profileId }),
+                  putPastSailsForUser({ sails, profile_id: action.profile_id }),
                   putSnack({ snack: { type: SnackType.INFO, message: 'Refreshed' } }),
                 );
               }
-              return of(putPastSailsForUser({ sails, profileId: action.profileId }));
+              return of(putPastSailsForUser({ sails, profile_id: action.profile_id }));
             }),
             catchError(errorCatcher('Failed to get your past sails.'))
           )),

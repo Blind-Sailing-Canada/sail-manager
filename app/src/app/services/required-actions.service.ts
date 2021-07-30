@@ -18,16 +18,16 @@ export class RequiredActionsService {
       `${this.API_URL}/my-required-actions`);
   }
 
-  public completeRequiredAction(actionId: string): Observable<RequiredAction> {
+  public completeRequiredAction(action_id: string): Observable<RequiredAction> {
     return this.http
-      .patch<RequiredAction>(`${this.API_URL}/${actionId}`, {
+      .patch<RequiredAction>(`${this.API_URL}/${action_id}`, {
         status: RequiredActionStatus.Completed,
       });
   }
 
-  public dismissRequiredAction(actionId: string): Observable<RequiredAction> {
+  public dismissRequiredAction(action_id: string): Observable<RequiredAction> {
     return this.http
-      .patch<RequiredAction>(`${this.API_URL}/${actionId}`, {
+      .patch<RequiredAction>(`${this.API_URL}/${action_id}`, {
         status: RequiredActionStatus.Dismissed,
       });
   }

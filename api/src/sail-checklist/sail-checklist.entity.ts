@@ -15,15 +15,15 @@ import { SailChecklistType } from '../types/sail-checklist/sail-checklist-type';
 
 @Entity('sail-checklist')
 @Unique('sail_id_checklist_type', [
-  'sailId',
-  'checklistType',
+  'sail_id',
+  'checklist_type',
 ])
 export class SailChecklistEntity extends BaseModelEntity implements SailChecklist {
   @Column({
     nullable: true,
     default: false,
   })
-  signedByCrew: boolean;
+  signed_by_crew: boolean;
 
   @Column({
     nullable: true,
@@ -35,7 +35,7 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
     nullable: true,
     default: false,
   })
-  signedBySkipper: boolean;
+  signed_by_skipper: boolean;
 
   @Column({
     default: SailChecklistType.Before,
@@ -43,13 +43,13 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
     type: 'enum',
     nullable: true,
   })
-  checklistType: SailChecklistType;
+  checklist_type: SailChecklistType;
 
   @Column({
     nullable: true,
     default: null,
   })
-  sailDestination: string;
+  sail_destination: string;
 
   @Column({
     nullable: true,
@@ -71,7 +71,7 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
     type: 'enum',
     nullable: true,
   })
-  fireExtinguisher: FireExtinguisherState;
+  fire_extinguisher: FireExtinguisherState;
 
   @Column({
     default: FlaresState.DID_NOT_CHECK,
@@ -90,7 +90,7 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
   fuel: FuelState;
 
   @Column()
-  sailId: string;
+  sail_id: string;
 
   @ManyToOne(() => SailEntity, (sail) => sail.feedback)
   sail: SailEntity;

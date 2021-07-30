@@ -76,13 +76,13 @@ export class SailChecklistEffects {
       ofType(updateSailChecklists),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailChecklistService.updateSailChecklists(action.sailId, action.checklistsData)
+        action => this.sailChecklistService.updateSailChecklists(action.sail_id, action.checklistsData)
           .pipe(
             mergeMap(sail => of(
-              putSail({ sail, id: action.sailId }),
+              putSail({ sail, id: action.sail_id }),
               putSnack({ snack: { type: SnackType.INFO, message: 'Saved' } }),
             )),
-            catchError(errorCatcher(`Failed to update sail checklist for sail: ${action.sailId}`)),
+            catchError(errorCatcher(`Failed to update sail checklist for sail: ${action.sail_id}`)),
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

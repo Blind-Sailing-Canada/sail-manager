@@ -13,14 +13,14 @@ export interface Profile extends ExpiresBase {
   achievements: Achievement[];
   bio: string;
   challenges: ChallengeParticipant[];
-  clinicsAttendances: ClinicAttendance[];
+  clinics_attendances: ClinicAttendance[];
   email: string;
-  expiresAt: Date;
+  expires_at: Date;
   name: string;
   phone: string;
   photo: string;
-  requiredActions: RequiredAction[];
+  required_actions: RequiredAction[];
   roles: ProfileRole[];
-  sailManifests: SailManifest[];
+  sail_manifests: SailManifest[];
   status: ProfileStatus;
 }

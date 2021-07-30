@@ -58,7 +58,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   public creatingNewSail = false;
   public sailEndDateTimeForm: FormGroup;
   public sailForm: FormGroup;
-  public sailId: string;
+  public sail_id: string;
   public sailRequestId: string;
   public sailStartDateTimeForm: FormGroup;
 
@@ -75,26 +75,26 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
   ngOnInit() {
     this.sailRequestId = this.route.snapshot.params.sailRequestId;
-    this.sailId = this.route.snapshot.params.id;
-    this.creatingNewSail = !this.sailId;
+    this.sail_id = this.route.snapshot.params.id;
+    this.creatingNewSail = !this.sail_id;
 
     this.buildForm();
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.BOATS, () => {
-      const sail = this.sails[this.sailId] || {} as Sail;
-      const boatId = this.sailForm.controls.boatId.value || sail.boatId;
-      this.updateMaxOccupancy(boatId);
+      const sail = this.sails[this.sail_id] || {} as Sail;
+      const boat_id = this.sailForm.controls.boat_id.value || sail.boat_id;
+      this.updateMaxOccupancy(boat_id);
     });
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
       if (!this.creatingNewSail) {
-        const sail = this.sails[this.sailId];
+        const sail = this.sails[this.sail_id];
 
-        if (sail === undefined && !this._fetching[this.sailId]) {
-          this._fetching[this.sailId] = true;
-          this.dispatchAction(fetchSail({ id: this.sailId }));
+        if (sail === undefined && !this._fetching[this.sail_id]) {
+          this._fetching[this.sail_id] = true;
+          this.dispatchAction(fetchSail({ id: this.sail_id }));
           return;
         }
 
@@ -115,7 +115,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.sailForm.controls.name.setValue(formValues.name || sail.name);
     this.sailForm.controls.description.setValue(formValues.description || sail.description);
 
-    const start = new Date(sail.start);
+    const start = new Date(sail.start_at);
 
     this.sailStartDateTimeForm.patchValue({
       date: start.getDate(),
@@ -125,7 +125,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       year: start.getFullYear(),
     });
 
-    const end = new Date(sail.end);
+    const end = new Date(sail.end_at);
 
     this.sailStartDateTimeForm.patchValue({
       date: end.getDate(),
@@ -135,7 +135,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       year: end.getFullYear(),
     });
 
-    this.sailForm.controls.boatId.setValue(formValues.boatId || sail.boatId);
+    this.sailForm.controls.boat_id.setValue(formValues.boat_id || sail.boat_id);
 
     this.sailForm.markAsPristine();
   }
@@ -152,21 +152,21 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     });
 
     this.sailStartDateTimeForm.valueChanges.subscribe((value) => {
-      const startDateTime = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
+      const start_dateTime = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
 
-      this.sailForm.controls.start.setValue(startDateTime);
+      this.sailForm.controls.start.setValue(start_dateTime);
       this.sailForm.controls.start.markAsDirty();
       this.sailForm.controls.start.updateValueAndValidity();
 
-      const endDateTime =  new Date(startDateTime);
-      endDateTime.setHours(endDateTime.getHours() + 3);
+      const end_dateTime =  new Date(start_dateTime);
+      end_dateTime.setHours(end_dateTime.getHours() + 3);
 
       this.sailEndDateTimeForm.patchValue({
-        date: endDateTime.getDate(),
-        month: endDateTime.getMonth(),
-        year: endDateTime.getFullYear(),
-        hour: endDateTime.getHours(),
-        minute: endDateTime.getMinutes()
+        date: end_dateTime.getDate(),
+        month: end_dateTime.getMonth(),
+        year: end_dateTime.getFullYear(),
+        hour: end_dateTime.getHours(),
+        minute: end_dateTime.getMinutes()
       });
 
       this.sailEndDateTimeForm.markAsDirty();
@@ -182,8 +182,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     });
 
     this.sailEndDateTimeForm.valueChanges.subscribe((value) => {
-      const endDateTime = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
-      this.sailForm.controls.end.setValue(endDateTime);
+      const end_dateTime = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
+      this.sailForm.controls.end.setValue(end_dateTime);
       this.sailForm.controls.end.markAsDirty();
       this.sailForm.controls.end.updateValueAndValidity();
     });
@@ -195,10 +195,10 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
           const valid = control.pristine || !!name;
           return valid ? null : { invalid: 'Sail name cannot be empty.' };
         },
-        this.sailId ? Validators.required : null,
+        this.sail_id ? Validators.required : null,
       ].filter(Boolean)),
       description: new FormControl({ disabled: !!this.sailRequestId, value: undefined }),
-      start: new FormControl(undefined, [
+      start_at: new FormControl(undefined, [
         Validators.required,
         (control) => {
           if (!this.sailForm) {
@@ -221,7 +221,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
           return valid ? null : { 'Start date cannot be in the past!': control.value };
         },
       ]),
-      end: new FormControl(undefined, [
+      end_at: new FormControl(undefined, [
         Validators.required,
         ((control) => {
           if (!this.sailForm) {
@@ -239,18 +239,18 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
           return valid ? null : { 'End date must be greater than start date!': control.value };
         }).bind(this),
       ]),
-      boatId: new FormControl(undefined, Validators.required),
-      maxOccupancy: new FormControl(undefined, Validators.required),
+      boat_id: new FormControl(undefined, Validators.required),
+      max_occupancy: new FormControl(undefined, Validators.required),
     });
 
     this.sailForm
       .controls
-      .boatId
+      .boat_id
       .valueChanges
       .pipe(
         takeWhile(() => this.active),
       )
-      .subscribe(boatId => this.updateMaxOccupancy(boatId));
+      .subscribe(boat_id => this.updateMaxOccupancy(boat_id));
 
     this.fetchBoatsOnSailDateChanges();
 
@@ -259,13 +259,13 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
       startMoment.setDate(startMoment.getDate() + 1);
 
-      const startDate = new Date(startMoment);
+      const start_date = new Date(startMoment);
 
-      this.sailStartDateTimeForm.controls.date.setValue(startDate.getDate());
-      this.sailStartDateTimeForm.controls.month.setValue(startDate.getMonth());
-      this.sailStartDateTimeForm.controls.year.setValue(startDate.getFullYear());
-      this.sailStartDateTimeForm.controls.hour.setValue(startDate.getHours());
-      this.sailStartDateTimeForm.controls.minute.setValue(startDate.getMinutes());
+      this.sailStartDateTimeForm.controls.date.setValue(start_date.getDate());
+      this.sailStartDateTimeForm.controls.month.setValue(start_date.getMonth());
+      this.sailStartDateTimeForm.controls.year.setValue(start_date.getFullYear());
+      this.sailStartDateTimeForm.controls.hour.setValue(start_date.getHours());
+      this.sailStartDateTimeForm.controls.minute.setValue(start_date.getMinutes());
 
       startMoment.setHours(startMoment.getHours() + 3);
 
@@ -280,7 +280,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   }
 
   public editManifest(): void {
-    this.goTo([editSailManifestRoute(this.sailId)]);
+    this.goTo([editSailManifestRoute(this.sail_id)]);
   }
 
   private fetchBoatsOnSailDateChanges(): void {
@@ -304,21 +304,21 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   }
 
   private fetchAvailableBoats(): Observable<Boat[]> {
-    const startDate: Date = this.sailForm.controls.start.value;
-    const endDate: Date = this.sailForm.controls.end.value;
-    return this.sailsService.fetchAvailableBoats(startDate.toISOString(), endDate.toISOString());
+    const start_date: Date = this.sailForm.controls.start.value;
+    const end_date: Date = this.sailForm.controls.end.value;
+    return this.sailsService.fetchAvailableBoats(start_date.toISOString(), end_date.toISOString());
   }
 
-  public setSailBoatOnKey(event, boatId: string): void {
+  public setSailBoatOnKey(event, boat_id: string): void {
     if (event.key !== 'Enter') {
       return;
     }
 
-    this.setSailBoat(boatId);
+    this.setSailBoat(boat_id);
   }
 
   public setSailBoat(id?: string): void {
-    const currentlySetBoatId = this.sailForm.controls.boatId.value;
+    const currentlySetBoatId = this.sailForm.controls.boat_id.value;
 
     if (currentlySetBoatId) {
       this.availableBoats = this.availableBoats.concat(this.getBoat(currentlySetBoatId));
@@ -326,27 +326,27 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     this.availableBoats = this.availableBoats.filter(boat => boat.id !== id);
 
-    this.sailForm.controls.boatId.setValue(id || null);
-    this.sailForm.controls.boatId.markAsDirty();
-    this.sailForm.controls.boatId.markAsTouched();
+    this.sailForm.controls.boat_id.setValue(id || null);
+    this.sailForm.controls.boat_id.markAsDirty();
+    this.sailForm.controls.boat_id.markAsTouched();
   }
 
   public get title(): string {
     return this.creatingNewSail ? 'New Sail Form' : 'Edit Sail Form';
   }
 
-  private updateMaxOccupancy(boatId): void {
+  private updateMaxOccupancy(boat_id): void {
     const defaultMax = 6;
-    const boat = this.getBoat(boatId) as Boat;
+    const boat = this.getBoat(boat_id) as Boat;
 
     if (!boat) {
-      this.sailForm.controls.maxOccupancy.patchValue(undefined);
+      this.sailForm.controls.max_occupancy.patchValue(undefined);
       return;
     }
 
-    const boatMax = boat.maxOccupancy || defaultMax;
+    const boatMax = boat.max_occupancy || defaultMax;
 
-    this.sailForm.controls.maxOccupancy.patchValue(boatMax);
+    this.sailForm.controls.max_occupancy.patchValue(boatMax);
   }
 
   public get nameErrors(): string[] {
@@ -357,30 +357,30 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     return errorStrings;
   }
 
-  public get startDateErrors(): string[] {
+  public get start_dateErrors(): string[] {
     const errors = Object.keys(this.sailForm.controls.start.errors || {});
     return errors;
   }
 
   public get boatErrors(): string[] {
-    const errors = Object.keys(this.sailForm.controls.boatId.errors || {});
+    const errors = Object.keys(this.sailForm.controls.boat_id.errors || {});
     return errors;
   }
 
-  public get maxOccupancyErrors(): string[] {
-    const errors = Object.keys(this.sailForm.controls.maxOccupancy.errors || {});
+  public get max_occupancyErrors(): string[] {
+    const errors = Object.keys(this.sailForm.controls.max_occupancy.errors || {});
     return errors;
   }
 
-  public get endDateErrors(): string[] {
+  public get end_dateErrors(): string[] {
     const errors = Object.keys(this.sailForm.controls.end.errors || {});
     return errors;
   }
 
-  public get maxOccupancy(): number {
-    const boatId = this.sailForm.controls.boatId.value;
+  public get max_occupancy(): number {
+    const boat_id = this.sailForm.controls.boat_id.value;
     const defaultValue = 6;
-    const boatValue = (this.boats[boatId] || {} as Boat).maxOccupancy || defaultValue;
+    const boatValue = (this.boats[boat_id] || {} as Boat).max_occupancy || defaultValue;
 
     const max = boatValue;
 
@@ -388,14 +388,14 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   }
 
   public get maxPassengers(): number {
-    const maxOccupancy = +this.sailForm.getRawValue().maxOccupancy;
-    const maxPassengers = maxOccupancy - 2;
+    const max_occupancy = +this.sailForm.getRawValue().max_occupancy;
+    const maxPassengers = max_occupancy - 2;
     return maxPassengers;
   }
 
   public get boatName(): string {
-    const boatId = this.sailForm.controls.boatId.value;
-    const boat = this.getBoat(boatId);
+    const boat_id = this.sailForm.controls.boat_id.value;
+    const boat = this.getBoat(boat_id);
     return boat?.name;
   }
 
@@ -404,8 +404,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       return '';
     }
 
-    const sail = this.getSail(this.sailId);
-    return sail.manifest.find(sailor => sailor.sailorRole === SailorRole.Skipper)?.profile.name;
+    const sail = this.getSail(this.sail_id);
+    return sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.profile.name;
   }
 
   public get crewName(): string {
@@ -413,8 +413,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       return '';
     }
 
-    const sail = this.getSail(this.sailId);
-    return sail.manifest.find(sailor => sailor.sailorRole === SailorRole.Crew)?.profile.name;
+    const sail = this.getSail(this.sail_id);
+    return sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Crew)?.profile.name;
 
   }
 
@@ -423,12 +423,12 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       return '';
     }
 
-    const sail = this.getSail(this.sailId);
+    const sail = this.getSail(this.sail_id);
     const passengers = sail
       .manifest
-      .filter(sailor => sailor.sailorRole !== SailorRole.Skipper)
-      .filter(sailor => sailor.sailorRole !== SailorRole.Crew)
-      .map(sailor => sailor.personName);
+      .filter(sailor => sailor.sailor_role !== SailorRole.Skipper)
+      .filter(sailor => sailor.sailor_role !== SailorRole.Crew)
+      .map(sailor => sailor.person_name);
 
     const names = passengers.join(', ');
 
@@ -499,7 +499,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     this.sailForm.markAsPristine();
     this.sailForm.markAsUntouched();
-    this.dispatchAction(updateSail({ id: this.sailId, sail: changedValue }));
+    this.dispatchAction(updateSail({ id: this.sail_id, sail: changedValue }));
   }
 
 }

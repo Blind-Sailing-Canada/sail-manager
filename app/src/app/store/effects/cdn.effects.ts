@@ -115,7 +115,7 @@ export class CDNEffects {
       tap(() => this.store.dispatch(startLoading())),
       exhaustMap(
         action => this.service
-          .uploadSailPicture(action.file, action.sailId)
+          .uploadSailPicture(action.file, action.sail_id)
           .pipe(
             concatMap((event: HttpEvent<string>) => {
               const processResult = this.processHttpEvent(event, action.file, action.notify);
@@ -173,7 +173,7 @@ export class CDNEffects {
       tap(() => this.store.dispatch(startLoading())),
       exhaustMap(
         action => this.service
-          .uploadProfilePicture(action.file, action.profileId)
+          .uploadProfilePicture(action.file, action.profile_id)
           .pipe(
             concatMap((event: HttpEvent<string>) => {
               const processResult = this.processHttpEvent(event, action.file, action.notify);
@@ -202,7 +202,7 @@ export class CDNEffects {
       tap(() => this.store.dispatch(startLoading())),
       exhaustMap(
         action => this.service
-          .uploadBoatPicture(action.file, action.boatId)
+          .uploadBoatPicture(action.file, action.boat_id)
           .pipe(
             concatMap((event: HttpEvent<string>) => {
               const processResult = this.processHttpEvent(event, action.file, action.notify);
@@ -231,7 +231,7 @@ export class CDNEffects {
       tap(() => this.store.dispatch(startLoading())),
       exhaustMap(
         action => this.service
-          .uploadDepartureInstructionsPicture(action.file, action.boatId)
+          .uploadDepartureInstructionsPicture(action.file, action.boat_id)
           .pipe(
             concatMap((event: HttpEvent<string>) => {
               const processResult = this.processHttpEvent(event, action.file, action.notify);
@@ -260,7 +260,7 @@ export class CDNEffects {
       tap(() => this.store.dispatch(startLoading())),
       exhaustMap(
         action => this.service
-          .uploadArrivalInstructionsPicture(action.file, action.boatId)
+          .uploadArrivalInstructionsPicture(action.file, action.boat_id)
           .pipe(
             concatMap((event: HttpEvent<string>) => {
               const processResult = this.processHttpEvent(event, action.file, action.notify);

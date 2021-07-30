@@ -18,90 +18,90 @@ import { SailEntity } from './sail.entity';
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class UserSailController {
 
-  @Get('/:profileId/count')
-  async count(@Param('profileId') profileId) {
+  @Get('/:profile_id/count')
+  async count(@Param('profile_id') profile_id) {
     return SailManifestEntity
-      .count({ where: { profileId } });
+      .count({ where: { profile_id } });
   }
 
   @Get('/in-progress')
-  async inProgressSails(@Query('profileId') profileId, @Query('limit') take: 10) {
+  async inProgressSails(@Query('profile_id') profile_id, @Query('limit') take: 10) {
     const sails = await SailEntity.find({
       take,
       where: { status: SailStatus.Started },
     });
 
-    if (profileId) {
-      return sails.filter(sail => sail.manifest.some(manifest => manifest.profileId === profileId));
+    if (profile_id) {
+      return sails.filter(sail => sail.manifest.some(manifest => manifest.profile_id === profile_id));
     }
 
     return sails;
   }
 
   @Get('/past')
-  async pastSails(@Query('profileId') profileId, @Query('limit') take: 5) {
-    if (profileId) {
+  async pastSails(@Query('profile_id') profile_id, @Query('limit') take: 5) {
+    if (profile_id) {
       const manifests = await SailManifestEntity.find({
         take,
         relations: ['sail'],
-        where: { profileId },
+        where: { profile_id },
       });
 
       return manifests
-        .filter(manifest => new Date(manifest.sail.end).getTime() < Date.now())
+        .filter(manifest => new Date(manifest.sail.end_at).getTime() < Date.now())
         .map(manifest => manifest.sail);
     }
 
     return SailEntity.find({
       take,
-      where: { end: LessThan(new Date()) },
+      where: { end_at: LessThan(new Date()) },
     });
   }
 
   @Get('/future')
-  async futureSails(@Query('profileId') profileId: string, @Query('limit') take: 5) {
+  async futureSails(@Query('profile_id') profile_id: string, @Query('limit') take: 5) {
     const sails = await SailEntity
       .find(
         {
           take,
           where: {
             status: SailStatus.New,
-            start: MoreThan(new Date()),
+            start_at: MoreThan(new Date()),
           },
-          order: { start: 'ASC' },
+          order: { start_at: 'ASC' },
         }
       );
 
-    if (profileId) {
-      return sails.filter(sail => sail.manifest.some(manifest => manifest.profileId === profileId));
+    if (profile_id) {
+      return sails.filter(sail => sail.manifest.some(manifest => manifest.profile_id === profile_id));
     }
 
     return sails;
   }
 
   @Get('/today')
-  async todaySails(@Query('profileId') profileId) {
+  async todaySails(@Query('profile_id') profile_id) {
     const sails = await SailEntity
       .find(
         { where: `
-          (DATE_FORMAT(start, "%Y-%m-%d") = CURDATE() OR DATE_FORMAT(end, "%Y-%m-%d") = CURDATE()) OR
-          (start < NOW() AND end > NOW())
+          (to_char(start_at, 'YYYY-MM-DD') = CURRENT_DATE::text OR to_char(end_at, 'YYYY-MM-DD') = CURRENT_DATE::text) OR
+          (start_at < NOW() AND end_at > NOW())
           ` }
       );
 
-    if (profileId) {
-      return sails.filter(sail => sail.manifest.some(manifest => manifest.profileId === profileId));
+    if (profile_id) {
+      return sails.filter(sail => sail.manifest.some(manifest => manifest.profile_id === profile_id));
     }
 
     return sails;
   }
 
   @Get('/all')
-  async allSails(@Query('profileId') profileId) {
+  async allSails(@Query('profile_id') profile_id) {
     const manifests = await SailManifestEntity
       .find({
         relations: ['sail'],
-        where: { profileId },
+        where: { profile_id },
       });
 
     return manifests.map(manifest => manifest.sail);

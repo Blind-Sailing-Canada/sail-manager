@@ -36,9 +36,9 @@ import { SailManifestService } from './sail-manifest.service';
 export class SailManifestController {
   constructor(public service: SailManifestService) { }
 
-  @Post('/update-sail-manifest/:sailId')
-  async updateSailManifest(@Param('sailId') sailId: string, @Body() manifests: Partial<SailManifest>[]) {
-    const sail = await SailEntity.findOne(sailId);
+  @Post('/update-sail-manifest/:sail_id')
+  async updateSailManifest(@Param('sail_id') sail_id: string, @Body() manifests: Partial<SailManifest>[]) {
+    const sail = await SailEntity.findOne(sail_id);
 
     const currentManifestId = sail.manifest.map(manifest => manifest.id).filter(Boolean);
     const updatedManifestId = manifests.map(manifest => manifest.id).filter(Boolean);
@@ -59,24 +59,24 @@ export class SailManifestController {
       await SailManifestEntity.getRepository().delete(manifestsToDelete);
     }
 
-    return SailEntity.findOne(sailId);
+    return SailEntity.findOne(sail_id);
   }
 
   @Get('/available-sailors')
-  async getAvailableSailors(@Query('start') start: string, @Query('end') end: string, @Query('sailorName') sailorName, @Query('limit') limit = 5 ) {
+  async getAvailableSailors(@Query('start_at') start: string, @Query('end_at') end: string, @Query('sailorName') sailorName, @Query('limit') limit = 5 ) {
     const sailsDuringThisTime = await SailEntity
       .find(
         {
           relations: ['manifest'],
           where: `
-            (start <= "${start}" AND end >= "${start}") OR
-            (start <= "${end}" AND end >= "${end}")
+            (start_at <= "${start}" AND end_at >= "${start}") OR
+            (start_at <= "${end}" AND end_at >= "${end}")
           `,
         }
       );
 
     const notAvailable = sailsDuringThisTime.reduce((red, sail) => {
-      return red.concat(sail.manifest.map(manifest => manifest.profileId));
+      return red.concat(sail.manifest.map(manifest => manifest.profile_id));
     }, []).filter(Boolean);
 
     let availableSailors;

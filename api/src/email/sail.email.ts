@@ -14,26 +14,26 @@ export class SailEmail {
 
     sail
       .manifest
-      .filter(sailor => sailor.profileId)
+      .filter(sailor => sailor.profile_id)
       .forEach(sailor => sendTo.add(sailor.profile.email));
 
     coordinators.forEach(coordinator => sendTo.add(coordinator.email));
 
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
-      subject: `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entityNumber} was cancelled`,
+      subject: `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entity_number} was cancelled`,
       content:  `
         <html>
           <body>
-            <h2>Your sail "${sail.name}" (#${sail.entityNumber}) was cancelled.</h2>
+            <h2>Your sail "${sail.name}" (#${sail.entity_number}) was cancelled.</h2>
             <div>
-              <label>Cancellation reason: </label> <span>${sail.cancelReason}</span>
+              <label>Cancellation reason: </label> <span>${sail.cancel_reason}</span>
             </div>
             <div>
-              <label>Cancelled by: </label> <span>${sail.cancelledBy.name}</span>
+              <label>Cancelled by: </label> <span>${sail.cancelled_by.name}</span>
             </div>
             <div>
-              <label>Cancelled at: </label> <span>${toLocalDate(sail.cancelledAt)}</span>
+              <label>Cancelled at: </label> <span>${toLocalDate(sail.cancelled_at)}</span>
             </div>
             <br>
             <a href="${DOMAIN}/sails/view/${sail.id}">View sail</a>
@@ -52,16 +52,16 @@ export class SailEmail {
 
     sail
       .manifest
-      .filter(sailor => sailor.profileId)
+      .filter(sailor => sailor.profile_id)
       .forEach(sailor => sendTo.add(sailor.profile.email));
 
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
-      subject: `COMPANY_NAME_SHORT_HEADER: New comment on sail #${sail.entityNumber}`,
+      subject: `COMPANY_NAME_SHORT_HEADER: New comment on sail #${sail.entity_number}`,
       content: `
         <html>
           <body>
-            <h2>New comment for "${sail.name}" (#${sail.entityNumber})</h2>
+            <h2>New comment for "${sail.name}" (#${sail.entity_number})</h2>
             <div>
               <label>Comment: </label> <span>${comment.comment}</span>
             </div>
@@ -69,7 +69,7 @@ export class SailEmail {
               <label>Posted by: </label> <span>${comment.author.name}</span>
             </div>
             <div>
-              <label>Posted at: </label> <span>${toLocalDate(comment.createdAt)}</span>
+              <label>Posted at: </label> <span>${toLocalDate(comment.created_at)}</span>
             </div>
             <br>
             <a href="${DOMAIN}/sails/view/${sail.id}">View sail</a>
@@ -103,7 +103,7 @@ export class SailEmail {
 
   private sailList(sails: Sail[]): string {
     return sails.reduce((red, sail) => {
-      return `<li><a href="${DOMAIN}/sails/view/${sail.id}">${toLocalDate(sail.start)} - ${sail.name} on ${sail.boat.name}</a></li>`;
+      return `<li><a href="${DOMAIN}/sails/view/${sail.id}">${toLocalDate(sail.start_at)} - ${sail.name} on ${sail.boat.name}</a></li>`;
     }, '');
   }
 }

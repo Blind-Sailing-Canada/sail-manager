@@ -33,22 +33,22 @@ export const finishUploading = createAction(CDN_ACTION_TYPES.FINISH_UPLOADING, p
 export const resetCDN = createAction(CDN_ACTION_TYPES.RESET, props<{ progress: number }>());
 export const startUploading = createAction(CDN_ACTION_TYPES.START_UPLOADING, props<{ fileName: string }>());
 export const uploadBoatPicture = createAction(
-  CDN_ACTION_TYPES.UPLOAD_BOAT_PICTURE, props<{ file: File, boatId: string, notify?: boolean }>());
+  CDN_ACTION_TYPES.UPLOAD_BOAT_PICTURE, props<{ file: File, boat_id: string, notify?: boolean }>());
 export const uploadMaintenancePicture = createAction(
   CDN_ACTION_TYPES.UPLOAD_MAINTENANCE_PICTURE, props<{ file: File, notify?: boolean }>());
 export const uploadProfilePicture = createAction(
-  CDN_ACTION_TYPES.UPLOAD_PROFILE_PICTURE, props<{ file: File, profileId: string, notify?: boolean }>());
+  CDN_ACTION_TYPES.UPLOAD_PROFILE_PICTURE, props<{ file: File, profile_id: string, notify?: boolean }>());
 export const uploadProgress = createAction(CDN_ACTION_TYPES.UPLOAD_PROGRESS, props<{ fileName: string, progress: number }>());
 export const uploadError = createAction(CDN_ACTION_TYPES.UPLOAD_ERROR, props<{ fileName: string, message: string, error?: Error }>());
 export const deleteError = createAction(CDN_ACTION_TYPES.DELETE_ERROR, props<{ filePath: string, message: string, error?: Error }>());
 export const deleteFile = createAction(CDN_ACTION_TYPES.DELETE_FILE, props<{ filePath: string, notify?: boolean }>());
 export const deletedFile = createAction(CDN_ACTION_TYPES.DELETED_FILE, props<{ filePath: string }>());
 export const uploadDepartureInstructionsPicture = createAction(
-  CDN_ACTION_TYPES.UPLOAD_DEPARTURE_INSTRUCTIONS_PICTURE, props<{ file: File, boatId: string, notify?: boolean }>());
+  CDN_ACTION_TYPES.UPLOAD_DEPARTURE_INSTRUCTIONS_PICTURE, props<{ file: File, boat_id: string, notify?: boolean }>());
 export const uploadArrivalInstructionsPicture = createAction(
-  CDN_ACTION_TYPES.UPLOAD_ARRIVAL_INSTRUCTIONS_PICTURE, props<{ file: File, boatId: string, notify?: boolean }>());
+  CDN_ACTION_TYPES.UPLOAD_ARRIVAL_INSTRUCTIONS_PICTURE, props<{ file: File, boat_id: string, notify?: boolean }>());
 export const uploadSailPicture = createAction(
-  CDN_ACTION_TYPES.UPLOAD_SAIL_PICTURE, props<{ file: File, sailId: string, notify?: boolean }>());
+  CDN_ACTION_TYPES.UPLOAD_SAIL_PICTURE, props<{ file: File, sail_id: string, notify?: boolean }>());
 export const uploadChallengePicture = createAction(
   CDN_ACTION_TYPES.UPLOAD_CHALLENGE_PICTURE, props<{ file: File, challengeId: string, notify?: boolean }>());
 export const uploadBoatMaintenancePicture = createAction(

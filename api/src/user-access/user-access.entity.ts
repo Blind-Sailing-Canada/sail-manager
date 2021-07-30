@@ -23,7 +23,7 @@ export class UserAccessEntity extends BaseModelEntity implements UserAccess {
 
   @Column()
   @Index()
-  profileId: string;
+  profile_id: string;
 
   @OneToOne(() => ProfileEntity, (profile) => profile.access, { onDelete: 'CASCADE' })
   @JoinColumn()

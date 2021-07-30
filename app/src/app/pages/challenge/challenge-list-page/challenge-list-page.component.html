@@ -66,18 +66,18 @@
       <mat-panel-title>
         {{challenge.name}}
       </mat-panel-title>
-      <mat-panel-description *ngIf="!!challenge.endDate && !windowServer.isSmallWidth">
-        Due {{challenge.endDate | humanDate}}
+      <mat-panel-description *ngIf="!!challenge.end_date && !windowServer.isSmallWidth">
+        Due {{challenge.end_date | humanDate}}
       </mat-panel-description>
     </mat-expansion-panel-header>
     <h3>Challenge Details:</h3>
     <div>
       <label>Start date: </label>
-      <span>{{challenge.startDate | humanDate}}</span>
+      <span>{{challenge.start_date | humanDate}}</span>
     </div>
     <div>
       <label>End date: </label>
-      <span>{{challenge.endDate | humanDate}}</span>
+      <span>{{challenge.end_date | humanDate}}</span>
     </div>
     <pre>{{challenge.description}}</pre>
     <mat-action-row>

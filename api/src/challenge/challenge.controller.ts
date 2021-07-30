@@ -33,7 +33,7 @@ import { ChallengeService } from './challenge.service';
       'participants.participant': { eager: true },
       comments: { eager: true },
       pictures: { eager: true },
-      'pictures.postedBy': { eager: true },
+      'pictures.posted_by': { eager: true },
       'comments.author': {
         eager: true,
         alias: 'comment_author',
@@ -56,17 +56,17 @@ export class ChallengeController {
   constructor(public service: ChallengeService,
     @InjectQueue('challenge') private readonly challengeQueue: Queue) { }
 
-  @Patch('/:id/accomplished-by/:profileId')
-  async setAccomplishedBy(@User() user: JwtObject, @Param('id') id: string, @Param('profileId') profileId: string, @Body() note: {note: string}) {
-    if (user.profileId !== profileId && !user.access.access[UserAccessFields.JudgeChallenge]) {
+  @Patch('/:id/accomplished-by/:profile_id')
+  async setAccomplishedBy(@User() user: JwtObject, @Param('id') id: string, @Param('profile_id') profile_id: string, @Body() note: {note: string}) {
+    if (user.profile_id !== profile_id && !user.access.access[UserAccessFields.JudgeChallenge]) {
       throw new UnauthorizedException();
     }
 
     await ChallengeParticipantEntity.update({
-      challengeId: id,
-      participantId: profileId,
+      challenge_id: id,
+      participant_id: profile_id,
     }, {
-      finishedAt: new Date(),
+      finished_at: new Date(),
       note:  note.note,
     });
 
@@ -74,26 +74,26 @@ export class ChallengeController {
   }
 
   @Post('/:id/join')
-  async join(@User() user: JwtObject, @Param('id') challengeId: string) {
+  async join(@User() user: JwtObject, @Param('id') challenge_id: string) {
     const participant = ChallengeParticipantEntity.create();
-    participant.participantId = user.profileId;
-    participant.challengeId = challengeId;
+    participant.participant_id = user.profile_id;
+    participant.challenge_id = challenge_id;
 
     await participant
       .save()
       .then(() => this.challengeQueue.add('new-attendee', {
-        challengeId,
-        profileId: user.profileId,
+        challenge_id,
+        profile_id: user.profile_id,
       }));
 
-    return ChallengeEntity.findOne({ where: { id: challengeId } });
+    return ChallengeEntity.findOne({ where: { id: challenge_id } });
   }
 
   @Delete('/:id/leave')
   async leave(@User() user: JwtObject, @Param('id') id: string) {
     await ChallengeParticipantEntity.delete({
-      participantId: user.profileId,
-      challengeId: id,
+      participant_id: user.profile_id,
+      challenge_id: id,
     });
 
     return ChallengeEntity.findOne({ where: { id } });
@@ -104,9 +104,9 @@ export class ChallengeController {
     const newPictures = MediaEntity.create(pictures);
 
     newPictures.forEach(picture => {
-      picture.mediaForId = id;
-      picture.mediaForType = ChallengeEntity.name;
-      picture.postedById = user.profileId;
+      picture.media_for_id = id;
+      picture.media_for_type = ChallengeEntity.name;
+      picture.posted_by_id = user.profile_id;
     });
 
     await MediaEntity.save(newPictures);
@@ -121,7 +121,7 @@ export class ChallengeController {
     } else {
       await MediaEntity.delete({
         id: pictureId,
-        postedById: user.profileId,
+        posted_by_id: user.profile_id,
       });
     }
 
@@ -129,22 +129,22 @@ export class ChallengeController {
   }
 
   @Post('/:id/comments')
-  async postComment(@User() user: JwtObject, @Param('id') challengeId: string, @Body() commentInfo: Partial<Comment>) {
+  async postComment(@User() user: JwtObject, @Param('id') challenge_id: string, @Body() commentInfo: Partial<Comment>) {
     const comment = CommentEntity.create(commentInfo);
 
-    comment.authorId = user.profileId;
-    comment.createdAt = new Date();
-    comment.commentableId = challengeId;
-    comment.commentableType = ChallengeEntity.name;
+    comment.author_id = user.profile_id;
+    comment.created_at = new Date();
+    comment.commentable_id = challenge_id;
+    comment.commentable_type = ChallengeEntity.name;
 
     await comment
       .save()
       .then((savedComment) => this.challengeQueue.add('new-comment', {
-        challengeId,
+        challenge_id,
         commentId: savedComment.id,
       }));
 
-    return ChallengeEntity.findOne({ where: { id: challengeId } });
+    return ChallengeEntity.findOne({ where: { id: challenge_id } });
   }
 
   @Delete('/:id/comments/:commentId')
@@ -157,8 +157,8 @@ export class ChallengeController {
       await CommentEntity.delete(commentId);
     } else {
       await CommentEntity.delete({
-        authorId: user.profileId,
-        commentableId: id,
+        author_id: user.profile_id,
+        commentable_id: id,
         id: commentId,
       });
     }

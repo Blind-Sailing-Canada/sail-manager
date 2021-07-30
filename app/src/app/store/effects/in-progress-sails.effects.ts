@@ -60,7 +60,7 @@ export class InProgressSailsEffects {
         action => this.sailService.fetchInProgressSailsForUser(action.id, action.query)
           .pipe(
             mergeMap(sails => of(
-              putInProgressSailsForUser({ sails, profileId: action.id }),
+              putInProgressSailsForUser({ sails, profile_id: action.id }),
               action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'refreshed' } }),
             )),
             catchError(errorCatcher('Failed to get your in-progress sails.'))

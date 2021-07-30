@@ -34,7 +34,7 @@ export class DeparturePageComponent extends SailChecklistBasePageComponent {
     @Inject(MatDialog) dialog: MatDialog,
   ) {
     super(store, route, router, fb, dialog);
-    this.checklistType = 'before';
+    this.checklist_type = 'before';
 
     if (fb) {
       this.buildForm();
@@ -45,7 +45,7 @@ export class DeparturePageComponent extends SailChecklistBasePageComponent {
     this.goTo(
       [maintenanceRoute],
       {
-        queryParams: { boatId: this.sail.boat.id },
+        queryParams: { boat_id: this.sail.boat.id },
       }
     );
   }
@@ -55,9 +55,9 @@ export class DeparturePageComponent extends SailChecklistBasePageComponent {
       [sailChecklistsRoute],
       {
         queryParams: {
-          boatId: this.sail.boat.id,
+          boat_id: this.sail.boat.id,
           boatName: this.sail.boat.name,
-          excludeSailId: this.sailId
+          excludeSailId: this.sail_id
         },
       }
     );

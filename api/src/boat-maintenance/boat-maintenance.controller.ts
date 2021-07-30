@@ -37,11 +37,11 @@ import { BoatMaintenanceService } from './boat-maintenance.service';
     alwaysPaginate: false,
     join: {
       boat: { eager: true },
-      requestedBy: { eager: true },
-      resolvedBy: { eager: true },
+      requested_by: { eager: true },
+      resolved_by: { eager: true },
       comments: { eager: true },
       pictures: { eager: true },
-      'pictures.postedBy': { eager: true },
+      'pictures.posted_by': { eager: true },
       'comments.author': {
         eager: true,
         alias: 'comment_author',
@@ -72,9 +72,9 @@ export class BoatMaintenanceController {
     const newPictures = MediaEntity.create(pictures);
 
     newPictures.forEach(picture => {
-      picture.mediaForId = id;
-      picture.mediaForType = BoatMaintenanceEntity.name;
-      picture.postedById = user.profileId;
+      picture.media_for_id = id;
+      picture.media_for_type = BoatMaintenanceEntity.name;
+      picture.posted_by_id = user.profile_id;
     });
 
     await MediaEntity.save(newPictures);
@@ -97,7 +97,7 @@ export class BoatMaintenanceController {
     ) {
       shouldDelete = true;
     } else {
-      shouldDelete = picture.postedById === user.profileId;
+      shouldDelete = picture.posted_by_id === user.profile_id;
     }
 
     if (shouldDelete) {
@@ -115,10 +115,10 @@ export class BoatMaintenanceController {
   async postComment(@User() user: JwtObject, @Param('id') id: string, @Body() commentInfo: Partial<Comment>) {
     const comment = CommentEntity.create(commentInfo);
 
-    comment.authorId = user.profileId;
-    comment.createdAt = new Date();
-    comment.commentableId = id;
-    comment.commentableType = BoatMaintenanceEntity.name;
+    comment.author_id = user.profile_id;
+    comment.created_at = new Date();
+    comment.commentable_id = id;
+    comment.commentable_type = BoatMaintenanceEntity.name;
 
     const savedComment = await comment.save();
 
@@ -142,8 +142,8 @@ export class BoatMaintenanceController {
       await CommentEntity.delete(commentId);
     } else {
       await CommentEntity.delete({
-        authorId: user.profileId,
-        commentableId: id,
+        author_id: user.profile_id,
+        commentable_id: id,
         id: commentId,
       });
     }

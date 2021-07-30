@@ -5,12 +5,12 @@ import { SailorRole } from './sailor-role';
 
 export interface SailManifest extends Base {
   attended: boolean;
-  personName: string;
+  guest_of: Profile;
+  guest_of_id: string;
+  person_name: string;
   profile: Profile;
-  profileId: string;
+  profile_id: string;
   sail: Sail;
-  sailId: string;
-  sailorRole: SailorRole;
-  guestOfId: string;
-  guestOf: Profile;
+  sail_id: string;
+  sailor_role: SailorRole;
 }

@@ -26,15 +26,15 @@ export class SailCommentsController {
   async postComment(@User() user: JwtObject, @Param('id') id: string, @Body() commentInfo: Partial<Comment>) {
     const comment = CommentEntity.create(commentInfo);
 
-    comment.authorId = user.profileId;
-    comment.createdAt = new Date();
-    comment.commentableId = id;
-    comment.commentableType = SailEntity.name;
+    comment.author_id = user.profile_id;
+    comment.created_at = new Date();
+    comment.commentable_id = id;
+    comment.commentable_type = SailEntity.name;
 
     const savedComment = await comment.save();
 
     this.sailQueue.add('new-comment', {
-      sailId: id,
+      sail_id: id,
       commentId: savedComment.id,
     });
 
@@ -51,8 +51,8 @@ export class SailCommentsController {
       await CommentEntity.delete(commentId);
     } else {
       await CommentEntity.delete({
-        authorId: user.profileId,
-        commentableId: id,
+        author_id: user.profile_id,
+        commentable_id: id,
         id: commentId,
       });
     }

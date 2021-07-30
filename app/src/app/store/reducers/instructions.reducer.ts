@@ -21,15 +21,15 @@ const reducerHandler = createReducer(
 
     instructionsArray
       .forEach((instructions) => {
-        const boatId = instructions.boatId;
+        const boat_id = instructions.boat_id;
 
-        if (!updatedInstructions[boatId]) {
-          updatedInstructions[boatId] = {};
+        if (!updatedInstructions[boat_id]) {
+          updatedInstructions[boat_id] = {};
         }
 
-        const instructionType = instructions.instructionsType;
+        const instruction_type = instructions.instructionsType;
 
-        updatedInstructions[boatId][instructionType] = instructions;
+        updatedInstructions[boat_id][instruction_type] = instructions;
       });
 
     return updatedInstructions;

@@ -25,7 +25,7 @@ export class ChallengeEntity extends BaseModelEntity implements Challenge {
     default: ChallengeEntity.name,
     nullable: false,
   })
-  entityType: string;
+  entity_type: string;
 
   @Column()
   description: string;
@@ -43,13 +43,19 @@ export class ChallengeEntity extends BaseModelEntity implements Challenge {
   status: ChallengeStatus;
 
   @Column({ default: 0 })
-  maxOccupancy: number;
+  max_occupancy: number;
 
-  @Column({ nullable: true })
-  startDate: Date;
+  @Column({
+    nullable: true,
+    type: 'timestamptz',
+  })
+  start_date: Date;
 
-  @Column({ nullable: true })
-  endDate: Date;
+  @Column({
+    nullable: true,
+    type: 'timestamptz',
+  })
+  end_date: Date;
 
   @OneToMany(() => ChallengeParticipantEntity, (participant) => participant.challenge, { eager: true })
   participants: ChallengeParticipantEntity[];

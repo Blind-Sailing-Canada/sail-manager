@@ -23,7 +23,7 @@ export class ViewUserSailsGuard implements CanActivate {
   ) { }
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
-    const can: boolean = await this.can(route.params.profileId);
+    const can: boolean = await this.can(route.params.profile_id);
 
     if (!can) {
       this.router.navigate(['/']);
@@ -32,7 +32,7 @@ export class ViewUserSailsGuard implements CanActivate {
     return can;
   }
 
-  private async can(profileId: string): Promise<boolean> {
+  private async can(profile_id: string): Promise<boolean> {
     if (this.tokenService.isExpired) {
       return false;
     }
@@ -46,7 +46,7 @@ export class ViewUserSailsGuard implements CanActivate {
     const isAdmin = tokenData.roles.includes(ProfileRole.Admin);
     const access = tokenData.access.access || {};
 
-    const hasAccess = profileId === tokenData.profileId || access[UserAccessFields.ViewUserSails];
+    const hasAccess = profile_id === tokenData.profile_id || access[UserAccessFields.ViewUserSails];
 
     return isAdmin || hasAccess;
 

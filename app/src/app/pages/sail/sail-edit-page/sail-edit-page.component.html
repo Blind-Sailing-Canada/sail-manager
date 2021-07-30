@@ -1,5 +1,5 @@
-<h4 *ngIf="!creatingNewSail && sails[sailId] === null">Looks like this sail is missing.</h4>
-<mat-card *ngIf="creatingNewSail || sails[sailId]">
+<h4 *ngIf="!creatingNewSail && sails[sail_id] === null">Looks like this sail is missing.</h4>
+<mat-card *ngIf="creatingNewSail || sails[sail_id]">
   <mat-card-header>
     <div mat-card-avatar>
       <mat-icon>cloud_queue</mat-icon>
@@ -52,7 +52,7 @@
     aria-hidden="true"
     id="step1"
     tabindex="-1"
-  >Step 1 of 9: Sail's Name{{sailId ? ' (required)' : ' (leave blank for default name)'}}</h4>
+  >Step 1 of 9: Sail's Name{{sail_id ? ' (required)' : ' (leave blank for default name)'}}</h4>
   <form [formGroup]="sailForm">
     <mat-form-field>
       <input
@@ -97,9 +97,9 @@
   ></app-date-time-form>
   <mat-error
     tabindex="0"
-    *ngFor="let error of startDateErrors"
+    *ngFor="let error of start_dateErrors"
   >{{error}}</mat-error>
-  <p tabindex="0">Start date preview: {{getTime("start")}}</p>
+  <p tabindex="0">Start date preview: {{getTime("start_at")}}</p>
 </ng-template>
 <ng-template #sailend>
   <h4 tabindex="0">Step 4 of 9: Sail's End</h4>
@@ -110,9 +110,9 @@
   ></app-date-time-form>
   <mat-error
     tabindex="0"
-    *ngFor="let error of endDateErrors"
+    *ngFor="let error of end_dateErrors"
   >{{error}}</mat-error>
-  <p tabindex="0">End date preview: {{getTime("end")}}</p>
+  <p tabindex="0">End date preview: {{getTime("end_at")}}</p>
 </ng-template>
 <ng-template #sailboat>
   <h4 tabindex="0">Step 5 of 9: Sail's Boat (required)</h4>
@@ -122,7 +122,7 @@
   >Current boat: {{boatName || 'not assigned'}}</p>
   <button
     (click)="setSailBoat()"
-    *ngIf="sailForm.controls['boatId']?.value"
+    *ngIf="sailForm.controls['boat_id']?.value"
     mat-raised-button
     title="Unset sail's boat"
   >Unset</button>
@@ -156,9 +156,9 @@
   <form [formGroup]="sailForm">
     <mat-form-field>
       <input
-        [max]="maxOccupancy"
+        [max]="max_occupancy"
         aria-labeledby="step6"
-        formControlName="maxOccupancy"
+        formControlName="max_occupancy"
         matInput
         title="Sail's maxium number of people"
         min="2"
@@ -169,7 +169,7 @@
   </form>
   <mat-error
     tabindex="0"
-    *ngFor="let error of maxOccupancyErrors"
+    *ngFor="let error of max_occupancyErrors"
   >{{error}}</mat-error>
 </ng-template>
 <ng-template #sailskipper>

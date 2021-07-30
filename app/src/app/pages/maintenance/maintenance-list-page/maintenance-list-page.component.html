@@ -4,7 +4,7 @@
       <mat-icon>build</mat-icon>
     </div>
     <mat-card-title
-      *ngIf="!boatId"
+      *ngIf="!boat_id"
       id="pageTitle"
       role="heading"
       tabindex="0"
@@ -12,7 +12,7 @@
       Maintenance
     </mat-card-title>
     <mat-card-title
-      *ngIf="boatId"
+      *ngIf="boat_id"
       id="pageTitle"
       role="heading"
       tabindex="0"
@@ -37,7 +37,7 @@
         <ng-container *ngTemplateOutlet="TemplateNewRequests"></ng-container>
         <mat-action-row>
           <button
-            (click)="fetchRecentNewRequests(boatId, true)"
+            (click)="fetchRecentNewRequests(boat_id, true)"
             mat-raised-button
             title="Refresh new maintenance requests list"
           >Refresh</button>
@@ -52,7 +52,7 @@
         <ng-container *ngTemplateOutlet="TemplateInprogressRequests"></ng-container>
         <mat-action-row>
           <button
-            (click)="fetchRecentInProgressRequests(boatId, true)"
+            (click)="fetchRecentInProgressRequests(boat_id, true)"
             mat-raised-button
             title="Refresh in progress maintenance requests list"
           >Refresh</button>
@@ -67,7 +67,7 @@
         <ng-container *ngTemplateOutlet="TemplateResolvedRequests"></ng-container>
         <mat-action-row>
           <button
-            (click)="fetchRecentResolvedRequests(boatId, true)"
+            (click)="fetchRecentResolvedRequests(boat_id, true)"
             mat-raised-button
             title="Refresh resolved maintenance requests list"
           >Refresh</button>

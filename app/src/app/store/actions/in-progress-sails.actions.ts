@@ -19,5 +19,5 @@ export const fetchInProgressSailsForUser = createAction(
   props<{ id: string, query?: string, notify?: boolean }>());
 export const putInProgressSailsForAll = createAction(IN_PROGRESS_SAILS_ACTION_TYPES.PUT_ALL, props<{ sails: Sail[] }>());
 export const putInProgressSailsForUser = createAction(
-  IN_PROGRESS_SAILS_ACTION_TYPES.PUT_USER, props<{ profileId: string, sails: Sail[] }>());
+  IN_PROGRESS_SAILS_ACTION_TYPES.PUT_USER, props<{ profile_id: string, sails: Sail[] }>());
 export const resetInProgressSails = createAction(IN_PROGRESS_SAILS_ACTION_TYPES.RESET);

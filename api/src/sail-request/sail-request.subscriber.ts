@@ -12,7 +12,7 @@ export class SailRequestSubscriber implements EntitySubscriberInterface<SailRequ
 
   constructor(
     @InjectConnection() readonly connection: Connection,
-    @InjectQueue('sail-request') private readonly sailRequestQueue: Queue
+    @InjectQueue('sail-request') private readonly sail_requestQueue: Queue
   ) {
     connection.subscribers.push(this);
   }
@@ -22,7 +22,7 @@ export class SailRequestSubscriber implements EntitySubscriberInterface<SailRequ
   }
 
   afterInsert(event: InsertEvent<SailRequestEntity>) {
-    this.sailRequestQueue.add('new-sail-request', { sailRequestId: event.entity.id });
+    this.sail_requestQueue.add('new-sail-request', { sail_request_id: event.entity.id });
   }
 
 }

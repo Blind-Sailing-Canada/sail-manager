@@ -60,7 +60,7 @@ export class ClinicViewPageComponent extends BasePageComponent implements OnInit
   }
 
   public get shouldEnableEditButton(): boolean {
-    return !!this.user.access[UserAccessFields.EditClinic] || this.user.profile.id === this.clinic.instructorId;
+    return !!this.user.access[UserAccessFields.EditClinic] || this.user.profile.id === this.clinic.instructor_id;
   }
 
   public editClinic(): void {
@@ -68,40 +68,40 @@ export class ClinicViewPageComponent extends BasePageComponent implements OnInit
   }
 
   public get shouldEnableEnrollButton(): boolean {
-    return !(this.clinic.attendance || []).some(attendant => attendant.attendantId === this.user.profile.id);
+    return !(this.clinic.attendance || []).some(attendant => attendant.attendant_id === this.user.profile.id);
   }
 
   public enrollInClinic(): void {
-    this.dispatchAction(enrollInClinic({ clinicId: this.clinicId, profileId: this.user.profile.id, notify: true }));
+    this.dispatchAction(enrollInClinic({ clinicId: this.clinicId, profile_id: this.user.profile.id, notify: true }));
   }
 
   public disenrollFromClinic(): void {
-    this.dispatchAction(leaveClinic({ clinicId: this.clinicId, profileId: this.user.profile.id, notify: true }));
+    this.dispatchAction(leaveClinic({ clinicId: this.clinicId, profile_id: this.user.profile.id, notify: true }));
   }
 
   public get shouldEnableDisenrollButton(): boolean {
-    return (this.clinic.attendance || []).some(attendant => attendant.attendantId === this.user.profile.id);
+    return (this.clinic.attendance || []).some(attendant => attendant.attendant_id === this.user.profile.id);
   }
 
-  public removeUserFromClinic(profileId: string): void {
-    this.dispatchAction(removeUserFromClinic({ profileId, clinicId: this.clinicId, notify: true }));
+  public removeUserFromClinic(profile_id: string): void {
+    this.dispatchAction(removeUserFromClinic({ profile_id, clinicId: this.clinicId, notify: true }));
   }
 
-  public graduateUserFromClinic(profileId: string): void {
-    this.dispatchAction(graduateUserFromClinic({ profileId, clinicId: this.clinicId, notify: true }));
+  public graduateUserFromClinic(profile_id: string): void {
+    this.dispatchAction(graduateUserFromClinic({ profile_id, clinicId: this.clinicId, notify: true }));
   }
 
   public get shouldEnableEditEnrollmentButton(): boolean {
-    return !!this.user.access[UserAccessFields.EditClinic] || this.user.profile.id === this.clinic.instructorId;
+    return !!this.user.access[UserAccessFields.EditClinic] || this.user.profile.id === this.clinic.instructor_id;
   }
 
   public get shouldEnableGraduateButton(): boolean {
-    return this.clinic.instructorId === this.user.profile.id;
+    return this.clinic.instructor_id === this.user.profile.id;
     return true;
   }
 
   public get shouldEnableRemoveButton(): boolean {
-    return !!this.user.access[UserAccessFields.EditClinic] || this.clinic.instructorId === this.user.profile.id;
+    return !!this.user.access[UserAccessFields.EditClinic] || this.clinic.instructor_id === this.user.profile.id;
   }
 
 }

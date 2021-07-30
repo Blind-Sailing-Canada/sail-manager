@@ -35,19 +35,19 @@ export class SailChecklistViewPageComponent extends SailChecklistBasePageCompone
     super(store, route, router, undefined, dialog);
   }
   public get editSailchecklistRouteLink(): string {
-    return editSailChecklistRoute(this.sailId);
+    return editSailChecklistRoute(this.sail_id);
   }
 
   public get departureSailchecklistRouteLink(): string {
-    return departureSailChecklistRoute(this.sailId);
+    return departureSailChecklistRoute(this.sail_id);
   }
 
   public get arrivalSailchecklistRouteLink(): string {
-    return arrivalSailChecklistRoute(this.sailId);
+    return arrivalSailChecklistRoute(this.sail_id);
   }
 
   public gotToPeopleManifestRouteLink(): void {
-    this.goTo([viewSailPeopleManifestRoute(this.sailId)]);
+    this.goTo([viewSailPeopleManifestRoute(this.sail_id)]);
   }
 
   public get shouldAllowEdit(): boolean {
@@ -56,7 +56,7 @@ export class SailChecklistViewPageComponent extends SailChecklistBasePageCompone
     return this
       .sail
       .manifest
-      .filter(sailor => sailor.profileId === user.id)
-      .some(sailor => [SailorRole.Crew, SailorRole.Skipper].includes(sailor.sailorRole));
+      .filter(sailor => sailor.profile_id === user.id)
+      .some(sailor => [SailorRole.Crew, SailorRole.Skipper].includes(sailor.sailor_role));
   }
 }

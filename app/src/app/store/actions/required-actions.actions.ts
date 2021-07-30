@@ -16,11 +16,11 @@ export enum REQUIRED_ACTIONS_ACTION_TYPES {
 export const fetchNewRequiredActionsForUser = createAction(
   REQUIRED_ACTIONS_ACTION_TYPES.FETCH_NEW_ACTIONS_FOR_USER, props<{userId: string}>());
 export const completeRequiredAction = createAction(
-  REQUIRED_ACTIONS_ACTION_TYPES.COMPLETE_REQUIRED_ACTION, props<{actionId: string, notify?: boolean}>());
+  REQUIRED_ACTIONS_ACTION_TYPES.COMPLETE_REQUIRED_ACTION, props<{action_id: string, notify?: boolean}>());
 export const dismissRequiredAction = createAction(
-  REQUIRED_ACTIONS_ACTION_TYPES.DISMISS_REQUIRED_ACTION, props<{actionId: string, notify?: boolean}>());
+  REQUIRED_ACTIONS_ACTION_TYPES.DISMISS_REQUIRED_ACTION, props<{action_id: string, notify?: boolean}>());
 export const putRequiredAction = createAction(
-  REQUIRED_ACTIONS_ACTION_TYPES.PUT_REQUIRED_ACTION, props<{actionId: string, action: Partial<RequiredAction>}>());
+  REQUIRED_ACTIONS_ACTION_TYPES.PUT_REQUIRED_ACTION, props<{action_id: string, action: Partial<RequiredAction>}>());
 export const putRequiredActions = createAction(
   REQUIRED_ACTIONS_ACTION_TYPES.PUT_REQUIRED_ACTIONS, props<{actions: Partial<RequiredAction>[]}>());
 export const resetRequiredActions = createAction(REQUIRED_ACTIONS_ACTION_TYPES.RESET);

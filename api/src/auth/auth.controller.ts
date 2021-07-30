@@ -94,19 +94,19 @@ export class AuthController {
       return 'piss off mate! third warning.';
     }
 
-    const profileId = user.profileId;
+    const profile_id = user.profile_id;
 
-    this.authService.logout(profileId);
+    this.authService.logout(profile_id);
     req.logout();
-    req.user = { userId: profileId };
+    req.user = { userId: profile_id };
   }
 
   @Get('login')
   @UseGuards(AuthGuard('jwt'), LoginGuard)
   login(@User() user: JwtObject): Promise<ProfileEntity> {
-    const profileId = user.profileId;
+    const profile_id = user.profile_id;
 
-    return ProfileEntity.findOne(profileId);
+    return ProfileEntity.findOne(profile_id);
   }
 
   @Get('login-firebase/:idToken')

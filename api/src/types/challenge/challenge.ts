@@ -8,11 +8,11 @@ export interface Challenge extends Base {
   badge: string;
   comments: Comment[];
   description: string;
-  endDate: Date;
-  maxOccupancy: number;
+  end_date: Date;
+  max_occupancy: number;
   name: string;
   participants: ChallengeParticipant[];
   pictures: Media[];
-  startDate: Date;
+  start_date: Date;
   status: ChallengeStatus;
 }

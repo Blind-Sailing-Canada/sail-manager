@@ -31,7 +31,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
   template: ''
 })
 export class SailChecklistBasePageComponent extends BasePageComponent implements OnInit {
-  protected checklistType?: string;
+  protected checklist_type?: string;
   public checklistForm: FormGroup;
 
   constructor(
@@ -60,11 +60,11 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
   }
 
   public get sail(): Sail {
-    return this.getSail(this.sailId);
+    return this.getSail(this.sail_id);
   }
 
-  public get sailId(): string {
-    return this.route.snapshot.params.sailId;
+  public get sail_id(): string {
+    return this.route.snapshot.params.sail_id;
   }
 
   public get beforeFormControls() {
@@ -80,7 +80,7 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
       .sail
       .boat
       .instructions
-      .find(instructions => instructions.instructionType === BoatInstructionType.Arrival)
+      .find(instructions => instructions.instruction_type === BoatInstructionType.Arrival)
       .instructions;
   }
 
@@ -89,15 +89,15 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
       .sail
       .boat
       .instructions
-      .find(instructions => instructions.instructionType === BoatInstructionType.Departure)
+      .find(instructions => instructions.instruction_type === BoatInstructionType.Departure)
       .instructions;
   }
 
   private updateForm(sail: Sail): void {
-    const before = sail.checklists.find(checklist => checklist.checklistType === SailChecklistType.Before);
+    const before = sail.checklists.find(checklist => checklist.checklist_type === SailChecklistType.Before);
     this.checklistForm.controls.before.patchValue(before);
 
-    const after = sail.checklists.find(checklist => checklist.checklistType === SailChecklistType.After);
+    const after = sail.checklists.find(checklist => checklist.checklist_type === SailChecklistType.After);
     this.checklistForm.controls.after.patchValue(after);
 
     const formManifest = this.checklistForm.controls.peopleManifest as FormArray;
@@ -105,9 +105,9 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
     formManifest.clear();
 
     sail.manifest.forEach(sailor => formManifest.push(this.fb.group({
-      guestOfName: this.fb.control(sailor.guestOf?.name),
-      personName: this.fb.control(sailor.personName),
-      sailorRole: this.fb.control(sailor.sailorRole),
+      guest_ofName: this.fb.control(sailor.guest_of?.name),
+      person_name: this.fb.control(sailor.person_name),
+      sailor_role: this.fb.control(sailor.sailor_role),
       attended: this.fb.control(sailor.attended || false),
       profile: this.fb.control(sailor.profile),
       id: this.fb.control(sailor.id),
@@ -125,35 +125,35 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
     let beforeForm = {};
     let afterForm = {};
 
-    if (this.checklistType === 'before' || this.checklistType === 'both') {
+    if (this.checklist_type === 'before' || this.checklist_type === 'both') {
       beforeForm = {
         before: this.fb.group({
           bilge: new FormControl(BilgeState.DID_NOT_CHECK),
           comments: new FormControl(),
-          fireExtinguisher: new FormControl(FireExtinguisherState.DID_NOT_CHECK),
+          fire_extinguisher: new FormControl(FireExtinguisherState.DID_NOT_CHECK),
           flares: new FormControl(FlaresState.DID_NOT_CHECK),
           fuel: new FormControl(FuelState.DID_NOT_CHECK),
           id: new FormControl(undefined),
-          sailDestination: new FormControl(undefined, Validators.required),
-          signedByCrew: new FormControl(),
-          signedBySkipper: new FormControl(),
+          sail_destination: new FormControl(undefined, Validators.required),
+          signed_by_crew: new FormControl(),
+          signed_by_skipper: new FormControl(),
           weather: new FormControl(undefined, Validators.required),
         }),
         peopleManifest: this.fb.array([]),
       };
     }
 
-    if (this.checklistType === 'after' || this.checklistType === 'both') {
+    if (this.checklist_type === 'after' || this.checklist_type === 'both') {
       afterForm = {
         after: this.fb.group({
           bilge: new FormControl(),
           comments: new FormControl(),
-          fireExtinguisher: new FormControl(),
+          fire_extinguisher: new FormControl(),
           flares: new FormControl(),
           fuel: new FormControl(),
           id: new FormControl(undefined),
-          signedByCrew: new FormControl(),
-          signedBySkipper: new FormControl(),
+          signed_by_crew: new FormControl(),
+          signed_by_skipper: new FormControl(),
         }),
       };
     }
@@ -203,6 +203,6 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
         {}
       ) as any;
 
-    this.dispatchAction(updateSailChecklists({ sailId: this.sailId, checklistsData: changedValue }));
+    this.dispatchAction(updateSailChecklists({ sail_id: this.sail_id, checklistsData: changedValue }));
   }
 }

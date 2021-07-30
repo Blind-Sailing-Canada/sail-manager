@@ -80,8 +80,8 @@ export class GoogleCalendarService {
 
     return SailEntity
       .update(sail.id, {
-        calendarId: createdEvent.id,
-        calendarLink: createdEvent.htmlLink,
+        calendar_id: createdEvent.id,
+        calendar_link: createdEvent.htmlLink,
       });
   }
 
@@ -90,14 +90,14 @@ export class GoogleCalendarService {
       await this.connect();
     }
 
-    if (!sail.calendarId) {
+    if (!sail.calendar_id) {
       this.logger.log(`cancelSailEvent: no calendar event for sail ${sail.id}`);
       return;
     }
 
     await SailEntity.update({ id: sail.id }, {
-      calendarId: null,
-      calendarLink: null,
+      calendar_id: null,
+      calendar_link: null,
     });
 
     return this.calendar
@@ -105,7 +105,7 @@ export class GoogleCalendarService {
       .delete({
         calendarId: CALENDAR_ID,
         sendNotifications: true,
-        eventId: sail.calendarId,
+        eventId: sail.calendar_id,
       });
 
   }
@@ -115,7 +115,7 @@ export class GoogleCalendarService {
       await this.connect();
     }
 
-    if (!sail.calendarId) {
+    if (!sail.calendar_id) {
       this.logger.log(`updateSailEvent: no calendar event for sail ${sail.id}`);
       return;
     }
@@ -124,7 +124,7 @@ export class GoogleCalendarService {
 
     return this.calendar.events.patch({
       calendarId: CALENDAR_ID,
-      eventId: sail.calendarId,
+      eventId: sail.calendar_id,
       requestBody: event,
       sendUpdates: 'all',
     });
@@ -135,7 +135,7 @@ export class GoogleCalendarService {
       await this.connect();
     }
 
-    if (!sail.calendarId) {
+    if (!sail.calendar_id) {
       this.logger.log(`joinSailEvent: no calendar event for sail ${sail.id}`);
       return Promise.resolve();
     }
@@ -144,7 +144,7 @@ export class GoogleCalendarService {
       .events
       .get({
         calendarId: CALENDAR_ID,
-        eventId: sail.calendarId,
+        eventId: sail.calendar_id,
       })
       .then(reponse => reponse.data);
 
@@ -165,7 +165,7 @@ export class GoogleCalendarService {
       .events
       .patch({
         calendarId: CALENDAR_ID,
-        eventId: sail.calendarId,
+        eventId: sail.calendar_id,
         requestBody: { attendees: currentAttendees },
         sendUpdates: 'all',
       });
@@ -176,7 +176,7 @@ export class GoogleCalendarService {
       await this.connect();
     }
 
-    if (!sail.calendarId) {
+    if (!sail.calendar_id) {
       this.logger.log(`leaveSailEvent: no calendar event for sail ${sail.id}`);
       return Promise.resolve();
     }
@@ -185,7 +185,7 @@ export class GoogleCalendarService {
       .events
       .get({
         calendarId: CALENDAR_ID,
-        eventId: sail.calendarId,
+        eventId: sail.calendar_id,
       })
       .then(reponse => reponse.data);
 
@@ -197,7 +197,7 @@ export class GoogleCalendarService {
       .events
       .patch({
         calendarId: CALENDAR_ID,
-        eventId: sail.calendarId,
+        eventId: sail.calendar_id,
         requestBody: { attendees: newAttendees },
         sendUpdates: 'all',
       });
@@ -205,25 +205,25 @@ export class GoogleCalendarService {
 
   private sailEvent(sail: Sail, message: string) {
     const attendees = sail.manifest.map(sailor => ({
-      displayName: sailor.personName,
+      displayName: sailor.person_name,
       email: sailor.profile?.email,
       resource: false,
     }));
 
-    if (sail.boat.calendarResourceId) {
+    if (sail.boat.calendar_resource_id) {
       attendees.push({
         resource: true,
         displayName: sail.boat.name,
-        email: sail.boat.calendarResourceId,
+        email: sail.boat.calendar_resource_id,
       });
     }
 
-    const skipperName = sail.manifest.find(sailor => sailor.sailorRole === SailorRole.Skipper)?.personName || 'n/a';
-    const crewnames = sail.manifest.filter(sailor => sailor.sailorRole === SailorRole.Crew).map(sailor => sailor.personName);
-    const sailorNames = sail.manifest.filter(sailor => sailor.sailorRole === SailorRole.Sailor).map(sailor => sailor.personName);
+    const skipperName = sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.person_name || 'n/a';
+    const crewnames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Crew).map(sailor => sailor.person_name);
+    const sailorNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Sailor).map(sailor => sailor.person_name);
 
     const event = {
-      'summary': `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entityNumber}: ${sail.name}`,
+      'summary': `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entity_number}: ${sail.name}`,
       'description': `
         <!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -234,8 +234,8 @@ export class GoogleCalendarService {
             <h2>Sail details</h2>
             <div><label>Name: </label>${sail.name}</div>
             <div><label>Description: </label>${sail.description || 'n/a'}</div>
-            <div><label>Start: </label>${toLocalDate(sail.start)}</div>
-            <div><label>End: </label>${toLocalDate(sail.end)}</div>
+            <div><label>Start: </label>${toLocalDate(sail.start_at)}</div>
+            <div><label>End: </label>${toLocalDate(sail.end_at)}</div>
             <div><label>Boat: ${sail.boat.name} </label></div>
             <div><label>Skipper: </label>${skipperName}</div>
             <div><label>Crew: </label>${crewnames.join(', ') || '-'}</div>
@@ -244,8 +244,8 @@ export class GoogleCalendarService {
           </body>
         </html>
       `.trim().replace(/\n/g,''),
-      'start': { 'dateTime': sail.start.toISOString() },
-      'end': { 'dateTime': sail.end.toISOString() },
+      'start': { 'dateTime': sail.start_at.toISOString() },
+      'end': { 'dateTime':sail.end_at.toISOString() },
       'attendees': attendees,
       'reminders': { 'useDefault': true },
     };

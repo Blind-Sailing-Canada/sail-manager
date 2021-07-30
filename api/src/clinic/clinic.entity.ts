@@ -38,19 +38,25 @@ export class ClinicEntity extends BaseModelEntity implements Clinic {
   status: ClinicStatus;
 
   @Column({ default: 0 })
-  maxOccupancy: number;
+  max_occupancy: number;
 
-  @Column({ nullable: true })
-  startDate: Date;
+  @Column({
+    nullable: true,
+    type: 'timestamptz',
+  })
+  start_date: Date;
 
-  @Column({ nullable: true })
-  endDate: Date;
+  @Column({
+    nullable: true,
+    type: 'timestamptz',
+  })
+  end_date: Date;
 
   @Column({
     nullable: true,
     default: null,
   })
-  instructorId: string;
+  instructor_id: string;
 
   @OneToOne(() => ProfileEntity, {
     eager: true,

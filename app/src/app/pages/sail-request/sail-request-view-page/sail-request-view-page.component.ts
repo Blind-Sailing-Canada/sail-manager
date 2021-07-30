@@ -25,8 +25,8 @@ export class SailRequestViewPageComponent extends SailRequestBasePageComponent {
     super(store, route, router, dialog);
   }
 
-  public viewSail(sailId: string) {
-    this.goTo([viewSailRoute(sailId)]);
+  public viewSail(sail_id: string) {
+    this.goTo([viewSailRoute(sail_id)]);
   }
 
   public get editSailRequestRoute(): string {
@@ -39,7 +39,7 @@ export class SailRequestViewPageComponent extends SailRequestBasePageComponent {
       return false;
     }
 
-    if (this.user.profile.id === this.sailRequest.requestedById) {
+    if (this.user.profile.id === this.sailRequest.requested_by_id) {
       return true;
     }
 

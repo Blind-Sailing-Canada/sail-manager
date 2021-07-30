@@ -33,10 +33,10 @@ export class UserAccessEffects {
       ofType(fetchUserAccess),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.userAccessService.getUserAccess(action.profileId)
+        action => this.userAccessService.getUserAccess(action.profile_id)
           .pipe(
-            map(returnedAccess => putUserAccess({ profileId: action.profileId, access: returnedAccess })),
-            catchError(errorCatcher(`Failed to fetch user access: ${action.profileId}`))
+            map(returnedAccess => putUserAccess({ profile_id: action.profile_id, access: returnedAccess })),
+            catchError(errorCatcher(`Failed to fetch user access: ${action.profile_id}`))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

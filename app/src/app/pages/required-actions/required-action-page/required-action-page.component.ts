@@ -25,7 +25,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class RequiredActionPageComponent extends BasePageComponent implements OnInit {
 
-  public requiredActionId: string;
+  public required_action_id: string;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -36,17 +36,17 @@ export class RequiredActionPageComponent extends BasePageComponent implements On
   }
 
   ngOnInit() {
-    this.requiredActionId = this.route.snapshot.params.id;
+    this.required_action_id = this.route.snapshot.params.id;
     this.subscribeToStoreSliceWithUser(STORE_SLICES.REQUIRED_ACTIONS, (state: RequiredActionsState) => {
-      const action = state.actions[this.requiredActionId];
+      const action = state.actions[this.required_action_id];
 
       if (action) {
-        switch (action.requiredActionType) {
+        switch (action.required_action_type) {
           case RequiredActionType.ReviewNewUser:
-            this.goTo([`${editProfilePrivilegesRoute(action.actionableId)}`], { queryParams: { completeRequiredAction: action.id } });
+            this.goTo([`${editProfilePrivilegesRoute(action.actionable_id)}`], { queryParams: { completeRequiredAction: action.id } });
             break;
           case RequiredActionType.RateSail:
-            this.goTo([`${submitFeedbackRoute(action.actionableId)}`], { queryParams: { completeRequiredAction: action.id } });
+            this.goTo([`${submitFeedbackRoute(action.actionable_id)}`], { queryParams: { completeRequiredAction: action.id } });
             break;
         }
       }
@@ -58,11 +58,11 @@ export class RequiredActionPageComponent extends BasePageComponent implements On
   }
 
   public get requiredAction(): RequiredAction {
-    if (!this.requiredActionId) {
+    if (!this.required_action_id) {
       return null;
     }
 
-    return this.requiredActionsState.actions[this.requiredActionId];
+    return this.requiredActionsState.actions[this.required_action_id];
   }
 
 }

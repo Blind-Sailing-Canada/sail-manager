@@ -49,7 +49,7 @@ import { SailNotificationDialogData } from '../../../models/sail-notification-di
 })
 export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
-  private sailId: string;
+  private sail_id: string;
   public passengerSpots: number[] = [];
   public sailPassengers: SailManifest[] = [];
   public sail: Sail;
@@ -69,15 +69,15 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return;
     }
 
-    this.sailId = this.route.snapshot.params.id;
+    this.sail_id = this.route.snapshot.params.id;
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
-      this.sail = this.getSail(this.sailId);
+      this.sail = this.getSail(this.sail_id);
 
       if (this.sail) {
-        this.passengerSpots = [].constructor((this.sail.maxOccupancy || 6) - 2);
+        this.passengerSpots = [].constructor((this.sail.max_occupancy || 6) - 2);
         this.sailPassengers = this.sail
           .manifest
-          .filter(sailor => sailor.sailorRole !== SailorRole.Skipper && sailor.sailorRole !== SailorRole.Crew)
+          .filter(sailor => sailor.sailor_role !== SailorRole.Skipper && sailor.sailor_role !== SailorRole.Crew)
           .map(sailor => sailor);
       }
 
@@ -99,19 +99,19 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
   }
 
   private sendNotification(notificationMessage, notificationType): void {
-    this.dispatchAction(sendSailNotification({ notificationMessage, notificationType, sailId: this.sailId, notify: true }));
+    this.dispatchAction(sendSailNotification({ notificationMessage, notificationType, sail_id: this.sail_id, notify: true }));
   }
 
   public postNewComment(comment: Comment): void {
-    this.dispatchAction(postSailComment({ comment, sailId: this.sailId, notify: true }));
+    this.dispatchAction(postSailComment({ comment, sail_id: this.sail_id, notify: true }));
   }
 
   public deleteComment(commentId: string): void {
-    this.dispatchAction(deleteSailComment({ commentId, sailId: this.sailId, notify: true }));
+    this.dispatchAction(deleteSailComment({ commentId, sail_id: this.sail_id, notify: true }));
   }
 
   public goToSailPicturesPage(): void {
-    this.goTo([viewSailPicturesRoute(this.sailId)]);
+    this.goTo([viewSailPicturesRoute(this.sail_id)]);
   }
 
   public get isSailCancelled(): boolean {
@@ -138,7 +138,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
     const is = this.sail
       .manifest
-      .some(sailor => sailor.profileId === this.user.profile.id && sailor.sailorRole === SailorRole.Skipper);
+      .some(sailor => sailor.profile_id === this.user.profile.id && sailor.sailor_role === SailorRole.Skipper);
 
     return is;
   }
@@ -150,7 +150,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
     const is = this.sail
       .manifest
-      .some(sailor => sailor.profileId === this.user.profile.id && sailor.sailorRole === SailorRole.Crew);
+      .some(sailor => sailor.profile_id === this.user.profile.id && sailor.sailor_role === SailorRole.Crew);
 
     return is;
   }
@@ -167,11 +167,11 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
   }
 
   public get viewSailFeedbackRouteLink(): string {
-    return listFeedbackRoute(this.sailId);
+    return listFeedbackRoute(this.sail_id);
   }
 
   public get viewSailPathsRouteLink(): string {
-    return listSailPathsRoute(this.sailId);
+    return listSailPathsRoute(this.sail_id);
   }
 
   public get canEditSail(): boolean {
@@ -195,14 +195,14 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
   private isUserInSail(sail: Sail = {} as Sail, user: User): boolean {
     let inSail = false;
 
-    inSail = sail.manifest.some(sailor => sailor.profileId === user.profile.id);
+    inSail = sail.manifest.some(sailor => sailor.profile_id === user.profile.id);
 
     return inSail;
   }
 
   public get isInPast() {
     const sail = this.sail;
-    const start = new Date(sail.start);
+    const start = new Date(sail.start_at);
     const now = new Date();
     const past = start.getTime() < now.getTime();
 
@@ -210,11 +210,11 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
   }
 
   public get sailSkipper(): Profile {
-    return this.sail.manifest.find(sailor => sailor.sailorRole === SailorRole.Skipper)?.profile;
+    return this.sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.profile;
   }
 
   public get sailCrew(): Profile {
-    return this.sail.manifest.find(sailor => sailor.sailorRole === SailorRole.Crew)?.profile;
+    return this.sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Crew)?.profile;
   }
 
   public get canJoinSail(): boolean {
@@ -263,7 +263,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return false;
     }
 
-    if (sail.manifest.some(sailor => sailor.sailorRole === SailorRole.Crew)) {
+    if (sail.manifest.some(sailor => sailor.sailor_role === SailorRole.Crew)) {
       return false;
     }
 
@@ -289,7 +289,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return false;
     }
 
-    if (sail.manifest.some(sailor => sailor.sailorRole === SailorRole.Skipper)) {
+    if (sail.manifest.some(sailor => sailor.sailor_role === SailorRole.Skipper)) {
       return false;
     }
 
@@ -329,13 +329,13 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
   }
 
   public cancelSail(): void {
-    this.goTo([cancelSailRoute(this.sailId)]);
+    this.goTo([cancelSailRoute(this.sail_id)]);
   }
 
   public get isSailFull(): boolean {
     const sail = this.sail;
 
-    return sail.manifest.length >= sail.maxOccupancy;
+    return sail.manifest.length >= sail.max_occupancy;
   }
 
   public editSailLink(id): string {
@@ -345,31 +345,31 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
   public joinSailAsCrew(): void {
     const sail = this.sail;
 
-    this.dispatchAction(joinSailAsCrew({ sailId: sail.id, notify: true }));
+    this.dispatchAction(joinSailAsCrew({ sail_id: sail.id, notify: true }));
   }
 
   public joinSailAsPassenger(): void {
     const sail = this.sail;
 
-    this.dispatchAction(joinSailAsPassenger({ sailId: sail.id, notify: true }));
+    this.dispatchAction(joinSailAsPassenger({ sail_id: sail.id, notify: true }));
   }
 
   public joinSailAsSkipper(): void {
     const sail = this.sail;
 
-    this.dispatchAction(joinSailAsSkipper({ sailId: sail.id, notify: true }));
+    this.dispatchAction(joinSailAsSkipper({ sail_id: sail.id, notify: true }));
   }
 
   public leaveSail(): void {
     const sail = this.sail;
 
-    this.dispatchAction(leaveSail({ sailId: sail.id, notify: true }));
+    this.dispatchAction(leaveSail({ sail_id: sail.id, notify: true }));
   }
 
   public getPassengers(sail: Sail): Profile[] {
     const passengers = sail
       .manifest
-      .filter(sailor => sailor.sailorRole !== SailorRole.Crew && sailor.sailorRole !== SailorRole.Skipper)
+      .filter(sailor => sailor.sailor_role !== SailorRole.Crew && sailor.sailor_role !== SailorRole.Skipper)
       .map(sailor => sailor.profile);
 
     return passengers;
@@ -389,12 +389,12 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return `${passenger.profile.name}. Click to open profile dialog.`;
     }
 
-    if (passenger && passenger.guestOf) {
-      return `${passenger.personName} (Guest of ${passenger.guestOf.name}).`;
+    if (passenger && passenger.guest_of) {
+      return `${passenger.person_name} (Guest of ${passenger.guest_of.name}).`;
     }
 
     if (passenger) {
-      return passenger.personName;
+      return passenger.person_name;
     }
 
     return '-empty-';
@@ -417,7 +417,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
     if (!sail
       .manifest
-      .find(sailor => sailor.profileId === this.user.profile.id && sailor.sailorRole === SailorRole.Skipper)) {
+      .find(sailor => sailor.profile_id === this.user.profile.id && sailor.sailor_role === SailorRole.Skipper)) {
       return false;
     }
 
@@ -431,11 +431,11 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return false;
     }
 
-    if (!sail.manifest.some(sailor => sailor.sailorRole === SailorRole.Skipper)) {
+    if (!sail.manifest.some(sailor => sailor.sailor_role === SailorRole.Skipper)) {
       return false;
     }
 
-    if (!sail.manifest.some(sailor => sailor.sailorRole === SailorRole.Crew)) {
+    if (!sail.manifest.some(sailor => sailor.sailor_role === SailorRole.Crew)) {
       return false;
     }
 
@@ -443,7 +443,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return false;
     }
 
-    const start = new Date(sail.start).getTime();
+    const start = new Date(sail.start_at).getTime();
     const now = new Date().getTime();
     const timeToStart = start - now;
 

@@ -83,13 +83,13 @@
   >Step 3 of 6: Challenge Start Date</h4>
   <form [formGroup]="form">
     <app-date-picker
-      controlName="startDate"
+      controlName="start_date"
       [form]="form"
       ariaLabel="Step 3 of 6: Challenge Start Date"
       tooltip="Challenge Start date"
     ></app-date-picker>
   </form>
-  <p>Start date preview: {{this.form.controls.startDate.value | formatDate}}</p>
+  <p>Start date preview: {{this.form.controls.start_date.value | formatDate}}</p>
 </ng-template>
 
 <ng-template #CHALLENGE_END_DATE_TEMPLATE>
@@ -100,13 +100,13 @@
   >Step 4 of 6: Challenge End Date</h4>
   <form [formGroup]="form">
     <app-date-picker
-      controlName="endDate"
+      controlName="end_date"
       [form]="form"
       ariaLabel="Step 4 of 6: Challenge End Date"
       tooltip="Challenge End date"
     ></app-date-picker>
   </form>
-  <p>End date preview: {{this.form.controls.endDate.value | formatDate}}</p>
+  <p>End date preview: {{this.form.controls.end_date.value | formatDate}}</p>
 </ng-template>
 
 <ng-template #CHALLENGE_BADGE_TEMPLATE>

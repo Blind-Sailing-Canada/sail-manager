@@ -65,6 +65,6 @@ export class FeedbackViewPageComponent extends BasePageComponent implements OnIn
   }
 
   public goToSail(): void {
-    this.viewSail(this.feedback?.sailId);
+    this.viewSail(this.feedback?.sail_id);
   }
 }

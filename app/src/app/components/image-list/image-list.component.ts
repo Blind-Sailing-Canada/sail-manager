@@ -57,6 +57,6 @@ export class ImageListComponent implements OnChanges {
       return false;
     }
 
-    return this.user.profile.id === picture.postedById || this.user.access[UserAccessFields.DeletePictures];
+    return this.user.profile.id === picture.posted_by_id || this.user.access[UserAccessFields.DeletePictures];
   }
 }

@@ -13,24 +13,24 @@ import { SailorRole } from '../types/sail-manifest/sailor-role';
 
 @Entity('sail-manifest')
 @Index('sail-profile-index', [
-  'sailId',
-  'profileId',
+  'sail_id',
+  'profile_id',
 ], { unique: true })
 export class SailManifestEntity extends BaseModelEntity implements SailManifest {
   @Column({ nullable: false })
   @Index()
-  sailId: string;
+  sail_id: string;
 
   @ManyToOne(() => SailEntity, sail => sail.manifest)
   sail: SailEntity
 
   @Column({ nullable: true })
   @Index()
-  profileId: string;
+  profile_id: string;
 
   @Column({ nullable: false })
   @Index()
-  personName: string;
+  person_name: string;
 
   @Column({
     nullable: false,
@@ -42,21 +42,21 @@ export class SailManifestEntity extends BaseModelEntity implements SailManifest 
     nullable: true,
     default: null,
   })
-  guestOfId: string;
+  guest_of_id: string;
 
   @ManyToOne(() => ProfileEntity, {
     nullable: true,
     eager: true,
   })
   @JoinColumn({
-    name: 'guestOfId',
+    name: 'guest_of_id',
     referencedColumnName: 'id',
   })
-  guestOf: ProfileEntity;
+  guest_of: ProfileEntity;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
   @JoinColumn({
-    name: 'profileId',
+    name: 'profile_id',
     referencedColumnName: 'id',
   })
   profile: ProfileEntity;
@@ -66,6 +66,6 @@ export class SailManifestEntity extends BaseModelEntity implements SailManifest 
     enum: SailorRole,
     type:  'enum',
   })
-  sailorRole: SailorRole;
+  sailor_role: SailorRole;
 
 }

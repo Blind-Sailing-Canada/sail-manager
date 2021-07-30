@@ -114,7 +114,7 @@
       <td
         tabindex="0"
         role="listitem"
-        attr.aria-label="Achievement {{i+1}} of {{profile.achievements.length}}: {{achievement.name}} ({{achievement.description}}), achieved on {{achievement.createdAt | humanDate}}."
+        attr.aria-label="Achievement {{i+1}} of {{profile.achievements.length}}: {{achievement.name}} ({{achievement.description}}), achieved on {{achievement.created_at | humanDate}}."
       >
         <img
           class="achievement-badge"
@@ -128,7 +128,7 @@
       <td
         aria-hidden="true"
         tabindex="-1"
-      >{{achievement.createdAt | humanDate}}</td>
+      >{{achievement.created_at | humanDate}}</td>
     </tr>
     <tr
       class="table-spacer"

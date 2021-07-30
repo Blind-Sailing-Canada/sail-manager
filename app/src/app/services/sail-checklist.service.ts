@@ -16,8 +16,8 @@ export class SailChecklistService {
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  public updateSailChecklists(sailId: string, checklists): Observable<Sail> {
-    return this.http.patch<Sail>(`${this.API_URL}/sail/${sailId}/update`, checklists);
+  public updateSailChecklists(sail_id: string, checklists): Observable<Sail> {
+    return this.http.patch<Sail>(`${this.API_URL}/sail/${sail_id}/update`, checklists);
   }
 
   public fetchOne(id: string): Observable<SailChecklist> {

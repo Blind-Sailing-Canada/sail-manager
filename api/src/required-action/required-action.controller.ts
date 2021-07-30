@@ -34,9 +34,9 @@ export class RequiredActionController {
     }
 
     return RequiredActionEntity.find({
-      order: { dueDate: 'ASC' },
+      order: { due_date: 'ASC' },
       where: {
-        assignedToId: user.profileId,
+        assigned_to_id: user.profile_id,
         status: RequiredActionStatus.New,
       },
     });

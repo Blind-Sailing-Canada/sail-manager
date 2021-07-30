@@ -3,8 +3,8 @@ import { Profile } from '../profile/profile';
 
 export interface Comment extends Base {
   author: Profile;
-  authorId: string;
+  author_id: string;
   comment: string;
-  commentableId: string;
-  commentableType: string;
+  commentable_id: string;
+  commentable_type: string;
 }

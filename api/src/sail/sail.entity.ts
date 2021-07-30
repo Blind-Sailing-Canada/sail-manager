@@ -23,7 +23,7 @@ import { SailStatus } from '../types/sail/sail-status';
 @Entity('sail')
 @Index([
   'id',
-  'entityType',
+  'entity_type',
 ])
 export class SailEntity extends BaseModelEntity implements Sail {
 
@@ -31,7 +31,7 @@ export class SailEntity extends BaseModelEntity implements Sail {
     nullable: true,
     unique: true,
   })
-  entityNumber: number;
+  entity_number: number;
 
   @Column({
     default: '',
@@ -44,13 +44,13 @@ export class SailEntity extends BaseModelEntity implements Sail {
     nullable: true,
     default: null,
   })
-  calendarId: string;
+  calendar_id: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  calendarLink: string;
+  calendar_link: string;
 
   @Column({
     length: 500,
@@ -68,29 +68,35 @@ export class SailEntity extends BaseModelEntity implements Sail {
   @Index()
   status: SailStatus
 
-  @Column({ nullable: false })
+  @Column({
+    nullable: false,
+    type: 'timestamptz',
+  })
   @Index()
-  start: Date;
+  start_at: Date;
 
-  @Column({ nullable: false })
+  @Column({
+    nullable: false,
+    type: 'timestamptz',
+  })
   @Index()
-  end: Date;
+  end_at: Date;
 
   @Column({ default: 6 })
-  maxOccupancy: number;
+  max_occupancy: number;
 
   @Column({ nullable: true })
-  cancelReason: string;
+  cancel_reason: string;
 
   @Column({ nullable: true })
-  cancelledById: string;
+  cancelled_by_id: string;
 
   @Column({
     default: SailEntity.name,
     nullable: false,
   })
   @Index()
-  entityType: string;
+  entity_type: string;
 
   @ManyToOne(() => ProfileEntity, undefined, {
     nullable: true,
@@ -98,13 +104,16 @@ export class SailEntity extends BaseModelEntity implements Sail {
     eager: true,
   })
   @JoinColumn()
-  cancelledBy: ProfileEntity;
+  cancelled_by: ProfileEntity;
 
-  @Column({ nullable: true })
-  cancelledAt: Date;
+  @Column({
+    nullable: true,
+    type: 'timestamptz',
+  })
+  cancelled_at: Date;
 
   @Column()
-  boatId: string;
+  boat_id: string;
 
   @ManyToOne(() => BoatEntity, boat => boat.sails, { eager: true })
   @Index()
@@ -130,10 +139,10 @@ export class SailEntity extends BaseModelEntity implements Sail {
     nullable: true,
     default: null,
   })
-  sailRequestId: string;
+  sail_request_id: string;
 
   @OneToOne(() => SailRequestEntity, { nullable: true })
-  sailRequest: SailRequestEntity;
+  sail_request: SailRequestEntity;
 
   @OneToMany(() => MediaEntity, (picture) => picture.sail, {
     createForeignKeyConstraints: false,
@@ -146,15 +155,15 @@ export class SailEntity extends BaseModelEntity implements Sail {
   async addEntityNumber() {
     const tableName = `"${SailEntity.getRepository().metadata.tableName}"`;
 
-    const entityNumber = await SailEntity
+    const entity_number = await SailEntity
       .getRepository()
       .createQueryBuilder(tableName)
-      .select(`MAX(${tableName}.entityNumber)`, 'max')
+      .select(`MAX(${tableName}.entity_number)`, 'max')
       .getRawOne();
 
-    const sailNumber = entityNumber.max + 1;
+    const sailNumber = entity_number.max + 1;
 
-    this.entityNumber = sailNumber;
+    this.entity_number = sailNumber;
 
     if (!`${this.name || ''}`.trim()) {
       this.name = `Sail #${sailNumber}`;

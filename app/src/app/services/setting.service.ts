@@ -16,11 +16,11 @@ export class SettingService {
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  public updateSettingForProfile(profileId: string, settings: Setting): Observable<Settings> {
-    return this.http.post<Settings>(`${this.API_URL}/for-user/${profileId}`, settings);
+  public updateSettingForProfile(profile_id: string, settings: Setting): Observable<Settings> {
+    return this.http.post<Settings>(`${this.API_URL}/for-user/${profile_id}`, settings);
   }
 
-  public fetchSettingsForProfile(profileId: string): Observable<Settings> {
-    return this.http.get<Settings>(`${this.API_URL}/for-user/${profileId}`);
+  public fetchSettingsForProfile(profile_id: string): Observable<Settings> {
+    return this.http.get<Settings>(`${this.API_URL}/for-user/${profile_id}`);
   }
 }

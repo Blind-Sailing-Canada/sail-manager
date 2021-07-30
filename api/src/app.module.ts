@@ -5,6 +5,13 @@ import {
 } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
+import { BullModule } from '@nestjs/bull';
+import {
+  RavenInterceptor, RavenModule
+} from 'nest-raven';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { BoatModule } from './boat/boat.module';
 import { ProfileModule } from './profile/profile.module';
 import { SailModule } from './sail/sail.module';
@@ -28,12 +35,6 @@ import { SailRequestInterestModule } from './sail-request-interest/sail-request-
 import { AchievementModule } from './achievement/achievement.module';
 import { SettingModule } from './setting/setting.module';
 import { EmailModule } from './email/email.module';
-import { ScheduleModule } from '@nestjs/schedule';
-import { BullModule } from '@nestjs/bull';
-import {
-  RavenInterceptor, RavenModule
-} from 'nest-raven';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 
 const DB_LOGGIN = [];
 
@@ -50,8 +51,10 @@ const DB_CONNECTION_META: ConnectionOptions = {
     // '**/*.entity.ts', // when debugging
     '**/*.entity.js',
   ],
-  synchronize: process.env.DB_SYNCHRONIZE === 'true',
+  synchronize: true,
+  ssl: true,
   extra: { ssl: { rejectUnauthorized: false } },
+  namingStrategy: new SnakeNamingStrategy(),
 };
 
 @Module({

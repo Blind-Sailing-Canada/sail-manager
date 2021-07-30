@@ -12,7 +12,7 @@ import { BaseQueueProcessor } from '../utils/base-queue-processor';
 export class SailRequestInterestProcessor extends BaseQueueProcessor {
 
   constructor(
-    private sailRequestEmail: SailRequestEmail,
+    private sail_requestEmail: SailRequestEmail,
     private emailService: GoogleEmailService
   ) {
     super();
@@ -20,9 +20,9 @@ export class SailRequestInterestProcessor extends BaseQueueProcessor {
 
   @Process('new-sail-request-interest')
   async sendInterestRequest(job: Job) {
-    const sailRequestInterest = await SailRequestInterestEntity.findOneOrFail(job.data.sailRequestInterestId, { relations: ['sailRequest'] });
+    const sail_requestInterest = await SailRequestInterestEntity.findOneOrFail(job.data.sail_requestInterestId, { relations: ['sail_request'] });
 
-    const email = await this.sailRequestEmail.newInterestSailRequest(sailRequestInterest);
+    const email = await this.sail_requestEmail.newInterestSailRequest(sail_requestInterest);
 
     await this.emailService.sendBccEmail(email);
   }

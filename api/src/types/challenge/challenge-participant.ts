@@ -4,9 +4,9 @@ import { Challenge } from './challenge';
 
 export interface ChallengeParticipant extends Base {
   participant: Profile;
-  participantId: string;
+  participant_id: string;
   challenge: Challenge;
-  challengeId: string;
-  finishedAt: Date;
+  challenge_id: string;
+  finished_at: Date;
   note: string;
 }

@@ -29,8 +29,8 @@ export class SettingJob {
     }
 
     const futureSails = await SailEntity.find({
-      where: { start: MoreThan(new Date()) },
-      order: { start: 'ASC' },
+      where: { start_at: MoreThan(new Date()) },
+      order: { start_at: 'ASC' },
       take: 10,
     });
 
@@ -60,8 +60,8 @@ export class SettingJob {
     }
 
     const futureSails = await SailEntity.find({
-      where: { start: MoreThan(new Date()) },
-      order: { start: 'ASC' },
+      where: { start_at: MoreThan(new Date()) },
+      order: { start_at: 'ASC' },
       take: 10,
     });
 
@@ -91,8 +91,8 @@ export class SettingJob {
     }
 
     const futureSails = await SailEntity.find({
-      where: { start: MoreThan(new Date()) },
-      order: { start: 'ASC' },
+      where: { start_at: MoreThan(new Date()) },
+      order: { start_at: 'ASC' },
       take: 10,
     });
 

@@ -5,5 +5,5 @@ import { Access } from './access';
 export interface UserAccess extends Base {
   access: Access;
   profile: Profile;
-  profileId: string;
+  profile_id: string;
 }

@@ -20,8 +20,8 @@ export class ClinicProcessor extends BaseQueueProcessor {
 
   @Process('new-attendee')
   async sendNewAttendee(job: Job) {
-    const clinic = await ClinicEntity.findOneOrFail(job.data.clinicId);
-    const attendee = await ProfileEntity.findOneOrFail(job.data.profileId);
+    const clinic = await ClinicEntity.findOneOrFail(job.data.clinic_id);
+    const attendee = await ProfileEntity.findOneOrFail(job.data.profile_id);
 
     const email = await this.clinicEmail.newAttendee(clinic, attendee);
 

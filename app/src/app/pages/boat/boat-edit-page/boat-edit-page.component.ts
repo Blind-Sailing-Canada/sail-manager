@@ -110,15 +110,15 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
     this.boatForm = this.fb.group({
       ballast: this.fb.control(undefined, Validators.required),
       beam: this.fb.control(undefined, Validators.required),
-      calendarResourceId: this.fb.control(undefined),
+      calendar_resource_id: this.fb.control(undefined),
       draft: this.fb.control(undefined, Validators.required),
-      hullType: this.fb.control(undefined, Validators.required),
-      jibSailArea: this.fb.control(undefined, Validators.required),
+      hull_type: this.fb.control(undefined, Validators.required),
+      jib_sail_area: this.fb.control(undefined, Validators.required),
       loa: this.fb.control(undefined, Validators.required),
       lwl: this.fb.control(undefined, Validators.required),
-      mainSailArea: this.fb.control(undefined, Validators.required),
+      main_sail_area: this.fb.control(undefined, Validators.required),
       material: this.fb.control(undefined, Validators.required),
-      maxOccupancy: this.fb.control(undefined, Validators.required),
+      max_occupancy: this.fb.control(undefined, Validators.required),
       model: this.fb.control(undefined),
       name: this.fb.control(undefined, Validators.required),
       phrf: this.fb.control(undefined, Validators.required),
@@ -131,16 +131,16 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
   }
 
   public get title(): string {
-    return this.boatId ? `Edit Boat Form` : 'New Boat Form';
+    return this.boat_id ? `Edit Boat Form` : 'New Boat Form';
   }
 
   public get boat(): Boat {
-    if (!this.boatId) {
+    if (!this.boat_id) {
       return;
     }
-    const boat = this.boats[this.boatId];
+    const boat = this.boats[this.boat_id];
     if (!boat && boat !== null) {
-      this.fetchBoat(this.boatId);
+      this.fetchBoat(this.boat_id);
     }
 
     return boat;
@@ -169,7 +169,7 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
     this.boatForm.markAsPristine();
   }
 
-  public get boatId(): string {
+  public get boat_id(): string {
     return this.route.snapshot.params.id;
   }
 
@@ -223,11 +223,11 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
 
   public uploadFileToCDN(files: File[]): void {
     this.fileToUpload = files[0];
-    this.dispatchAction(uploadBoatPicture({ file: files[0], boatId: this.boatId, notify: true }));
+    this.dispatchAction(uploadBoatPicture({ file: files[0], boat_id: this.boat_id, notify: true }));
   }
 
   public goToBoatInstructions(): void {
-    this.goTo([editBoatInstructionsRoute(this.boatId)]);
+    this.goTo([editBoatInstructionsRoute(this.boat_id)]);
   }
 
   public save(): void {
@@ -249,8 +249,8 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
 
     const boat: Boat = formData as Boat;
 
-    if (this.boatId) {
-      this.dispatchAction(updateBoat({ boat, id: this.boatId, }));
+    if (this.boat_id) {
+      this.dispatchAction(updateBoat({ boat, id: this.boat_id, }));
     } else {
       this.dispatchAction(createBoat({ boat }));
     }

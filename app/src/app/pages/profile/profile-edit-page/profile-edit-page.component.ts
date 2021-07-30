@@ -35,7 +35,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 export class ProfileEditPageComponent extends BasePageComponent implements OnInit {
 
   private fileToUpload: File;
-  private profileId: string;
+  private profile_id: string;
   public ProfileStatus = ProfileStatus;
   public profileForm: FormGroup;
   public profilePictureInputId = 'profilePictureInput';
@@ -49,7 +49,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   }
 
   ngOnInit() {
-    this.profileId = this.route.snapshot.params.id;
+    this.profile_id = this.route.snapshot.params.id;
 
     this.buildForm();
 
@@ -85,7 +85,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
     });
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES, (profilesState) => {
-      const profile = profilesState?.profiles[this.profileId];
+      const profile = profilesState?.profiles[this.profile_id];
       if (profile) {
         if (profile.status !== ProfileStatus.Registration && profile.status !== ProfileStatus.Approved) {
           this.goTo([FULL_ROUTES.ACCOUNT_REVIEW], undefined);
@@ -96,7 +96,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   }
 
   public get profile(): Profile {
-    return this.getProfile(this.profileId);
+    return this.getProfile(this.profile_id);
   }
 
   private buildForm(): void {
@@ -146,7 +146,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   public save(): void {
     if (this.profile.status === ProfileStatus.Registration) {
       const profile = this.profileForm.getRawValue();
-      this.dispatchAction(updateProfileInfo({ profile, id: this.profileId }));
+      this.dispatchAction(updateProfileInfo({ profile, id: this.profile_id }));
       return;
     }
 
@@ -161,7 +161,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
         },
         {}
       ) as any;
-    this.dispatchAction(updateProfileInfo({ id: this.profileId, profile: changedValue, notify: true }));
+    this.dispatchAction(updateProfileInfo({ id: this.profile_id, profile: changedValue, notify: true }));
   }
 
   public get isNewRegistration(): boolean {
@@ -178,6 +178,6 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
 
   public uploadFileToCDN(files: File[]): void {
     this.fileToUpload = files[0];
-    this.dispatchAction(uploadProfilePicture({ file: files[0], profileId: this.profileId, notify: true }));
+    this.dispatchAction(uploadProfilePicture({ file: files[0], profile_id: this.profile_id, notify: true }));
   }
 }

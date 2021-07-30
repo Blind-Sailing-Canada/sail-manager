@@ -48,12 +48,12 @@ export class CommentListComponent {
       return true;
     }
 
-    return comment.authorId === this.user.profile.id;
+    return comment.author_id === this.user.profile.id;
   }
 
   public generateCommentAriaLabel(index: number, comment: Comment): string {
     const author: Profile = comment.author;
-    const date = this.momentService.humanizeDateWithTime(comment.createdAt, false);
+    const date = this.momentService.humanizeDateWithTime(comment.created_at, false);
     const text = comment.comment;
 
     const label = `

@@ -25,7 +25,7 @@ export class ArrivalPageComponent extends SailChecklistBasePageComponent {
     @Inject(FormBuilder) fb: FormBuilder,
   ) {
     super(store, route, router, fb, null);
-    this.checklistType = 'after';
+    this.checklist_type = 'after';
     if (fb) {
       this.buildForm();
     }
@@ -35,7 +35,7 @@ export class ArrivalPageComponent extends SailChecklistBasePageComponent {
     this.goTo(
       [createMaintenanceRoute],
       {
-        queryParams: { boatId: this.sail.boat.id },
+        queryParams: { boat_id: this.sail.boat.id },
       }
     );
   }

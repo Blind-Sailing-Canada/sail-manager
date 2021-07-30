@@ -32,7 +32,7 @@ export class EditProfileGuard implements CanActivate {
     return can;
   }
 
-  private async can(profileId: string): Promise<boolean> {
+  private async can(profile_id: string): Promise<boolean> {
     if (this.tokenService.isExpired) {
       return false;
     }
@@ -46,7 +46,7 @@ export class EditProfileGuard implements CanActivate {
     const isAdmin = tokenData.roles.includes(ProfileRole.Admin);
     const access = tokenData.access?.access || {};
 
-    const hasAccess = profileId === tokenData.profileId || access[UserAccessFields.EditUserProfile];
+    const hasAccess = profile_id === tokenData.profile_id || access[UserAccessFields.EditUserProfile];
 
     return isAdmin || hasAccess;
 

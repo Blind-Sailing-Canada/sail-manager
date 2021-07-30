@@ -18,8 +18,8 @@ import { Comment } from '../types/comment/comment';
 
 @Entity('comment')
 @Index([
-  'commentableId',
-  'commentableType',
+  'commentable_id',
+  'commentable_type',
 ])
 @Tree('materialized-path')
 export class CommentEntity extends BaseModelEntity implements Comment  {
@@ -28,16 +28,16 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
 
   @Column()
   @Index()
-  authorId: string;
+  author_id: string;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
   author: ProfileEntity
 
   @Column({ nullable: true })
-  commentableId: string;
+  commentable_id: string;
 
   @Column({ nullable: true })
-  commentableType: string;
+  commentable_type: string;
 
   @TreeChildren()
   replies: CommentEntity[];
@@ -48,12 +48,12 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   @ManyToOne(() => SailEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
     {
-      name: 'commentableId',
+      name: 'commentable_id',
       referencedColumnName: 'id',
     },
     {
-      name: 'commentableType',
-      referencedColumnName: 'entityType',
+      name: 'commentable_type',
+      referencedColumnName: 'entity_type',
     },
   ])
   sail: SailEntity
@@ -61,25 +61,25 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   @ManyToOne(() => BoatMaintenanceEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
     {
-      name: 'commentableId',
+      name: 'commentable_id',
       referencedColumnName: 'id',
     },
     {
-      name: 'commentableType',
-      referencedColumnName: 'entityType',
+      name: 'commentable_type',
+      referencedColumnName: 'entity_type',
     },
   ])
-  boatMaintenance: BoatMaintenanceEntity
+  boat_maintenance: BoatMaintenanceEntity
 
   @ManyToOne(() => ChallengeEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
     {
-      name: 'commentableId',
+      name: 'commentable_id',
       referencedColumnName: 'id',
     },
     {
-      name: 'commentableType',
-      referencedColumnName: 'entityType',
+      name: 'commentable_type',
+      referencedColumnName: 'entity_type',
     },
   ])
   challenge: ChallengeEntity

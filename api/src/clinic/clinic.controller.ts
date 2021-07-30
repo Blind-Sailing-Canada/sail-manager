@@ -45,81 +45,81 @@ export class ClinicController {
     public service: ClinicService,
     @InjectQueue('clinic') private readonly cliniQueue: Queue) { }
 
-  @Patch('/:clinicId/enroll/:profileId')
-  async enroll(@Param('clinicId') clinicId: string, @Param('profileId') profileId: string) {
+  @Patch('/:clinic_id/enroll/:profile_id')
+  async enroll(@Param('clinic_id') clinic_id: string, @Param('profile_id') profile_id: string) {
     const count = await ClinicAttendanceEntity.count({ where: {
-      clinicId,
-      attendantId: profileId,
+      clinic_id,
+      attendant_id: profile_id,
     } });
 
     if (!count) {
       const newAttendant = ClinicAttendanceEntity.create({
-        clinicId,
-        attendantId: profileId,
+        clinic_id,
+        attendant_id: profile_id,
       });
 
       await newAttendant
         .save()
         .then(() => this.cliniQueue.add('new-attendee', {
-          clinicId,
-          profileId,
+          clinic_id,
+          profile_id,
         }));
     }
 
-    const clinic = await ClinicEntity.findOne({  id: clinicId });
+    const clinic = await ClinicEntity.findOne({  id: clinic_id });
 
     return clinic;
   }
 
-  @Delete('/:clinicId/leave/:profileId')
-  async disenroll(@Param('clinicId') clinicId: string, @Param('profileId') profileId: string) {
+  @Delete('/:clinic_id/leave/:profile_id')
+  async disenroll(@Param('clinic_id') clinic_id: string, @Param('profile_id') profile_id: string) {
     const enrollment = await ClinicAttendanceEntity.findOne({
-      clinicId,
-      attendantId: profileId,
+      clinic_id,
+      attendant_id: profile_id,
     });
 
     if (enrollment) {
       await enrollment.remove();
     }
 
-    const clinic = await ClinicEntity.findOne({  id: clinicId });
+    const clinic = await ClinicEntity.findOne({  id: clinic_id });
 
     return clinic;
   }
 
-  @Delete('/:clinicId/remove-user/:profileId')
-  async removeUser(@User() user: JwtObject, @Param('clinicId') clinicId: string, @Param('profileId') profileId: string) {
+  @Delete('/:clinic_id/remove-user/:profile_id')
+  async removeUser(@User() user: JwtObject, @Param('clinic_id') clinic_id: string, @Param('profile_id') profile_id: string) {
     const enrollment = await ClinicAttendanceEntity.findOne({
-      clinicId,
-      attendantId: profileId,
+      clinic_id,
+      attendant_id: profile_id,
     }, { relations: ['clinic'] });
 
     if (enrollment) {
       const clinic = enrollment.clinic;
 
-      if (!user.roles.includes[ProfileRole.Admin] && clinic.instructorId !== user.profileId) {
+      if (!user.roles.includes[ProfileRole.Admin] && clinic.instructor_id !== user.profile_id) {
         throw new UnauthorizedException();
       }
 
       await enrollment.remove();
     }
 
-    const clinic = await ClinicEntity.findOne({  id: clinicId });
+    const clinic = await ClinicEntity.findOne({  id: clinic_id });
 
     return clinic;
   }
 
-  @Patch(':clinicId/graduate-user/:profileId')
-  async graduateUseFromClinic(@User() user: JwtObject, @Param('clinicId') clinicId: string, @Param('profileId') profileId: string) {
+  @Patch(':clinic_id/graduate-user/:profile_id')
+  async graduateUseFromClinic(@User() user: JwtObject, @Param('clinic_id') clinic_id: string, @Param('profile_id') profile_id: string) {
     const enrollment = await ClinicAttendanceEntity.findOne({
-      clinicId,
-      attendantId: profileId,
+      clinic_id,
+      attendant_id: profile_id,
     }, { relations: ['clinic'] });
 
     if (enrollment) {
       const clinic = enrollment.clinic;
 
-      if (!user.roles.includes[ProfileRole.Admin] && clinic.instructorId !== user.profileId) {
+      if (!user.roles.includes[ProfileRole.Admin] && clinic.instructor_id !== user.profile_id) {
         throw new UnauthorizedException();
       }
 
@@ -127,8 +127,8 @@ export class ClinicController {
         await transactionalEntityManager.remove(enrollment);
 
         const newAchievement = AchievementEntity.create({
-          profileId: profileId,
-          achievementId: clinicId,
+          profile_id: profile_id,
+          achievement_id: clinic_id,
           name: clinic.name,
           description: `Completed ${clinic.name} clinic.`,
           badge: clinic.badge,
@@ -139,6 +139,6 @@ export class ClinicController {
 
     }
 
-    return ClinicEntity.findOne({  id: clinicId });
+    return ClinicEntity.findOne({  id: clinic_id });
   }
 }

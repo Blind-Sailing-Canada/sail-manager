@@ -84,7 +84,7 @@
       [compareWith]="compareBoats"
       aria-labelledby="step1"
       aria-required="true"
-      formControlName="boatId"
+      formControlName="boat_id"
       matNativeControl
       required
     >
@@ -96,7 +96,7 @@
   </mat-form-field>
   <mat-error
       tabindex="0"
-      *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('boatId'))"
+      *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('boat_id'))"
     >{{error}}</mat-error>
 </ng-template>
 <ng-template #TemplateRequestDetails>
@@ -115,7 +115,7 @@
       cdkAutosizeMaxRows="10"
       cdkAutosizeMinRows="1"
       cdkTextareaAutosize
-      formControlName="requestDetails"
+      formControlName="request_details"
       matInput
       title="Request Details"
       required
@@ -123,7 +123,7 @@
   </mat-form-field>
   <mat-error
       tabindex="0"
-      *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('requestDetails'))"
+      *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('request_details'))"
     >{{error}}</mat-error>
 </ng-template>
 <ng-template #TemplateRequestServiceDetails>
@@ -143,7 +143,7 @@
       cdkAutosizeMaxRows="10"
       cdkAutosizeMinRows="1"
       cdkTextareaAutosize
-      formControlName="serviceDetails"
+      formControlName="service_details"
       matInput
       title="Service Details"
     >{{isServiceDetailsRequired}}</textarea>

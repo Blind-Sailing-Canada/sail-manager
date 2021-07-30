@@ -27,7 +27,7 @@ export class SailNotificationDialogComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      notificationType: this.fb.control(this.data.sail.calendarId ? 'update' : 'new', [Validators.required]),
+      notificationType: this.fb.control(this.data.sail.calendar_id ? 'update' : 'new', [Validators.required]),
       notificationMessage: this.fb.control(undefined),
     });
   }

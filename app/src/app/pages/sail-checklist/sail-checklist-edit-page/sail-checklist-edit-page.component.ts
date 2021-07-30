@@ -25,7 +25,7 @@ export class SailChecklistEditPageComponent extends SailChecklistBasePageCompone
   ) {
     super(store, route, router, fb);
 
-    this.checklistType = 'both';
+    this.checklist_type = 'both';
 
     if (fb) {
       this.buildForm();

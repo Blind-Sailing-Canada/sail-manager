@@ -17,19 +17,19 @@ const routes: Routes = [
     component: SailChecklistListPageComponent,
   },
   {
-    path: `${SUB_ROUTES.VIEW_SAIL_CHECKLIST}/:sailId`,
+    path: `${SUB_ROUTES.VIEW_SAIL_CHECKLIST}/:sail_id`,
     component: SailChecklistViewPageComponent,
   },
   {
-    path: `${SUB_ROUTES.EDIT_SAIL_CHECKLIST}/:sailId`,
+    path: `${SUB_ROUTES.EDIT_SAIL_CHECKLIST}/:sail_id`,
     component: SailChecklistEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.DEPARTURE_SAIL_CHECKLIST}/:sailId`,
+    path: `${SUB_ROUTES.DEPARTURE_SAIL_CHECKLIST}/:sail_id`,
     component: DeparturePageComponent,
   },
   {
-    path: `${SUB_ROUTES.ARRIVAL_SAIL_CHECKLIST}/:sailId`,
+    path: `${SUB_ROUTES.ARRIVAL_SAIL_CHECKLIST}/:sail_id`,
     component: ArrivalPageComponent,
   },
 ];

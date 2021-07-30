@@ -11,7 +11,7 @@
   </mat-card-header>
   <mat-card-actions>
     <a
-      *ngIf="boatId"
+      *ngIf="boat_id"
       mat-raised-button
       (click)="goToBoatInstructions()"
       title="Click to edit boat's instructions"
@@ -38,7 +38,7 @@
         [disabled]="shouldDisableUpdateButton"
         [title]="shouldDisableUpdateButton? '': 'Save boat information.'"
         mat-raised-button
-      >{{boatId? "Update" : "Create"}}</button>
+      >{{boat_id? "Update" : "Create"}}</button>
     </mat-action-row>
   </mat-card-footer>
 </mat-card>
@@ -101,7 +101,7 @@
     <input
       aria-labelledby="formStepOccupancy"
       aria-required="true"
-      formControlName="maxOccupancy"
+      formControlName="max_occupancy"
       matInput
       max="15"
       min="2"
@@ -118,11 +118,11 @@
     tabindex="-1"
   >Step 4 of 8: Boat's Pictures</h4>
   <p
-    *ngIf="!boatId"
+    *ngIf="!boat_id"
     tabindex="0"
   >You can upload boat pictures after creating this boat.</p>
   <app-image-form
-    *ngIf="boatId"
+    *ngIf="boat_id"
     (deleteClick)="deletePicture($event)"
     [form]="boatForm"
     [allowDelete]="true"
@@ -130,7 +130,7 @@
   >
   </app-image-form>
   <app-file-select
-    *ngIf="boatId"
+    *ngIf="boat_id"
     (action)="uploadFileToCDN($event)"
     [id]="boatPictureInputId"
     [progress]="uploadProgress"
@@ -203,7 +203,7 @@
     >Calendar Resource Id</mat-label>
     <input
       aria-labelledby="formStepCalendarResourceId"
-      formControlName="calendarResourceId"
+      formControlName="calendar_resource_id"
       matInput
       type="text"
     >
@@ -286,7 +286,7 @@
       <input
         aria-labelledby="formStepHull labelType"
         aria-required="true"
-        formControlName="hullType"
+        formControlName="hull_type"
         matInput
         required
         type="text"
@@ -331,7 +331,7 @@
       <input
         aria-labelledby="formStepHull labelJibSailArea"
         aria-required="true"
-        formControlName="jibSailArea"
+        formControlName="jib_sail_area"
         matInput
         required
         type="text"
@@ -346,7 +346,7 @@
       <input
         aria-labelledby="formStepHull labelMainSailArea"
         aria-required="true"
-        formControlName="mainSailArea"
+        formControlName="main_sail_area"
         matInput
         required
         type="text"

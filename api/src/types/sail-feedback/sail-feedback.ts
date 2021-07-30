@@ -5,5 +5,5 @@ export interface SailFeedback extends Base {
   feedback: string;
   rating: number;
   sail: Sail;
-  sailId: string;
+  sail_id: string;
 }

@@ -182,11 +182,11 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
   }
 
   public uploadDepartureInstructionsPictureToCDN(file: File): void {
-    this.dispatchAction(uploadDepartureInstructionsPicture({ file, boatId: this.boatId, notify: true }));
+    this.dispatchAction(uploadDepartureInstructionsPicture({ file, boat_id: this.boat_id, notify: true }));
   }
 
   public uploadArrivalInstructionsPictureToCDN(file: File): void {
-    this.dispatchAction(uploadDepartureInstructionsPicture({ file, boatId: this.boatId, notify: true }));
+    this.dispatchAction(uploadDepartureInstructionsPicture({ file, boat_id: this.boat_id, notify: true }));
   }
 
   public get shouldEnableSaveButton(): boolean {
@@ -215,6 +215,6 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
       };
     }
 
-    this.dispatchAction(updateBoatInstructions({ instructions, boatId: this.boatId, notify: true }));
+    this.dispatchAction(updateBoatInstructions({ instructions, boat_id: this.boat_id, notify: true }));
   }
 }

@@ -11,9 +11,9 @@ import { UserAccessEntity } from './user-access.entity';
 @UseGuards(JwtGuard, LoginGuard)
 export class UserAccessController {
 
-  @Get('/:profileId')
-  async getAccess(@Param('profileId') profileId: string) {
-    return UserAccessEntity.findOneOrFail({ where: { profileId } });
+  @Get('/:profile_id')
+  async getAccess(@Param('profile_id') profile_id: string) {
+    return UserAccessEntity.findOneOrFail({ where: { profile_id } });
   }
 
 }

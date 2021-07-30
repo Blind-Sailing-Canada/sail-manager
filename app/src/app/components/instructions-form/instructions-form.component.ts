@@ -26,7 +26,7 @@ export class InstructionsFormComponent implements OnChanges {
   @Input() public cdn: ICDNState = {};
   @Input() public controls: AbstractControl[];
   @Input() public form: FormGroup;
-  @Input() public instructionType: string;
+  @Input() public instruction_type: string;
   @Input() public subtitle: string;
   @Output() public addMore: EventEmitter<void> = new EventEmitter<void>();
   @Output() public remove: EventEmitter<number> = new EventEmitter<number>();
@@ -115,7 +115,7 @@ export class InstructionsFormComponent implements OnChanges {
   }
 
   public instructionFileInput(index: number): string {
-    return `${this.instructionType || 'instructions'}PictureInput${index}`;
+    return `${this.instruction_type || 'instructions'}PictureInput${index}`;
   }
 
   public uploadProgress(index: number): number {

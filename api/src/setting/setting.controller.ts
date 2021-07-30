@@ -17,17 +17,17 @@ import { SettingService } from './setting.service';
 export class SettingController {
   constructor(public service: SettingService) { }
 
-  @Post('/for-user/:profileId')
-  async saveSettinsForUser(@User() user: JwtObject, @Param('profileId') profileId: string, @Body() settingsInfo) {
+  @Post('/for-user/:profile_id')
+  async saveSettinsForUser(@User() user: JwtObject, @Param('profile_id') profile_id: string, @Body() settingsInfo) {
 
-    if (user.profileId !== profileId) {
+    if (user.profile_id !== profile_id) {
       throw new UnauthorizedException();
     }
 
-    let settings =  await SettingEntity.findOne({ profileId });
+    let settings =  await SettingEntity.findOne({ profile_id });
 
     if (!settings) {
-      settings = SettingEntity.create({ profileId });
+      settings = SettingEntity.create({ profile_id });
     }
 
     settings.settings = settingsInfo;
@@ -35,11 +35,11 @@ export class SettingController {
     return settings.save();
   }
 
-  @Get('/for-user/:profileId')
-  getSettinsForUser(@User() user: JwtObject, @Param('profileId') profileId: string) {
-    if (user.profileId !== profileId) {
+  @Get('/for-user/:profile_id')
+  getSettinsForUser(@User() user: JwtObject, @Param('profile_id') profile_id: string) {
+    if (user.profile_id !== profile_id) {
       throw new UnauthorizedException();
     }
-    return SettingEntity.findOne({ profileId });
+    return SettingEntity.findOne({ profile_id });
   }
 }

@@ -8,15 +8,15 @@ import { SailChecklistType } from './sail-checklist-type';
 
 export interface SailChecklist extends Base {
   bilge: BilgeState;
-  checklistType: SailChecklistType;
+  checklist_type: SailChecklistType;
   comments: string;
-  fireExtinguisher: FireExtinguisherState;
+  fire_extinguisher: FireExtinguisherState;
   flares: FlaresState;
   fuel: FuelState;
   sail: Sail;
-  sailDestination: string;
-  sailId: string;
-  signedByCrew: boolean;
-  signedBySkipper: boolean;
+  sail_destination: string;
+  sail_id: string;
+  signed_by_crew: boolean;
+  signed_by_skipper: boolean;
   weather: string;
 }

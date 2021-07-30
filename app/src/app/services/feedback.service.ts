@@ -18,8 +18,8 @@ export class FeedbackService {
     return this.http.post<SailFeedback>(this.API_URL, feedback);
   }
 
-  public fetchFeedbacksForSail(sailId: string): Observable<SailFeedback[]> {
-    return this.http.get<SailFeedback[]>(`${this.API_URL}?sailId=${sailId}`);
+  public fetchFeedbacksForSail(sail_id: string): Observable<SailFeedback[]> {
+    return this.http.get<SailFeedback[]>(`${this.API_URL}?sail_id=${sail_id}`);
   }
 
   public fetchFeedback(id: string): Observable<SailFeedback> {

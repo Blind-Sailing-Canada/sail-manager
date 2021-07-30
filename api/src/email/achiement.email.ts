@@ -18,7 +18,7 @@ export class AchievementEmail {
         <html>
           <body>
             <p>Good job! You earned "${achievement.name}" achievement.</p>
-            <p>You can view your achievement in your <a href="${DOMAIN}/profiles/view/${achievement.profileId}">profile</a></p>
+            <p>You can view your achievement in your <a href="${DOMAIN}/profiles/view/${achievement.profile_id}">profile</a></p>
           </body>
         </html>
       `.trim().replace(/\n/g, ''),

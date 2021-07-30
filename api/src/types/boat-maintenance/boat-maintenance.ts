@@ -8,19 +8,19 @@ import { Media } from '../media/media';
 
 export interface BoatMaintenance extends Base {
   boat: Boat;
-  boatId: string;
+  boat_id: string;
   comments: Comment[];
-  entityType: string;
-  requestDetails: string;
-  requestedBy: Profile;
-  requestedById: string;
-  resolutionDetails: string;
-  serviceDetails: string;
-  servicedAt: Date;
-  resolvedBy: Profile;
-  resolvedById: string;
+  entity_type: string;
+  request_details: string;
+  requested_by: Profile;
+  requested_by_id: string;
+  resolution_details: string;
+  service_details: string;
+  serviced_at: Date;
+  resolved_by: Profile;
+  resolved_by_id: string;
   sail: Sail;
-  sailId: string;
+  sail_id: string;
   status: BoatMaintenanceStatus;
   pictures: Media[];
 }

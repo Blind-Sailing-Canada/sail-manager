@@ -28,9 +28,9 @@ export class MaintenanceListComponent {
 
   public generateRequestDiscription(request: BoatMaintenance): string {
     const boatName = request.boat.name;
-    const requestDate = this.humanizeDateWithTime(request.createdAt);
-    const requesterName = request.requestedBy.name;
-    const requestDescription = request.requestDetails;
+    const requestDate = this.humanizeDateWithTime(request.created_at);
+    const requesterName = request.requested_by.name;
+    const requestDescription = request.request_details;
 
     const description = `
     Request details for boat

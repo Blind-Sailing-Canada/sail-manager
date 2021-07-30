@@ -112,7 +112,7 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
       return null;
     }
 
-    const instructor = this.form.get('instructorId').value;
+    const instructor = this.form.get('instructor_id').value;
 
     if (!instructor) {
       return;
@@ -123,18 +123,18 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
     return (profile || {}).name;
   }
 
-  public setInstructor(profileId?: string): void {
-    this.form.get('instructorId').setValue(profileId);
-    this.form.get('instructorId').markAsDirty();
+  public setInstructor(profile_id?: string): void {
+    this.form.get('instructor_id').setValue(profile_id);
+    this.form.get('instructor_id').markAsDirty();
     this.form.updateValueAndValidity();
     this.form.markAsDirty();
   }
 
-  public setInstructorByKey(event, profileId?: string): void {
+  public setInstructorByKey(event, profile_id?: string): void {
     if (event.key !== 'Enter') {
       return;
     }
-    this.setInstructor(profileId);
+    this.setInstructor(profile_id);
   }
 
   private updateForm(): void {
@@ -147,10 +147,10 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
     this.form = this.fb.group({
       badge: this.fb.control(null, Validators.required),
       description: this.fb.control(undefined, Validators.required),
-      instructorId: this.fb.control(null),
+      instructor_id: this.fb.control(null),
       name: this.fb.control(undefined, Validators.required),
-      startDate: this.fb.control(null),
-      endDate: this.fb.control(null),
+      start_date: this.fb.control(null),
+      end_date: this.fb.control(null),
     });
   }
 

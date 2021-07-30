@@ -14,12 +14,12 @@ import { Setting } from '../types/settings/setting';
 export class SettingEntity extends BaseModelEntity implements Settings {
   @Column()
   @Index({ unique: true })
-  profileId: string;
+  profile_id: string;
 
   @Column({
-    type: 'json',
+    type: 'jsonb',
     array: false,
-    default: () => '("{}")',
+    default: {},
     nullable: false,
   })
   settings: Setting;

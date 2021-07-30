@@ -23,24 +23,24 @@ export class ClinicService {
     return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}`, clinic);
   }
 
-  public enrollInClinic(clinicId: string, profileId: string): Observable<Clinic> {
-    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}/enroll/${profileId}`, undefined);
+  public enrollInClinic(clinicId: string, profile_id: string): Observable<Clinic> {
+    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}/enroll/${profile_id}`, undefined);
   }
 
-  public leaveClinic(clinicId: string, profileId: string): Observable<Clinic> {
-    return this.http.delete<Clinic>(`${this.API_URL}/${clinicId}/leave/${profileId}`);
+  public leaveClinic(clinicId: string, profile_id: string): Observable<Clinic> {
+    return this.http.delete<Clinic>(`${this.API_URL}/${clinicId}/leave/${profile_id}`);
   }
 
-  public addUserToClinic(clinicId: string, profileId: string): Observable<Clinic> {
-    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}/add-user/${profileId}`, undefined);
+  public addUserToClinic(clinicId: string, profile_id: string): Observable<Clinic> {
+    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}/add-user/${profile_id}`, undefined);
   }
 
-  public graduateUserFromClinic(clinicId: string, profileId: string): Observable<Clinic> {
-    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}/graduate-user/${profileId}`, undefined);
+  public graduateUserFromClinic(clinicId: string, profile_id: string): Observable<Clinic> {
+    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}/graduate-user/${profile_id}`, undefined);
   }
 
-  public removeUserToClinic(clinicId: string, profileId: string): Observable<Clinic> {
-    return this.http.delete<Clinic>(`${this.API_URL}/${clinicId}/remove-user/${profileId}`);
+  public removeUserToClinic(clinicId: string, profile_id: string): Observable<Clinic> {
+    return this.http.delete<Clinic>(`${this.API_URL}/${clinicId}/remove-user/${profile_id}`);
   }
 
   public fetchClinic(clinicId: string): Observable<Clinic> {

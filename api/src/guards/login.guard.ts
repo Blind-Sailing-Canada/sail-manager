@@ -22,18 +22,18 @@ export class LoginGuard implements CanActivate {
       return false;
     }
 
-    const profileId = user.profileId;
+    const profile_id = user.profile_id;
 
-    const cachedToken = this.authService.getCachedToken(profileId);
+    const cachedToken = this.authService.getCachedToken(profile_id);
 
     if (cachedToken) {
       return cachedToken.expireAt.getTime() > Date.now();
     }
 
-    const storedToken = await this.authService.getStoredToken(profileId);
+    const storedToken = await this.authService.getStoredToken(profile_id);
 
     if (storedToken && storedToken.expireAt.getTime() > Date.now()) {
-      this.authService.cacheToken(profileId, storedToken.token, storedToken.expireAt);
+      this.authService.cacheToken(profile_id, storedToken.token, storedToken.expireAt);
 
       return storedToken.expireAt.getTime() > Date.now();
     }

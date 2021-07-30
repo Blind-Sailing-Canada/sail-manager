@@ -57,10 +57,10 @@ export class FeedbackEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .fetchFeedbacksForSail(action.sailId)
+          .fetchFeedbacksForSail(action.sail_id)
           .pipe(
             concatMap(returnedFeedbacks => of(putFeedbacks({ feedbacks: returnedFeedbacks }))),
-            catchError(errorCatcher(`Failed to fetch feedbacks for sail ${action.sailId}.`))
+            catchError(errorCatcher(`Failed to fetch feedbacks for sail ${action.sail_id}.`))
           )
       ),
       tap(() => this.store.dispatch(finishLoading())),
@@ -80,7 +80,7 @@ export class FeedbackEffects {
               action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Feedback submitted.' } }),
               goTo({ route: '/' }),
             )),
-            catchError(errorCatcher(`Failed to submit feedback for ${action.feedback.sailId}.`))
+            catchError(errorCatcher(`Failed to submit feedback for ${action.feedback.sail_id}.`))
           )
       ),
       filter(action => action && action.type),

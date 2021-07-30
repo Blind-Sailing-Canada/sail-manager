@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CancelRequest {
   @ApiProperty()
-  cancelReason: string;
+  cancel_reason: string;
   @ApiProperty()
-  cancelledById: string;
+  cancelled_by_id: string;
 }

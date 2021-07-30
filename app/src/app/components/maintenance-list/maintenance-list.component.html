@@ -29,16 +29,16 @@
       class="sail-cell"
       aria-hidden="true"
     >
-      {{request.createdAt | humanDateWithTime: true }}
+      {{request.created_at | humanDateWithTime: true }}
     </td>
     <td aria-hidden="true">
       {{request.boat.name}}
     </td>
     <td aria-hidden="true">
-      {{request.requestedBy.name}}
+      {{request.requested_by.name}}
     </td>
     <td aria-hidden="true">
-      {{request.requestDetails}}
+      {{request.request_details}}
     </td>
   </tr>
 </app-table>

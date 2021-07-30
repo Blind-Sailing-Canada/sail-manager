@@ -55,12 +55,12 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
 
   private buildForm(): void {
     this.maintenanceResolveForm = this.fb.group({
-      serviceDetails: this.fb.control(this.maintenance.serviceDetails, Validators.required),
+      service_details: this.fb.control(this.maintenance.service_details, Validators.required),
     });
   }
 
   private updateForm(): void {
-    this.maintenanceResolveForm.controls.serviceDetails.patchValue(this.maintenance.serviceDetails);
+    this.maintenanceResolveForm.controls.service_details.patchValue(this.maintenance.service_details);
     this.maintenanceResolveForm.updateValueAndValidity();
     this.maintenanceResolveForm.markAsPristine();
   }
@@ -79,9 +79,9 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
 
   public submitMaintenaceResolveForm(): void {
     const maintenance: Partial<BoatMaintenance> = {
-      serviceDetails: this.maintenanceResolveForm.controls.serviceDetails.value.trim(),
-      servicedAt: new Date(),
-      resolvedById: this.user.profile.id,
+      service_details: this.maintenanceResolveForm.controls.service_details.value.trim(),
+      serviced_at: new Date(),
+      resolved_by_id: this.user.profile.id,
       status: BoatMaintenanceStatus.Resolved,
     };
 

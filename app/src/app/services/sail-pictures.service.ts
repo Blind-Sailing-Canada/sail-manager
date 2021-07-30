@@ -11,20 +11,20 @@ import { Media } from '../../../../api/src/types/media/media';
 })
 export class SailPicturesService {
 
-  private readonly API_URL = (sailId: string) => `/api/sail/${sailId}/pictures`;
+  private readonly API_URL = (sail_id: string) => `/api/sail/${sail_id}/pictures`;
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  public getPictures(sailId: string): Observable<Media[]> {
-    return this.http.get<Media[]>(this.API_URL(sailId));
+  public getPictures(sail_id: string): Observable<Media[]> {
+    return this.http.get<Media[]>(this.API_URL(sail_id));
   }
 
-  public addNewPictures(sailId: string, pictures: Media[]): Observable<Media[]> {
-    return this.http.put<Media[]>(this.API_URL(sailId), pictures);
+  public addNewPictures(sail_id: string, pictures: Media[]): Observable<Media[]> {
+    return this.http.put<Media[]>(this.API_URL(sail_id), pictures);
   }
 
-  public deletePicture(sailId: string, pictureId: string): Observable<Media[]> {
-    return this.http.delete<Media[]>(`${this.API_URL(sailId)}/${pictureId}`);
+  public deletePicture(sail_id: string, pictureId: string): Observable<Media[]> {
+    return this.http.delete<Media[]>(`${this.API_URL(sail_id)}/${pictureId}`);
   }
 
 }

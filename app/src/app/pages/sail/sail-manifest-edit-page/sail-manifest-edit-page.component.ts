@@ -40,7 +40,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   public availableSailors: Profile[] = [];
   public usersOnSail: Profile[] = [];
   public SAILOR_ROLES = Object.entries(SailorRole);
-  public sailorRoles: any = [];
+  public sailor_roles: any = [];
   private addSailorDialogRef: MatDialogRef<AddSailorDialogComponent>;
 
   constructor(
@@ -56,7 +56,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   }
 
   ngOnInit(): void {
-    this.getSail(this.sailId);
+    this.getSail(this.sail_id);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
       if (this.sail) {
         console.log('updating form', this.sail);
@@ -83,11 +83,11 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
 
   public showAddGuestDialog(): void {
     const dialogData: AddGuestDialogData = {
-      addGuest: (guestName, guestOfId) => this.addGuest(guestName, guestOfId),
+      addGuest: (guestName, guest_of_id) => this.addGuest(guestName, guest_of_id),
       usersOnSail: this.usersOnSail,
       sail: this.sail,
       guestName: '',
-      guestOfId: this.usersOnSail[0]?.id,
+      guest_of_id: this.usersOnSail[0]?.id,
     };
 
     this.dialog
@@ -106,7 +106,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
 
   private updateForm(sail: Sail): void {
     this.usersOnSail = [];
-    this.sailorRoles = [];
+    this.sailor_roles = [];
 
     const manifestControls = sail.manifest.map((manifest) => {
 
@@ -117,12 +117,12 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
       this.buildSailorRoles(manifest.profile || {});
 
       const newManifestForm = this.fb.group({
-        guestOfId: this.fb.control(manifest.guestOfId),
+        guest_of_id: this.fb.control(manifest.guest_of_id),
         id: this.fb.control(manifest.id),
-        personName: this.fb.control(manifest.personName, Validators.required),
-        profileId: this.fb.control(manifest.profileId),
-        sailId: this.fb.control(this.sailId),
-        sailorRole: this.fb.control(manifest.sailorRole),
+        person_name: this.fb.control(manifest.person_name, Validators.required),
+        profile_id: this.fb.control(manifest.profile_id),
+        sail_id: this.fb.control(this.sail_id),
+        sailor_role: this.fb.control(manifest.sailor_role),
       });
 
       newManifestForm.setParent(this.manifestForm);
@@ -141,25 +141,25 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     return (this.manifestForm.controls.manifest as FormArray).controls as FormGroup[];
   }
 
-  public addGuest(name: string, guestOfId: string): void {
+  public addGuest(name: string, guest_of_id: string): void {
     console.log(name);
-    console.log(guestOfId);
+    console.log(guest_of_id);
 
-    this.addSailor({ name }, SailorRole.Guest, guestOfId);
+    this.addSailor({ name }, SailorRole.Guest, guest_of_id);
   }
 
   public isGuest(role: SailorRole): boolean {
     return role === SailorRole.Guest;
   }
 
-  public addSailor(sailor: Partial<Profile>, role: SailorRole = SailorRole.Sailor, guestOfId?: string): void {
+  public addSailor(sailor: Partial<Profile>, role: SailorRole = SailorRole.Sailor, guest_of_id?: string): void {
     (this.manifestForm.controls.manifest as FormArray).push(this.fb.group({
-      guestOfId: this.fb.control(guestOfId),
+      guest_of_id: this.fb.control(guest_of_id),
       id: this.fb.control(undefined),
-      personName: this.fb.control(sailor.name, Validators.required),
-      profileId: this.fb.control(sailor.id),
-      sailId: this.fb.control(this.sailId),
-      sailorRole: this.fb.control(role),
+      person_name: this.fb.control(sailor.name, Validators.required),
+      profile_id: this.fb.control(sailor.id),
+      sail_id: this.fb.control(this.sail_id),
+      sailor_role: this.fb.control(role),
     }));
 
     this.manifestForm.updateValueAndValidity();
@@ -178,7 +178,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     const profile = this.usersOnSail.find(user => user.id === sailor.id);
 
     if (!profile) {
-      this.sailorRoles.push([['Guest', SailorRole.Guest]]);
+      this.sailor_roles.push([['Guest', SailorRole.Guest]]);
       return;
     }
 
@@ -188,7 +188,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
 
     roles.push(['Sailor', SailorRole.Sailor]);
 
-    this.sailorRoles.push(roles);
+    this.sailor_roles.push(roles);
   }
 
   public removeSailor(index: number): void {
@@ -197,10 +197,10 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     this.manifestForm.markAsDirty();
 
     this.usersOnSail.splice(index, 1);
-    this.sailorRoles.splice(index, 1);
+    this.sailor_roles.splice(index, 1);
   }
 
-  public get sailId(): string {
+  public get sail_id(): string {
     return this.route.snapshot.params.id;
   }
 
@@ -213,12 +213,12 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   }
 
   public get sail(): Sail {
-    return this.sails[this.sailId];
+    return this.sails[this.sail_id];
   }
 
   public fetchAvailableSailor(sailorName: string): void {
     this.sailManifestService
-      .getAvailableSailors(this.sail.start, this.sail.end, sailorName)
+      .getAvailableSailors(this.sail.start_at, this.sail.end_at, sailorName)
       .pipe(takeWhile(() => this.active))
       .subscribe((availableSailors) => {
         this.availableSailors = availableSailors.filter(sailor => !this.usersOnSail.some(user => user.id === sailor.id));
@@ -239,15 +239,15 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   public get occupanyExceeded(): boolean {
     const manifest = this.manifestForm.getRawValue().manifest as SailManifest[];
 
-    return manifest.length > this.sail.maxOccupancy;
+    return manifest.length > this.sail.max_occupancy;
   }
 
   public submitForm(): void {
     const manifest = this.manifestForm.getRawValue().manifest;
 
     this.sailManifestService
-      .updateManifest(this.sailId, manifest)
-      .subscribe(sail => this.dispatchAction(putSail({ sail, id: this.sailId })));
+      .updateManifest(this.sail_id, manifest)
+      .subscribe(sail => this.dispatchAction(putSail({ sail, id: this.sail_id })));
   }
 
 }

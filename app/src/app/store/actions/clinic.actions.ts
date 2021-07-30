@@ -20,20 +20,20 @@ export enum CLINIC_ACTION_TYPES {
 }
 
 export const addUserToClinic = createAction(
-  CLINIC_ACTION_TYPES.ADD_USER_TO_CLINIC, props<{ clinicId: string, profileId: string, notify?: boolean }>());
+  CLINIC_ACTION_TYPES.ADD_USER_TO_CLINIC, props<{ clinicId: string, profile_id: string, notify?: boolean }>());
 export const createClinic = createAction(CLINIC_ACTION_TYPES.CREATE_CLINIC, props<{ clinic: Partial<Clinic>, notify?: boolean }>());
 export const fetchClinic = createAction(CLINIC_ACTION_TYPES.FETCH_CLINIC, props<{ clinicId: string, notify?: boolean }>());
 export const fetchClinics = createAction(CLINIC_ACTION_TYPES.FETCH_CLINICS, props<{ query?: string, notify?: boolean }>());
 export const resetClinics = createAction(CLINIC_ACTION_TYPES.RESET);
 export const graduateUserFromClinic = createAction(
-  CLINIC_ACTION_TYPES.GRADUATE_USER_FROM_CLINIC, props<{ clinicId: string, profileId: string, notify?: boolean }>());
+  CLINIC_ACTION_TYPES.GRADUATE_USER_FROM_CLINIC, props<{ clinicId: string, profile_id: string, notify?: boolean }>());
 export const removeUserFromClinic = createAction(
-  CLINIC_ACTION_TYPES.REMOVE_USER_FROM_CLINIC, props<{ clinicId: string, profileId: string, notify?: boolean }>());
+  CLINIC_ACTION_TYPES.REMOVE_USER_FROM_CLINIC, props<{ clinicId: string, profile_id: string, notify?: boolean }>());
 export const updateClinic = createAction(
   CLINIC_ACTION_TYPES.UPDATE_CLINIC, props<{ clinicId: string, clinic: Partial<Clinic>, notify?: boolean }>());
 export const putClinic = createAction(CLINIC_ACTION_TYPES.PUT_CLINIC, props<{ clinicId: string, clinic: Clinic }>());
 export const putClinics = createAction(CLINIC_ACTION_TYPES.PUT_CLINICS, props<{ clinics: Clinic[] }>());
 export const enrollInClinic = createAction(
-  CLINIC_ACTION_TYPES.ENROLL_IN_CLINIC, props<{ clinicId: string, profileId: string, notify?: boolean }>());
+  CLINIC_ACTION_TYPES.ENROLL_IN_CLINIC, props<{ clinicId: string, profile_id: string, notify?: boolean }>());
 export const leaveClinic = createAction(
-  CLINIC_ACTION_TYPES.LEAVE_CLINIC, props<{ clinicId: string, profileId: string, notify?: boolean }>());
+  CLINIC_ACTION_TYPES.LEAVE_CLINIC, props<{ clinicId: string, profile_id: string, notify?: boolean }>());

@@ -39,24 +39,24 @@ export class BoatViewPageComponent extends BasePageComponent implements OnInit {
   }
 
   public goToBoatInstructions(): void {
-    this.goTo([viewBoatInstructionsRoute(this.boatId)]);
+    this.goTo([viewBoatInstructionsRoute(this.boat_id)]);
   }
 
   public goToChecklists(): void {
     this.goTo(
       [sailChecklistsRoute],
       {
-        queryParams: { boatId: this.boatId, boatName: this.boat.name },
+        queryParams: { boat_id: this.boat_id, boatName: this.boat.name },
       }
     );
   }
 
-  public get boatId(): string {
+  public get boat_id(): string {
     return this.route.snapshot.params.id;
   }
 
   public get boat(): Boat {
-    return this.getBoat(this.boatId);
+    return this.getBoat(this.boat_id);
   }
 
   public get shouldShowEditBoat(): boolean {
@@ -70,7 +70,7 @@ export class BoatViewPageComponent extends BasePageComponent implements OnInit {
   public goToBoatMaintenance(): void {
     this.goTo(
       [maintenanceRoute],
-      { queryParams: { boatId: this.boatId } },
+      { queryParams: { boat_id: this.boat_id } },
     );
   }
 }

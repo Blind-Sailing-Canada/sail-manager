@@ -28,30 +28,30 @@ export class CDNService {
     return this.uploadFile(endpoint, fileToUpload);
   }
 
-  public uploadBoatPicture(fileToUpload: File, boatId: string): Observable<HttpEvent<string>> {
-    const endpoint = `images/boats/${boatId}/${fileToUpload.name}`;
+  public uploadBoatPicture(fileToUpload: File, boat_id: string): Observable<HttpEvent<string>> {
+    const endpoint = `images/boats/${boat_id}/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);
   }
 
-  public uploadDepartureInstructionsPicture(fileToUpload: File, boatId: string): Observable<HttpEvent<string>> {
-    const endpoint = `images/boats/${boatId}/departure/${fileToUpload.name}`;
+  public uploadDepartureInstructionsPicture(fileToUpload: File, boat_id: string): Observable<HttpEvent<string>> {
+    const endpoint = `images/boats/${boat_id}/departure/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);
   }
 
-  public uploadArrivalInstructionsPicture(fileToUpload: File, boatId: string): Observable<HttpEvent<string>> {
-    const endpoint = `images/boats/${boatId}/arrival/${fileToUpload.name}`;
+  public uploadArrivalInstructionsPicture(fileToUpload: File, boat_id: string): Observable<HttpEvent<string>> {
+    const endpoint = `images/boats/${boat_id}/arrival/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);
   }
 
-  public uploadProfilePicture(fileToUpload: File, profileId: string): Observable<HttpEvent<string>> {
+  public uploadProfilePicture(fileToUpload: File, profile_id: string): Observable<HttpEvent<string>> {
     const lastDotIndex = fileToUpload.name.lastIndexOf('.');
     const ext = fileToUpload.name.substring(lastDotIndex + 1);
-    const endpoint = `images/profiles/${profileId}.${ext}`;
+    const endpoint = `images/profiles/${profile_id}.${ext}`;
     return this.uploadFile(endpoint, fileToUpload);
   }
 
-  public uploadSailPicture(fileToUpload: File, sailId: string): Observable<HttpEvent<string>> {
-    const endpoint = `images/sails/${sailId}/${fileToUpload.name}`;
+  public uploadSailPicture(fileToUpload: File, sail_id: string): Observable<HttpEvent<string>> {
+    const endpoint = `images/sails/${sail_id}/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);
   }
 

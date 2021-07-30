@@ -15,7 +15,7 @@ const reducerHandler = createReducer(
     return Object.assign({}, state, { all: action.sails });
   }),
   on(putTodaySailsForUser, (state, action) => {
-    return Object.assign({}, state, { [action.profileId]: action.sails });
+    return Object.assign({}, state, { [action.profile_id]: action.sails });
   })
 );
 

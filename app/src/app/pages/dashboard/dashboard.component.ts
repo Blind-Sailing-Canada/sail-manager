@@ -92,7 +92,7 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
       this.myRequiredActions = Object
         .values(actions)
         .filter(Boolean)
-        .filter(action => action.assignedToId === this.user.profile.id && action.status === RequiredActionStatus.New);
+        .filter(action => action.assigned_to_id === this.user.profile.id && action.status === RequiredActionStatus.New);
     });
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.FUTURE_SAILS, (sails: FutureSailsState) => {
@@ -145,7 +145,7 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   }
 
   public fetchMyPastSails(notify = false): void {
-    this.dispatchAction(fetchPastSailsForUser({ notify, profileId: this.user.profile.id, query: 'limit=10' }));
+    this.dispatchAction(fetchPastSailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=10' }));
   }
 
   public fetchOtherPastSails(notify = false): void {
@@ -153,11 +153,11 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   }
 
   public fetchMyFutureSails(notify = false): void {
-    this.dispatchAction(fetchFutureSailsForUser({ notify, profileId: this.user.profile.id, query: 'limit=10' }));
+    this.dispatchAction(fetchFutureSailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=10' }));
   }
 
   public fetchMyTodaySails(notify = false): void {
-    this.dispatchAction(fetchTodaySailsForUser({ notify, profileId: this.user.profile.id, query: 'limit=10' }));
+    this.dispatchAction(fetchTodaySailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=10' }));
   }
 
   public fetchAllTodaySails(notify = false): void {
@@ -208,7 +208,7 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
     return !!this.user.access[UserAccessFields.EditBoat] || !!this.user.access[UserAccessFields.CreateBoat];
   }
 
-  public viewUserSailsRouteLink(profileId: string): string {
-    return viewUserSailsRoute(profileId);
+  public viewUserSailsRouteLink(profile_id: string): string {
+    return viewUserSailsRoute(profile_id);
   }
 }

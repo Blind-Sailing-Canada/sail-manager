@@ -2,9 +2,9 @@ import { Profile } from '../../../../api/src/types/profile/profile';
 import { Sail } from '../../../../api/src/types/sail/sail';
 
 export interface AddGuestDialogData {
-  addGuest: (name: string, guestOfId: string) => void;
+  addGuest: (name: string, guest_of_id: string) => void;
   guestName: string;
-  guestOfId: string;
+  guest_of_id: string;
   sail: Sail;
   usersOnSail: Profile[];
 }

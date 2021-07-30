@@ -25,7 +25,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class SailCancelPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
   public sailCancelForm: FormGroup;
-  public sailId: string;
+  public sail_id: string;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -36,15 +36,15 @@ export class SailCancelPageComponent extends BasePageComponent implements OnInit
   }
 
   ngOnInit() {
-    this.sailId = this.route.snapshot.params.id;
+    this.sail_id = this.route.snapshot.params.id;
 
     this.buildForm();
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
-      const sail = this.sails[this.sailId];
+      const sail = this.sails[this.sail_id];
 
       if (!sail && sail !== null) {
-        this.fetchSail(this.sailId);
+        this.fetchSail(this.sail_id);
         return;
       }
 
@@ -55,12 +55,12 @@ export class SailCancelPageComponent extends BasePageComponent implements OnInit
   }
 
   private updateForm(sail: Sail): void {
-    this.sailCancelForm.controls.cancelReason.setValue(sail.cancelReason);
+    this.sailCancelForm.controls.cancel_reason.setValue(sail.cancel_reason);
   }
 
   private buildForm(): void {
     this.sailCancelForm = this.fb.group({
-      cancelReason: new FormControl(undefined, Validators.required),
+      cancel_reason: new FormControl(undefined, Validators.required),
     });
 
   }
@@ -75,10 +75,10 @@ export class SailCancelPageComponent extends BasePageComponent implements OnInit
 
   public submitCancelForm(): void {
     const cancelledSail: Sail = this.sailCancelForm.value;
-    cancelledSail.cancelledById = this.user.profile.id;
-    cancelledSail.cancelledAt = new Date();
+    cancelledSail.cancelled_by_id = this.user.profile.id;
+    cancelledSail.cancelled_at = new Date();
 
-    this.dispatchAction(cancelSail({ id: this.sailId, sail: cancelledSail, notify: true }));
+    this.dispatchAction(cancelSail({ id: this.sail_id, sail: cancelledSail, notify: true }));
   }
 
 }

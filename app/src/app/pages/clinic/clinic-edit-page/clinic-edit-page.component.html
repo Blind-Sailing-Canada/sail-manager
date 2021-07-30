@@ -93,11 +93,11 @@
     <mat-form-field>
       <mat-label
         aria-hidden="true"
-        id="startDateInputLabel"
+        id="start_dateInputLabel"
       >Start date</mat-label>
       <input
-        aria-labelledby="startDateInputLabel"
-        formControlName="startDate"
+        aria-labelledby="start_dateInputLabel"
+        formControlName="start_date"
         matInput
         type="date"
       />
@@ -105,11 +105,11 @@
     <mat-form-field>
       <mat-label
         aria-hidden="true"
-        id="endDateInputLabel"
+        id="end_dateInputLabel"
       >End date</mat-label>
       <input
-        aria-labelledby="endDateInputLabel"
-        formControlName="endDate"
+        aria-labelledby="end_dateInputLabel"
+        formControlName="end_date"
         matInput
         type="date"
       />
@@ -125,7 +125,7 @@
       >Current instructor: {{instructorName || 'not assigned'}}</p>
       <button
         (click)="setInstructor()"
-        *ngIf="form.controls.instructorId.value"
+        *ngIf="form.controls.instructor_id.value"
         mat-raised-button
         title="Unset instructor"
       >

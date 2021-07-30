@@ -60,14 +60,15 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   @Column({
     nullable: true,
     default: null,
+    type: 'timestamptz',
   })
-  expiresAt: Date;
+  expires_at: Date;
 
   @Column({
     array: false,
-    default: () => '("[]")',
+    default: [],
     nullable: false,
-    type: 'json',
+    type: 'jsonb',
   })
   roles: ProfileRole[];
 
@@ -78,13 +79,13 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   achievements: AchievementEntity[]
 
   @OneToMany(() => SailManifestEntity, (sailManifest) => sailManifest.profile)
-  sailManifests: SailManifestEntity[]
+  sail_manifests: SailManifestEntity[]
 
-  @OneToMany(() => RequiredActionEntity, (requiredAction) => requiredAction.assignedTo)
-  requiredActions: RequiredActionEntity[]
+  @OneToMany(() => RequiredActionEntity, (requiredAction) => requiredAction.assigned_to)
+  required_actions: RequiredActionEntity[]
 
   @OneToMany(() => ClinicAttendanceEntity, (clinicAttendance) => clinicAttendance.attendant)
-  clinicsAttendances: ClinicAttendanceEntity[]
+  clinics_attendances: ClinicAttendanceEntity[]
 
   @OneToMany(() => ChallengeParticipantEntity, (challenge) => challenge.participant)
   challenges: ChallengeParticipantEntity[]

@@ -4,9 +4,9 @@ import { BaseModelEntity } from './base.entity';
 
 export class ExpiresBaseModelEntity extends BaseModelEntity implements ExpiresBase {
   @Column({
-    type: 'timestamp',
+    type: 'timestamptz',
     nullable: true,
     default: null,
   })
-  expiresAt: Date;
+  expires_at: Date;
 }

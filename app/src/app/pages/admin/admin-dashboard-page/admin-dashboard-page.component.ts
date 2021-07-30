@@ -111,8 +111,8 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   public get pendingApproval(): Profile[] {
     const profiles = this.profiles || {} as IProfileMap;
-    const profileIds = Object.keys(profiles);
-    const pendingProfiles = profileIds
+    const profile_ids = Object.keys(profiles);
+    const pendingProfiles = profile_ids
       .filter(id => !!profiles[id])
       .filter(id => profiles[id].status === ProfileStatus.PendingApproval)
       .map(id => profiles[id]);
@@ -147,7 +147,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   private createUser(name: string, email: string): Promise<void> {
     return this.profileService.createUser(name, email).toPromise()
-      .then(createdUser => this.editProfilePrivileges({ id: createdUser.profileId } as Profile))
+      .then(createdUser => this.editProfilePrivileges({ id: createdUser.profile_id } as Profile))
       .then(() => this.dispatchMessage('User created.'))
       .catch((error) => {
         console.error(error);

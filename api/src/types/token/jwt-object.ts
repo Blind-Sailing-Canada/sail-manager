@@ -8,7 +8,7 @@ export interface JwtObject {
   access?: UserAccess;
   expireAt: number;
   iat?: number;
-  profileId: string;
+  profile_id: string;
   provider: string;
   roles: ProfileRole[];
   status: ProfileStatus;

@@ -7,7 +7,7 @@
       id="pageTitle"
       tabindex="0"
       role="heading"
-    >Sail request #{{sailRequest.entityNumber}}</mat-card-title>
+    >Sail request #{{sailRequest.entity_number}}</mat-card-title>
   </mat-card-header>
   <mat-card-actions>
     <ng-container [ngTemplateOutlet]="controls"></ng-container>
@@ -17,7 +17,7 @@
       <tr
         tabindex="0"
         role="listitem"
-        attr.aria-label="Request number {{sailRequest.entityNumber}}"
+        attr.aria-label="Request number {{sailRequest.entity_number}}"
       >
         <th
           aria-hidden="true"
@@ -26,7 +26,7 @@
         <td
           tabindex="-1"
           aria-hidden="true"
-        >{{sailRequest.entityNumber}}</td>
+        >{{sailRequest.entity_number}}</td>
       </tr>
       <tr
         tabindex="0"
@@ -43,8 +43,8 @@
         >{{sailRequest.status}}</td>
       </tr>
       <tr
-        (click)="showProfileDialog(sailRequest.requestedBy)"
-        attr.aria-label="Requested by {{sailRequest.requestedBy.name}}"
+        (click)="showProfileDialog(sailRequest.requested_by)"
+        attr.aria-label="Requested by {{sailRequest.requested_by.name}}"
         class="clickable"
         role="listitem"
         tabindex="0"
@@ -57,12 +57,12 @@
           aria-hidden="true"
           tabindex="-1"
         >
-          <app-profile-bullet [profile]="sailRequest.requestedBy"></app-profile-bullet>
+          <app-profile-bullet [profile]="sailRequest.requested_by"></app-profile-bullet>
         </td>
       </tr>
       <tr
-        *ngIf="sailRequest.sailId"
-        (click)="viewSail(sailRequest.sailId)"
+        *ngIf="sailRequest.sail_id"
+        (click)="viewSail(sailRequest.sail_id)"
         attr.aria-label="Go to view sail {{sailRequest.sail.name}}"
         class="clickable"
         role="listitem"

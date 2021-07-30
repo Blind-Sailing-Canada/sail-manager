@@ -1,7 +1,7 @@
 import { ProfileLink } from './profile-link';
 
 export interface ProfileLinkInfo {
-  profileIdA: string,
-  profileIdB: string,
+  profile_idA: string,
+  profile_idB: string,
   linkType: ProfileLink,
 }

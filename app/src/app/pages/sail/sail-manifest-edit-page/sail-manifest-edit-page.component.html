@@ -37,9 +37,9 @@
       class="manifest-list"
       *ngFor="let sailor of manifestControls; let i = index"
       tabindex="0"
-      attr.aria-label="Sailor {{i + 1}} of {{manifestControls.length}} {{sailor.controls.personName.value}}."
+      attr.aria-label="Sailor {{i + 1}} of {{manifestControls.length}} {{sailor.controls.person_name.value}}."
     >
-      <legend>Sailor {{i + 1}} of {{manifestControls.length}} {{sailor.controls.personName.value}}.</legend>
+      <legend>Sailor {{i + 1}} of {{manifestControls.length}} {{sailor.controls.person_name.value}}.</legend>
       <mat-form-field [formGroup]="sailor">
         <mat-label
           id="labelName"
@@ -49,7 +49,7 @@
         <input
           aria-labelledby="labelName"
           aria-required="true"
-          formControlName="personName"
+          formControlName="person_name"
           matInput
           required
           type="text"
@@ -64,17 +64,17 @@
         <select
           matNativeControl
           required
-          formControlName="sailorRole"
+          formControlName="sailor_role"
         >
           <option
-            *ngFor="let role of sailorRoles[i]"
+            *ngFor="let role of sailor_roles[i]"
             [value]="role[1]"
           >{{role[0]}}</option>
         </select>
       </mat-form-field>
       <mat-form-field
         [formGroup]="sailor"
-        *ngIf="isGuest(sailor.controls.sailorRole.value)"
+        *ngIf="isGuest(sailor.controls.sailor_role.value)"
       >
         <mat-label
           id="labelRole"
@@ -84,7 +84,7 @@
         <select
           matNativeControl
           required
-          formControlName="guestOfId"
+          formControlName="guest_of_id"
         >
           <option
             *ngFor="let user of usersOnSail"

@@ -22,10 +22,10 @@ export class MediaEntity extends BaseModelEntity implements Media {
   description: string;
 
   @Column({ nullable: true })
-  mediaForId: string;
+  media_for_id: string;
 
   @Column({ nullable: true })
-  mediaForType: string;
+  media_for_type: string;
 
   @Column({
     default: MediaType.Picture,
@@ -34,26 +34,26 @@ export class MediaEntity extends BaseModelEntity implements Media {
     nullable: false,
   })
   @Index('media_type')
-  mediaType: MediaType;
+  media_type: MediaType;
 
   @Column()
-  postedById: string;
+  posted_by_id: string;
 
   @Column({ nullable: true })
   title: string;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
-  postedBy: ProfileEntity;
+  posted_by: ProfileEntity;
 
   @ManyToOne(() => BoatMaintenanceEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
     {
-      name: 'mediaForId',
+      name: 'media_for_id',
       referencedColumnName: 'id',
     },
     {
-      name: 'mediaForType',
-      referencedColumnName: 'entityType',
+      name: 'media_for_type',
+      referencedColumnName: 'entity_type',
     },
   ])
   boatMaintenance: BoatMaintenanceEntity
@@ -61,12 +61,12 @@ export class MediaEntity extends BaseModelEntity implements Media {
   @ManyToOne(() => BoatMaintenanceEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
     {
-      name: 'mediaForId',
+      name: 'media_for_id',
       referencedColumnName: 'id',
     },
     {
-      name: 'mediaForType',
-      referencedColumnName: 'entityType',
+      name: 'media_for_type',
+      referencedColumnName: 'entity_type',
     },
   ])
   challenge: ChallengeEntity;
@@ -74,12 +74,12 @@ export class MediaEntity extends BaseModelEntity implements Media {
   @ManyToOne(() => SailEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
     {
-      name: 'mediaForId',
+      name: 'media_for_id',
       referencedColumnName: 'id',
     },
     {
-      name: 'mediaForType',
-      referencedColumnName: 'entityType',
+      name: 'media_for_type',
+      referencedColumnName: 'entity_type',
     },
   ])
   sail: SailEntity;

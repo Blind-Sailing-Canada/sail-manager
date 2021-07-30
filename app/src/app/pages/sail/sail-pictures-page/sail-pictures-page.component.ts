@@ -42,7 +42,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
   public form: FormGroup;
   public pictures: Media[];
   public sail: Sail;
-  public sailId: string;
+  public sail_id: string;
   public sailPictureInput = 'sail_picture_input';
   public uploadProgress = 0;
 
@@ -59,12 +59,12 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
   }
 
   ngOnInit() {
-    this.sailId = this.route.snapshot.params.id;
+    this.sail_id = this.route.snapshot.params.id;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
       if (!this.sail && this.sail !== null) {
-        this.sail = this.getSail(this.sailId);
+        this.sail = this.getSail(this.sail_id);
       }
     });
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CDN, (cdn: ICDNState) => {
@@ -146,7 +146,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
 
   public getSailPictures(): void {
     this.picturesService
-      .getPictures(this.sailId)
+      .getPictures(this.sail_id)
       .pipe(
         take(1),
         map(pictures => pictures || [] as Media[]))
@@ -155,7 +155,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
 
   public uploadNewPicture(pictures: File[]): void {
     this.fileToUpload = pictures[0];
-    this.dispatchAction(uploadSailPicture({ file: pictures[0], sailId: this.sailId, notify: true }));
+    this.dispatchAction(uploadSailPicture({ file: pictures[0], sail_id: this.sail_id, notify: true }));
   }
 
   public deleteCDNFile(formArrayIndex: number): void {
@@ -165,7 +165,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
 
   public deletePicture(picture: Media): void {
     this.picturesService
-      .deletePicture(this.sailId, picture.id)
+      .deletePicture(this.sail_id, picture.id)
       .pipe(take(1))
       .subscribe(pictures => this.pictures = pictures);
   }
@@ -179,7 +179,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
 
     if (pictures) {
       this.picturesService
-        .addNewPictures(this.sailId, pictures)
+        .addNewPictures(this.sail_id, pictures)
         .pipe(take(1))
         .subscribe((sailPictures) => {
           this.pictures = sailPictures;

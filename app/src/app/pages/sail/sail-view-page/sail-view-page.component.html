@@ -98,7 +98,7 @@
     <tbody role="list">
       <tr
         aria-label="Sail number"
-        title="Sail #{{sail.entityNumber}}"
+        title="Sail #{{sail.entity_number}}"
         tabindex="0"
         role="listitem"
       >
@@ -109,11 +109,11 @@
         <td
           aria-hidden="true"
           tabindex="-1"
-        >{{sail.entityNumber}}</td>
+        >{{sail.entity_number}}</td>
       </tr>
       <tr
         aria-label="Sail start"
-        title="This sail starts {{sail.start | humanDateWithTime}}"
+        title="This sail starts {{sail.start_at | humanDateWithTime}}"
         tabindex="0"
         role="listitem"
       >
@@ -124,11 +124,11 @@
         <td
           aria-hidden="true"
           tabindex="-1"
-        >{{sail.start | humanDateWithTime:true}}</td>
+        >{{sail.start_at | humanDateWithTime:true}}</td>
       </tr>
       <tr
         aria-label="Sail end"
-        title="This sail ends {{sail.end | humanDateWithTime}}"
+        title="This sail ends {{sail.end_at | humanDateWithTime}}"
         tabindex="0"
         role="listitem"
       >
@@ -139,11 +139,11 @@
         <td
           aria-hidden="true"
           tabindex="-1"
-        >{{sail.end | humanDateWithTime:true}}</td>
+        >{{sail.end_at | humanDateWithTime:true}}</td>
       </tr>
       <tr
         aria-label="Sail duration"
-        title="This sail's duration is {{sail.start | duration: sail.end}}"
+        title="This sail's duration is {{sail.start_at | duration: sail.end_at}}"
         tabindex="0"
         role="listitem"
       >
@@ -154,7 +154,7 @@
         <td
           aria-hidden="true"
           tabindex="-1"
-        > {{sail.start | duration: sail.end}} </td>
+        > {{sail.start_at | duration: sail.end_at}} </td>
       </tr>
       <tr
         aria-label="Sail status"
@@ -176,7 +176,7 @@
         title="Calendar event link for this sail"
         tabindex="0"
         role="listitem"
-        *ngIf="sail.calendarLink"
+        *ngIf="sail.calendar_link"
       >
         <th
           aria-hidden="true"
@@ -186,7 +186,7 @@
           aria-hidden="true"
           tabindex="-1"
         ><a
-            [href]="sail.calendarLink"
+            [href]="sail.calendar_link"
             target="_blank"
           >View calendar event</a></td>
       </tr>
@@ -214,7 +214,7 @@
         </tr>
         <tr
           aria-label="Cancel date"
-          title="This sail was cancelled {{(sail.cancelledAt | humanDateWithTime)}}"
+          title="This sail was cancelled {{(sail.cancelled_at | humanDateWithTime)}}"
           tabindex="0"
           role="listitem"
         >
@@ -225,14 +225,14 @@
           <td
             aria-hidden="true"
             tabindex="-1"
-          >{{sail.cancelledAt | humanDateWithTime:true}}</td>
+          >{{sail.cancelled_at | humanDateWithTime:true}}</td>
         </tr>
         <tr
-          (click)="showProfileDialog(sail.cancelledBy, 'sail cancelled by')"
-          (keyup.enter)="showProfileDialog(sail.cancelledBy, 'sail cancelled by')"
+          (click)="showProfileDialog(sail.cancelled_by, 'sail cancelled by')"
+          (keyup.enter)="showProfileDialog(sail.cancelled_by, 'sail cancelled by')"
           aria-label="Cancelled by"
           class="clickable"
-          title="This sail was cancelled by {{sail.cancelledBy?.name}}. Click to open profile dialog."
+          title="This sail was cancelled by {{sail.cancelled_by?.name}}. Click to open profile dialog."
           tabindex="0"
           role="listitem"
         >
@@ -244,7 +244,7 @@
             aria-hidden="true"
             tabindex="-1"
           >
-            <app-profile-bullet [profile]="sail.cancelledBy"></app-profile-bullet>
+            <app-profile-bullet [profile]="sail.cancelled_by"></app-profile-bullet>
           </td>
         </tr>
         <tr>
@@ -256,7 +256,7 @@
         </tr>
         <tr
           aria-label="Cancellation reason"
-          title="This sail was cancelled because {{sail.cancelReason || 'no one knows.'}}"
+          title="This sail was cancelled because {{sail.cancel_reason || 'no one knows.'}}"
           tabindex="0"
           role="listitem"
         >
@@ -265,7 +265,7 @@
             colspan="2"
             aria-hidden="true"
             tabindex="-1"
-          >{{sail.cancelReason}}</td>
+          >{{sail.cancel_reason}}</td>
         </tr>
       </ng-container>
       <tr
@@ -402,7 +402,7 @@
       </tr>
       <tr role="list">
         <th
-          [attr.rowspan]="((sail.maxOccupancy || 6) - 1)"
+          [attr.rowspan]="((sail.max_occupancy || 6) - 1)"
           aria-hidden="true"
           tabindex="-1"
         >Sailors</th>

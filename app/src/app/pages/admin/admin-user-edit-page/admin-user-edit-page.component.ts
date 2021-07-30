@@ -39,7 +39,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class AdminUserEditPageComponent extends BasePageComponent implements OnInit {
 
-  private requiredActionId: string = null;
+  private required_action_id: string = null;
   public UserAccessFields = UserAccessFields;
   public profileAccess: UserAccess = {} as UserAccess;
   public profileForm: FormGroup;
@@ -60,7 +60,7 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
       return;
     }
 
-    this.requiredActionId = this.route.snapshot.queryParams.completeRequiredAction;
+    this.required_action_id = this.route.snapshot.queryParams.completeRequiredAction;
 
     this.buildForm();
 
@@ -69,12 +69,12 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
     });
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.USER_ACCESS, () => {
-      this.profileAccess = this.store[STORE_SLICES.USER_ACCESS][this.profileId];
+      this.profileAccess = this.store[STORE_SLICES.USER_ACCESS][this.profile_id];
       this.updateForm();
     });
 
     this.subscribeToStoreSlice(STORE_SLICES.REQUIRED_ACTIONS, (requiredActionsState: RequiredActionsState) => {
-      this.requiredAction = requiredActionsState.actions[this.requiredActionId];
+      this.requiredAction = requiredActionsState.actions[this.required_action_id];
 
       if (this.requiredAction && this.requiredAction.status !== RequiredActionStatus.New) {
         this.requiredAction = null;
@@ -82,7 +82,7 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
 
     });
 
-    this.dispatchAction(fetchUserAccess({ profileId: this.profileId }));
+    this.dispatchAction(fetchUserAccess({ profile_id: this.profile_id }));
   }
 
   public setStatus(status: string): void {
@@ -91,7 +91,7 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
   }
 
   public dismissRequiredAction(): void {
-    this.dispatchAction(dismissRequiredAction({ actionId: this.requiredActionId, notify: true }));
+    this.dispatchAction(dismissRequiredAction({ action_id: this.required_action_id, notify: true }));
   }
 
   private buildForm(): void {
@@ -132,12 +132,12 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
     this.profileForm.markAsDirty();
   }
 
-  public get profileId(): string {
+  public get profile_id(): string {
     return this.route.snapshot.params.id;
   }
 
   public get profile(): Profile {
-    return this.getProfile(this.profileId);
+    return this.getProfile(this.profile_id);
   }
 
   public get shouldDisableSave(): boolean {
@@ -182,13 +182,13 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
       profileReview.roles = data.roles;
     }
 
-    if (this.requiredActionId) {
-      profileReview.requiredActionId = this.requiredActionId;
+    if (this.required_action_id) {
+      profileReview.required_action_id = this.required_action_id;
     }
 
     this.dispatchAction(reviewProfile({
       profileReview,
-      id: this.profileId,
+      id: this.profile_id,
       notify: true,
     }));
   }

@@ -13,24 +13,24 @@ import { SailRequestInterest } from '../types/sail-request-interest/sail-request
 
 @Entity('sail-request-interest')
 @Index([
-  'sailRequestId',
-  'profileId',
+  'sail_request_id',
+  'profile_id',
 ], { unique: true })
 export class SailRequestInterestEntity extends BaseModelEntity implements SailRequestInterest {
 
   @Column()
   @Index()
-  profileId: string;
+  profile_id: string;
 
   @Column()
   @Index()
-  sailRequestId: string;
+  sail_request_id: string;
 
   @ManyToOne(() => ProfileEntity, undefined, { eager: true })
   @JoinColumn()
   profile: Profile;
 
-  @ManyToOne(() => SailRequestEntity, (sailRequest) => sailRequest.interest, { eager: false })
+  @ManyToOne(() => SailRequestEntity, (sail_request) => sail_request.interest, { eager: false })
   @JoinColumn()
-  sailRequest: SailRequestEntity;
+  sail_request: SailRequestEntity;
 }

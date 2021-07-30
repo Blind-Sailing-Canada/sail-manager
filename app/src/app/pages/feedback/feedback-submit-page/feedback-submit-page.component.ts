@@ -56,7 +56,7 @@ export class FeedbackSubmitPageComponent extends BasePageComponent implements On
   }
 
   public goToSail(): void {
-    this.viewSail(this.sailId);
+    this.viewSail(this.sail_id);
   }
 
   public setRating(rating: number): void {
@@ -68,12 +68,12 @@ export class FeedbackSubmitPageComponent extends BasePageComponent implements On
     return `Feedback Form For Sail: ${(this.sail || {}).name}`;
   }
 
-  public get sailId(): string {
-    return this.route.snapshot.params.sailId;
+  public get sail_id(): string {
+    return this.route.snapshot.params.sail_id;
   }
 
   public get sail(): Sail {
-    return this.getSail(this.sailId);
+    return this.getSail(this.sail_id);
   }
 
   public get shouldEnableSubmitButton(): boolean {
@@ -87,13 +87,13 @@ export class FeedbackSubmitPageComponent extends BasePageComponent implements On
   public submitForm(): void {
     const feedback: SailFeedback = this.submitFeedbackForm.getRawValue();
 
-    feedback.sailId = this.sailId;
+    feedback.sail_id = this.sail_id;
 
     const completeRequiredActionId = this.route.snapshot.queryParams.completeRequiredAction;
 
     if (completeRequiredActionId) {
       this.dispatchAction(
-        submitFeedback({ feedback, notify: true, completeRequiredAction: completeRequiredAction({ actionId: completeRequiredActionId }) }));
+        submitFeedback({ feedback, notify: true, completeRequiredAction: completeRequiredAction({ action_id: completeRequiredActionId }) }));
     } else {
       this.dispatchAction(
         submitFeedback({ feedback, notify: true, completeRequiredAction: null }));

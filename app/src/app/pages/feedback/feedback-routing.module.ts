@@ -18,7 +18,7 @@ const routes: Routes = [
     component: FeedbackListPageComponent,
   },
   {
-    path: `${SUB_ROUTES.LIST_FEEDBACK}/:sailId`,
+    path: `${SUB_ROUTES.LIST_FEEDBACK}/:sail_id`,
     component: FeedbackListPageComponent,
   },
   {
@@ -26,7 +26,7 @@ const routes: Routes = [
     component: FeedbackViewPageComponent,
   },
   {
-    path: `${SUB_ROUTES.SUBMIT_FEEDBACK}/:sailId`,
+    path: `${SUB_ROUTES.SUBMIT_FEEDBACK}/:sail_id`,
     component: FeedbackSubmitPageComponent,
   },
 ];

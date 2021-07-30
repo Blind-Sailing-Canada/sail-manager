@@ -10,9 +10,9 @@ export class BaseModelEntity extends BaseEntity implements Base {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
+  @CreateDateColumn({ type: 'timestamptz' })
+  created_at: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt: Date;
+  @UpdateDateColumn({ type: 'timestamptz' })
+  updated_at: Date;
 }

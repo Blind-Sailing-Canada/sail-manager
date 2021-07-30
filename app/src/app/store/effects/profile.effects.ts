@@ -136,8 +136,8 @@ export class ProfileEffects {
           .pipe(
             mergeMap(reviewResult => of(
               putProfile({ profile: reviewResult.profile, id: action.id }),
-              putUserAccess({ access: reviewResult.access, profileId: action.id }),
-              reviewResult && putRequiredAction({ actionId: action.profileReview.requiredActionId, action: reviewResult.action }),
+              putUserAccess({ access: reviewResult.access, profile_id: action.id }),
+              reviewResult && putRequiredAction({ action_id: action.profileReview.required_action_id, action: reviewResult.action }),
               action.notify && putSnack({ snack: { message: 'saved', type: SnackType.INFO } }),
             )),
             catchError(errorCatcher(`Failed to update profile info: ${action.id}`))

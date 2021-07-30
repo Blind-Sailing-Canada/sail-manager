@@ -29,7 +29,7 @@ import { ApprovedUserGuard } from '../guards/approved-profile.guard';
       sail: { eager: true },
       'sail.boat': { eager: true },
       'sail.manifest': { eager: true },
-      requestedBy: { eager: true } ,
+      requested_by: { eager: true } ,
       interest: { eager: true },
       'interest.profile': { eager: true },
     },
@@ -44,7 +44,7 @@ export class SailRequestController {
   @Get('/download')
   async download(@Res() response) {
     const requests = await SailRequestEntity.find({
-      order: { createdAt: 'DESC' },
+      order: { created_at: 'DESC' },
       take: 20,
     });
 
@@ -62,9 +62,9 @@ export class SailRequestController {
     const data = requests.map(request => ({
       '#': request.id,
       details: request.details,
-      'sail #': request.sailId || '',
-      'requested on': request.createdAt,
-      'requested by': request.requestedBy?.name,
+      'sail #': request.sail_id || '',
+      'requested on': request.created_at,
+      'requested by': request.requested_by?.name,
       status: request.status,
     }));
 

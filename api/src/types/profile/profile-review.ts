@@ -7,7 +7,7 @@ export interface ProfileReviewAccess {
 
 export interface ProfileReview {
   access: ProfileReviewAccess
-  requiredActionId: string
+  required_action_id: string
   roles: ProfileRole[]
   status: ProfileStatus
 }

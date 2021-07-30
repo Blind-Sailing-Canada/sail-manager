@@ -83,16 +83,16 @@ export class ProfileController {
     let updated:UpdateResult;
 
     if (linkInfo.linkType == ProfileLink.Primary) {
-      updated = await UserEntity.update({ profileId: linkInfo.profileIdB }, {
-        profileId: linkInfo.profileIdA,
-        originalProfileId: linkInfo.profileIdB,
-        linkedByProfileId: user.profileId,
+      updated = await UserEntity.update({ profile_id: linkInfo.profile_idB }, {
+        profile_id: linkInfo.profile_idA,
+        original_profile_id: linkInfo.profile_idB,
+        linked_by_profile_id: user.profile_id,
       });
     } else {
-      updated = await UserEntity.update({ profileId: linkInfo.profileIdA }, {
-        profileId: linkInfo.profileIdB,
-        originalProfileId: linkInfo.profileIdA,
-        linkedByProfileId: user.profileId,
+      updated = await UserEntity.update({ profile_id: linkInfo.profile_idA }, {
+        profile_id: linkInfo.profile_idB,
+        original_profile_id: linkInfo.profile_idA,
+        linked_by_profile_id: user.profile_id,
       });
     }
 
@@ -111,8 +111,8 @@ export class ProfileController {
   @Patch('/:id/review')
   @UserAccess(UserAccessFields.EditUserAccess)
   @UseGuards(UserAccessGuard)
-  async reviewProfile(@Param('id') profileId: string, @Body() review: ProfileReview) {
-    const profile = await ProfileEntity.findOneOrFail(profileId);
+  async reviewProfile(@Param('id') profile_id: string, @Body() review: ProfileReview) {
+    const profile = await ProfileEntity.findOneOrFail(profile_id);
 
     await getManager()
       .transaction(async transactionalEntityManager => {
@@ -130,7 +130,7 @@ export class ProfileController {
           await transactionalEntityManager
             .update(
               ProfileEntity,
-              { id: profileId },
+              { id: profile_id },
               newInfo
             );
         }
@@ -139,31 +139,31 @@ export class ProfileController {
           await transactionalEntityManager
             .update(
               UserAccessEntity,
-              { profileId: profileId },
+              { profile_id: profile_id },
               { access: review.access }
             );
         }
 
-        if (review.requiredActionId) {
+        if (review.required_action_id) {
           await transactionalEntityManager
             .update(
               RequiredActionEntity,
-              { id: review.requiredActionId },
+              { id: review.required_action_id },
               { status: RequiredActionStatus.Completed }
             );
         }
       });
 
     if (review.status === ProfileStatus.Approved && profile.status !== ProfileStatus.Approved) {
-      this.profileQueue.add('profile-approved', { profileId });
+      this.profileQueue.add('profile-approved', { profile_id });
     }
 
-    await this.authService.logout(profileId);
+    await this.authService.logout(profile_id);
 
     return {
-      access: await UserAccessEntity.findOne({ profileId: profileId }),
-      profile: await ProfileEntity.findOne(profileId),
-      action: review.requiredActionId? await RequiredActionEntity.findOne(review.requiredActionId): undefined,
+      access: await UserAccessEntity.findOne({ profile_id: profile_id }),
+      profile: await ProfileEntity.findOne(profile_id),
+      action: review.required_action_id? await RequiredActionEntity.findOne(review.required_action_id): undefined,
     };
   }
 
@@ -184,24 +184,24 @@ export class ProfileController {
 
     if (user.status === ProfileStatus.Registration) {
       updatedProfile.status = ProfileStatus.PendingApproval;
-      updatedProfile.expiresAt = null;
+      updatedProfile.expires_at = null;
 
-      await this.authService.logout(user.profileId);
+      await this.authService.logout(user.profile_id);
 
-      this.profileQueue.add('new-profile', { profileId: id });
+      this.profileQueue.add('new-profile', { profile_id: id });
 
       await getManager().transaction(async transactionalEntityManager => {
         const admins = await ProfileEntity.admins();
 
-        const requiredActions = admins.map(admin => RequiredActionEntity.create ({
-          actionableId: user.profileId,
-          actionableType: 'ProfileEntity',
-          assignedToId: admin.id,
-          requiredActionType: RequiredActionType.ReviewNewUser,
+        const required_actions = admins.map(admin => RequiredActionEntity.create ({
+          actionable_id: user.profile_id,
+          actionable_type: 'ProfileEntity',
+          assigned_to_id: admin.id,
+          required_action_type: RequiredActionType.ReviewNewUser,
           title: `Review ${user.email} account.`,
         }));
 
-        await transactionalEntityManager.save(requiredActions);
+        await transactionalEntityManager.save(required_actions);
 
         await ProfileEntity.save(updatedProfile);
       });

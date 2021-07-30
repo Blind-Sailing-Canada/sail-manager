@@ -5,11 +5,11 @@
     (opened)="setExpandedId.emit(request.id)"
   >
     <mat-expansion-panel-header
-      attr.aria-label="Sail request #{{request.entityNumber}} {{i + 1}} of {{sailRequests.length}}"
-      title="Requested by {{request.requestedBy.name}} on  {{request.createdAt | humanDateWithTime}}. Request description: {{request.details}}; Request status: {{request.status}}."
+      attr.aria-label="Sail request #{{request.entity_number}} {{i + 1}} of {{sailRequests.length}}"
+      title="Requested by {{request.requested_by.name}} on  {{request.created_at | humanDateWithTime}}. Request description: {{request.details}}; Request status: {{request.status}}."
     >
-      <mat-panel-title> {{i + 1}}. {{request.requestedBy.name}} {{request.createdAt | humanDateWithTime}}
-        #{{request.entityNumber}}
+      <mat-panel-title> {{i + 1}}. {{request.requested_by.name}} {{request.created_at | humanDateWithTime}}
+        #{{request.entity_number}}
       </mat-panel-title>
       <mat-panel-description> {{request.status}} </mat-panel-description>
     </mat-expansion-panel-header>
@@ -17,7 +17,7 @@
       <tr
         tabindex="0"
         role="listitem"
-        attr.aria-label="Request number {{request.entityNumber}}"
+        attr.aria-label="Request number {{request.entity_number}}"
       >
         <th
           aria-hidden="true"
@@ -26,7 +26,7 @@
         <td
           tabindex="-1"
           aria-hidden="true"
-        >{{request.entityNumber}}</td>
+        >{{request.entity_number}}</td>
       </tr>
       <tr
         tabindex="0"
@@ -43,8 +43,8 @@
         >{{request.status}}</td>
       </tr>
       <tr
-        (click)="showProfileDialog(request.requestedBy)"
-        attr.aria-label="Requested by {{request.requestedBy.name}}"
+        (click)="showProfileDialog(request.requested_by)"
+        attr.aria-label="Requested by {{request.requested_by.name}}"
         class="clickable"
         role="listitem"
         tabindex="0"
@@ -57,12 +57,12 @@
           aria-hidden="true"
           tabindex="-1"
         >
-          <app-profile-bullet [profile]="request.requestedBy"></app-profile-bullet>
+          <app-profile-bullet [profile]="request.requested_by"></app-profile-bullet>
         </td>
       </tr>
       <tr
-        *ngIf="request.sailId"
-        (click)="viewSailRoute.emit(request.sailId)"
+        *ngIf="request.sail_id"
+        (click)="viewSailRoute.emit(request.sail_id)"
         attr.aria-label="Go to view sail {{request.sail.name}}"
         class="clickable"
         role="listitem"
@@ -138,31 +138,31 @@
         *ngIf="canCreateSail(request)"
         (click)="createSail.emit(request.id)"
         mat-raised-button
-        title="Create sail for this request #{{request.entityNumber}}"
+        title="Create sail for this request #{{request.entity_number}}"
       >Create sail</a>
       <a
         *ngIf="canEditRequest(request)"
         (click)="editSailRequest.emit(request.id)"
         mat-raised-button
-        title="Edit sail request #{{request.entityNumber}}"
+        title="Edit sail request #{{request.entity_number}}"
       >Edit</a>
       <button
         (click)="cancelSailRequest.emit(request.id)"
         *ngIf="canCancelRequest(request)"
         mat-raised-button
-        title="Cancel sail request #{{request.entityNumber}}"
+        title="Cancel sail request #{{request.entity_number}}"
       >Cancel</button>
       <button
         *ngIf="canJoinRequest(request)"
         (click)="joinSailRequest.emit(request.id)"
         mat-raised-button
-        title="I would like to go on this sail #{{request.entityNumber}}"
+        title="I would like to go on this sail #{{request.entity_number}}"
       >Interested</button>
       <button
         *ngIf="canLeaveRequest(request)"
         (click)="leaveSailRequest.emit(request.id)"
         mat-raised-button
-        title="I'm not longer interested in sail request #{{request.entityNumber}}"
+        title="I'm not longer interested in sail request #{{request.entity_number}}"
       >Uninterested</button>
     </mat-action-row>
   </mat-expansion-panel>
