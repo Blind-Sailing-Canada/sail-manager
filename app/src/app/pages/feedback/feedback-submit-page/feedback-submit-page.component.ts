@@ -93,7 +93,8 @@ export class FeedbackSubmitPageComponent extends BasePageComponent implements On
 
     if (completeRequiredActionId) {
       this.dispatchAction(
-        submitFeedback({ feedback, notify: true, completeRequiredAction: completeRequiredAction({ action_id: completeRequiredActionId }) }));
+        submitFeedback(
+          { feedback, notify: true, completeRequiredAction: completeRequiredAction({ action_id: completeRequiredActionId }) }));
     } else {
       this.dispatchAction(
         submitFeedback({ feedback, notify: true, completeRequiredAction: null }));

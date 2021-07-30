@@ -203,7 +203,10 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
   }
 
   public get userAccompliedChallenge(): boolean {
-    return this.challenge.participants.some(participant => participant.participant_id === this.user.profile.id && !!participant.finished_at);
+    return this
+      .challenge
+      .participants
+      .some(participant => participant.participant_id === this.user.profile.id && !!participant.finished_at);
   }
 
   public get userJoinedChallenge(): boolean {
