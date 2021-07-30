@@ -140,8 +140,8 @@ export class SailController {
     const sailsDuringThisTime = await SailEntity
       .find(
         { where: `
-          (start_at <= "${times.start}" AND end_at >= "${times.start}") OR
-          (start_at <= "${times.end}" AND end_at >= "${times.end}")
+          (start_at <= '${times.start}'::timestamp with time zone AND end_at >= '${times.start}'::timestamp with time zone) OR
+          (start_at <= '${times.end}'::timestamp with time zone AND end_at >= '${times.end}'::timestamp with time zone)
           ` }
       );
 

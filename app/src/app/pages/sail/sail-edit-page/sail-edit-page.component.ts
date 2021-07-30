@@ -154,9 +154,9 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.sailStartDateTimeForm.valueChanges.subscribe((value) => {
       const start_dateTime = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
 
-      this.sailForm.controls.start.setValue(start_dateTime);
-      this.sailForm.controls.start.markAsDirty();
-      this.sailForm.controls.start.updateValueAndValidity();
+      this.sailForm.controls.start_at.setValue(start_dateTime);
+      this.sailForm.controls.start_at.markAsDirty();
+      this.sailForm.controls.start_at.updateValueAndValidity();
 
       const end_dateTime =  new Date(start_dateTime);
       end_dateTime.setHours(end_dateTime.getHours() + 3);
@@ -183,9 +183,9 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     this.sailEndDateTimeForm.valueChanges.subscribe((value) => {
       const end_dateTime = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
-      this.sailForm.controls.end.setValue(end_dateTime);
-      this.sailForm.controls.end.markAsDirty();
-      this.sailForm.controls.end.updateValueAndValidity();
+      this.sailForm.controls.end_at.setValue(end_dateTime);
+      this.sailForm.controls.end_at.markAsDirty();
+      this.sailForm.controls.end_at.updateValueAndValidity();
     });
 
     this.sailForm = this.fb.group({
@@ -211,7 +211,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
           const selectedDate = new Date(control.value);
           const now = Date.now();
-          const end = this.sailForm.controls.end.value;
+          const end = this.sailForm.controls.end_at.value;
 
           if (!end) {
             return null;
@@ -231,7 +231,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
             return null;
           }
           const selectedDate = new Date(control.value);
-          const start = this.sailForm.controls.start.value;
+          const start = this.sailForm.controls.start_at.value;
           const endTime = selectedDate.getTime();
           const startTime = start.getTime();
           const valid = endTime > startTime;
@@ -286,7 +286,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   private fetchBoatsOnSailDateChanges(): void {
     this.sailForm
       .controls
-      .end
+      .end_at
       .valueChanges
       .pipe(
         takeWhile(() => this.active),
@@ -304,8 +304,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   }
 
   private fetchAvailableBoats(): Observable<Boat[]> {
-    const start_date: Date = this.sailForm.controls.start.value;
-    const end_date: Date = this.sailForm.controls.end.value;
+    const start_date: Date = this.sailForm.controls.start_at.value;
+    const end_date: Date = this.sailForm.controls.end_at.value;
     return this.sailsService.fetchAvailableBoats(start_date.toISOString(), end_date.toISOString());
   }
 
@@ -358,7 +358,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   }
 
   public get start_dateErrors(): string[] {
-    const errors = Object.keys(this.sailForm.controls.start.errors || {});
+    const errors = Object.keys(this.sailForm.controls.start_at.errors || {});
     return errors;
   }
 
@@ -373,7 +373,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   }
 
   public get end_dateErrors(): string[] {
-    const errors = Object.keys(this.sailForm.controls.end.errors || {});
+    const errors = Object.keys(this.sailForm.controls.end_at.errors || {});
     return errors;
   }
 

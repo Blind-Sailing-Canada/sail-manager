@@ -63,7 +63,7 @@ export class SailRequestEntity extends BaseModelEntity implements SailRequest {
 
   @BeforeInsert()
   async addEntityNumber() {
-    const tableName = `"${SailRequestEntity.getRepository().metadata.tableName}"`;
+    const tableName = `${SailRequestEntity.getRepository().metadata.tableName}`;
 
     const entity_number = await SailRequestEntity
       .getRepository()
