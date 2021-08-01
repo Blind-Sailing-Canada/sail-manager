@@ -109,15 +109,19 @@ export class EmailPasswordComponent extends BasePageComponent implements OnInit 
       return;
     }
 
-    this
-      .firebaseService
-      .signInWithEmailAndPassword(email, password)
-      .then(() => this.firebaseService.currentUser.getIdToken())
-      .then(token => window.location.href = `/api/auth/login-firebase/${token}`)
-      .catch((error) => {
-        this.dispatchError(`Failed to login: ${error.message}`);
-        console.error(error);
-      });
+    try {
+      this
+        .firebaseService
+        .signInWithEmailAndPassword(email, password)
+        .then(() => this.firebaseService.currentUser.getIdToken())
+        .then(token => window.location.href = `/api/auth/login-firebase/${token}`)
+        .catch((error) => {
+          this.dispatchMessage(`Failed to login: ${error.message}`);
+          console.error(error);
+        });
+    } catch (error) {
+      this.dispatchMessage(`Failed to login: authentication not set up.`);
+    }
   }
 
 }

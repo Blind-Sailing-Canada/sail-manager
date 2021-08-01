@@ -96,7 +96,8 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
   }
 
   public get shouldDisableUpdateButton(): boolean {
-    const should = !this.form
+    const should = this.loading ||
+      !this.form
       || !this.form.valid
       || !this.form.dirty;
 
@@ -104,7 +105,7 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
   }
 
   public get shouldDisableCreateButton(): boolean {
-    const should = !this.form || !this.form.valid || !this.form.dirty;
+    const should = this.loading || !this.form || !this.form.valid || !this.form.dirty;
 
     return should;
   }

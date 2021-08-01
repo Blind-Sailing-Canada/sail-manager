@@ -76,22 +76,25 @@
     tabindex="-1"
   >Step 2 of 10: Sail Category</h4>
   <form [formGroup]="sailForm">
-    <mat-form-field>
+    <mat-form-field
+      appearance="fill"
+      appearance="standard"
+    >
       <mat-label
         id="stepLabelCategory"
         aria-hidden="true"
         tabindex="-1"
       >Sail category</mat-label>
-      <select
-        matNativeControl
+      <mat-select
         formControlName="category"
+        aria-label="Selected category is {{sailForm.controls.category}}"
       >
-        <option value=""></option>
-        <option
+        <mat-option value=""></mat-option>
+        <mat-option
           *ngFor="let category of sailCategories"
           [value]="category.category"
-        >{{category.category}}</option>
-      </select>
+        >{{category.category}}</mat-option>
+      </mat-select>
     </mat-form-field>
   </form>
 </ng-template>

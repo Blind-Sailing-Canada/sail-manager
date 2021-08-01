@@ -43,13 +43,19 @@ export class AppComponent extends BasePageComponent implements OnInit {
     @Inject(MatSnackBar) private snackBar: MatSnackBar,
     @Inject(Store) store: Store<any>,
     @Inject(HttpClient) private httpClient: HttpClient,
-    ) {
+  ) {
     super(store, null, null);
   }
 
   async ngOnInit(): Promise<void> {
-
-    const csrfToken = await this.httpClient.get<{csrfToken: string}>('/api/csrfToken').toPromise();
+    const csrfToken = await this.httpClient
+      .get<{ csrfToken: string }>('/api/csrfToken')
+      .toPromise()
+      .catch((error) => {
+        console.error(error);
+        this.dispatchError('Failed to secure connection');
+        return { csrfToken: null };
+      });
 
     sessionStorage.setItem('csrfToken', csrfToken.csrfToken);
 
@@ -66,11 +72,10 @@ export class AppComponent extends BasePageComponent implements OnInit {
       }
     });
 
-    this.subscribeToStore(STORE_SLICES.SNACKS)
-      .subscribe((snacks: ISnackState) => {
-        this.snacks = snacks.snacks;
-        this.processSnacks(this.snacks);
-      });
+    this.subscribeToStoreSlice(STORE_SLICES.SNACKS, (snacks: ISnackState) => {
+      this.snacks = snacks.snacks;
+      this.processSnacks(this.snacks);
+    });
 
     this.subscribeToStore(STORE_SLICES.LOGIN)
       .subscribe((login) => {
