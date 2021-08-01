@@ -53,13 +53,14 @@
     >Step 1 of {{sail_request_id ? '3' : '2'}}: Sail category</h4>
     <mat-form-field>
       <mat-label
-        id="stepLabelCategory"
         aria-hidden="true"
         tabindex="-1"
       >Sail category</mat-label>
       <select
         matNativeControl
         formControlName="category"
+        aria-labelledby="stepLabelCategory"
+        attr.aria-label="Selected category is {{form.controls.category.value}}"
       >
         <option value=""></option>
         <option
