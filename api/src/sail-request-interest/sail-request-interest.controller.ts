@@ -33,12 +33,7 @@ export class SailRequestInterestController {
 
     this.sail_requestInterestQueue.add('new-sail-request-interest', { sail_requestInterestId: newInterest.id });
 
-    return SailRequestEntity
-      .findOne(sail_request_id, { relations: [
-        'interest',
-        'requested_by',
-        'sail',
-      ] });
+    return SailRequestEntity.findOne(sail_request_id );
   }
 
   @Delete(':sail_request_id')
@@ -48,10 +43,6 @@ export class SailRequestInterestController {
       profile_id: user.profile_id,
     });
 
-    return SailRequestEntity.findOne(sail_request_id, { relations: [
-      'interest',
-      'requested_by',
-      'sail',
-    ] });
+    return SailRequestEntity.findOne(sail_request_id);
   }
 }

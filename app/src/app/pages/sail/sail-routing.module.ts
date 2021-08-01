@@ -26,7 +26,7 @@ const routes: Routes = [
     component: SailEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.CREATE_SAIL}/:sailRequestId`,
+    path: `${SUB_ROUTES.CREATE_SAIL}/:sail_request_id`,
     canActivate: [CreateSailGuard],
     component: SailEditPageComponent,
   },

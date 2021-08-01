@@ -163,7 +163,7 @@ export const createBoatRoute = FULL_ROUTES.CREATE_BOAT;
 export const createChallengeRoute = FULL_ROUTES.CREATE_CHALLENGE;
 export const createClinicRoute = FULL_ROUTES.CREATE_CLINIC;
 export const createMaintenanceRoute = FULL_ROUTES.CREATE_MAINTENANCE;
-export const createSailFromRequestRoute = (sailRequestId: string) => `${FULL_ROUTES.CREATE_SAIL}/${sailRequestId}`;
+export const createSailFromRequestRoute = (sail_request_id: string) => `${FULL_ROUTES.CREATE_SAIL}/${sail_request_id}`;
 export const createSailRequestRoute = FULL_ROUTES.CREATE_SAIL_REQUEST;
 export const createSailRoute = FULL_ROUTES.CREATE_SAIL;
 export const departureSailChecklistRoute = (id: string) => `${FULL_ROUTES.DEPARTURE_SAIL_CHECKLIST}/${id}`;

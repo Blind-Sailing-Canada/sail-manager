@@ -5,7 +5,7 @@ import {
 import { BaseModelEntity } from '../base/base.entity';
 import { Token } from '../types/token/token';
 
-@Entity('token')
+@Entity('tokens')
 export class TokenEntity extends BaseModelEntity implements Token {
   @Column()
   profile_id: string;

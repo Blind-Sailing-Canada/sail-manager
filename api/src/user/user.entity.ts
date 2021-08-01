@@ -8,7 +8,7 @@ import { BaseModelEntity } from '../base/base.entity';
 import { ProfileEntity } from '../profile/profile.entity';
 import { User } from '../types/user/user';
 
-@Entity('user')
+@Entity('users')
 export class UserEntity extends BaseModelEntity implements User {
   @Column({ length: 50 })
   provider: string;

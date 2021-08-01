@@ -1,7 +1,9 @@
 {
-  "name": "app",
-  "version": "0.0.0",
+  "name": "sail-manager-app",
+  "description": "fontend for sail manager",
+  "version": "1.0.0",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "build": "yarn build:app && yarn build:server",
     "build:app": "ng build --configuration production --stats-json",
@@ -13,7 +15,6 @@
     "start": "ng serve",
     "start:server": "node ./app/server/server.js"
   },
-  "private": true,
   "dependencies": {
     "@types/node": "14.14.35",
     "@angular/animations": "12.1.3",

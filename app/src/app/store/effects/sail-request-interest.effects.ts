@@ -34,7 +34,7 @@ export class SailRequestInterestEffects {
         ofType(interestedSailRequest),
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
-          action => this.sailRequestInterestService.interested(action.sailRequestId)
+          action => this.sailRequestInterestService.interested(action.sail_request_id)
             .pipe(
               mergeMap(sailRequest => of(
                 putSailRequest({ sailRequest, id: sailRequest.id }),
@@ -53,7 +53,7 @@ export class SailRequestInterestEffects {
         ofType(uninterestedSailRequest),
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
-          action => this.sailRequestInterestService.uninterested(action.sailRequestId)
+          action => this.sailRequestInterestService.uninterested(action.sail_request_id)
             .pipe(
               mergeMap(sailRequest => of(
                 putSailRequest({ sailRequest, id: sailRequest.id }),

@@ -175,13 +175,17 @@ export class SailController {
 
         sail = await transactionalEntityManager.save(sail);
 
-        await transactionalEntityManager
+        const result = await transactionalEntityManager
           .update(
             SailRequestEntity,
             { id: sailInfo.sail_request_id },{
               sail_id: sail.id,
               status: SailRequestStatus.Scheduled,
             });
+
+        if (result.affected !== 1) {
+          throw new Error(`SailRequest(${sailInfo.sail_request_id}) was not updated.`);
+        }
 
         const manifest = sail_request
           .interest

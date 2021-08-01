@@ -31,12 +31,12 @@ export class SailRequestBasePageComponent extends BasePageComponent implements O
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAIL_REQUESTS);
   }
 
-  public get sailRequestId(): string {
+  public get sail_request_id(): string {
     return this.route.snapshot.params.id;
   }
 
   public get sailRequest(): SailRequest {
-    const id = this.sailRequestId;
+    const id = this.sail_request_id;
 
     if (!id) {
       return;

@@ -9,7 +9,7 @@ import { ProfileEntity } from '../profile/profile.entity';
 import { ClinicEntity } from './clinic.entity';
 import { ClinicAttendance } from '../types/clinic/clinic-attendance';
 
-@Entity('clinic-attendance')
+@Entity('clinic_attendances')
 export class ClinicAttendanceEntity extends BaseModelEntity implements ClinicAttendance {
   @Column()
   clinic_id: string;

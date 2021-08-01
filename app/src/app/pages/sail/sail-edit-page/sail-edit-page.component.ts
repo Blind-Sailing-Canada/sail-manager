@@ -59,7 +59,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   public sailEndDateTimeForm: FormGroup;
   public sailForm: FormGroup;
   public sail_id: string;
-  public sailRequestId: string;
+  public sail_request_id: string;
   public sailStartDateTimeForm: FormGroup;
 
   constructor(
@@ -74,7 +74,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   }
 
   ngOnInit() {
-    this.sailRequestId = this.route.snapshot.params.sailRequestId;
+    this.sail_request_id = this.route.snapshot.params.sail_request_id;
     this.sail_id = this.route.snapshot.params.id;
     this.creatingNewSail = !this.sail_id;
 
@@ -110,6 +110,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   }
 
   private updateForm(sail: Sail): void {
+
     const formValues = this.sailForm.getRawValue();
 
     this.sailForm.controls.name.setValue(formValues.name || sail.name);
@@ -127,7 +128,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     const end = new Date(sail.end_at);
 
-    this.sailStartDateTimeForm.patchValue({
+    this.sailEndDateTimeForm.patchValue({
       date: end.getDate(),
       hour: end.getHours(),
       minute: end.getMinutes(),
@@ -197,7 +198,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
         },
         this.sail_id ? Validators.required : null,
       ].filter(Boolean)),
-      description: new FormControl({ disabled: !!this.sailRequestId, value: undefined }),
+      description: new FormControl({ disabled: !!this.sail_request_id, value: undefined }),
       start_at: new FormControl(undefined, [
         Validators.required,
         (control) => {
@@ -477,8 +478,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     const sail = this.copy(data) as Sail;
 
-    if (this.sailRequestId) {
-      this.dispatchAction(createSailFromSailRequest({ sail, sailRequestId: this.sailRequestId }));
+    if (this.sail_request_id) {
+      this.dispatchAction(createSailFromSailRequest({ sail, sail_request_id: this.sail_request_id }));
     } else {
       this.dispatchAction(createSail({ sail }));
     }

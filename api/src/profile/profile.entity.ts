@@ -10,13 +10,14 @@ import { ExpiresBaseModelEntity } from '../base/expires-base.entity';
 import { ChallengeParticipantEntity } from '../challenge/challenge-participant.entity';
 import { ClinicAttendanceEntity } from '../clinic/clinic-attendance.entity';
 import { RequiredActionEntity } from '../required-action/required-action.entity';
+import { SailChecklistEntity } from '../sail-checklist/sail-checklist.entity';
 import { SailManifestEntity } from '../sail-manifest/sail-manifest.entity';
 import { Profile } from '../types/profile/profile';
 import { ProfileRole } from '../types/profile/profile-role';
 import { ProfileStatus } from '../types/profile/profile-status';
 import { UserAccessEntity } from '../user-access/user-access.entity';
 
-@Entity('profile')
+@Entity('profiles')
 export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   @Column({ length: 100 })
   @Index('profile_name')
@@ -90,18 +91,21 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   @OneToMany(() => ChallengeParticipantEntity, (challenge) => challenge.participant)
   challenges: ChallengeParticipantEntity[]
 
+  @OneToMany(() => SailChecklistEntity, (checklist) => checklist.submitted_by)
+  sail_checklists: SailChecklistEntity[]
+
   static coordinators(): Promise<ProfileEntity[]> {
     return ProfileEntity
-      .find({ where: `status="${ProfileStatus.Approved}" AND JSON_SEARCH(roles, 'one', '${ProfileRole.Coordinator}') IS NOT NULL` });
+      .find({ where: `status='${ProfileStatus.Approved}' AND roles ? '${ProfileRole.Coordinator}' = true` });
   }
 
   static admins(): Promise<ProfileEntity[]> {
     return ProfileEntity
-      .find({ where: `status="${ProfileStatus.Approved}" AND JSON_SEARCH(roles, 'one', '${ProfileRole.Admin}') IS NOT NULL` });
+      .find({ where: `status='${ProfileStatus.Approved}' AND roles ? '${ProfileRole.Admin}' = true` });
   }
 
   static fleetManager(): Promise<ProfileEntity> {
     return ProfileEntity
-      .findOne({ where: `status="${ProfileStatus.Approved}" AND JSON_SEARCH(roles, 'one', '${ProfileRole.FleetManager}') IS NOT NULL` });
+      .findOne({ where: `status='${ProfileStatus.Approved}' AND roles ? '${ProfileRole.FleetManager}' = true` });
   }
 }

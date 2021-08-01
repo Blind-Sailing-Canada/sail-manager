@@ -6,20 +6,30 @@ import { Injectable } from '@angular/core';
 export class MomentService {
 
   public format(date: string | Date): string {
+    if (!date) {
+      return '';
+    }
+
     const formatedString = new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true });
 
     return formatedString;
   }
 
   public describeDate(date: string | Date, short?: boolean): string {
-    if (short) {
-      return new Date(date).toLocaleString([], { weekday: 'short', month: 'short', day: '2-digit', year: '2-digit' });
+    if (!date) {
+      return '';
     }
 
-    return new Date(date).toLocaleString([], { weekday: 'long', month: 'long', day: '2-digit', year: 'numeric' });
+    const size = short ? 'short' : 'long';
+    const digits = short ? '2-digit' : 'numeric';
+
+    return new Date(date).toLocaleString([], { weekday: size, month: size, day: digits, year: digits });
   }
 
   public yyyymmdd(date: string | Date): string {
+    if (!date) {
+      return '';
+    }
 
     const formatedValue = new Date(date)
       .toLocaleString('en-us', { year: 'numeric', month: '2-digit', day: '2-digit' })
@@ -29,51 +39,35 @@ export class MomentService {
   }
 
   public humanizeDateWithTime(date: string | Date, short: boolean): string {
-    // const mnt = moment(new Date(date));
-    // const format = {
-    //   lastDay: 'hh:mm A [Yesterday]',
-    //   sameDay: '[Today] @ hh:mm A',
-    //   nextDay: 'hh:mm A [Tomorrow]',
-    //   lastWeek: 'hh:mm A [Last] dddd',
-    //   nextWeek: 'hh:mm A [Next] dddd',
-    //   sameElse: short ? 'hh:mm A ddd, DD MMM, YYYY' : 'hh:mm A dddd, DD MMMM, YYYY',
-    // };
-    // const humanDateWithTime = mnt.calendar(undefined, format);
+    if (!date) {
+      return '';
+    }
 
-    // return humanDateWithTime;
+    const size = short ? 'short' : 'long';
+    const digits = short ? '2-digit' : 'numeric';
 
-    console.log('humanizeDateWithTime', date);
-    console.log(
-      `new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true })`,
-      new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true }));
-    return new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true });
+    return new Date(date).toLocaleTimeString([], { month: size, day: digits, year: digits, hour12: true });
   }
 
   public humanizeDate(date: string | Date, short?: boolean): string {
-    // const mnt = moment(date);
-    // const format = {
-    //   lastDay: '[Yesterday]',
-    //   sameDay: '[Today]',
-    //   nextDay: '[Tomorrow]',
-    //   lastWeek: '[Last] dddd',
-    //   nextWeek: '[Next] dddd',
-    //   sameElse: short ? 'ddd, DD MMM, YYYY' : 'dddd, DD MMMM, YYYY',
-    // };
+    if (!date) {
+      return '';
+    }
 
-    // const humanDateWithTime = mnt.calendar(undefined, format);
+    const size = short ? 'short' : 'long';
+    const digits = short ? '2-digit' : 'numeric';
 
-    // return humanDateWithTime;
-    return new Date(date).toLocaleString([], { weekday: 'short', month: 'short', day: '2-digit', year: '2-digit' });
+    return new Date(date).toLocaleString([], { weekday: size, month: size, day: digits, year: digits });
   }
 
   public duration(start: string | Date, finish: string | Date): string {
-    // const foo = moment(start);
-    // const bar = moment(finish);
-    // const duration = moment.duration(foo.diff(bar));
-    // const humanString = duration.humanize();
+    const date1 = new Date(start);
+    const date2 = new Date(finish);
 
-    // return humanString;
-    return '';
+    const duration = date2.valueOf() - date1.valueOf();
+    const hourDiff = (duration / 1000) / 3600;
+
+    return `${hourDiff} hours.`;
   }
 
 }

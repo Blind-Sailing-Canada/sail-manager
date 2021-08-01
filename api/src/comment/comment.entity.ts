@@ -16,7 +16,7 @@ import { ProfileEntity } from '../profile/profile.entity';
 import { SailEntity } from '../sail/sail.entity';
 import { Comment } from '../types/comment/comment';
 
-@Entity('comment')
+@Entity('comments')
 @Index([
   'commentable_id',
   'commentable_type',

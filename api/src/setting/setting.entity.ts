@@ -10,7 +10,7 @@ import { Settings } from '../types/settings/settings';
 import { ProfileEntity } from '../profile/profile.entity';
 import { Setting } from '../types/settings/setting';
 
-@Entity('setting')
+@Entity('settings')
 export class SettingEntity extends BaseModelEntity implements Settings {
   @Column()
   @Index({ unique: true })

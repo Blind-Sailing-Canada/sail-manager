@@ -11,14 +11,14 @@ import { ChallengeStatus } from '../types/challenge/challenge-status';
 import { CommentEntity } from '../comment/comment.entity';
 import { MediaEntity } from '../media/media.entity';
 
-@Entity('challenge')
+@Entity('challenges')
 export class ChallengeEntity extends BaseModelEntity implements Challenge {
   @Column({
     length: 100,
     unique: true,
     nullable: false,
   })
-  @Index('challenge_name')
+  @Index('challenges_name')
   name: string;
 
   @Column({
@@ -39,7 +39,7 @@ export class ChallengeEntity extends BaseModelEntity implements Challenge {
     type: 'enum',
     nullable: false,
   })
-  @Index('challenge_status')
+  @Index('challenges_status')
   status: ChallengeStatus;
 
   @Column({ default: 0 })

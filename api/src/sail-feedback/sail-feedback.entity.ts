@@ -9,7 +9,7 @@ import { SailEntity } from '../sail/sail.entity';
 import { SailFeedback } from '../types/sail-feedback/sail-feedback';
 import { Sail } from '../types/sail/sail';
 
-@Entity('sail-feedback')
+@Entity('sail_feedback')
 @Index(['id'])
 export class SailFeedbackEntity extends BaseModelEntity implements SailFeedback {
   @Column({

@@ -39,6 +39,10 @@ mat-label {
   margin-right: 10px !important;
 }
 
+.mat-snack-bar-container {
+  margin: 0 !important;
+}
+
 form, .form {
   width: 100%;
   display: flex;

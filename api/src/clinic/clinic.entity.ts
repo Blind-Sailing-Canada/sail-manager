@@ -12,14 +12,14 @@ import { Clinic } from '../types/clinic/clinic';
 import { ClinicStatus } from '../types/clinic/clinic-status';
 import { ProfileEntity } from '../profile/profile.entity';
 
-@Entity('clinic')
+@Entity('clinics')
 export class ClinicEntity extends BaseModelEntity implements Clinic {
   @Column({
     length: 100,
     unique: true,
     nullable: false,
   })
-  @Index('clinic_name')
+  @Index('clinics_name')
   name: string;
 
   @Column()

@@ -63,7 +63,7 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
   }
 
   public get title(): string {
-    return this.sailRequestId ? 'Edit Sail Request Form' : 'New Sail Request Form';
+    return this.sail_request_id ? 'Edit Sail Request Form' : 'New Sail Request Form';
   }
 
   private buildForm(): void {
@@ -101,7 +101,7 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
   }
 
   public get creating(): boolean {
-    return !this.sailRequestId;
+    return !this.sail_request_id;
   }
 
   public create(): void {
@@ -130,19 +130,19 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
         {}
       ) as any;
 
-    this.dispatchAction(updateSailRequest({ id: this.sailRequestId, sailRequest: changedValue }));
+    this.dispatchAction(updateSailRequest({ id: this.sail_request_id, sailRequest: changedValue }));
   }
 
   public cancelRequest(): void {
-    this.dispatchAction(cancelSailRequest({ id: this.sailRequestId }));
+    this.dispatchAction(cancelSailRequest({ id: this.sail_request_id }));
   }
 
   public expireRequest(): void {
-    this.dispatchAction(expireSailRequest({ id: this.sailRequestId }));
+    this.dispatchAction(expireSailRequest({ id: this.sail_request_id }));
   }
 
   public get shouldShowControls(): boolean {
-    return !!this.sailRequestId;
+    return !!this.sail_request_id;
   }
 
   public get shouldShowCancellButton() {

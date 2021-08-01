@@ -66,13 +66,10 @@ export class SailManifestController {
   async getAvailableSailors(@Query('start_at') start: string, @Query('end_at') end: string, @Query('sailorName') sailorName, @Query('limit') limit = 5 ) {
     const sailsDuringThisTime = await SailEntity
       .find(
-        {
-          relations: ['manifest'],
-          where: `
-            (start_at <= "${start}" AND end_at >= "${start}") OR
-            (start_at <= "${end}" AND end_at >= "${end}")
-          `,
-        }
+        { where: `
+            (start_at <= '${start}'::timestamp with time zone AND end_at >= '${start}'::timestamp with time zone) OR
+            (start_at <= '${end}'::timestamp with time zone AND end_at >= '${end}'::timestamp with time zone)
+          ` }
       );
 
     const notAvailable = sailsDuringThisTime.reduce((red, sail) => {

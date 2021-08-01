@@ -273,7 +273,7 @@ export class SailEffects {
       ofType(createSailFromSailRequest),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.createFromSailRequest(action.sail, action.sailRequestId)
+        action => this.sailService.createFromSailRequest(action.sail, action.sail_request_id)
           .pipe(
             mergeMap(sail => of(
               putSnack({ snack: { type: SnackType.INFO, message: 'Sail created!' } }),

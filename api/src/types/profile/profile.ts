@@ -7,6 +7,7 @@ import { ProfileStatus } from './profile-status';
 import { ExpiresBase } from '../base/expires-base';
 import { Achievement } from '../achievement/achievement';
 import { UserAccess } from '../user-access/user-access';
+import { SailChecklist } from '../sail-checklist/sail-checklist';
 
 export interface Profile extends ExpiresBase {
   access: UserAccess;
@@ -21,6 +22,7 @@ export interface Profile extends ExpiresBase {
   photo: string;
   required_actions: RequiredAction[];
   roles: ProfileRole[];
+  sail_checklists: SailChecklist[];
   sail_manifests: SailManifest[];
   status: ProfileStatus;
 }

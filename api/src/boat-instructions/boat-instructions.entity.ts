@@ -9,7 +9,7 @@ import { BoatInstruction } from '../types/boat-instructions/boat-instruction';
 import { BoatInstructions } from '../types/boat-instructions/boat-instructions';
 import { BoatInstructionType } from '../types/boat-instructions/boat-instruction-type';
 
-@Entity('boat-instructions')
+@Entity('boat_instructions')
 export class BoatInstructionsEntity extends BaseModelEntity implements BoatInstructions {
 
   @ManyToOne(() => BoatEntity, (boat) => boat.instructions)

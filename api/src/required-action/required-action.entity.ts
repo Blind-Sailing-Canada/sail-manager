@@ -9,7 +9,7 @@ import { RequiredAction } from '../types/required-action/required-action';
 import { RequiredActionStatus } from '../types/required-action/required-action-status';
 import { RequiredActionType } from '../types/required-action/required-action-type';
 
-@Entity('required-action')
+@Entity('required_actions')
 export class RequiredActionEntity extends BaseModelEntity implements RequiredAction {
   @Column()
   title: string;

@@ -13,7 +13,7 @@ import { Boat } from '../types/boat/boat';
 import { BoatStatus } from '../types/boat/boat-status';
 import { BoatInstructionType } from '../types/boat-instructions/boat-instruction-type';
 
-@Entity('boat')
+@Entity('boats')
 export class BoatEntity extends BaseModelEntity implements Boat {
   @Column({
     length: 100,
@@ -74,7 +74,10 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   @Column({ length: 50 })
   phrf: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+    default: null,
+  })
   wiki: string;
 
   @Column({

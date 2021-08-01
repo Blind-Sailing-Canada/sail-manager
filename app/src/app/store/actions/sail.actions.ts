@@ -41,7 +41,7 @@ export const deleteSailComment = createAction(
 export const completeSail = createAction(SAIL_ACTION_TYPES.COMPLETE, props<{ sail: Sail, notify?: boolean }>());
 export const createSail = createAction(SAIL_ACTION_TYPES.CREATE, props<{ sail: Sail }>());
 export const createSailFromSailRequest = createAction(
-  SAIL_ACTION_TYPES.CREATE_FROM_SAIL_REQUEST, props<{ sail: Sail, sailRequestId: string }>());
+  SAIL_ACTION_TYPES.CREATE_FROM_SAIL_REQUEST, props<{ sail: Sail, sail_request_id: string }>());
 export const startSail = createAction(SAIL_ACTION_TYPES.START, props<{ sail: Sail, notify?: boolean }>());
 export const fetchSail = createAction(SAIL_ACTION_TYPES.FETCH_ONE, props<{ id: string, notify?: boolean }>());
 export const fetchSails = createAction(SAIL_ACTION_TYPES.FETCH_MANY, props<{ notify?: boolean, query?: string }>());

@@ -1,4 +1,5 @@
 import { Base } from '../base/base';
+import { Profile } from '../profile/profile';
 import { Sail } from '../sail/sail';
 import { BilgeState } from './bilge-state';
 import { FireExtinguisherState } from './fire-exstinguisher-state';
@@ -18,5 +19,7 @@ export interface SailChecklist extends Base {
   sail_id: string;
   signed_by_crew: boolean;
   signed_by_skipper: boolean;
+  submitted_by: Profile;
+  submitted_by_id: string;
   weather: string;
 }

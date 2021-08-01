@@ -5,6 +5,7 @@ import {
   Unique
 } from 'typeorm';
 import { BaseModelEntity } from '../base/base.entity';
+import { ProfileEntity } from '../profile/profile.entity';
 import { SailEntity } from '../sail/sail.entity';
 import { BilgeState } from '../types/sail-checklist/bilge-state';
 import { FireExtinguisherState } from '../types/sail-checklist/fire-exstinguisher-state';
@@ -13,7 +14,7 @@ import { FuelState } from '../types/sail-checklist/fuel-state';
 import { SailChecklist } from '../types/sail-checklist/sail-checklist';
 import { SailChecklistType } from '../types/sail-checklist/sail-checklist-type';
 
-@Entity('sail-checklist')
+@Entity('sail_checklists')
 @Unique('sail_id_checklist_type', [
   'sail_id',
   'checklist_type',
@@ -94,4 +95,13 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
 
   @ManyToOne(() => SailEntity, (sail) => sail.feedback)
   sail: SailEntity;
+
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  submitted_by_id: string;
+
+  @ManyToOne(() => ProfileEntity, (profile) => profile.sail_checklists, { eager: true })
+  submitted_by: ProfileEntity;
 }

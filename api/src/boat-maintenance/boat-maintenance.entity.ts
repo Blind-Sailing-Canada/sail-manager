@@ -16,7 +16,7 @@ import { BoatMaintenance } from '../types/boat-maintenance/boat-maintenance';
 import { BoatMaintenanceStatus } from '../types/boat-maintenance/boat-maintenance-status';
 import { MediaEntity } from '../media/media.entity';
 
-@Entity('boat-maintenance')
+@Entity('boat_maintenances')
 export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMaintenance {
   @OneToMany(() => CommentEntity, (comment) => comment.boat_maintenance, {
     createForeignKeyConstraints: false,

@@ -11,7 +11,7 @@ import { Access } from '../types/user-access/access';
 import { DefaultUserAccess } from '../types/user-access/default-user-access';
 import { UserAccess } from '../types/user-access/user-access';
 
-@Entity('user-access')
+@Entity('user_accesses')
 export class UserAccessEntity extends BaseModelEntity implements UserAccess {
   @Column({
     type: 'json',

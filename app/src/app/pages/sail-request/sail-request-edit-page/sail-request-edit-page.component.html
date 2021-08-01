@@ -49,7 +49,7 @@
       tabindex="-1"
       aria-hidden="true"
       id="stepLabelDetails"
-    >Step 1 of {{sailRequestId ? '2' : '1'}}: Request details (required)</h4>
+    >Step 1 of {{sail_request_id ? '2' : '1'}}: Request details (required)</h4>
     <mat-form-field aria-required="true">
       <mat-label
         tabindex="-1"
@@ -76,7 +76,7 @@
 <ng-template #status>
   <form
     [formGroup]="form"
-    *ngIf="!!sailRequestId"
+    *ngIf="!!sail_request_id"
   >
     <h4
       tabindex="-1"

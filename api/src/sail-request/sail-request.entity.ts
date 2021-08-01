@@ -15,7 +15,7 @@ import { SailEntity } from '../sail/sail.entity';
 import { SailRequest } from '../types/sail-request/sail-request';
 import { SailRequestStatus } from '../types/sail-request/sail-request-status';
 
-@Entity('sail-request')
+@Entity('sail_requests')
 export class SailRequestEntity extends BaseModelEntity implements SailRequest {
   @Column({
     nullable: true,

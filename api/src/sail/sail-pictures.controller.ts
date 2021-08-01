@@ -21,10 +21,7 @@ export class SailPicturesController {
 
   @Get('/:sail_id/pictures')
   async getSailPictures(@Param('sail_id') sail_id) {
-    return MediaEntity.find({
-      relations: ['posted_by'],
-      where : { media_for_id: sail_id },
-    });
+    return MediaEntity.find({ where : { media_for_id: sail_id } });
   }
 
   @Put('/:sail_id/pictures')
@@ -39,10 +36,7 @@ export class SailPicturesController {
     const media = MediaEntity.create(pictures);
     await MediaEntity.save(media);
 
-    return MediaEntity.find({
-      relations: ['posted_by'],
-      where : { media_for_id: sail_id },
-    });
+    return MediaEntity.find({ where : { media_for_id: sail_id } });
   }
 
   @Delete('/:sail_id/pictures/:pictureId')
@@ -55,10 +49,7 @@ export class SailPicturesController {
 
     await picture.remove();
 
-    return MediaEntity.find({
-      relations: ['posted_by'],
-      where : { media_for_id: sail_id },
-    });
+    return MediaEntity.find({ where : { media_for_id: sail_id } });
   }
 
 }

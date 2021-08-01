@@ -30,7 +30,7 @@ export class SailRequestViewPageComponent extends SailRequestBasePageComponent {
   }
 
   public get editSailRequestRoute(): string {
-    return editSailRequestRoute(this.sailRequestId);
+    return editSailRequestRoute(this.sail_request_id);
   }
 
   public get canEditRequest(): boolean {
@@ -51,6 +51,6 @@ export class SailRequestViewPageComponent extends SailRequestBasePageComponent {
   }
 
   public cancelRequest(): void {
-    this.dispatchAction(cancelSailRequest({ id: this.sailRequestId }));
+    this.dispatchAction(cancelSailRequest({ id: this.sail_request_id }));
   }
 }

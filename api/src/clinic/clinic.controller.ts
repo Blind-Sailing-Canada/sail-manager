@@ -1,5 +1,6 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
+  Body,
   Controller, Delete, Param, Patch, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -33,7 +34,6 @@ import { ClinicService } from './clinic.service';
     'createOneBase',
     'getManyBase',
     'getOneBase',
-    'updateOneBase',
   ] },
 })
 @Controller('clinic')
@@ -44,6 +44,17 @@ export class ClinicController {
   constructor(
     public service: ClinicService,
     @InjectQueue('clinic') private readonly cliniQueue: Queue) { }
+
+  @Patch('/:clinic_id')
+  async update(@Param('clinic_id') id: string, @Body() body) {
+    const result = await ClinicEntity.update(id, body);
+
+    if (result.affected !== 1) {
+      throw new Error(`Failed to update Clinic (${id})`);
+    }
+
+    return ClinicEntity.findOneOrFail(id);
+  }
 
   @Patch('/:clinic_id/enroll/:profile_id')
   async enroll(@Param('clinic_id') clinic_id: string, @Param('profile_id') profile_id: string) {

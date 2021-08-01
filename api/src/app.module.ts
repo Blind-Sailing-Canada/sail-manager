@@ -60,15 +60,18 @@ const DB_CONNECTION_META: ConnectionOptions = {
 @Module({
   imports: [
     RavenModule,
-    BullModule.forRoot({ defaultJobOptions: {
-      delay: 30000,
-      removeOnComplete: true,
-      attempts: 5,
-      backoff: {
-        type: 'exponential',
-        delay: 60 * 1000,
+    BullModule.forRoot({
+      redis: process.env.REDIS_CONNECTION_STRING,
+      defaultJobOptions: {
+        delay: 30000,
+        removeOnComplete: true,
+        attempts: 5,
+        backoff: {
+          type: 'exponential',
+          delay: 60 * 1000,
+        },
       },
-    } }),
+    }),
     ServeStaticModule.forRoot({ rootPath: join(__dirname) }),
     TypeOrmModule.forRoot(DB_CONNECTION_META),
     ScheduleModule.forRoot(),

@@ -172,8 +172,8 @@ export class SailService {
     return this.http.post<Sail>(`${this.API_URL}`, sail);
   }
 
-  public createFromSailRequest(sail: Sail, sailRequestId: string): Observable<Sail> {
-    return this.http.post<Sail>(`${this.API_URL}/sail-request`, { sail, sailRequestId });
+  public createFromSailRequest(sail: Sail, sail_request_id: string): Observable<Sail> {
+    return this.http.post<Sail>(`${this.API_URL}/sail-request`, { sail, sail_request_id });
   }
 
   public joinAsCrew(sail_id: string): Observable<Sail> {

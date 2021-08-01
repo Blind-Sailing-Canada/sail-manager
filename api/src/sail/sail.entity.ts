@@ -20,7 +20,7 @@ import { SailRequestEntity } from '../sail-request/sail-request.entity';
 import { Sail } from '../types/sail/sail';
 import { SailStatus } from '../types/sail/sail-status';
 
-@Entity('sail')
+@Entity('sails')
 @Index([
   'id',
   'entity_type',

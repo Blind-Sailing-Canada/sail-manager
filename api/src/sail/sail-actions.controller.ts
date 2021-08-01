@@ -60,7 +60,7 @@ export class SailActionsController {
       throw new UnauthorizedException('You do not have skipper status');
     }
 
-    const sail = await SailEntity.findOne(id, { relations: ['manifest'] });
+    const sail = await SailEntity.findOne(id);
 
     if (!sail) {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
@@ -102,7 +102,7 @@ export class SailActionsController {
       throw new UnauthorizedException('You do not have crew status');
     }
 
-    const sail = await SailEntity.findOne(id, { relations: ['manifest'] });
+    const sail = await SailEntity.findOne(id);
 
     if (!sail) {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
@@ -138,7 +138,7 @@ export class SailActionsController {
 
   @Put(':id/join/sailor')
   async joinSailAsSailor(@User() user: JwtObject, @Param('id') id: string) {
-    const sail = await SailEntity.findOne(id, { relations: ['manifest'] });
+    const sail = await SailEntity.findOne(id);
 
     if (!sail) {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);

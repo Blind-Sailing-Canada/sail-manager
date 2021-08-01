@@ -8,6 +8,8 @@ import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
 import { SailManifestEntity } from '../sail-manifest/sail-manifest.entity';
 import { SailEntity } from '../sail/sail.entity';
+import { JwtObject } from '../types/token/jwt-object';
+import { User } from '../user/user.decorator';
 import { SailChecklistEntity } from './sail-checklist.entity';
 import { SailChecklistService } from './sail-checklist.service';
 
@@ -44,17 +46,25 @@ export class SailChecklistController {
   constructor(public service: SailChecklistService) { }
 
   @Patch('/sail/:sail_id/update')
-  async updateSailChecklist(@Param('sail_id') sail_id: string, @Body() checklistInfo) {
+  async updateSailChecklist(@User() user: JwtObject, @Param('sail_id') sail_id: string, @Body() checklistInfo) {
     const before = checklistInfo.before;
 
     if (before) {
       await SailChecklistEntity.update(before.id, before);
+      await SailChecklistEntity.update({
+        id: before.id,
+        submitted_by_id: null,
+      }, { submitted_by_id: user.profile_id });
     }
 
     const after = checklistInfo.before;
 
     if (after) {
       await SailChecklistEntity.update(after.id, after);
+      await SailChecklistEntity.update({
+        id: after.id,
+        submitted_by_id: null,
+      }, { submitted_by_id: user.profile_id });
     }
 
     const manifest = checklistInfo.peopleManifest;

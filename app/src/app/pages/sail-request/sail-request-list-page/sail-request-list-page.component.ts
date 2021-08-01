@@ -149,11 +149,11 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
   }
 
   public joinSailRequest(id: string): void {
-    this.dispatchAction(interestedSailRequest({ sailRequestId: id }));
+    this.dispatchAction(interestedSailRequest({ sail_request_id: id }));
   }
 
   public leaveSailRequest(id: string): void {
-    this.dispatchAction(uninterestedSailRequest({ sailRequestId: id }));
+    this.dispatchAction(uninterestedSailRequest({ sail_request_id: id }));
   }
 
   public cancelRequest(id: string): void {

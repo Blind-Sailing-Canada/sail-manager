@@ -11,7 +11,7 @@ import { SailRequestEntity } from '../sail-request/sail-request.entity';
 import { Profile } from '../types/profile/profile';
 import { SailRequestInterest } from '../types/sail-request-interest/sail-request-interest';
 
-@Entity('sail-request-interest')
+@Entity('sail_request_interests')
 @Index([
   'sail_request_id',
   'profile_id',

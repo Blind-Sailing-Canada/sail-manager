@@ -11,7 +11,7 @@ import { SailEntity } from '../sail/sail.entity';
 import { SailManifest } from '../types/sail-manifest/sail-manifest';
 import { SailorRole } from '../types/sail-manifest/sailor-role';
 
-@Entity('sail-manifest')
+@Entity('sail_manifests')
 @Index('sail-profile-index', [
   'sail_id',
   'profile_id',
