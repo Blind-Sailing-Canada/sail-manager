@@ -55,8 +55,16 @@ export class SailEntity extends BaseModelEntity implements Sail {
   @Column({
     length: 500,
     nullable: true,
+    default: 'other',
   })
-  @Index('sail_description')
+  @Index('sails_category')
+  category: string;
+
+  @Column({
+    length: 500,
+    nullable: true,
+  })
+  @Index('sails_description')
   description: string;
 
   @Column({

@@ -24,6 +24,9 @@ export class SailRequestEntity extends BaseModelEntity implements SailRequest {
   entity_number: number;
 
   @Column()
+  category: string;
+
+  @Column()
   details: string;
 
   @Column({ nullable: true })

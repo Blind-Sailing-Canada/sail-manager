@@ -18,6 +18,7 @@ export interface Sail extends Base {
   cancelled_at: Date;
   cancelled_by: Profile;
   cancelled_by_id: string;
+  category: string;
   checklists: SailChecklist[];
   comments: Comment[];
   description: string;

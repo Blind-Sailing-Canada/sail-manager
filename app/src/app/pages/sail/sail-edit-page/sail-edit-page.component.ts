@@ -44,6 +44,8 @@ import { Sail } from '../../../../../../api/src/types/sail/sail';
 import { Boat } from '../../../../../../api/src/types/boat/boat';
 import { SailorRole } from '../../../../../../api/src/types/sail-manifest/sailor-role';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
+import { SailCategory } from '../../../../../../api/src/types/sail/sail-category';
+import { fetchSailCategories } from '../../../store/actions/sail-category.actions';
 
 @Component({
   selector: 'app-sail-edit-page',
@@ -61,6 +63,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   public sail_id: string;
   public sail_request_id: string;
   public sailStartDateTimeForm: FormGroup;
+  public sailCategories: SailCategory[] = [];
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -78,9 +81,15 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.sail_id = this.route.snapshot.params.id;
     this.creatingNewSail = !this.sail_id;
 
+    this.dispatchAction(fetchSailCategories({ notify: false }));
+
     this.buildForm();
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
+
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.SAIL_CATEGORIES, (categories) => {
+      this.sailCategories = Object.values(categories || {});
+    });
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.BOATS, () => {
       const sail = this.sails[this.sail_id] || {} as Sail;
@@ -113,6 +122,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     const formValues = this.sailForm.getRawValue();
 
+    this.sailForm.controls.category.setValue(formValues.category || sail.category);
     this.sailForm.controls.name.setValue(formValues.name || sail.name);
     this.sailForm.controls.description.setValue(formValues.description || sail.description);
 
@@ -159,7 +169,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       this.sailForm.controls.start_at.markAsDirty();
       this.sailForm.controls.start_at.updateValueAndValidity();
 
-      const end_dateTime =  new Date(start_dateTime);
+      const end_dateTime = new Date(start_dateTime);
       end_dateTime.setHours(end_dateTime.getHours() + 3);
 
       this.sailEndDateTimeForm.patchValue({
@@ -190,6 +200,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     });
 
     this.sailForm = this.fb.group({
+      category: this.fb.control(''),
       name: new FormControl('', [
         (control) => {
           const name = control.value.trim();

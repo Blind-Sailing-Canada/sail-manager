@@ -9,10 +9,12 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminUserEditPageComponent } from './admin-user-edit-page/admin-user-edit-page.component';
 import { BasePageModule } from '../base-page/base-page.module';
 import { CreateUserDialogModule } from '../../components/create-user-dialog/create-user-dialog.module';
+import { AdminSailCategoryPageComponent } from './admin-sail-category-page/admin-sail-category-page.component';
 
 @NgModule({
   declarations: [
     AdminDashboardPageComponent,
+    AdminSailCategoryPageComponent,
     AdminUserEditPageComponent,
   ],
   imports: [

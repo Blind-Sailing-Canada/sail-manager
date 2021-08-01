@@ -21,7 +21,7 @@ import { Store } from '@ngrx/store';
 import { IProfileMap } from '../../../models/profile-state.interface';
 import { SnackType } from '../../../models/snack-state.interface';
 import {
-  editProfilePrivilegesRoute,
+  editProfilePrivilegesRoute, listSailCategoriesRoute,
 } from '../../../routes/routes';
 import { ProfileService } from '../../../services/profile.service';
 import {
@@ -143,6 +143,10 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
         maxWidth: 500,
         data: dialogData,
       });
+  }
+
+  public goToSailCategories(): void {
+    this.goTo([listSailCategoriesRoute]);
   }
 
   private createUser(name: string, email: string): Promise<void> {

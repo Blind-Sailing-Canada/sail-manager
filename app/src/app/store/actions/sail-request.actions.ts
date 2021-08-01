@@ -18,7 +18,7 @@ export enum SAIL_REQUEST_ACTION_TYPES {
 }
 
 export const cancelSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.CANCEL, props<{ id: string }>());
-export const createSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.CREATE, props<{ sailRequest: SailRequest }>());
+export const createSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.CREATE, props<{ sailRequest: Partial<SailRequest> }>());
 export const expireSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.EXPIRE, props<{ id: string }>());
 export const fetchSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.FETCH_ONE, props<{ id: string }>());
 export const fetchSailRequests = createAction(SAIL_REQUEST_ACTION_TYPES.FETCH_MANY, props<{ query?: string, notify?: boolean }>());

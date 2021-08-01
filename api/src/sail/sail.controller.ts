@@ -171,6 +171,7 @@ export class SailController {
           ...sailInfo.sail,
           description: sail_request.details,
           sail_request_id: sailInfo.sail_request_id,
+          category: sail_request.category || 'other',
         });
 
         sail = await transactionalEntityManager.save(sail);

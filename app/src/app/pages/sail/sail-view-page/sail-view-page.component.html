@@ -112,6 +112,21 @@
         >{{sail.entity_number}}</td>
       </tr>
       <tr
+        aria-label="Sail category"
+        title="{{sail.category}}"
+        tabindex="0"
+        role="listitem"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Category</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        >{{sail.category}}</td>
+      </tr>
+      <tr
         aria-label="Sail start"
         title="This sail starts {{sail.start_at | humanDateWithTime}}"
         tabindex="0"

@@ -7,6 +7,7 @@ import { AdminGuard } from '../../auth/admin.guard';
 import { EditUserAccessGuard } from '../../auth/edit-user-access.guard';
 import { SUB_ROUTES } from '../../routes/routes';
 import { AdminDashboardPageComponent } from './admin-dashboard-page/admin-dashboard-page.component';
+import { AdminSailCategoryPageComponent } from './admin-sail-category-page/admin-sail-category-page.component';
 import { AdminUserEditPageComponent } from './admin-user-edit-page/admin-user-edit-page.component';
 
 const routes: Routes = [
@@ -19,6 +20,11 @@ const routes: Routes = [
     path: `${SUB_ROUTES.EDIT_PROFILE_PRIVILEGES}/:id`,
     canActivate: [EditUserAccessGuard],
     component: AdminUserEditPageComponent,
+  },
+  {
+    path: `${SUB_ROUTES.LIST_SAIL_CATEGORIES}`,
+    canActivate: [AdminGuard],
+    component: AdminSailCategoryPageComponent,
   },
 ];
 

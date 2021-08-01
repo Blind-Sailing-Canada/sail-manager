@@ -53,6 +53,7 @@ export enum SUB_ROUTES {
   LIST_CLINICS = 'list',
   LIST_FEEDBACK = 'list',
   LIST_LOGS = 'list',
+  LIST_SAIL_CATEGORIES = 'list',
   LIST_SAIL_PATHS = 'list',
   PROFILE_SETTINGS = 'settings',
   RECORD_SAIL_PATH = 'record',
@@ -129,6 +130,7 @@ export enum FULL_ROUTES {
   LIST_CLICNICS = CLINICS + SEPARATOR + SUB_ROUTES.LIST_CLINICS,
   LIST_FEEDBACK = FEEDBACK + SEPARATOR + SUB_ROUTES.LIST_FEEDBACK,
   LIST_LOGS = LOGS + SEPARATOR + SUB_ROUTES.LIST_LOGS,
+  LIST_SAIL_CATEGORIES = ADMIN + SEPARATOR + SUB_ROUTES.LIST_SAIL_CATEGORIES,
   LIST_SAIL_PATHS = SAIL_PATHS + SEPARATOR + SUB_ROUTES.LIST_SAIL_PATHS,
   PROFILE_SETTINGS = PROFILE + SEPARATOR + SUB_ROUTES.PROFILE_SETTINGS,
   RECORD_SAIL_PATH = SAIL_PATHS + SEPARATOR + SUB_ROUTES.RECORD_SAIL_PATH,
@@ -186,6 +188,7 @@ export const listChallengesRoute = `${FULL_ROUTES.LIST_CHALLENGES}`;
 export const listClinicsRoute = () => `${FULL_ROUTES.LIST_CLICNICS}`;
 export const listFeedbackRoute = (sail_id: string) => `${FULL_ROUTES.LIST_FEEDBACK}/${sail_id}`;
 export const listLogsRoute = `${FULL_ROUTES.LIST_LOGS}`;
+export const listSailCategoriesRoute = FULL_ROUTES.LIST_SAIL_CATEGORIES;
 export const listSailPathsRoute = (sail_id: string) => `${FULL_ROUTES.LIST_SAIL_PATHS}/${sail_id}`;
 export const loginWithEmailAndPassword = FULL_ROUTES.EMAIL_AND_PASSWORD;
 export const maintenanceRoute = FULL_ROUTES.MAINTENACE;

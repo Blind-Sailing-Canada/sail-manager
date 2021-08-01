@@ -18,6 +18,7 @@ import { SailEffects } from './sail.effects';
 import { FutureSailsEffects } from './future-sails.effects';
 import { UserAccessEffects } from './user-access.effects';
 import { TodaySailsEffects } from './today-sails.effects';
+import { SailCategoryEffects } from './sail-category.effects';
 
 export const effects = [
   AppEffects,
@@ -27,17 +28,18 @@ export const effects = [
   ChallengeEffects,
   ClinicsEffects,
   FeedbackEffects,
+  FutureSailsEffects,
   InProgressSailsEffects,
   InstructionsEffects,
   LoginEffects,
   PastSailsEffects,
   ProfileEffects,
   RequiredActionsEffects,
+  SailCategoryEffects,
   SailChecklistEffects,
   SailEffects,
-  TodaySailsEffects,
   SailRequestEffects,
   SailRequestInterestEffects,
-  FutureSailsEffects,
+  TodaySailsEffects,
   UserAccessEffects,
 ];

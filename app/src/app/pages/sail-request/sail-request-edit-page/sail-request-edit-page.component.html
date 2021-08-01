@@ -1,4 +1,4 @@
-<mat-card *ngIf="user">
+<mat-card *ngIf="user && sailRequest">
   <mat-card-header>
     <div mat-card-avatar>
       <mat-icon>cloud_upload</mat-icon>
@@ -13,6 +13,7 @@
     <ng-container [ngTemplateOutlet]="controls"></ng-container>
   </mat-card-actions>
   <mat-card-content>
+    <ng-container *ngTemplateOutlet="category"></ng-container>
     <ng-container *ngTemplateOutlet="details"></ng-container>
     <ng-container *ngTemplateOutlet="status"></ng-container>
   </mat-card-content>
@@ -43,13 +44,40 @@
   >Cancel</button>
 </ng-template>
 
+<ng-template #category>
+  <form [formGroup]="form">
+    <h4
+      tabindex="-1"
+      aria-hidden="true"
+      id="stepLabelCategory"
+    >Step 1 of {{sail_request_id ? '3' : '2'}}: Sail category</h4>
+    <mat-form-field>
+      <mat-label
+        id="stepLabelCategory"
+        aria-hidden="true"
+        tabindex="-1"
+      >Sail category</mat-label>
+      <select
+        matNativeControl
+        formControlName="category"
+      >
+        <option value=""></option>
+        <option
+          *ngFor="let category of sailCategories"
+          [value]="category.category"
+        >{{category.category}}</option>
+      </select>
+    </mat-form-field>
+  </form>
+</ng-template>
+
 <ng-template #details>
   <form [formGroup]="form">
     <h4
       tabindex="-1"
       aria-hidden="true"
       id="stepLabelDetails"
-    >Step 1 of {{sail_request_id ? '2' : '1'}}: Request details (required)</h4>
+    >Step 2 of {{sail_request_id ? '3' : '2'}}: Request details (required)</h4>
     <mat-form-field aria-required="true">
       <mat-label
         tabindex="-1"
@@ -82,7 +110,7 @@
       tabindex="-1"
       aria-hidden="true"
       id="stepLabelStatus"
-    >Step 2 of 2: Request status</h4>
+    >Step 3 of 3: Request status</h4>
     <mat-form-field>
       <mat-label
         aria-hidden="true"

@@ -6,6 +6,7 @@ import { EmailModule } from '../email/email.module';
 import { FirebaseAdminModule } from '../firebase-admin/firebase-admin.module';
 import { GoogleApiModule } from '../google-api/google-api.modeul';
 import { SailActionsController } from './sail-actions.controller';
+import { SailCategoryController } from './sail-category.controller';
 import { SailCommentsController } from './sail-comments.controller';
 import { SailPicturesController } from './sail-pictures.controller';
 import { SailController } from './sail.controller';
@@ -24,11 +25,12 @@ import { UserSailController } from './user-sail.controller';
     GoogleApiModule,
   ],
   controllers: [
-    SailController,
-    UserSailController,
     SailActionsController,
+    SailCategoryController,
     SailCommentsController,
+    SailController,
     SailPicturesController,
+    UserSailController,
   ],
   providers: [
     SailService,

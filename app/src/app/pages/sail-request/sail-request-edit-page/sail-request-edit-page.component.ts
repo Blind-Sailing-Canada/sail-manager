@@ -15,7 +15,9 @@ import {
 import { Store } from '@ngrx/store';
 import { SailRequest } from '../../../../../../api/src/types/sail-request/sail-request';
 import { SailRequestStatus } from '../../../../../../api/src/types/sail-request/sail-request-status';
+import { SailCategory } from '../../../../../../api/src/types/sail/sail-category';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
+import { fetchSailCategories } from '../../../store/actions/sail-category.actions';
 import {
   cancelSailRequest,
   createSailRequest,
@@ -34,6 +36,7 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
 
   public form: FormGroup;
   public requestStatusValues = Object.values(SailRequestStatus);
+  public sailCategories: SailCategory[] = [];
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -60,6 +63,11 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
       }
     });
 
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.SAIL_CATEGORIES, (categories) => {
+      this.sailCategories = Object.values(categories || {});
+    });
+
+    this.dispatchAction(fetchSailCategories({ notify: false }));
   }
 
   public get title(): string {
@@ -70,6 +78,7 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
     this.form = this.fb.group({
       requested_by_id: this.fb.control(this.user.profile.id, Validators.required),
       details: this.fb.control(undefined, Validators.required),
+      category: this.fb.control(''),
       status: this.fb
         .control({ value: SailRequestStatus.New, disabled: this.creating || !this.shouldShowStatusInput }, Validators.required),
     });
@@ -105,9 +114,9 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
   }
 
   public create(): void {
-    const data: SailRequest = this.form.getRawValue();
+    const sailRequest: Partial<SailRequest> = this.form.getRawValue();
 
-    this.dispatchAction(createSailRequest({ sailRequest: data }));
+    this.dispatchAction(createSailRequest({ sailRequest }));
   }
 
   public update(): void {

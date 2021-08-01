@@ -5,6 +5,7 @@ import { Base } from '../base/base';
 import { SailRequestInterest } from '../sail-request-interest/sail-request-interest';
 
 export interface SailRequest extends Base {
+  category: string;
   details: string;
   entity_number: number;
   interest: SailRequestInterest[];
