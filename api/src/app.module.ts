@@ -57,11 +57,18 @@ const DB_CONNECTION_META: ConnectionOptions = {
   namingStrategy: new SnakeNamingStrategy(),
 };
 
+const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING);
+
 @Module({
   imports: [
     RavenModule,
     BullModule.forRoot({
-      redis: process.env.REDIS_CONNECTION_STRING,
+      redis: {
+        host: redisUrl.hostname,
+        password: redisUrl.password,
+        port: Number(redisUrl.port),
+        username: redisUrl.username,
+      },
       defaultJobOptions: {
         delay: 30000,
         removeOnComplete: true,
