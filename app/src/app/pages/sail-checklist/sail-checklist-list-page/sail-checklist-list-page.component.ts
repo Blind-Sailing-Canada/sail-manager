@@ -9,7 +9,6 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SailChecklist } from '../../../../../../api/src/types/sail-checklist/sail-checklist';
-import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
 import { MomentService } from '../../../services/moment.service';
 import { findSailChecklists } from '../../../store/actions/sail-checklist.actions';
 import { STORE_SLICES } from '../../../store/store';
@@ -47,24 +46,12 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
 
     if (this.boat_id) {
       if (this.excludeSailId) {
-        const query = JSON.stringify({
-          checklist_type: SailChecklistType.Before,
-          sail_id: { $ne: this.excludeSailId },
-          'sail.boat_id': this.boat_id,
-        });
-        this.dispatchAction(findSailChecklists({ query: `s=${query}&limit=10&sort=sail.start_at,DESC` }));
+        this.dispatchAction(findSailChecklists({ query: `boat_id=${this.boat_id}&exclude_sail_id=${this.excludeSailId}` }));
       } else {
-        const query = JSON.stringify({
-          'sail.boat_id': this.boat_id,
-          checklist_type: SailChecklistType.Before,
-        });
-        this.dispatchAction(findSailChecklists({ query: `s=${query}&limit=10&sort=sail.start_at,DESC` }));
+        this.dispatchAction(findSailChecklists({ query: `boat_id=${this.boat_id}` }));
       }
     } else {
-      const query = JSON.stringify({
-        checklist_type: SailChecklistType.Before,
-      });
-      this.dispatchAction(findSailChecklists({ query: `s=${query}&limit=10&sort=sail.start_at,DESC` }));
+      this.dispatchAction(findSailChecklists({ query: '' }));
     }
   }
 

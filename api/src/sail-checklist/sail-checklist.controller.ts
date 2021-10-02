@@ -1,8 +1,8 @@
 import {
-  Body, Controller, Param, Patch, UseGuards
+  Body, Controller, Get, Param, Patch, Query, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Crud } from '@nestjsx/crud';
+import { Not } from 'typeorm';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
@@ -13,37 +13,45 @@ import { User } from '../user/user.decorator';
 import { SailChecklistEntity } from './sail-checklist.entity';
 import { SailChecklistService } from './sail-checklist.service';
 
-@Crud({
-  model: { type: SailChecklistEntity },
-  params: { id: {
-    field: 'id',
-    type: 'uuid',
-    primary: true,
-  } },
-  query: {
-    alwaysPaginate: false,
-    join: {
-      sail: { eager: true },
-      'sail.boat': {
-        eager: true,
-        alias: 'boat',
-      },
-      'sail.boat.instructions': { eager: true },
-      'sail.checklists': { eager: true },
-      'sail.manifest': {
-        eager: true,
-        alias: 'manifest',
-      },
-      'sail.manifest.profile': { eager: true },
-      'sail.manifest.guest_of': { eager: true },
-    },
-  },
-})
 @Controller('checklist')
 @ApiTags('checklist')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class SailChecklistController {
   constructor(public service: SailChecklistService) { }
+
+  @Get('/')
+  async fetchChecklists(@Query('boat_id') boat_id: string, @Query('exclude_sail_id') exclude_sail_id: string) {
+
+    if (boat_id) {
+      if (exclude_sail_id) {
+        return SailChecklistEntity.find({
+          relations: ['sail'],
+          where: {
+            'sail.boat_id': boat_id,
+            sail_id: Not(exclude_sail_id),
+          },
+
+          order: { created_at: 'DESC' },
+        });
+      }
+
+      return SailChecklistEntity.find({
+        relations: ['sail'],
+        where: { 'sail.boat_id': boat_id },
+        order: { created_at: 'DESC' },
+      });
+    }
+
+    return SailChecklistEntity.find({
+      relations: ['sail'],
+      order: { created_at: 'DESC' },
+    });
+  }
+
+  @Get('/:checklist_id')
+  async fetchChecklist(@Param('checklist_id') checklist_id: string) {
+    return SailChecklistEntity.findOneOrFail(checklist_id, { relations: ['sail'] });
+  }
 
   @Patch('/sail/:sail_id/update')
   async updateSailChecklist(@User() user: JwtObject, @Param('sail_id') sail_id: string, @Body() checklistInfo) {
