@@ -1,48 +1,70 @@
-import 'firebase/auth';
-import * as firebase from 'firebase/app';
+import 'firebase/compat/auth';
+import { FirebaseApp, initializeApp } from 'firebase/app';
 import { take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import {
   Inject,
   Injectable,
 } from '@angular/core';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  linkWithRedirect,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
+  private firebaseApp: FirebaseApp;
 
   constructor(@Inject(HttpClient) private http: HttpClient) {
     this.http
       .get('/api/auth/firebase-public-config')
       .pipe(take(1))
       .subscribe((config) => {
-        if (!firebase.apps.length) {
-          firebase.initializeApp(config);
+        if (!this.firebaseApp) {
+          this.firebaseApp = initializeApp(config);
         }
       });
   }
 
+  private get auth() {
+    return getAuth(this.firebaseApp);
+  }
+
   public createUserWithEmailAndPassword(email: string, password: string) {
-    return firebase.auth().createUserWithEmailAndPassword(email, password);
+    return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
   public signInWithEmailAndPassword(email: string, password: string) {
-    return firebase.auth().signInWithEmailAndPassword(email, password);
+    const auth = getAuth();
+    return signInWithEmailAndPassword(auth, email, password);
   }
 
   public get currentUser() {
-    return firebase.auth().currentUser;
+    const auth = getAuth();
+    return auth.currentUser;
   }
 
   public linkGoogleAccount() {
-    return firebase.auth().currentUser.linkWithRedirect(new firebase.auth.GoogleAuthProvider()).then((response) => {
-      console.log('link with redirect response', response);
-    });
+    return linkWithRedirect(this.auth.currentUser, new GoogleAuthProvider())
+      .then((response) => {
+        console.log('link with redirect response', response);
+      });
   }
 
   public sendPasswordResetEmail(email: string) {
-    return firebase.auth().sendPasswordResetEmail(email);
+
+    return sendPasswordResetEmail(this.auth, email);
+  }
+
+  public logout() {
+    signOut(this.auth).catch(error => console.error(error));
   }
 
 }

@@ -11,6 +11,7 @@ import {
   profileSettingsRoute,
   viewProfileRoute,
 } from '../../routes/routes';
+import { FirebaseService } from '../../services/firebase.service';
 import {
   WINDOW_WIDTH,
   WindowService,
@@ -28,10 +29,12 @@ export class HeaderComponent {
 
   constructor(
     @Inject(WindowService) public windowServer: WindowService,
+    @Inject(FirebaseService) private firebaseService: FirebaseService,
   ) { }
 
   public logout(): void {
     this.logoutListner.emit();
+    this.firebaseService.logout();
   }
 
   public get viewProfileLink(): string {
