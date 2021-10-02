@@ -396,11 +396,13 @@ mat-card-footer mat-card-actions {
 }
 
 *:focus {
-  outline: auto; /* set to auto to see outline */
+  outline: none;
+  border-bottom: solid 5px black;
 }
 
 *::-moz-focus-inner {
   border: none;
+  border-bottom: solid 5px black;
 }
 
 article section {
