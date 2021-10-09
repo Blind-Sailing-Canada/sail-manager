@@ -1,7 +1,10 @@
 const dotenv = require('dotenv');
+
 dotenv.config();
 
-import sslRedirect from 'heroku-ssl-redirect';
+const sslRedirect = require('heroku-ssl-redirect');
+
+const Sentry = require("@sentry/node");
 
 const FormData = require('form-data');
 const fs = require('fs');
@@ -55,10 +58,37 @@ const sendFile = async (filepath, destination, authorizationHeader) => {
   })
 }
 
+Sentry.init({
+  dsn: process.env.SENTRY_DSN_BACKEND,
+});
+
 const app = express();
 
 app
-  .use(sslRedirect())
+  .use((request, _, next) => {
+    console.log('new request', request.url);
+
+    try {
+      Sentry.captureEvent({
+        level: Sentry.Severity.Log,
+        message: `[FE:SERVER] ${request.method} ${request.url}`,
+        request:{
+          url: request.url,
+          method: request.method,
+          headers: request.headers,
+        },
+        user: request.user,
+        extra: { token: request.headers['authorization']}
+      });
+    } catch (error) {
+      console.log('error sending to sentry')
+      console.error(error)
+    }
+
+    return next()
+  })
+  .use(Sentry.Handlers.requestHandler())
+  .use(sslRedirect.default())
   .use(compression())
   .use(express.json())
   .use(fileUpload({
@@ -136,6 +166,7 @@ app
   .use((_req, res) => {
     res.sendFile(DIST_DIR + '/index.html');
   })
+  .use(Sentry.Handlers.errorHandler())
   // Start server
   .listen(port, () => {
     console.info('Port: ' + port);

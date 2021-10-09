@@ -97,7 +97,11 @@ export class AuthController {
     const profile_id = user.profile_id;
 
     this.authService.logout(profile_id);
-    req.logout();
+
+    if (typeof req.logout === 'function') {
+      req.logout();
+    }
+
     req.user = { userId: profile_id };
   }
 

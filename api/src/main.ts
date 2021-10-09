@@ -7,7 +7,7 @@ import * as session from 'express-session';
 import * as csurf from 'csurf';
 import * as cookieParser from 'cookie-parser';
 import * as Sentry from '@sentry/node';
-
+import * as Tracing from '@sentry/tracing';
 import { NestFactory } from '@nestjs/core';
 import {
   DocumentBuilder,
@@ -16,25 +16,35 @@ import {
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AllExceptionFilter } from './utils/all-exception.filter';
-
-Sentry.init({ dsn: process.env.SENTRY_DSN_BACKEND });
-Sentry.captureEvent({
-  level: Sentry.Severity.Info,
-  message: 'Sentry initialized in main.ts',
-});
-
-process
-  .on('unhandledRejection', (reason) => {
-    Sentry.captureMessage(JSON.stringify(reason, null, 2), Sentry.Severity.Error);
-  })
-  .on('uncaughtException', (error) => {
-    Sentry.captureException(error);
-    process.exit(1);
-  });
+import { LoggingInterceptor } from './utils/logging.interceptor';
 
 async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN_BACKEND,
+    integrations: [
+      new Sentry.Integrations.Http({ tracing: true }),
+      new Tracing.Integrations.Express({ app: app as any }),
+    ],
+
+    tracesSampleRate: 1.0,
+  });
+
+  Sentry.captureEvent({
+    level: Sentry.Severity.Info,
+    message: 'Sentry initialized in main.ts',
+  });
+
+  process
+    .on('unhandledRejection', (reason) => {
+      Sentry.captureMessage(JSON.stringify(reason, null, 2), Sentry.Severity.Error);
+    })
+    .on('uncaughtException', (error) => {
+      Sentry.captureException(error);
+      process.exit(1);
+    });
 
   const sess = {
     secret: process.env.SESSION_SECRET,
@@ -51,7 +61,9 @@ async function bootstrap() {
   const csurfValidation = csurf({ cookie: false });
 
   app.use(Sentry.Handlers.requestHandler());
+  app.use(Sentry.Handlers.tracingHandler());
   app.useGlobalFilters(new AllExceptionFilter());
+  app.useGlobalInterceptors(new LoggingInterceptor());
   app.enableCors();
   app.use(cookieParser());
   app.use(session(sess));
