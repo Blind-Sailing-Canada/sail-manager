@@ -52,13 +52,13 @@ export class FeedbackViewPageComponent extends BasePageComponent implements OnIn
 
     const feedback = allFeedback[this.feedbackId];
 
-    if (feedback === undefined && !this._fetching[this.feedbackId]) {
-      this._fetching[this.feedbackId] = true;
+    if (feedback === undefined && !this.fetching[this.feedbackId]) {
+      this.fetching[this.feedbackId] = true;
       this.dispatchAction(fetchFeedback({ feedbackId: this.feedbackId }));
     }
 
     if (feedback || feedback === null) {
-      delete this._fetching[this.feedbackId];
+      delete this.fetching[this.feedbackId];
     }
 
     return feedback;
