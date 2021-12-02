@@ -65,7 +65,7 @@ export class SailChecklistController {
       }, { submitted_by_id: user.profile_id });
     }
 
-    const after = checklistInfo.before;
+    const after = checklistInfo.after;
 
     if (after) {
       await SailChecklistEntity.update(after.id, after);

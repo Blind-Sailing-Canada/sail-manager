@@ -44,16 +44,6 @@ export class ProfileSettingsPageComponent extends BasePageComponent implements O
       });
   }
 
-  private buildForm(): void {
-    this.form = this.fb.group({
-      futureSails: this.fb.control(-1, Validators.required)
-    });
-  }
-
-  private updateForm(settings: Setting): void {
-    this.form.patchValue(settings);
-  }
-
   public get profile(): Profile {
     return this.user.profile;
   }
@@ -70,5 +60,16 @@ export class ProfileSettingsPageComponent extends BasePageComponent implements O
         this.dispatchAction(putSnack({ snack: { message: 'Saved', type: SnackType.INFO } }));
       });
   }
+
+  private buildForm(): void {
+    this.form = this.fb.group({
+      futureSails: this.fb.control(-1, Validators.required)
+    });
+  }
+
+  private updateForm(settings: Setting): void {
+    this.form.patchValue(settings);
+  }
+
 
 }

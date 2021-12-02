@@ -15,14 +15,8 @@ const initialState: InProgressSailsState = {} as InProgressSailsState;
 const reducerHandler = createReducer(
   initialState,
   on(resetInProgressSails, () => initialState),
-  on(putInProgressSailsForAll, (state, action) => {
-    return Object.assign({}, state, { all: action.sails });
-  }),
-  on(putInProgressSailsForUser, (state, action) => {
-    return Object.assign({}, state, { [action.profile_id]: action.sails });
-  })
+  on(putInProgressSailsForAll, (state, action) => Object.assign({}, state, { all: action.sails })),
+  on(putInProgressSailsForUser, (state, action) => Object.assign({}, state, { [action.profile_id]: action.sails }))
 );
 
-export function inProgressSailsReducer(state: InProgressSailsState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const inProgressSailsReducer = (state: InProgressSailsState | undefined, action: Action) => reducerHandler(state, action);

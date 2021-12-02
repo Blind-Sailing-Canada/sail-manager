@@ -45,13 +45,6 @@ export class AdminSailCategoryPageComponent extends BasePageComponent implements
     });
   }
 
-  private buildForm(): void {
-    this.form = this.fb.group({
-      category: this.fb.control('', Validators.required),
-    });
-
-  }
-
   public saveSailCategory(): void {
     const newCategory = this.form.getRawValue() as Partial<SailCategory>;
 
@@ -62,6 +55,13 @@ export class AdminSailCategoryPageComponent extends BasePageComponent implements
 
   public removeSailCategory(category: SailCategory): void {
     this.dispatchAction(deleteSailCategory({ id: category.id }));
+  }
+
+  private buildForm(): void {
+    this.form = this.fb.group({
+      category: this.fb.control('', Validators.required),
+    });
+
   }
 
 }

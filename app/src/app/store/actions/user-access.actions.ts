@@ -12,5 +12,5 @@ export enum USER_ACCESS_ACTION_TYPES {
 }
 
 export const fetchUserAccess = createAction(USER_ACCESS_ACTION_TYPES.FETCH_USER_ACCESS, props<{profile_id: string}>());
-export const putUserAccess = createAction(USER_ACCESS_ACTION_TYPES.PUT_USER_ACCESS, props<{ profile_id: string, access: UserAccess }>());
+export const putUserAccess = createAction(USER_ACCESS_ACTION_TYPES.PUT_USER_ACCESS, props<{ profile_id: string; access: UserAccess }>());
 export const resetUserAccess = createAction(USER_ACCESS_ACTION_TYPES.RESET);

@@ -21,21 +21,21 @@ export enum BOAT_MAINTENANCE_ACTION_TYPES {
 }
 
 export const createBoatMaintenance = createAction(
-  BOAT_MAINTENANCE_ACTION_TYPES.CREATE, props<{ maintenance: Partial<BoatMaintenance>, notify?: boolean }>());
+  BOAT_MAINTENANCE_ACTION_TYPES.CREATE, props<{ maintenance: Partial<BoatMaintenance>; notify?: boolean }>());
 export const updateBoatMaintenance = createAction(
-  BOAT_MAINTENANCE_ACTION_TYPES.UPDATE, props<{ id: string, maintenance: Partial<BoatMaintenance>, notify?: boolean }>());
-export const fetchBoatMaintenances = createAction(BOAT_MAINTENANCE_ACTION_TYPES.FETCH_MANY, props<{ query: string, notify?: boolean }>());
-export const fetchBoatMaintenance = createAction(BOAT_MAINTENANCE_ACTION_TYPES.FETCH_ONE, props<{ id: string, notify?: boolean }>());
+  BOAT_MAINTENANCE_ACTION_TYPES.UPDATE, props<{ id: string; maintenance: Partial<BoatMaintenance>; notify?: boolean }>());
+export const fetchBoatMaintenances = createAction(BOAT_MAINTENANCE_ACTION_TYPES.FETCH_MANY, props<{ query: string; notify?: boolean }>());
+export const fetchBoatMaintenance = createAction(BOAT_MAINTENANCE_ACTION_TYPES.FETCH_ONE, props<{ id: string; notify?: boolean }>());
 export const postBoatMaintenanceComment = createAction(
-  BOAT_MAINTENANCE_ACTION_TYPES.POST_COMMENT, props<{ id: string, comment: Comment, notify?: boolean }>());
+  BOAT_MAINTENANCE_ACTION_TYPES.POST_COMMENT, props<{ id: string; comment: Comment; notify?: boolean }>());
 export const putBoatMaintenances = createAction(
   BOAT_MAINTENANCE_ACTION_TYPES.PUT_MANY, props<{ maintenances: Partial<BoatMaintenance>[] }>());
 export const putBoatMaintenance = createAction(
-  BOAT_MAINTENANCE_ACTION_TYPES.PUT_ONE, props<{ id: string, maintenance: Partial<BoatMaintenance> }>());
+  BOAT_MAINTENANCE_ACTION_TYPES.PUT_ONE, props<{ id: string; maintenance: Partial<BoatMaintenance> }>());
 export const resetBoatMaintenances = createAction(BOAT_MAINTENANCE_ACTION_TYPES.RESET);
 export const deleteBoatMaintenanceComment = createAction(
-  BOAT_MAINTENANCE_ACTION_TYPES.DELETE_COMMENT, props<{ maintenanceId: string, commentId: string, notify?: boolean }>());
+  BOAT_MAINTENANCE_ACTION_TYPES.DELETE_COMMENT, props<{ maintenanceId: string; commentId: string; notify?: boolean }>());
 export const deleteBoatMaintenancePicture = createAction(
-    BOAT_MAINTENANCE_ACTION_TYPES.DELETE_PICTURE, props<{ maintenanceId: string, pictureId: string, notify?: boolean }>());
+    BOAT_MAINTENANCE_ACTION_TYPES.DELETE_PICTURE, props<{ maintenanceId: string; pictureId: string; notify?: boolean }>());
 export const postBoatMaintenancePictures = createAction(
-  BOAT_MAINTENANCE_ACTION_TYPES.POST_PICTURES, props<{ maintenanceId: string, pictures: Partial<Media>[], notify?: boolean }>());
+  BOAT_MAINTENANCE_ACTION_TYPES.POST_PICTURES, props<{ maintenanceId: string; pictures: Partial<Media>[]; notify?: boolean }>());

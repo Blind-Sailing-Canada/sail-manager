@@ -66,81 +66,8 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
     });
   }
 
-  private updateForm(departure: BoatInstructions, arrival: BoatInstructions): void {
-    if (departure) {
-      const departures = this.departureInstructionsForm.controls.instructions as FormArray;
-
-      while (departures.length) {
-        departures.removeAt(0);
-      }
-
-      const departureInstructions = (departure.instructions || []);
-
-      departureInstructions
-        .forEach((inst) => {
-          const newPictures = this.fb.array((inst.media || []).map(pic => this.fb.group({
-            description: pic.description,
-            url: pic.url,
-          })));
-
-          const newForm = this.fb.group({
-            description: this.fb.control(inst.description, Validators.required),
-            title: this.fb.control(inst.title, Validators.required),
-            media: newPictures,
-          });
-
-          newForm.setParent(departures);
-
-          departures.push(newForm);
-        });
-
-      this.departureInstructionsForm.updateValueAndValidity();
-      this.departureInstructionsForm.markAsUntouched();
-      this.departureInstructionsForm.markAsPristine();
-    }
-
-    if (arrival) {
-      const arrivals = this.arrivalInstructionsForm.controls.instructions as FormArray;
-
-      while (arrivals.length) {
-        arrivals.removeAt(0);
-      }
-
-      (arrival.instructions || []).forEach(inst => arrivals.push(this.fb.group({
-        description: this.fb.control(inst.description, Validators.required),
-        title: this.fb.control(inst.title, Validators.required),
-        media: this.fb.array((inst.media || []).map(pic => this.fb.group({
-          description: pic.description,
-          url: pic.url,
-        }))),
-
-      })));
-
-      this.arrivalInstructionsForm.updateValueAndValidity();
-      this.arrivalInstructionsForm.markAsUntouched();
-      this.arrivalInstructionsForm.markAsPristine();
-    }
-  }
-
   public get title(): string {
     return `Edit Boat Instructions Form for ${this.boat?.name}`;
-  }
-
-  private buildForm(): void {
-    this.departureInstructionsForm = this.fb.group({
-      instructions: this.fb.array([]),
-    });
-    this.arrivalInstructionsForm = this.fb.group({
-      instructions: this.fb.array([]),
-    });
-  }
-
-  private createNewInstruction(): FormGroup {
-    return this.fb.group({
-      title: this.fb.control(undefined, Validators.required),
-      description: this.fb.control(undefined, Validators.required),
-      media: this.fb.array([]),
-    });
   }
 
   public addDepartureInstruction(): void {
@@ -216,5 +143,78 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
     }
 
     this.dispatchAction(updateBoatInstructions({ instructions, boat_id: this.boat_id, notify: true }));
+  }
+
+  private updateForm(departure: BoatInstructions, arrival: BoatInstructions): void {
+    if (departure) {
+      const departures = this.departureInstructionsForm.controls.instructions as FormArray;
+
+      while (departures.length) {
+        departures.removeAt(0);
+      }
+
+      const departureInstructions = (departure.instructions || []);
+
+      departureInstructions
+        .forEach((inst) => {
+          const newPictures = this.fb.array((inst.media || []).map(pic => this.fb.group({
+            description: pic.description,
+            url: pic.url,
+          })));
+
+          const newForm = this.fb.group({
+            description: this.fb.control(inst.description, Validators.required),
+            title: this.fb.control(inst.title, Validators.required),
+            media: newPictures,
+          });
+
+          newForm.setParent(departures);
+
+          departures.push(newForm);
+        });
+
+      this.departureInstructionsForm.updateValueAndValidity();
+      this.departureInstructionsForm.markAsUntouched();
+      this.departureInstructionsForm.markAsPristine();
+    }
+
+    if (arrival) {
+      const arrivals = this.arrivalInstructionsForm.controls.instructions as FormArray;
+
+      while (arrivals.length) {
+        arrivals.removeAt(0);
+      }
+
+      (arrival.instructions || []).forEach(inst => arrivals.push(this.fb.group({
+        description: this.fb.control(inst.description, Validators.required),
+        title: this.fb.control(inst.title, Validators.required),
+        media: this.fb.array((inst.media || []).map(pic => this.fb.group({
+          description: pic.description,
+          url: pic.url,
+        }))),
+
+      })));
+
+      this.arrivalInstructionsForm.updateValueAndValidity();
+      this.arrivalInstructionsForm.markAsUntouched();
+      this.arrivalInstructionsForm.markAsPristine();
+    }
+  }
+
+  private buildForm(): void {
+    this.departureInstructionsForm = this.fb.group({
+      instructions: this.fb.array([]),
+    });
+    this.arrivalInstructionsForm = this.fb.group({
+      instructions: this.fb.array([]),
+    });
+  }
+
+  private createNewInstruction(): FormGroup {
+    return this.fb.group({
+      title: this.fb.control(undefined, Validators.required),
+      description: this.fb.control(undefined, Validators.required),
+      media: this.fb.array([]),
+    });
   }
 }

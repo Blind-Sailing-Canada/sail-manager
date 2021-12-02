@@ -15,9 +15,7 @@ const initialState = {} as ISailRequestState;
 const reducerHandler = createReducer(
   initialState,
   on(resetSailRequest, () => initialState),
-  on(putSailRequest, (state, action) => {
-    return Object.assign({}, state, { [action.id]: action.sailRequest });
-  }),
+  on(putSailRequest, (state, action) => Object.assign({}, state, { [action.id]: action.sailRequest })),
   on(putSailRequests, (state, action) => {
     const map = action
       .sailRequests
@@ -33,6 +31,4 @@ const reducerHandler = createReducer(
   })
 );
 
-export function sailRequestReducer(state: ISailRequestState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const sailRequestReducer = (state: ISailRequestState | undefined, action: Action) => reducerHandler(state, action);

@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import { Boat } from '../../../../../../api/src/types/boat/boat';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
 import {
+  editBoatChecklistRoute,
   editBoatRoute,
   maintenanceRoute,
   sailChecklistsRoute,
@@ -65,6 +66,10 @@ export class BoatViewPageComponent extends BasePageComponent implements OnInit {
 
   public editBoat(id): string {
     return editBoatRoute(id);
+  }
+
+  public editBoatChecklist(boat_id): string {
+    return editBoatChecklistRoute(boat_id);
   }
 
   public goToBoatMaintenance(): void {

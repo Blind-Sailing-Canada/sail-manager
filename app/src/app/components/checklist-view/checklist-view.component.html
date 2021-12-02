@@ -1,70 +1,19 @@
 <mat-list>
-  <mat-list-item>
+  <mat-list-item *ngFor="let item of checklist.checklist| keyvalue">
     <div
       class="checklist-item"
       tabindex="0"
       role="listitem"
-      attr.aria-label="Fuel state {{checklist?.fuel}}"
+      attr.aria-label="{{itemLabel(item.key)}}"
     >
       <label
         tabindex="-1"
         aria-hidden="true"
-      >Fuel</label>
+      >{{itemLabel(item.key)}}</label>
       <span
         tabindex="-1"
         aria-hidden="true"
-      >{{checklist?.fuel}}</span>
-    </div>
-  </mat-list-item>
-  <mat-list-item>
-    <div
-      class="checklist-item"
-      tabindex="0"
-      role="listitem"
-      attr.aria-label="Bilge state {{checklist?.bilge}}"
-    >
-      <label
-        tabindex="-1"
-        aria-hidden="true"
-      >Bilge</label>
-      <span
-        tabindex="-1"
-        aria-hidden="true"
-      >{{checklist?.bilge}}</span>
-    </div>
-  </mat-list-item>
-  <mat-list-item>
-    <div
-      class="checklist-item"
-      tabindex="0"
-      role="listitem"
-      attr.aria-label="Flares state {{checklist?.flares}}"
-    >
-      <label
-        tabindex="-1"
-        aria-hidden="true"
-      >Flares</label>
-      <span
-        tabindex="-1"
-        aria-hidden="true"
-      >{{checklist?.flares}}</span>
-    </div>
-  </mat-list-item>
-  <mat-list-item>
-    <div
-      class="checklist-item"
-      tabindex="0"
-      role="listitem"
-      attr.aria-label="Fire extinguisher state {{checklist?.fire_extinguisher}}"
-    >
-      <label
-        tabindex="-1"
-        aria-hidden="true"
-      >Extingnuisher</label>
-      <span
-        tabindex="-1"
-        aria-hidden="true"
-      >{{checklist?.fire_extinguisher}}</span>
+      >{{item.value}}</span>
     </div>
   </mat-list-item>
   <mat-list-item>

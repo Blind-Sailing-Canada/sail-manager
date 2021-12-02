@@ -77,9 +77,10 @@ import { ProfileRole } from '../../../../../api/src/types/profile/profile-role';
 })
 export class BasePageComponent implements OnDestroy, AfterViewInit {
   private static _isLoading: boolean;
+
   protected active = true;
+  protected fetching = {};
   private storeData = {};
-  protected _fetching = {};
 
   constructor(
     private _store?: Store<any>,
@@ -93,42 +94,6 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
   public get router(): Router {
     return this._router;
-  }
-
-  protected setFontSize(fontSize: string): void {
-    if (!fontSize || fontSize === FONT_SIZE[FONT_SIZE.default]) {
-      return;
-    }
-
-    const main: HTMLElement = document.getElementsByTagName('main')[0];
-
-    if (!main) {
-      return;
-    }
-
-    this.dispatchAction(startChangingAppFont());
-    setTimeout(
-      () => {
-        this.setFontSizeRecursivly(main, fontSize);
-        this.dispatchAction(finishChangingAppFont());
-      },
-      500,
-    );
-  }
-
-  private setFontSizeRecursivly(startFrom: HTMLElement, fontSize: string): void {
-    startFrom
-      .childNodes
-      .forEach((element: HTMLElement) => {
-        if (!element.style) {
-          return;
-        }
-
-        const newSize = `font-size: ${fontSize} !important;`;
-        element.style.cssText += `; ${newSize}`;
-
-        this.setFontSizeRecursivly(element, fontSize);
-      });
   }
 
   ngOnDestroy(): void {
@@ -178,14 +143,6 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return !!this.store[STORE_SLICES.APP].loading;
   }
 
-  protected get route() {
-    return this.activeRoute;
-  }
-
-  protected get store() {
-    return this.storeData as any;
-  }
-
   public get user(): User {
     const user = (this.store[STORE_SLICES.LOGIN] || {}).user;
 
@@ -217,13 +174,13 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
   public getChecklist(id: string): SailChecklist {
     const checklist = this.store[STORE_SLICES.CHECKLISTS].all[id];
 
-    if (checklist === undefined && !this._fetching[id]) {
-      this._fetching[id] = true;
+    if (checklist === undefined && !this.fetching[id]) {
+      this.fetching[id] = true;
       this.dispatchAction(fetchSailChecklist({ id }));
     }
 
-    if (checklist && this._fetching[id]) {
-      delete this._fetching[id];
+    if (checklist && this.fetching[id]) {
+      delete this.fetching[id];
     }
 
     return checklist;
@@ -266,20 +223,12 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return (this.store[STORE_SLICES.SAILS] || {}).search || [] as Sail[];
   }
 
-  protected goTo(data, options?) {
-    return this.router.navigate(data, options);
-  }
-
-  protected copy(obj) {
-    return JSON.parse(JSON.stringify(obj));
-  }
-
   public getSail(id: string): Sail {
     const sail = this.sails[id];
 
     if (sail) {
-      delete this._fetching[id];
-    } else if (sail === undefined && !this._fetching[id]) {
+      delete this.fetching[id];
+    } else if (sail === undefined && !this.fetching[id]) {
       this.fetchSail(id);
     }
 
@@ -290,8 +239,8 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     const request = this.sailRequests[id];
 
     if (request) {
-      delete this._fetching[id];
-    } else if (request === undefined && !this._fetching[id]) {
+      delete this.fetching[id];
+    } else if (request === undefined && !this.fetching[id]) {
       this.fetchSailRequest(id);
     }
 
@@ -334,39 +283,9 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return this.profiles[id];
   }
 
-  protected fetchProfile(id: string): void {
-    if (this._fetching[id]) {
-      return;
-    }
-    this._fetching[id] = true;
-    this.dispatchAction(fetchProfile({ id }));
-  }
-
-  protected fetchClinic(id: string): void {
-    if (this._fetching[id]) {
-      return;
-    }
-    this._fetching[id] = true;
-    this.dispatchAction(fetchClinic({ clinicId: id }));
-  }
-
-  protected fetchSail(id: string, options = {} as any): void {
-    if (!this._fetching[id]) {
-      this._fetching[id] = true;
-      this.dispatchAction(fetchSail({ id, ...options }));
-    }
-  }
-
-  protected fetchSailRequest(id: string, options = {} as any): void {
-    if (!this._fetching[id]) {
-      this._fetching[id] = true;
-      this.dispatchAction(fetchSailRequest({ id, ...options }));
-    }
-  }
-
   public fetchBoat(id: string): void {
-    if (!this._fetching[id]) {
-      this._fetching[id] = true;
+    if (!this.fetching[id]) {
+      this.fetching[id] = true;
       this.dispatchAction(fetchBoat({ id }));
     }
   }
@@ -376,61 +295,15 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
   }
 
   public fetchBoatMaintenance(id: string, notify?: boolean): void {
-    if (this._fetching[id]) {
+    if (this.fetching[id]) {
       return;
     }
-    this._fetching[id] = true;
+    this.fetching[id] = true;
     this.dispatchAction(fetchBoatMaintenance({ id, notify }));
   }
 
   public fetchBoats(notify?: boolean): void {
     this.dispatchAction(fetchBoats({ notify }));
-  }
-
-  protected subscribeToStoreSlice(slice, callback?: (data?: any) => void) {
-    this.subscribeToStore(slice)
-      .subscribe((data) => {
-        this.storeData[slice] = this.copy(data);
-        const ids = Object.keys(this.storeData[slice]);
-        ids.forEach(id => delete this._fetching[id]);
-
-        if (callback) {
-          callback(this.storeData[slice]);
-        }
-      });
-  }
-
-  protected subscribeToStoreSliceWithUser(slice, callback?: (data?: any) => void) {
-    this.subscribeToStoreWithUser(slice)
-      .subscribe((data) => {
-        this.storeData[slice] = this.copy(data);
-        const ids = Object.keys(this.storeData[slice]);
-        ids.forEach(id => delete this._fetching[id]);
-
-        if (callback) {
-          callback(this.storeData[slice]);
-        }
-      });
-  }
-
-  protected subscribeToStore(store: string) {
-    return this._store
-      .pipe(
-        takeWhile(() => this.active),
-        select(store)
-      );
-  }
-
-  protected subscribeToStoreWithUser(store: string) {
-    return this._store
-      .pipe(
-        takeWhile(() => this.active && !!this.user),
-        select(store)
-      );
-  }
-
-  protected dispatchAction(action: Action) {
-    this._store.dispatch(action);
   }
 
   public showBoatDialog(boat: Boat, type?: string) {
@@ -475,12 +348,140 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     this.goTo([viewSailRoute(id)]);
   }
 
+  protected setFontSize(fontSize: string): void {
+    if (!fontSize || fontSize === FONT_SIZE[FONT_SIZE.default]) {
+      return;
+    }
+
+    const main: HTMLElement = document.getElementsByTagName('main')[0];
+
+    if (!main) {
+      return;
+    }
+
+    this.dispatchAction(startChangingAppFont());
+    setTimeout(
+      () => {
+        this.setFontSizeRecursivly(main, fontSize);
+        this.dispatchAction(finishChangingAppFont());
+      },
+      500,
+    );
+  }
+
+  protected get route() {
+    return this.activeRoute;
+  }
+
+  protected get store() {
+    return this.storeData as any;
+  }
+
+  protected goTo(data, options?) {
+    return this.router.navigate(data, options);
+  }
+
+  protected copy(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  protected fetchProfile(id: string): void {
+    if (this.fetching[id]) {
+      return;
+    }
+    this.fetching[id] = true;
+    this.dispatchAction(fetchProfile({ id }));
+  }
+
+  protected fetchClinic(id: string): void {
+    if (this.fetching[id]) {
+      return;
+    }
+    this.fetching[id] = true;
+    this.dispatchAction(fetchClinic({ clinicId: id }));
+  }
+
+  protected fetchSail(id: string, options = {} as any): void {
+    if (!this.fetching[id]) {
+      this.fetching[id] = true;
+      this.dispatchAction(fetchSail({ id, ...options }));
+    }
+  }
+
+  protected fetchSailRequest(id: string, options = {} as any): void {
+    if (!this.fetching[id]) {
+      this.fetching[id] = true;
+      this.dispatchAction(fetchSailRequest({ id, ...options }));
+    }
+  }
+
+  protected subscribeToStoreSlice(slice, callback?: (data?: any) => void) {
+    this.subscribeToStore(slice)
+      .subscribe((data) => {
+        this.storeData[slice] = this.copy(data);
+        const ids = Object.keys(this.storeData[slice]);
+        ids.forEach(id => delete this.fetching[id]);
+
+        if (callback) {
+          callback(this.storeData[slice]);
+        }
+      });
+  }
+
+  protected subscribeToStoreSliceWithUser(slice, callback?: (data?: any) => void) {
+    this.subscribeToStoreWithUser(slice)
+      .subscribe((data) => {
+        this.storeData[slice] = this.copy(data);
+        const ids = Object.keys(this.storeData[slice]);
+        ids.forEach(id => delete this.fetching[id]);
+
+        if (callback) {
+          callback(this.storeData[slice]);
+        }
+      });
+  }
+
+  protected subscribeToStore(store: string) {
+    return this._store
+      .pipe(
+        takeWhile(() => this.active),
+        select(store)
+      );
+  }
+
+  protected subscribeToStoreWithUser(store: string) {
+    return this._store
+      .pipe(
+        takeWhile(() => this.active && !!this.user),
+        select(store)
+      );
+  }
+
+  protected dispatchAction(action: Action) {
+    this._store.dispatch(action);
+  }
+
   protected viewBoat(id: string): void {
     this.goTo([viewBoatRoute(id)]);
   }
 
   protected viewProfile(id: string): void {
     this.goTo([viewProfileRoute(id)]);
+  }
+
+  private setFontSizeRecursivly(startFrom: HTMLElement, fontSize: string): void {
+    startFrom
+      .childNodes
+      .forEach((element: HTMLElement) => {
+        if (!element.style) {
+          return;
+        }
+
+        const newSize = `font-size: ${fontSize} !important;`;
+        element.style.cssText += `; ${newSize}`;
+
+        this.setFontSizeRecursivly(element, fontSize);
+      });
   }
 
 }

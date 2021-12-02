@@ -57,6 +57,4 @@ const reducerHandler = createReducer(
   })
 );
 
-export function sailReducer(state: ISailState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const sailReducer = (state: ISailState | undefined, action: Action) => reducerHandler(state, action);

@@ -33,21 +33,22 @@ export class InstructionsFormComponent implements OnChanges {
   @Output() public deleteFile: EventEmitter<string> = new EventEmitter<string>();
   @Output() public processFile: EventEmitter<File> = new EventEmitter<File>();
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) { }
-
   private filesToUpload: {
     [propName: string]: {
-      file: File,
-      index: number
-    }
+      file: File;
+      index: number;
+    };
   } = {};
 
   private filesToDelete: {
     [propName: string]: {
-      url: string,
-      controlIndex: number,
-    }
+      url: string;
+      controlIndex: number;
+    };
   } = {};
+
+  constructor(@Inject(FormBuilder) private fb: FormBuilder) { }
+
 
   ngOnChanges(): void {
     Object
@@ -127,6 +128,11 @@ export class InstructionsFormComponent implements OnChanges {
     return 0;
   }
 
+  public uploadFileToCDN(files: File[], index: number): void {
+    this.filesToUpload[files[0].name] = { index, file: files[0] };
+    this.processFile.emit(files[0]);
+  }
+
   private removePicture(url: string, index: number): void {
     this.controls.forEach((control) => {
       const pictures = (control.get('media') as FormArray);
@@ -156,10 +162,5 @@ export class InstructionsFormComponent implements OnChanges {
 
     control.get('media').markAsDirty();
     control.markAsDirty();
-  }
-
-  public uploadFileToCDN(files: File[], index: number): void {
-    this.filesToUpload[files[0].name] = { index, file: files[0] };
-    this.processFile.emit(files[0]);
   }
 }

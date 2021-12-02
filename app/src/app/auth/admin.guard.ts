@@ -15,7 +15,7 @@ import {
   IProfileMap,
   IProfileState,
 } from '../models/profile-state.interface';
-import { FULL_ROUTES } from '../routes/routes';
+import { FullRoutes } from '../routes/routes';
 import { TokenService } from '../services/token.service';
 import { STORE_SLICES } from '../store/store';
 import { Profile } from '../../../../api/src/types/profile/profile';
@@ -41,7 +41,7 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
       .then((login: ILoginState) => login.user);
 
     if (!token || !loggedInUser || this.tokenService.isExpired) {
-      this.router.navigate([FULL_ROUTES.LOGIN]);
+      this.router.navigate([FullRoutes.LOGIN]);
       return Promise.resolve(null);
     }
 
@@ -53,7 +53,7 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
       .then((profiles: IProfileMap) => profiles[loggedInUser.id]);
 
     if (!profile) {
-      this.router.navigate([FULL_ROUTES.LOGIN]);
+      this.router.navigate([FullRoutes.LOGIN]);
       return Promise.resolve(null);
     }
 

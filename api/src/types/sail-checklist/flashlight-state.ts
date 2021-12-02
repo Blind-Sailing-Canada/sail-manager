@@ -1,7 +1,0 @@
-export enum FlashlightState {
-  DID_NOT_CHECK = 'DID NOT CHECK',
-  NOT_WORKING = 'NOT WORKING',
-  WEAK = 'WEAK',
-  WORKING = 'WORKING',
-  NOT_APPLICABLE = 'NOT APPLICABLE',
-}

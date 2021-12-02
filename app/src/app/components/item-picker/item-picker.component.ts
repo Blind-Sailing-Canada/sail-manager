@@ -38,10 +38,11 @@ export class ItemPickerComponent implements OnChanges, AfterViewInit, OnDestroy 
   @ViewChild('itemFilter', { static: false }) private itemFilter;
   @ViewChild('selectedList', { static: false }) private selectedList: MatSelectionList;
 
-  private filter = '';
-  private itemIds: string[] = [];
   public availableItemIds: string[] = [];
   public selectedItemIds: string[] = [];
+
+  private filter = '';
+  private itemIds: string[] = [];
   private active = true;
 
   get maxSelection() {
@@ -72,14 +73,6 @@ export class ItemPickerComponent implements OnChanges, AfterViewInit, OnDestroy 
   ngOnChanges(): void {
     this.selectedItemIds = [].concat(this.form.controls[this.controlName].value || []);
     this.filterItems();
-  }
-
-  private filterItems() {
-    const filter = new RegExp(this.filter, 'ig');
-    this.itemIds = Object.keys(this.items);
-    this.availableItemIds = this.itemIds
-      .filter(id => !this.selectedItemIds.includes(id)
-        && this.items[id][this.displayProperty].match(filter)).slice(0, this.displayLimit);
   }
 
   public getItemProperty(itemId, property) {
@@ -138,6 +131,14 @@ export class ItemPickerComponent implements OnChanges, AfterViewInit, OnDestroy 
     }
 
     this.form.controls[this.controlName].markAsDirty();
+  }
+
+  private filterItems() {
+    const filter = new RegExp(this.filter, 'ig');
+    this.itemIds = Object.keys(this.items);
+    this.availableItemIds = this.itemIds
+      .filter(id => !this.selectedItemIds.includes(id)
+        && this.items[id][this.displayProperty].match(filter)).slice(0, this.displayLimit);
   }
 
 }

@@ -74,25 +74,9 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
     return this.sail_request_id ? 'Edit Sail Request Form' : 'New Sail Request Form';
   }
 
-  private buildForm(): void {
-    this.form = this.fb.group({
-      requested_by_id: this.fb.control(this.user.profile.id, Validators.required),
-      details: this.fb.control(undefined, Validators.required),
-      category: this.fb.control(''),
-      status: this.fb
-        .control({ value: SailRequestStatus.New, disabled: this.creating || !this.shouldShowStatusInput }, Validators.required),
-    });
-  }
-
   public formErrors(controlName: string): string[] {
     const errors = Object.keys(this.form.controls[controlName].errors || {});
     return errors;
-  }
-
-  private updateForm(sailRequest: SailRequest): void {
-    this.form.patchValue(sailRequest);
-    this.form.markAsUntouched();
-    this.form.markAsPristine();
   }
 
   public get shouldDisableUpdateButton(): boolean {
@@ -165,5 +149,21 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
 
   public get shouldShowStatusInput() {
     return this.shouldShowControls && this.user.access[UserAccessFields.EditSailRequest];
+  }
+
+  private updateForm(sailRequest: SailRequest): void {
+    this.form.patchValue(sailRequest);
+    this.form.markAsUntouched();
+    this.form.markAsPristine();
+  }
+
+  private buildForm(): void {
+    this.form = this.fb.group({
+      requested_by_id: this.fb.control(this.user.profile.id, Validators.required),
+      details: this.fb.control(undefined, Validators.required),
+      category: this.fb.control(''),
+      status: this.fb
+        .control({ value: SailRequestStatus.New, disabled: this.creating || !this.shouldShowStatusInput }, Validators.required),
+    });
   }
 }

@@ -14,15 +14,15 @@ export enum INSTRUCTIONS_ACTION_TYPES {
   UPDATE_BOAT_INSTRUCTIONS = '[Instructions] Update boat instructions',
 }
 export const createInstructions = createAction(
-  INSTRUCTIONS_ACTION_TYPES.CREATE_INSTRUCTIONS, props<{ instructions: any, notify?: boolean }>());
+  INSTRUCTIONS_ACTION_TYPES.CREATE_INSTRUCTIONS, props<{ instructions: any; notify?: boolean }>());
 export const fetchInstructionByBoat = createAction(INSTRUCTIONS_ACTION_TYPES.FETCH_INSTRUCTIONS_BY_BOAT, props<{ boat_id: string }>());
 export const fetchInstructionByType = createAction(
-  INSTRUCTIONS_ACTION_TYPES.FETCH_INSTRUCTIONS_BY_TYPE, props<{ boat_id: string, instructionsType: any }>());
+  INSTRUCTIONS_ACTION_TYPES.FETCH_INSTRUCTIONS_BY_TYPE, props<{ boat_id: string; instructionsType: any }>());
 export const putInstructions = createAction(
   INSTRUCTIONS_ACTION_TYPES.PUT_INSTRUCTIONS, props<{ instructions: any | any[] }>());
 export const resetInstructions = createAction(INSTRUCTIONS_ACTION_TYPES.RESET);
 export const updateInstructions = createAction(
-  INSTRUCTIONS_ACTION_TYPES.UPDATE_INSTRUCTIONS, props<{ id: string, instructions: any, notify?: boolean }>());
+  INSTRUCTIONS_ACTION_TYPES.UPDATE_INSTRUCTIONS, props<{ id: string; instructions: any; notify?: boolean }>());
 export const updateBoatInstructions = createAction(
   INSTRUCTIONS_ACTION_TYPES.UPDATE_BOAT_INSTRUCTIONS,
-  props<{ boat_id: string, instructions: { [instructionId: string]: Partial<BoatInstructions> }, notify?: boolean }>());
+  props<{ boat_id: string; instructions: { [instructionId: string]: Partial<BoatInstructions> }; notify?: boolean }>());

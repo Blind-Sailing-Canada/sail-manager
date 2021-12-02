@@ -49,11 +49,12 @@ import { SailNotificationDialogData } from '../../../models/sail-notification-di
 })
 export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
-  private sail_id: string;
   public passengerSpots: number[] = [];
   public sailPassengers: SailManifest[] = [];
   public sail: Sail;
   public sailNotificationDialogRef: MatDialogRef<SailNotificationDialogComponent>;
+
+  private sail_id: string;
 
   constructor(
     @Inject(MatDialog) dialog: MatDialog,
@@ -96,10 +97,6 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
         maxWidth: 500,
         data: dialogData,
       });
-  }
-
-  private sendNotification(notificationMessage, notificationType): void {
-    this.dispatchAction(sendSailNotification({ notificationMessage, notificationType, sail_id: this.sail_id, notify: true }));
   }
 
   public postNewComment(comment: Comment): void {
@@ -190,14 +187,6 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     }
 
     return this.canEditSail;
-  }
-
-  private isUserInSail(sail: Sail = {} as Sail, user: User): boolean {
-    let inSail = false;
-
-    inSail = sail.manifest.some(sailor => sailor.profile_id === user.profile.id);
-
-    return inSail;
   }
 
   public get isInPast() {
@@ -488,6 +477,18 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
   public endSail(): void {
     this.dispatchAction(completeSail({ sail: this.sail, notify: true }));
+  }
+
+  private sendNotification(notificationMessage, notificationType): void {
+    this.dispatchAction(sendSailNotification({ notificationMessage, notificationType, sail_id: this.sail_id, notify: true }));
+  }
+
+  private isUserInSail(sail: Sail = {} as Sail, user: User): boolean {
+    let inSail = false;
+
+    inSail = sail.manifest.some(sailor => sailor.profile_id === user.profile.id);
+
+    return inSail;
   }
 
 }

@@ -54,17 +54,6 @@ export class SailCancelPageComponent extends BasePageComponent implements OnInit
 
   }
 
-  private updateForm(sail: Sail): void {
-    this.sailCancelForm.controls.cancel_reason.setValue(sail.cancel_reason);
-  }
-
-  private buildForm(): void {
-    this.sailCancelForm = this.fb.group({
-      cancel_reason: new FormControl(undefined, Validators.required),
-    });
-
-  }
-
   public get shouldEnableSubmitButton(): boolean {
     if (!this.sailCancelForm) {
       return false;
@@ -79,6 +68,17 @@ export class SailCancelPageComponent extends BasePageComponent implements OnInit
     cancelledSail.cancelled_at = new Date();
 
     this.dispatchAction(cancelSail({ id: this.sail_id, sail: cancelledSail, notify: true }));
+  }
+
+  private updateForm(sail: Sail): void {
+    this.sailCancelForm.controls.cancel_reason.setValue(sail.cancel_reason);
+  }
+
+  private buildForm(): void {
+    this.sailCancelForm = this.fb.group({
+      cancel_reason: new FormControl(undefined, Validators.required),
+    });
+
   }
 
 }

@@ -1,22 +1,47 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { BilgeState } from '../../../../../api/src/types/sail-checklist/bilge-state';
-import { FireExtinguisherState } from '../../../../../api/src/types/sail-checklist/fire-exstinguisher-state';
-import { FlaresState } from '../../../../../api/src/types/sail-checklist/flare-state';
-import { FuelState } from '../../../../../api/src/types/sail-checklist/fuel-state';
+import { BoatChecklist } from '../../../../../api/src/types/boat-checklist/boat-checklist';
+import { BoatChecklistItemType } from '../../../../../api/src/types/boat-checklist/boat-checklist-item-type';
+import { SelectOption } from '../../models/select-option';
 
 @Component({
   selector: 'app-checklist-form',
   templateUrl: './checklist-form.component.html',
   styleUrls: ['./checklist-form.component.css']
 })
-export class ChecklistFormComponent {
+export class ChecklistFormComponent implements OnChanges{
 
   @Input() form: FormGroup;
   @Input() when: string;
-  public bilgeState = BilgeState;
-  public fire_extinguisherState = FireExtinguisherState;
-  public flaresState = FlaresState;
-  public fuelLevel = FuelState;
+  @Input() boatChecklist: BoatChecklist;
+
+  public BoatChecklistItemType = BoatChecklistItemType;
+  public options: Map<string, SelectOption[]> = new Map();
+
+  ngOnChanges(): void {
+    this.options = this.boatChecklist.items.reduce((accumulator, item) => {
+      if (item.type !== BoatChecklistItemType.Select) {
+        return accumulator;
+      }
+
+      accumulator[item.key] = this.asSelectOptions(item.options);
+      return accumulator;
+    }, {}) as Map<string, SelectOption[]>;
+  }
+
+  public get checklistForm(): FormGroup {
+    return this.form.controls.checklist as FormGroup;
+  }
+
+  private asSelectOptions(options: string): SelectOption[] {
+    return options
+      .split(',')
+      .map((option) => option.trim())
+      .filter(Boolean)
+      .map((option) => ({
+        label: option,
+        value: option
+      }));
+  }
 
 }

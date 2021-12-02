@@ -98,44 +98,6 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
       });
   }
 
-  private buildForm(): void {
-    this.manifestForm = this.fb.group({
-      manifest: this.fb.array([]),
-    });
-  }
-
-  private updateForm(sail: Sail): void {
-    this.usersOnSail = [];
-    this.sailor_roles = [];
-
-    const manifestControls = sail.manifest.map((manifest) => {
-
-      if (manifest.profile) {
-        this.usersOnSail.push(manifest.profile);
-      }
-
-      this.buildSailorRoles(manifest.profile || {});
-
-      const newManifestForm = this.fb.group({
-        guest_of_id: this.fb.control(manifest.guest_of_id),
-        id: this.fb.control(manifest.id),
-        person_name: this.fb.control(manifest.person_name, Validators.required),
-        profile_id: this.fb.control(manifest.profile_id),
-        sail_id: this.fb.control(this.sail_id),
-        sailor_role: this.fb.control(manifest.sailor_role),
-      });
-
-      newManifestForm.setParent(this.manifestForm);
-
-      return newManifestForm;
-    });
-
-    this.manifestForm.controls.manifest = this.fb.array(manifestControls);
-    this.manifestForm.controls.manifest.setParent(this.manifestForm);
-
-    this.manifestForm.markAsUntouched();
-    this.manifestForm.markAsPristine();
-  }
 
   public get manifestControls() {
     return (this.manifestForm.controls.manifest as FormArray).controls as FormGroup[];
@@ -172,23 +134,6 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     this.buildSailorRoles(sailor);
 
     this.availableSailors = this.availableSailors.filter(availableSailor => availableSailor.id !== sailor.id);
-  }
-
-  private buildSailorRoles(sailor: Partial<Profile>): void {
-    const profile = this.usersOnSail.find(user => user.id === sailor.id);
-
-    if (!profile) {
-      this.sailor_roles.push([['Guest', SailorRole.Guest]]);
-      return;
-    }
-
-    const profileRoles = profile.roles.map(role => role.toLowerCase());
-
-    const roles = Object.entries(SailorRole).filter(role => profileRoles.includes(role[1]));
-
-    roles.push(['Sailor', SailorRole.Sailor]);
-
-    this.sailor_roles.push(roles);
   }
 
   public removeSailor(index: number): void {
@@ -248,6 +193,64 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     this.sailManifestService
       .updateManifest(this.sail_id, manifest)
       .subscribe(sail => this.dispatchAction(putSail({ sail, id: this.sail_id })));
+  }
+
+
+  private buildForm(): void {
+    this.manifestForm = this.fb.group({
+      manifest: this.fb.array([]),
+    });
+  }
+
+  private buildSailorRoles(sailor: Partial<Profile>): void {
+    const profile = this.usersOnSail.find(user => user.id === sailor.id);
+
+    if (!profile) {
+      this.sailor_roles.push([['Guest', SailorRole.Guest]]);
+      return;
+    }
+
+    const profileRoles = profile.roles.map(role => role.toLowerCase());
+
+    const roles = Object.entries(SailorRole).filter(role => profileRoles.includes(role[1]));
+
+    roles.push(['Sailor', SailorRole.Sailor]);
+
+    this.sailor_roles.push(roles);
+  }
+
+
+  private updateForm(sail: Sail): void {
+    this.usersOnSail = [];
+    this.sailor_roles = [];
+
+    const manifestControls = sail.manifest.map((manifest) => {
+
+      if (manifest.profile) {
+        this.usersOnSail.push(manifest.profile);
+      }
+
+      this.buildSailorRoles(manifest.profile || {});
+
+      const newManifestForm = this.fb.group({
+        guest_of_id: this.fb.control(manifest.guest_of_id),
+        id: this.fb.control(manifest.id),
+        person_name: this.fb.control(manifest.person_name, Validators.required),
+        profile_id: this.fb.control(manifest.profile_id),
+        sail_id: this.fb.control(this.sail_id),
+        sailor_role: this.fb.control(manifest.sailor_role),
+      });
+
+      newManifestForm.setParent(this.manifestForm);
+
+      return newManifestForm;
+    });
+
+    this.manifestForm.controls.manifest = this.fb.array(manifestControls);
+    this.manifestForm.controls.manifest.setParent(this.manifestForm);
+
+    this.manifestForm.markAsUntouched();
+    this.manifestForm.markAsPristine();
   }
 
 }

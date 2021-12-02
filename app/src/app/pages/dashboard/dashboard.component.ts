@@ -140,10 +140,6 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
     this.goTo([viewRequiredActionRoute(requiredAction.id)]);
   }
 
-  private fetchNewRequiredActionsForUser(): void {
-    this.dispatchAction(fetchNewRequiredActionsForUser({ userId: this.user.profile.id }));
-  }
-
   public fetchMyPastSails(notify = false): void {
     this.dispatchAction(fetchPastSailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=10' }));
   }
@@ -210,5 +206,9 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
 
   public viewUserSailsRouteLink(profile_id: string): string {
     return viewUserSailsRoute(profile_id);
+  }
+
+  private fetchNewRequiredActionsForUser(): void {
+    this.dispatchAction(fetchNewRequiredActionsForUser({ userId: this.user.profile.id }));
   }
 }

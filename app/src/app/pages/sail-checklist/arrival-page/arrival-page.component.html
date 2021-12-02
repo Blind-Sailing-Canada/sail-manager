@@ -48,6 +48,7 @@
 <ng-template #checklist>
   <h4 tabindex="0">Step 2 of 2: Arrival Checklist</h4>
   <app-checklist-form
+    [boatChecklist]="sail.boat.checklist"
     [form]="afterFormControls"
     when="After"
   ></app-checklist-form>

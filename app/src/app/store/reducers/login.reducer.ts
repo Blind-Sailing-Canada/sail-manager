@@ -32,11 +32,7 @@ const reducerHandler = createReducer(
     sessionStorage.clear();
     return initialState;
   }),
-  on(loggedIn, (state, action) => {
-    return Object.assign({}, state, { user: action.user, when: new Date() });
-  }),
+  on(loggedIn, (state, action) => Object.assign({}, state, { user: action.user, when: new Date() })),
 );
 
-export function loginReducer(state: ILoginState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const loginReducer = (state: ILoginState | undefined, action: Action) => reducerHandler(state, action);

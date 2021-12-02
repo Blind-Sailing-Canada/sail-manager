@@ -72,27 +72,6 @@ export class ChallengeEditPageComponent extends BasePageComponent implements OnI
     return 'New Challenge Form';
   }
 
-  private updateForm(challenge: Challenge): void {
-    this.form.patchValue(challenge);
-    this.form.controls.end_date.setValue(this.momentService.yyyymmdd(challenge.end_date));
-    this.form.controls.start_date.setValue(this.momentService.yyyymmdd(challenge.start_date));
-    this.form.controls.status.enable();
-
-    this.form.updateValueAndValidity();
-    this.form.markAsPristine();
-  }
-
-  private buildForm(): void {
-    this.form = this.fb.group({
-      name: this.fb.control(undefined, Validators.required),
-      description: this.fb.control(undefined, Validators.required),
-      start_date: this.fb.control(undefined),
-      end_date: this.fb.control(undefined),
-      badge: this.fb.control(undefined),
-      status: this.fb.control({ value: ChallengeStatus.Active, disabled: true }),
-    });
-  }
-
   public get shouldEnableCreateButton(): boolean {
     return this.form && this.form.valid && this.form.dirty && !this.challengeId;
   }
@@ -148,6 +127,27 @@ export class ChallengeEditPageComponent extends BasePageComponent implements OnI
 
     this.dispatchAction(updateChallenge({ challenge, challengeId: this.challengeId, notify: true }));
 
+  }
+
+  private updateForm(challenge: Challenge): void {
+    this.form.patchValue(challenge);
+    this.form.controls.end_date.setValue(this.momentService.yyyymmdd(challenge.end_date));
+    this.form.controls.start_date.setValue(this.momentService.yyyymmdd(challenge.start_date));
+    this.form.controls.status.enable();
+
+    this.form.updateValueAndValidity();
+    this.form.markAsPristine();
+  }
+
+  private buildForm(): void {
+    this.form = this.fb.group({
+      name: this.fb.control(undefined, Validators.required),
+      description: this.fb.control(undefined, Validators.required),
+      start_date: this.fb.control(undefined),
+      end_date: this.fb.control(undefined),
+      badge: this.fb.control(undefined),
+      status: this.fb.control({ value: ChallengeStatus.Active, disabled: true }),
+    });
   }
 
 }

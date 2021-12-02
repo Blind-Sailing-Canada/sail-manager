@@ -106,32 +106,8 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
 
   }
 
-  private buildForm(): void {
-    this.boatForm = this.fb.group({
-      ballast: this.fb.control(undefined, Validators.required),
-      beam: this.fb.control(undefined, Validators.required),
-      calendar_resource_id: this.fb.control(undefined),
-      draft: this.fb.control(undefined, Validators.required),
-      hull_type: this.fb.control(undefined, Validators.required),
-      jib_sail_area: this.fb.control(undefined, Validators.required),
-      loa: this.fb.control(undefined, Validators.required),
-      lwl: this.fb.control(undefined, Validators.required),
-      main_sail_area: this.fb.control(undefined, Validators.required),
-      material: this.fb.control(undefined, Validators.required),
-      max_occupancy: this.fb.control(undefined, Validators.required),
-      model: this.fb.control(undefined),
-      name: this.fb.control(undefined, Validators.required),
-      phrf: this.fb.control(undefined, Validators.required),
-      pictures: this.fb.array([]),
-      rig: this.fb.control(undefined, Validators.required),
-      status: this.fb.control(undefined, Validators.required),
-      wiki: this.fb.control(undefined),
-    });
-
-  }
-
   public get title(): string {
-    return this.boat_id ? `Edit Boat Form` : 'New Boat Form';
+    return this.boat_id ? 'Edit Boat Form' : 'New Boat Form';
   }
 
   public get boat(): Boat {
@@ -144,29 +120,6 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
     }
 
     return boat;
-  }
-
-  private addNewPictureToForm(url: string): void {
-    (this.boatForm.controls.pictures as FormArray).push(this.fb.group({ url }));
-    this.boatForm.controls.pictures.updateValueAndValidity();
-    this.boatForm.controls.pictures.markAsDirty();
-    this.boatForm.updateValueAndValidity();
-  }
-
-  private updateForm(): void {
-    const boat = this.boat;
-    this.boatForm.patchValue(boat);
-
-    const pictures = (this.boatForm.controls.pictures as FormArray);
-
-    while (pictures.length) {
-      pictures.removeAt(0);
-    }
-
-    boat.pictures.forEach(pic => pictures.push(this.fb.group({ url: pic })));
-
-    this.boatForm.markAsUntouched();
-    this.boatForm.markAsPristine();
   }
 
   public get boat_id(): string {
@@ -211,16 +164,6 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
     }
   }
 
-  private removePictureFromForm(url: string): void {
-    const existingPictures = (this.boatForm.controls.pictures as FormArray).controls;
-    const newPictures = existingPictures.filter(picture => picture.value.url !== url);
-    (this.boatForm.controls.pictures as FormArray).controls = newPictures;
-    this.boatForm.controls.pictures.markAsDirty();
-    this.boatForm.controls.pictures.updateValueAndValidity();
-    this.boatForm.markAsDirty();
-    this.boatForm.updateValueAndValidity();
-  }
-
   public uploadFileToCDN(files: File[]): void {
     this.fileToUpload = files[0];
     this.dispatchAction(uploadBoatPicture({ file: files[0], boat_id: this.boat_id, notify: true }));
@@ -254,5 +197,62 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
     } else {
       this.dispatchAction(createBoat({ boat }));
     }
+  }
+
+  private addNewPictureToForm(url: string): void {
+    (this.boatForm.controls.pictures as FormArray).push(this.fb.group({ url }));
+    this.boatForm.controls.pictures.updateValueAndValidity();
+    this.boatForm.controls.pictures.markAsDirty();
+    this.boatForm.updateValueAndValidity();
+  }
+
+  private updateForm(): void {
+    const boat = this.boat;
+    this.boatForm.patchValue(boat);
+
+    const pictures = (this.boatForm.controls.pictures as FormArray);
+
+    while (pictures.length) {
+      pictures.removeAt(0);
+    }
+
+    boat.pictures.forEach(pic => pictures.push(this.fb.group({ url: pic })));
+
+    this.boatForm.markAsUntouched();
+    this.boatForm.markAsPristine();
+  }
+
+  private removePictureFromForm(url: string): void {
+    const existingPictures = (this.boatForm.controls.pictures as FormArray).controls;
+    const newPictures = existingPictures.filter(picture => picture.value.url !== url);
+    (this.boatForm.controls.pictures as FormArray).controls = newPictures;
+    this.boatForm.controls.pictures.markAsDirty();
+    this.boatForm.controls.pictures.updateValueAndValidity();
+    this.boatForm.markAsDirty();
+    this.boatForm.updateValueAndValidity();
+  }
+
+  private buildForm(): void {
+    this.boatForm = this.fb.group({
+      ballast: this.fb.control(undefined, Validators.required),
+      beam: this.fb.control(undefined, Validators.required),
+      calendar_resource_id: this.fb.control(undefined),
+      draft: this.fb.control(undefined, Validators.required),
+      hull_type: this.fb.control(undefined, Validators.required),
+      jib_sail_area: this.fb.control(undefined, Validators.required),
+      loa: this.fb.control(undefined, Validators.required),
+      lwl: this.fb.control(undefined, Validators.required),
+      main_sail_area: this.fb.control(undefined, Validators.required),
+      material: this.fb.control(undefined, Validators.required),
+      max_occupancy: this.fb.control(undefined, Validators.required),
+      model: this.fb.control(undefined),
+      name: this.fb.control(undefined, Validators.required),
+      phrf: this.fb.control(undefined, Validators.required),
+      pictures: this.fb.array([]),
+      rig: this.fb.control(undefined, Validators.required),
+      status: this.fb.control(undefined, Validators.required),
+      wiki: this.fb.control(undefined),
+    });
+
   }
 }

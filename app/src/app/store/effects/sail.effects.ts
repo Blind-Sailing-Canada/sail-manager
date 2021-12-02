@@ -320,7 +320,7 @@ export class SailEffects {
               }
               return of(putSailSearchResults({ sails }));
             }),
-            catchError(errorCatcher(`Failed to fetch sails`, [putSailSearchResults({ sails: [] })]))
+            catchError(errorCatcher('Failed to fetch sails', [putSailSearchResults({ sails: [] })]))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),
@@ -342,7 +342,7 @@ export class SailEffects {
               }
               return of(putSails({ sails }));
             }),
-            catchError(errorCatcher(`Failed to fetch sails`, [putSails({ sails: [] })]))
+            catchError(errorCatcher('Failed to fetch sails', [putSails({ sails: [] })]))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

@@ -3,7 +3,7 @@ import {
   RouterModule,
   Routes,
 } from '@angular/router';
-import { SUB_ROUTES } from '../../routes/routes';
+import { SubRoutes } from '../../routes/routes';
 import { EmailPasswordComponent } from './email-password/register/email-password.component';
 import { ResetPasswordComponent } from './email-password/reset-password/reset-password.component';
 import { LoginPageComponent } from './login-page.component';
@@ -14,11 +14,11 @@ const routes: Routes = [
     component: LoginPageComponent,
   },
   {
-    path: SUB_ROUTES.EMAIL_AND_PASSWORD,
+    path: SubRoutes.EMAIL_AND_PASSWORD,
     component: EmailPasswordComponent,
   },
   {
-    path: SUB_ROUTES.RESET_PASSWORD,
+    path: SubRoutes.RESET_PASSWORD,
     component: ResetPasswordComponent,
   },
   {

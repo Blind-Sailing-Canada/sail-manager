@@ -37,6 +37,4 @@ const reducerHandler = createReducer(
   }),
 );
 
-export function profileReducer(state: IProfileState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const profileReducer = (state: IProfileState | undefined, action: Action) => reducerHandler(state, action);

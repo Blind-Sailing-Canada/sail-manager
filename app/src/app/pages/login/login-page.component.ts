@@ -13,7 +13,7 @@ import { ProfileStatus } from '../../../../../api/src/types/profile/profile-stat
 import { JwtObject } from '../../../../../api/src/types/token/jwt-object';
 import {
   editProfileRoute,
-  FULL_ROUTES,
+  FullRoutes,
   loginWithEmailAndPassword,
 } from '../../routes/routes';
 import { TokenService } from '../../services/token.service';
@@ -80,7 +80,7 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
         case ProfileStatus.Approved:
           const redirectTo = window
             .sessionStorage
-            .getItem('redirectTo') || FULL_ROUTES.DASHBOARD.toString();
+            .getItem('redirectTo') || FullRoutes.DASHBOARD.toString();
 
           window.sessionStorage.removeItem('redirectTo');
 
@@ -93,7 +93,7 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
         case ProfileStatus.Deactivated:
         case ProfileStatus.Rejected:
         default:
-          this.goTo([FULL_ROUTES.ACCOUNT_REVIEW], undefined);
+          this.goTo([FullRoutes.ACCOUNT_REVIEW], undefined);
           break;
       }
     });

@@ -188,15 +188,6 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
       });
   }
 
-  private buildForm(): void {
-    this.picturesForm = this.fb.group({
-      pictures: this.fb.array([
-      ])
-    });
-
-    this.notesForm = this.fb.group({});
-  }
-
   public canSubmitResult(participant: ChallengeParticipant): boolean {
     return participant.participant_id === this.user.profile.id ||
       this.user.access[UserAccessFields.JudgeChallenge];
@@ -250,10 +241,6 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
     this.dispatchAction(deleteChallengeComment({ commentId, challengeId: this.challengeId, notify: true }));
   }
 
-  private challengeAccomplished(challengeId: string, challengerId: string, note: string): void {
-    this.dispatchAction(completeUserChallenge({ challengerId, note, challengeId, notify: true }));
-  }
-
   public joinThisChallenge(): void {
     this.dispatchAction(joinChallenge({ challengeId: this.challengeId, notify: true }));
   }
@@ -264,5 +251,18 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
 
   public get canEditNewChallenge() {
     return !!this.user.access[UserAccessFields.EditChallenge];
+  }
+
+  private challengeAccomplished(challengeId: string, challengerId: string, note: string): void {
+    this.dispatchAction(completeUserChallenge({ challengerId, note, challengeId, notify: true }));
+  }
+
+  private buildForm(): void {
+    this.picturesForm = this.fb.group({
+      pictures: this.fb.array([
+      ])
+    });
+
+    this.notesForm = this.fb.group({});
   }
 }

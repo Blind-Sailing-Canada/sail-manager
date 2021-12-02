@@ -39,13 +39,14 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class AdminUserEditPageComponent extends BasePageComponent implements OnInit {
 
-  private required_action_id: string = null;
   public UserAccessFields = UserAccessFields;
   public profileAccess: UserAccess = {} as UserAccess;
   public profileForm: FormGroup;
   public profileRoles = ProfileRole;
   public profileStatus = ProfileStatus;
   public requiredAction: RequiredAction = null;
+
+  private required_action_id: string = null;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -92,36 +93,6 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
 
   public dismissRequiredAction(): void {
     this.dispatchAction(dismissRequiredAction({ action_id: this.required_action_id, notify: true }));
-  }
-
-  private buildForm(): void {
-    this.profileForm = this.fb.group({
-      status: this.fb.control(null),
-      roles: [],
-      access: [],
-    });
-
-  }
-
-  private updateForm(): void {
-    const updatedForm: any = {};
-
-    if (this.profileAccess) {
-      const access = Object
-        .keys((this.profileAccess || {}).access || {})
-        .filter(key => this.profileAccess.access[key]);
-
-      updatedForm.access = access;
-    }
-
-    if (this.profile) {
-      updatedForm.status = this.profile.status;
-      updatedForm.roles = this.profile.roles;
-    }
-
-    this.profileForm.patchValue(updatedForm);
-    this.profileForm.markAsPristine();
-    this.profileForm.markAsUntouched();
   }
 
   public clearRolesAccess(): void {
@@ -195,5 +166,35 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
 
   public viewProfile(id): string {
     return viewProfileRoute(id);
+  }
+
+  private buildForm(): void {
+    this.profileForm = this.fb.group({
+      status: this.fb.control(null),
+      roles: [],
+      access: [],
+    });
+
+  }
+
+  private updateForm(): void {
+    const updatedForm: any = {};
+
+    if (this.profileAccess) {
+      const access = Object
+        .keys((this.profileAccess || {}).access || {})
+        .filter(key => this.profileAccess.access[key]);
+
+      updatedForm.access = access;
+    }
+
+    if (this.profile) {
+      updatedForm.status = this.profile.status;
+      updatedForm.roles = this.profile.roles;
+    }
+
+    this.profileForm.patchValue(updatedForm);
+    this.profileForm.markAsPristine();
+    this.profileForm.markAsUntouched();
   }
 }

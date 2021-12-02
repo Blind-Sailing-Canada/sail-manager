@@ -1,0 +1,73 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>rules</mat-icon>
+    </div>
+    <mat-card-title
+      role="heading"
+      tabindex="0"
+      id="pageTitle"
+    >{{title}}</mat-card-title>
+    <mat-card-subtitle>{{boat?.name}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+  </mat-card-actions>
+  <mat-card-content>
+    <div *ngFor="let item of formItems.controls; let i=index">
+      <div [ngSwitch]="item.get('type').value">
+        <app-fieldset
+          *ngSwitchCase="BoatChecklistItemType.Select"
+          title="#{{i+1}}"
+        >
+          <app-boat-checklist-item-select [selectItemFormGroup]="asFormGroup(item)"></app-boat-checklist-item-select>
+          <button
+            (click)="deleteItem(i)"
+            title="delete item #{{i+1}}"
+            color="accent"
+            mat-button
+          >
+            <mat-icon>delete_forever</mat-icon>
+            Delete
+          </button>
+        </app-fieldset>
+        <app-fieldset
+          *ngSwitchCase="BoatChecklistItemType.Input"
+          title="#{{i+1}}"
+        >
+          <app-boat-checklist-item-input [inputItemFormGroup]="asFormGroup(item)"></app-boat-checklist-item-input>
+          <button
+            (click)="deleteItem(i)"
+            title="delete item #{{i+1}}"
+            color="accent"
+            mat-button
+          >
+            <mat-icon>delete_forever</mat-icon>
+            Delete
+          </button>
+        </app-fieldset>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-action-row>
+      <button
+        mat-raised-button
+        (click)="addInputItem()"
+      >Add Input Item</button>
+      <button
+        mat-raised-button
+        (click)="addSelectItem()"
+      >Add Select Item</button>
+      <button
+        (click)="save()"
+        *ngIf="!shouldDisableUpdateButton"
+        [attr.aria-label]="shouldDisableUpdateButton? '': 'Save checklist.'"
+        [disabled]="shouldDisableUpdateButton"
+        [title]="shouldDisableUpdateButton? '': 'Save checklist.'"
+        mat-raised-button
+      >
+        {{boat_id? "Update" : "Create"}}
+      </button>
+    </mat-action-row>
+  </mat-card-footer>
+</mat-card>

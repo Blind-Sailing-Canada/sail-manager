@@ -16,9 +16,7 @@ const initialState: ClinicsState = {
 const reducerHandler = createReducer(
   initialState,
   on(resetClinics, () => initialState),
-  on(putClinic, (state, action) => {
-    return Object.assign({}, state, { [action.clinicId]: action.clinic });
-  }),
+  on(putClinic, (state, action) => Object.assign({}, state, { [action.clinicId]: action.clinic })),
   on(putClinics, (state, action) => {
     const newClinics = action.clinics
       .reduce(
@@ -32,6 +30,4 @@ const reducerHandler = createReducer(
   }),
 );
 
-export function clinicsReducer(state: ClinicsState, action: Action) {
-  return reducerHandler(state, action);
-}
+export const clinicsReducer = (state: ClinicsState, action: Action) => reducerHandler(state, action);

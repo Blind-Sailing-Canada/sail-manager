@@ -25,8 +25,9 @@ export class NewCommentFormComponent implements OnDestroy {
 
   @Input() currentUser: User;
   @Output() postNewComment: EventEmitter<Comment> = new EventEmitter<Comment>();
-  private active = true;
   public form: FormGroup;
+
+  private active = true;
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     this.buildForm();

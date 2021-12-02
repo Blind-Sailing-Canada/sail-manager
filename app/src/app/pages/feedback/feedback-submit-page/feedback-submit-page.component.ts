@@ -15,8 +15,6 @@ import { Store } from '@ngrx/store';
 import { SailFeedback } from '../../../../../../api/src/types/sail-feedback/sail-feedback';
 import { SailFeedbackRating } from '../../../../../../api/src/types/sail-feedback/sail-feedback-rating';
 import { Sail } from '../../../../../../api/src/types/sail/sail';
-// import { FeedbackRating } from '../../../../../../api/src/shared/feedback/feedback-rating';
-
 import { submitFeedback } from '../../../store/actions/feedback.actions';
 import { completeRequiredAction } from '../../../store/actions/required-actions.actions';
 import { STORE_SLICES } from '../../../store/store';
@@ -46,13 +44,6 @@ export class FeedbackSubmitPageComponent extends BasePageComponent implements On
 
   ngOnInit() {
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS);
-  }
-
-  private buildForm(): void {
-    this.submitFeedbackForm = this.fb.group({
-      rating: this.fb.control(SailFeedbackRating.Average),
-      feedback: this.fb.control(undefined),
-    });
   }
 
   public goToSail(): void {
@@ -99,6 +90,13 @@ export class FeedbackSubmitPageComponent extends BasePageComponent implements On
       this.dispatchAction(
         submitFeedback({ feedback, notify: true, completeRequiredAction: null }));
     }
+  }
+
+  private buildForm(): void {
+    this.submitFeedbackForm = this.fb.group({
+      rating: this.fb.control(SailFeedbackRating.Average),
+      feedback: this.fb.control(undefined),
+    });
   }
 
 }

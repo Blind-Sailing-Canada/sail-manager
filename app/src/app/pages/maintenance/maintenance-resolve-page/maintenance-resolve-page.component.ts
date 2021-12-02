@@ -53,18 +53,6 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
 
   }
 
-  private buildForm(): void {
-    this.maintenanceResolveForm = this.fb.group({
-      service_details: this.fb.control(this.maintenance.service_details, Validators.required),
-    });
-  }
-
-  private updateForm(): void {
-    this.maintenanceResolveForm.controls.service_details.patchValue(this.maintenance.service_details);
-    this.maintenanceResolveForm.updateValueAndValidity();
-    this.maintenanceResolveForm.markAsPristine();
-  }
-
   public get maintenance(): BoatMaintenance {
     return this.maintenances[this.maintenanceId];
   }
@@ -86,6 +74,18 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
     };
 
     this.dispatchAction(updateBoatMaintenance({ maintenance, id: this.maintenanceId, notify: true }));
+  }
+
+  private buildForm(): void {
+    this.maintenanceResolveForm = this.fb.group({
+      service_details: this.fb.control(this.maintenance.service_details, Validators.required),
+    });
+  }
+
+  private updateForm(): void {
+    this.maintenanceResolveForm.controls.service_details.patchValue(this.maintenance.service_details);
+    this.maintenanceResolveForm.updateValueAndValidity();
+    this.maintenanceResolveForm.markAsPristine();
   }
 
 }

@@ -1,0 +1,18 @@
+<ng-container [formGroup]="form">
+  <mat-form-field>
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >{{label}}</mat-label>
+    <select
+      [attr.aria-label]="ariaLabel"
+      [formControlName]="controlName"
+      matNativeControl
+    >
+      <option
+        *ngFor="let option of options"
+        [value]="option.value"
+      >{{option.label}}</option>
+    </select>
+  </mat-form-field>
+</ng-container>

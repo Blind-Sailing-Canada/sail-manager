@@ -7,10 +7,6 @@ import {
 import { BaseModelEntity } from '../base/base.entity';
 import { ProfileEntity } from '../profile/profile.entity';
 import { SailEntity } from '../sail/sail.entity';
-import { BilgeState } from '../types/sail-checklist/bilge-state';
-import { FireExtinguisherState } from '../types/sail-checklist/fire-exstinguisher-state';
-import { FlaresState } from '../types/sail-checklist/flare-state';
-import { FuelState } from '../types/sail-checklist/fuel-state';
 import { SailChecklist } from '../types/sail-checklist/sail-checklist';
 import { SailChecklistType } from '../types/sail-checklist/sail-checklist-type';
 
@@ -59,36 +55,11 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
   weather: string;
 
   @Column({
-    default: BilgeState.DID_NOT_CHECK,
-    enum: BilgeState,
-    type: 'enum',
-    nullable: true,
+    nullable: false,
+    type: 'json',
+    default: {},
   })
-  bilge: BilgeState;
-
-  @Column({
-    default: FireExtinguisherState.DID_NOT_CHECK,
-    enum: FireExtinguisherState,
-    type: 'enum',
-    nullable: true,
-  })
-  fire_extinguisher: FireExtinguisherState;
-
-  @Column({
-    default: FlaresState.DID_NOT_CHECK,
-    enum: FlaresState,
-    type: 'enum',
-    nullable: true,
-  })
-  flares: FlaresState;
-
-  @Column({
-    default: FuelState.DID_NOT_CHECK,
-    enum: FuelState,
-    type: 'enum',
-    nullable: true,
-  })
-  fuel: FuelState;
+  checklist: Map<string, string>
 
   @Column()
   sail_id: string;

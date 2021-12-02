@@ -17,12 +17,12 @@ import {
 })
 export class FooterComponent {
 
+  @Input() changingAppFont = false;
+  @Output() changeFontSize: EventEmitter<string> = new EventEmitter<string>();
+
   public currentFontSize = 4;
   public max = FONT_SIZE_MAX;
   public min = FONT_SIZE_MIN;
-
-  @Input() changingAppFont = false;
-  @Output() changeFontSize: EventEmitter<string> = new EventEmitter<string>();
 
   public decreaseFontSize(): void {
     this.currentFontSize = Math.max(this.min, this.currentFontSize - 1);

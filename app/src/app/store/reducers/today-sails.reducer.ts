@@ -11,14 +11,8 @@ const initialState = {} as TodaySailsState;
 const reducerHandler = createReducer(
   initialState,
   on(resetTodaySails, () => initialState),
-  on(putTodaySailsForAll, (state, action) => {
-    return Object.assign({}, state, { all: action.sails });
-  }),
-  on(putTodaySailsForUser, (state, action) => {
-    return Object.assign({}, state, { [action.profile_id]: action.sails });
-  })
+  on(putTodaySailsForAll, (state, action) => Object.assign({}, state, { all: action.sails })),
+  on(putTodaySailsForUser, (state, action) => Object.assign({}, state, { [action.profile_id]: action.sails }))
 );
 
-export function todaySailsReducer(state: TodaySailsState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const todaySailsReducer = (state: TodaySailsState | undefined, action: Action)  => reducerHandler(state, action);

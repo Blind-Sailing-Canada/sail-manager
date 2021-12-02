@@ -17,10 +17,6 @@ import {
 import { Store } from '@ngrx/store';
 import { BoatInstruction } from '../../../../../../api/src/types/boat-instructions/boat-instruction';
 import { BoatInstructionType } from '../../../../../../api/src/types/boat-instructions/boat-instruction-type';
-import { BilgeState } from '../../../../../../api/src/types/sail-checklist/bilge-state';
-import { FireExtinguisherState } from '../../../../../../api/src/types/sail-checklist/fire-exstinguisher-state';
-import { FlaresState } from '../../../../../../api/src/types/sail-checklist/flare-state';
-import { FuelState } from '../../../../../../api/src/types/sail-checklist/fuel-state';
 import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
 import { Sail } from '../../../../../../api/src/types/sail/sail';
 import { updateSailChecklists } from '../../../store/actions/sail-checklist.actions';
@@ -31,8 +27,8 @@ import { BasePageComponent } from '../../base-page/base-page.component';
   template: ''
 })
 export class SailChecklistBasePageComponent extends BasePageComponent implements OnInit {
-  protected checklist_type?: string;
   public checklistForm: FormGroup;
+  public checklist_type?: string;
 
   constructor(
     store: Store<any>,
@@ -93,75 +89,8 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
       .instructions;
   }
 
-  private updateForm(sail: Sail): void {
-    const before = sail.checklists.find(checklist => checklist.checklist_type === SailChecklistType.Before);
-    this.checklistForm.controls.before.patchValue(before);
-
-    const after = sail.checklists.find(checklist => checklist.checklist_type === SailChecklistType.After);
-    this.checklistForm.controls.after.patchValue(after);
-
-    const formManifest = this.checklistForm.controls.peopleManifest as FormArray;
-
-    formManifest.clear();
-
-    sail.manifest.forEach(sailor => formManifest.push(this.fb.group({
-      guest_ofName: this.fb.control(sailor.guest_of?.name),
-      person_name: this.fb.control(sailor.person_name),
-      sailor_role: this.fb.control(sailor.sailor_role),
-      attended: this.fb.control(sailor.attended || false),
-      profile: this.fb.control(sailor.profile),
-      id: this.fb.control(sailor.id),
-    })));
-
-    this.checklistForm.markAsUntouched();
-    this.checklistForm.markAsPristine();
-  }
-
   public get formBuilder(): FormBuilder {
     return this.fb;
-  }
-
-  protected buildForm(): void {
-    let beforeForm = {};
-    let afterForm = {};
-
-    if (this.checklist_type === 'before' || this.checklist_type === 'both') {
-      beforeForm = {
-        before: this.fb.group({
-          bilge: new FormControl(BilgeState.DID_NOT_CHECK),
-          comments: new FormControl(),
-          fire_extinguisher: new FormControl(FireExtinguisherState.DID_NOT_CHECK),
-          flares: new FormControl(FlaresState.DID_NOT_CHECK),
-          fuel: new FormControl(FuelState.DID_NOT_CHECK),
-          id: new FormControl(undefined),
-          sail_destination: new FormControl(undefined, Validators.required),
-          signed_by_crew: new FormControl(),
-          signed_by_skipper: new FormControl(),
-          weather: new FormControl(undefined, Validators.required),
-        }),
-        peopleManifest: this.fb.array([]),
-      };
-    }
-
-    if (this.checklist_type === 'after' || this.checklist_type === 'both') {
-      afterForm = {
-        after: this.fb.group({
-          bilge: new FormControl(),
-          comments: new FormControl(),
-          fire_extinguisher: new FormControl(),
-          flares: new FormControl(),
-          fuel: new FormControl(),
-          id: new FormControl(undefined),
-          signed_by_crew: new FormControl(),
-          signed_by_skipper: new FormControl(),
-        }),
-      };
-    }
-
-    this.checklistForm = this.fb.group({
-      ...beforeForm,
-      ...afterForm,
-    });
   }
 
   public afterFormErrors(controlName: string): string[] {
@@ -205,4 +134,98 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
 
     this.dispatchAction(updateSailChecklists({ sail_id: this.sail_id, checklistsData: changedValue }));
   }
+
+  protected buildForm(): void {
+    let beforeForm = {};
+    let afterForm = {};
+
+    const boatChecklist = (this.sail?.boat?.checklist?.items || [])
+      .reduce((accumulator, item) => {
+        accumulator[item.key] = this.fb.control(item.defaultValue);
+        return accumulator;
+      }, {});
+
+    console.log('boatChecklist', JSON.stringify(boatChecklist, null, 2));
+
+    if (this.checklist_type === 'before' || this.checklist_type === 'both') {
+      beforeForm = {
+        before: this.fb.group({
+          checklist: this.fb.group(boatChecklist),
+          comments: new FormControl(),
+          id: new FormControl(undefined),
+          sail_destination: new FormControl(undefined, Validators.required),
+          signed_by_crew: new FormControl(),
+          signed_by_skipper: new FormControl(),
+          weather: new FormControl(undefined, Validators.required),
+        }),
+        peopleManifest: this.fb.array([]),
+      };
+    }
+
+    if (this.checklist_type === 'after' || this.checklist_type === 'both') {
+      afterForm = {
+        after: this.fb.group({
+          checklist: this.fb.group(boatChecklist),
+          comments: new FormControl(),
+          id: new FormControl(undefined),
+          signed_by_crew: new FormControl(),
+          signed_by_skipper: new FormControl(),
+        }),
+      };
+    }
+
+    this.checklistForm = this.fb.group({
+      ...beforeForm,
+      ...afterForm,
+    });
+
+    console.log('this.checklistForm', JSON.stringify(this.checklistForm.getRawValue(), null, 2));
+
+    this.checklistForm.valueChanges.subscribe((value) => {
+      console.log('change', value);
+    });
+
+  }
+
+  private updateForm(sail: Sail): void {
+    console.log('updating form');
+    const boatChecklist = this.fb.group((this.sail?.boat?.checklist?.items || [])
+      .reduce((accumulator, item) => {
+        accumulator[item.key] = this.fb.control(item.defaultValue);
+        return accumulator;
+      }, {}));
+
+    if (this.checklist_type === 'before' || this.checklist_type === 'both') {
+      (this.checklistForm.controls.before as FormGroup).setControl('checklist', boatChecklist);
+
+      const before = sail.checklists.find(checklist => checklist.checklist_type === SailChecklistType.Before);
+      this.checklistForm.controls.before.patchValue(before);
+    }
+
+    if (this.checklist_type === 'after' || this.checklist_type === 'both') {
+      (this.checklistForm.controls.after as FormGroup).setControl('checklist', boatChecklist);
+
+      const after = sail.checklists.find(checklist => checklist.checklist_type === SailChecklistType.After);
+      this.checklistForm.controls.after.patchValue(after);
+    }
+
+    const formManifest = this.checklistForm.controls.peopleManifest as FormArray;
+
+    formManifest.clear();
+
+    sail.manifest.forEach(sailor => formManifest.push(this.fb.group({
+      guest_ofName: this.fb.control(sailor.guest_of?.name),
+      person_name: this.fb.control(sailor.person_name),
+      sailor_role: this.fb.control(sailor.sailor_role),
+      attended: this.fb.control(sailor.attended || false),
+      profile: this.fb.control(sailor.profile),
+      id: this.fb.control(sailor.id),
+    })));
+
+    this.checklistForm.markAsUntouched();
+    this.checklistForm.markAsPristine();
+
+    console.log('updated checklistForm', JSON.stringify(this.checklistForm.getRawValue(), null, 2));
+  }
+
 }

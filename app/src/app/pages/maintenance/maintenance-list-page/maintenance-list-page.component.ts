@@ -83,13 +83,6 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
     }
   }
 
-  private filterAndSort(requests: BoatMaintenance[], status: BoatMaintenanceStatus, boat_id?: string): BoatMaintenance[] {
-    return requests
-      .filter(request => request.status === status)
-      .filter(request => boat_id ? request.boat_id === boat_id : true)
-      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-
-  }
   public get newRequests(): BoatMaintenance[] {
     return this.filterAndSort(this.maintenancesArray, BoatMaintenanceStatus.New, this.boat_id);
   }
@@ -112,5 +105,12 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
     } else {
       this.goTo([createMaintenanceRoute]);
     }
+  }
+
+  private filterAndSort(requests: BoatMaintenance[], status: BoatMaintenanceStatus, boat_id?: string): BoatMaintenance[] {
+    return requests
+      .filter(request => request.status === status)
+      .filter(request => boat_id ? request.boat_id === boat_id : true)
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
   }
 }

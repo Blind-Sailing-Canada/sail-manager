@@ -17,6 +17,12 @@
       title="Click to edit this boat."
     >Edit</a>
     <a
+      *ngIf="shouldShowEditBoat"
+      [routerLink]="editBoatChecklist(boat_id)"
+      mat-raised-button
+      title="Click to edit this boat's checklist."
+    >Checklist</a>
+    <a
       (click)="goToBoatMaintenance()"
       *ngIf="shouldShowEditBoat"
       mat-raised-button
@@ -30,8 +36,8 @@
     <a
       mat-raised-button
       (click)="goToChecklists()"
-      title="Checklists."
-    >Checklists</a>
+      title="Sail Checklists."
+    >Sail Checklists</a>
   </mat-card-actions>
 
   <mat-card-content>

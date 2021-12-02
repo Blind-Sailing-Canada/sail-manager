@@ -21,7 +21,12 @@ import {
   editMaintenanceRoute,
   resolveMaintenanceRoute,
 } from '../../../routes/routes';
-import { deleteBoatMaintenanceComment, deleteBoatMaintenancePicture, postBoatMaintenanceComment, postBoatMaintenancePictures } from '../../../store/actions/boat-maintenance.actions';
+import {
+  deleteBoatMaintenanceComment,
+  deleteBoatMaintenancePicture,
+  postBoatMaintenanceComment,
+  postBoatMaintenancePictures
+} from '../../../store/actions/boat-maintenance.actions';
 import { CDN_ACTION_STATE, deleteFile, uploadBoatMaintenancePicture } from '../../../store/actions/cdn.actions';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
@@ -130,13 +135,6 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
     });
   }
 
-  private buildForm(): void {
-    this.picturesForm = this.fb.group({
-      pictures: this.fb.array([
-      ])
-    });
-  }
-
   public get editMaintenanceLink(): string {
     return editMaintenanceRoute(this.maintenanceId);
   }
@@ -206,5 +204,12 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
 
   public get shouldAllowSaveButton(): boolean {
     return this.picturesForm && this.picturesForm.dirty;
+  }
+
+  private buildForm(): void {
+    this.picturesForm = this.fb.group({
+      pictures: this.fb.array([
+      ])
+    });
   }
 }

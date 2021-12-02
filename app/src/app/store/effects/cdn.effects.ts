@@ -325,7 +325,7 @@ export class CDNEffects {
       case HttpEventType.DownloadProgress:
         return EMPTY;
       case HttpEventType.UploadProgress:
-        // tslint:disable-next-line: no-string-literal
+        // eslint-disable-next-line @typescript-eslint/dot-notation
         const percentage = ((event['loaded'] || file.size) / file.size) * 100;
         const progress = Math.min(100, Math.round(percentage));
 

@@ -11,8 +11,6 @@ import { Media } from '../../../../api/src/types/media/media';
 })
 export class SailPicturesService {
 
-  private readonly API_URL = (sail_id: string) => `/api/sail/${sail_id}/pictures`;
-
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
   public getPictures(sail_id: string): Observable<Media[]> {
@@ -26,5 +24,7 @@ export class SailPicturesService {
   public deletePicture(sail_id: string, pictureId: string): Observable<Media[]> {
     return this.http.delete<Media[]>(`${this.API_URL(sail_id)}/${pictureId}`);
   }
+
+  private readonly API_URL = (sail_id: string) => `/api/sail/${sail_id}/pictures`;
 
 }

@@ -16,7 +16,7 @@ import {
 } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SnackType } from '../../models/snack-state.interface';
-import { FULL_ROUTES } from '../../routes/routes';
+import { FullRoutes } from '../../routes/routes';
 import { AuthService } from '../../services/auth.service';
 import { errorCatcher } from '../../utils/error-catcher';
 import {
@@ -66,7 +66,7 @@ export class LoginEffects {
                 putProfile({ profile, id: profile.id, }),
                 loggedIn({ token: action.token, user: profile })),
               ),
-              catchError(errorCatcher(`Failed to login.`))
+              catchError(errorCatcher('Failed to login.'))
             )
         ),
         tap(() => this.store.dispatch(finishLoading())),
@@ -84,7 +84,7 @@ export class LoginEffects {
             .pipe(
               mergeMap(() => of(
                 loggedOut(),
-                goTo({ route: FULL_ROUTES.LOGIN.toString() }),
+                goTo({ route: FullRoutes.LOGIN.toString() }),
                 resetLogin(),
                 putSnack({ snack: { type: SnackType.INFO, message: action.message || 'Bye. See you soon!' } }),
               )),
@@ -93,7 +93,7 @@ export class LoginEffects {
                   'Failed to logout.',
                   [
                     loggedOut(),
-                    goTo({ route: FULL_ROUTES.LOGIN.toString() }),
+                    goTo({ route: FullRoutes.LOGIN.toString() }),
                     resetLogin(),
                     putSnack({ snack: { type: SnackType.INFO, message: 'Bye. See you soon!' } }),
                   ]

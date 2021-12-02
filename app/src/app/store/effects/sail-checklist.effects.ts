@@ -118,9 +118,7 @@ export class SailChecklistEffects {
       mergeMap(
         action => this.sailChecklistService.find(action.query)
           .pipe(
-            mergeMap((checklists) => {
-              return of(putSailChecklists({ checklists }));
-            }),
+            mergeMap((checklists) => of(putSailChecklists({ checklists }))),
             catchError(
               errorCatcher('Failed to find sail checklists')),
           )),

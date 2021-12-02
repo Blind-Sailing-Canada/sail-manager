@@ -1,7 +1,4 @@
 {
-  "debug.node.autoAttach": "on",
-  "files.autoSave": "onFocusChange",
-  "debug.openDebug": "neverOpen",
   "editor.rulers": [
     100,
     120,
@@ -24,10 +21,20 @@
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.quoteStyle": "single",
   "typescript.updateImportsOnFileMove.enabled": "never",
+  "workbench.editor.enablePreview": false,
   "workbench.colorCustomizations": {
     "editorWarning.foreground": "#ff0000",
     "editorError.foreground": "#ff0000",
   },
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[html]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "eslint.format.enable": true,
   "html.format.endWithNewline": true,
   "html.format.indentHandlebars": true,
   "html.format.indentInnerHtml": true,

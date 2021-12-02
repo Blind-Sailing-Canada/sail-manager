@@ -37,20 +37,6 @@ export class ResetPasswordComponent extends BasePageComponent implements OnInit 
 
   public get email() { return this.form.get('email'); }
 
-  private buildForm(): void {
-    this.form = this.fb.group({
-      email: this.fb.control('', [
-        Validators.required,
-        Validators.maxLength(100),
-        Validators.email,
-      ]),
-    });
-  }
-
-  private get validateEmail(): string {
-    return `${this.form.controls.email.value}`.trim();
-  }
-
   public resetPassword(): void {
     this
       .firebaseService
@@ -63,6 +49,20 @@ export class ResetPasswordComponent extends BasePageComponent implements OnInit 
         this.dispatchError(`Failed to reset password: ${error.message}`);
         console.error(error);
       });
+  }
+
+  private buildForm(): void {
+    this.form = this.fb.group({
+      email: this.fb.control('', [
+        Validators.required,
+        Validators.maxLength(100),
+        Validators.email,
+      ]),
+    });
+  }
+
+  private get validateEmail(): string {
+    return `${this.form.controls.email.value}`.trim();
   }
 
 }

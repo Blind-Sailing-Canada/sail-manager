@@ -17,9 +17,7 @@ const initialState = {
 const reducerHandler = createReducer(
   initialState,
   on(resetSnacks, () => initialState),
-  on(putSnack, (state, action) => {
-    return Object.assign({}, state, { snacks: state.snacks.concat(action.snack) } as ISnackState);
-  }),
+  on(putSnack, (state, action) => Object.assign({}, state, { snacks: state.snacks.concat(action.snack) } as ISnackState)),
   on(removeSnack, (state, action) => {
     const copy = [].concat(state.snacks);
 
@@ -30,6 +28,4 @@ const reducerHandler = createReducer(
   })
 );
 
-export function snackReducer(state: ISnackState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const snackReducer = (state: ISnackState | undefined, action: Action) => reducerHandler(state, action);

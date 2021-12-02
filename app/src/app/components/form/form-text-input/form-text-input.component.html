@@ -1,0 +1,17 @@
+<ng-container [formGroup]="form">
+
+  <mat-form-field>
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >{{label}}</mat-label>
+    <input
+      [attr.aria-label]="ariaLabel"
+      [attr.aria-required]="required"
+      [formControlName]="controlName"
+      [type]="inputType"
+      matInput
+    >
+  </mat-form-field>
+
+</ng-container>

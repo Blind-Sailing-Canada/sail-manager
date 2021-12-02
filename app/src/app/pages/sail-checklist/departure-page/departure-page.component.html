@@ -76,7 +76,7 @@
     id="stepLabelWeather"
     tabindex="-1"
     aria-hidden="true"
-  >Step 2 of 5: Weather Forcast and Current</h4>
+  >Step 2 of 5: Weather Forecast and Current</h4>
   <mat-form-field [formGroup]="beforeFormControls">
     <mat-label
       tabindex="-1"
@@ -114,6 +114,7 @@
 <ng-template #checklist>
   <h4 tabindex="0">Step 5 of 5: Departure Checklist</h4>
   <app-checklist-form
+    [boatChecklist]="sail.boat.checklist"
     [form]="beforeFormControls"
     when="Before"
   ></app-checklist-form>

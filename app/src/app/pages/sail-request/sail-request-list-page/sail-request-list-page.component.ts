@@ -105,6 +105,30 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
       );
   }
 
+  public get createSailRequestRouteLink(): string {
+    return createSailRequestRoute.toString();
+  }
+
+  public createSail(id: string): void {
+    this.goTo([createSailFromRequestRoute(id)]);
+  }
+
+  public editSailRequest(id: string): void {
+    this.goTo([editSailRequestRoute(id)]);
+  }
+
+  public joinSailRequest(id: string): void {
+    this.dispatchAction(interestedSailRequest({ sail_request_id: id }));
+  }
+
+  public leaveSailRequest(id: string): void {
+    this.dispatchAction(uninterestedSailRequest({ sail_request_id: id }));
+  }
+
+  public cancelRequest(id: string): void {
+    this.dispatchAction(cancelSailRequest({ id }));
+  }
+
   private getSailRequestArray(requestStatus: SailRequestStatus): SailRequest[] {
     const sailRequests = this.sailRequests;
     const array = Object
@@ -134,29 +158,5 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
       });
 
     return array;
-  }
-
-  public get createSailRequestRouteLink(): string {
-    return createSailRequestRoute.toString();
-  }
-
-  public createSail(id: string): void {
-    this.goTo([createSailFromRequestRoute(id)]);
-  }
-
-  public editSailRequest(id: string): void {
-    this.goTo([editSailRequestRoute(id)]);
-  }
-
-  public joinSailRequest(id: string): void {
-    this.dispatchAction(interestedSailRequest({ sail_request_id: id }));
-  }
-
-  public leaveSailRequest(id: string): void {
-    this.dispatchAction(uninterestedSailRequest({ sail_request_id: id }));
-  }
-
-  public cancelRequest(id: string): void {
-    this.dispatchAction(cancelSailRequest({ id }));
   }
 }

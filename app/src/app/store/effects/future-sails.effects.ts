@@ -23,7 +23,12 @@ import {
   startLoading,
 } from '../actions/app.actions';
 import { putSnack } from '../actions/snack.actions';
-import { fetchFutureSailsForAll, fetchFutureSailsForUser, putFutureSailsForAll, putFutureSailsForUser } from '../actions/future-sails.actions';
+import {
+  fetchFutureSailsForAll,
+  fetchFutureSailsForUser,
+  putFutureSailsForAll,
+  putFutureSailsForUser
+} from '../actions/future-sails.actions';
 
 @Injectable()
 export class FutureSailsEffects {

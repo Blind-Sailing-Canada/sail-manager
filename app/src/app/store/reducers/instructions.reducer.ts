@@ -36,6 +36,4 @@ const reducerHandler = createReducer(
   }),
 );
 
-export function instructionsReducer(state: InstructionsState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const instructionsReducer = (state: InstructionsState | undefined, action: Action) => reducerHandler(state, action);

@@ -19,11 +19,11 @@ import { MomentService } from '../../services/moment.service';
 })
 export class ChecklistSummaryComponent {
 
-  public SAILOR_ROLE = SailorRole;
-
   @Input() sail: Sail;
   @Output() sailViewer: EventEmitter<string> = new EventEmitter();
   @Output() openProfileDialog: EventEmitter<Profile> = new EventEmitter<Profile>();
+
+  public SAILOR_ROLE = SailorRole;
 
   constructor(
     @Inject(MomentService) private momentService: MomentService,

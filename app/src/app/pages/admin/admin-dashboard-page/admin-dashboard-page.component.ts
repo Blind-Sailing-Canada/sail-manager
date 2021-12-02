@@ -46,8 +46,9 @@ import { CreateUserDialogData } from '../../../models/create-user-dialog-data.in
 })
 export class AdminDashboardPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
 
-  public searchedProfiles: Profile[];
   @ViewChild('profileSearchInput', { static: false }) private profileSearchInput;
+
+  public searchedProfiles: Profile[];
   public createUserDialogRef: MatDialogRef<CreateUserDialogComponent>;
 
   constructor(

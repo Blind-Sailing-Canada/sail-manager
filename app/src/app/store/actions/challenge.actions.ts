@@ -24,26 +24,26 @@ export enum CHALLENGE_ACTION_TYPES {
 }
 
 export const completeUserChallenge = createAction(
-  CHALLENGE_ACTION_TYPES.COMPLETE_USER_CHALLENGE, props<{ challengeId: string, challengerId: string, note?: string, notify?: boolean }>());
+  CHALLENGE_ACTION_TYPES.COMPLETE_USER_CHALLENGE, props<{ challengeId: string; challengerId: string; note?: string; notify?: boolean }>());
 export const joinChallenge = createAction(
-  CHALLENGE_ACTION_TYPES.JOIN_CHALLENGE, props<{ challengeId: string, notify?: boolean }>());
+  CHALLENGE_ACTION_TYPES.JOIN_CHALLENGE, props<{ challengeId: string; notify?: boolean }>());
 export const leaveChallenge = createAction(
-  CHALLENGE_ACTION_TYPES.LEAVE_CHALLENGE, props<{ challengeId: string, notify?: boolean }>());
+  CHALLENGE_ACTION_TYPES.LEAVE_CHALLENGE, props<{ challengeId: string; notify?: boolean }>());
 export const createChallenge = createAction(
-  CHALLENGE_ACTION_TYPES.CREATE_CHALLENGE, props<{ challenge: Partial<Challenge>, notify?: boolean }>());
-export const fetchChallenge = createAction(CHALLENGE_ACTION_TYPES.FETCH_CHALLENGE, props<{ challengeId: string, notify?: boolean }>());
-export const fetchChallenges = createAction(CHALLENGE_ACTION_TYPES.FETCH_CHALLENGES, props<{ query?: string, notify?: boolean }>());
+  CHALLENGE_ACTION_TYPES.CREATE_CHALLENGE, props<{ challenge: Partial<Challenge>; notify?: boolean }>());
+export const fetchChallenge = createAction(CHALLENGE_ACTION_TYPES.FETCH_CHALLENGE, props<{ challengeId: string; notify?: boolean }>());
+export const fetchChallenges = createAction(CHALLENGE_ACTION_TYPES.FETCH_CHALLENGES, props<{ query?: string; notify?: boolean }>());
 export const putChallenge = createAction(
-  CHALLENGE_ACTION_TYPES.PUT_CHALLENGE, props<{ challengeId: string, challenge: Partial<Challenge> }>());
+  CHALLENGE_ACTION_TYPES.PUT_CHALLENGE, props<{ challengeId: string; challenge: Partial<Challenge> }>());
 export const putChallenges = createAction(CHALLENGE_ACTION_TYPES.PUT_CHALLENGES, props<{ challenges: Partial<Challenge>[] }>());
 export const resetChallenges = createAction(CHALLENGE_ACTION_TYPES.RESET);
 export const updateChallenge = createAction(
-  CHALLENGE_ACTION_TYPES.UPDATE_CHALLENGE, props<{ challengeId: string, challenge: Partial<Challenge>, notify?: boolean }>());
+  CHALLENGE_ACTION_TYPES.UPDATE_CHALLENGE, props<{ challengeId: string; challenge: Partial<Challenge>; notify?: boolean }>());
 export const postChallengePictures = createAction(
-  CHALLENGE_ACTION_TYPES.POST_PICTURES, props<{ challengeId: string, pictures: Partial<Media>[], notify?: boolean }>());
+  CHALLENGE_ACTION_TYPES.POST_PICTURES, props<{ challengeId: string; pictures: Partial<Media>[]; notify?: boolean }>());
 export const deleteChallengePicture = createAction(
-  CHALLENGE_ACTION_TYPES.DELETE_PICTURE, props<{ challengeId: string, pictureId: string, notify?: boolean }>());
+  CHALLENGE_ACTION_TYPES.DELETE_PICTURE, props<{ challengeId: string; pictureId: string; notify?: boolean }>());
 export const postChallengeComment = createAction(
-  CHALLENGE_ACTION_TYPES.POST_COMMENT, props<{ challengeId: string, comment: Partial<Comment>, notify?: boolean }>());
+  CHALLENGE_ACTION_TYPES.POST_COMMENT, props<{ challengeId: string; comment: Partial<Comment>; notify?: boolean }>());
 export const deleteChallengeComment = createAction(
-    CHALLENGE_ACTION_TYPES.DELETE_COMMENT, props<{ challengeId: string, commentId: string, notify?: boolean }>());
+    CHALLENGE_ACTION_TYPES.DELETE_COMMENT, props<{ challengeId: string; commentId: string; notify?: boolean }>());

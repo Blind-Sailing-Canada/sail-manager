@@ -14,7 +14,7 @@ export class TableComponent {
 
   @Input() title: string;
   @Input() id: string;
-  @Input() captionActions: { name: string, tooltip: string, icon: string }[] = [];
+  @Input() captionActions: { name: string; tooltip: string; icon: string }[] = [];
   @Output() captionAction: EventEmitter<string> = new EventEmitter<string>();
 
   public captionActionsCallBack(event): void {

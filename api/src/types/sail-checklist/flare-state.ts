@@ -1,7 +1,0 @@
-export enum FlaresState {
-  VALID = 'VALID',
-  EXPIRED = 'EXPIRED',
-  USED = 'USED',
-  DID_NOT_CHECK = 'DID NOT CHECK',
-  NOT_APPLICABLE = 'NOT APPLICABLE',
-}

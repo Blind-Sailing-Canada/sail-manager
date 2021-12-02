@@ -17,7 +17,7 @@ export enum LOGIN_ACTION_TYPES {
 export const authenticateWithGoogle = createAction(LOGIN_ACTION_TYPES.AUTHENTICATE_WITH_GOOGLE);
 export const logIn = createAction(LOGIN_ACTION_TYPES.LOG_IN, props<{ token: string }>());
 export const logOut = createAction(LOGIN_ACTION_TYPES.LOG_OUT, props<{ message?: string }>());
-export const loggedIn = createAction(LOGIN_ACTION_TYPES.LOGGED_IN, props<{ token: string, user: Profile }>());
+export const loggedIn = createAction(LOGIN_ACTION_TYPES.LOGGED_IN, props<{ token: string; user: Profile }>());
 export const loggedOut = createAction(LOGIN_ACTION_TYPES.LOGGED_OUT);
 export const putToken = createAction(LOGIN_ACTION_TYPES.PUT_TOKEN, props<{ token: string }>());
 export const resetLogin = createAction(LOGIN_ACTION_TYPES.RESET);

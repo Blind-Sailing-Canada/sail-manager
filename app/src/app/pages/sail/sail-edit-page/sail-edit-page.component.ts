@@ -101,8 +101,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       if (!this.creatingNewSail) {
         const sail = this.sails[this.sail_id];
 
-        if (sail === undefined && !this._fetching[this.sail_id]) {
-          this._fetching[this.sail_id] = true;
+        if (sail === undefined && !this.fetching[this.sail_id]) {
+          this.fetching[this.sail_id] = true;
           this.dispatchAction(fetchSail({ id: this.sail_id }));
           return;
         }
@@ -118,207 +118,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
   }
 
-  private updateForm(sail: Sail): void {
-
-    const formValues = this.sailForm.getRawValue();
-
-    this.sailForm.controls.category.setValue(formValues.category || sail.category);
-    this.sailForm.controls.name.setValue(formValues.name || sail.name);
-    this.sailForm.controls.description.setValue(formValues.description || sail.description);
-
-    const start = new Date(sail.start_at);
-
-    this.sailStartDateTimeForm.patchValue({
-      date: start.getDate(),
-      hour: start.getHours(),
-      minute: start.getMinutes(),
-      month: start.getMonth(),
-      year: start.getFullYear(),
-    });
-
-    const end = new Date(sail.end_at);
-
-    this.sailEndDateTimeForm.patchValue({
-      date: end.getDate(),
-      hour: end.getHours(),
-      minute: end.getMinutes(),
-      month: end.getMonth(),
-      year: end.getFullYear(),
-    });
-
-    this.sailForm.controls.boat_id.setValue(formValues.boat_id || sail.boat_id);
-
-    this.sailForm.markAsPristine();
-  }
-
-  private buildForm(): void {
-    const currentDate = new Date();
-
-    this.sailStartDateTimeForm = this.fb.group({
-      date: new FormControl(currentDate.getDate(), Validators.required),
-      month: new FormControl(currentDate.getMonth(), Validators.required),
-      year: new FormControl(currentDate.getFullYear(), Validators.required),
-      hour: new FormControl(currentDate.getHours(), Validators.required),
-      minute: new FormControl(currentDate.getMinutes(), Validators.required),
-    });
-
-    this.sailStartDateTimeForm.valueChanges.subscribe((value) => {
-      const start_dateTime = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
-
-      this.sailForm.controls.start_at.setValue(start_dateTime);
-      this.sailForm.controls.start_at.markAsDirty();
-      this.sailForm.controls.start_at.updateValueAndValidity();
-
-      const end_dateTime = new Date(start_dateTime);
-      end_dateTime.setHours(end_dateTime.getHours() + 3);
-
-      this.sailEndDateTimeForm.patchValue({
-        date: end_dateTime.getDate(),
-        month: end_dateTime.getMonth(),
-        year: end_dateTime.getFullYear(),
-        hour: end_dateTime.getHours(),
-        minute: end_dateTime.getMinutes()
-      });
-
-      this.sailEndDateTimeForm.markAsDirty();
-      this.sailEndDateTimeForm.updateValueAndValidity();
-    });
-
-    this.sailEndDateTimeForm = this.fb.group({
-      date: new FormControl(currentDate.getDate(), Validators.required),
-      month: new FormControl(currentDate.getMonth(), Validators.required),
-      year: new FormControl(currentDate.getFullYear(), Validators.required),
-      hour: new FormControl(currentDate.getHours(), Validators.required),
-      minute: new FormControl(currentDate.getMinutes(), Validators.required),
-    });
-
-    this.sailEndDateTimeForm.valueChanges.subscribe((value) => {
-      const end_dateTime = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
-      this.sailForm.controls.end_at.setValue(end_dateTime);
-      this.sailForm.controls.end_at.markAsDirty();
-      this.sailForm.controls.end_at.updateValueAndValidity();
-    });
-
-    this.sailForm = this.fb.group({
-      category: this.fb.control(''),
-      name: new FormControl('', [
-        (control) => {
-          const name = control.value.trim();
-          const valid = control.pristine || !!name;
-          return valid ? null : { invalid: 'Sail name cannot be empty.' };
-        },
-        this.sail_id ? Validators.required : null,
-      ].filter(Boolean)),
-      description: new FormControl({ disabled: !!this.sail_request_id, value: undefined }),
-      start_at: new FormControl(undefined, [
-        Validators.required,
-        (control) => {
-          if (!this.sailForm) {
-            return null;
-          }
-
-          if (!control.value) {
-            return null;
-          }
-
-          const selectedDate = new Date(control.value);
-          const now = Date.now();
-          const end = this.sailForm.controls.end_at.value;
-
-          if (!end) {
-            return null;
-          }
-
-          const valid = !this.creatingNewSail || selectedDate.getTime() > now;
-          return valid ? null : { 'Start date cannot be in the past!': control.value };
-        },
-      ]),
-      end_at: new FormControl(undefined, [
-        Validators.required,
-        ((control) => {
-          if (!this.sailForm) {
-            return null;
-          }
-          if (!control.value) {
-            return null;
-          }
-          const selectedDate = new Date(control.value);
-          const start = this.sailForm.controls.start_at.value;
-          const endTime = selectedDate.getTime();
-          const startTime = start.getTime();
-          const valid = endTime > startTime;
-
-          return valid ? null : { 'End date must be greater than start date!': control.value };
-        }).bind(this),
-      ]),
-      boat_id: new FormControl(undefined, Validators.required),
-      max_occupancy: new FormControl(undefined, Validators.required),
-    });
-
-    this.sailForm
-      .controls
-      .boat_id
-      .valueChanges
-      .pipe(
-        takeWhile(() => this.active),
-      )
-      .subscribe(boat_id => this.updateMaxOccupancy(boat_id));
-
-    this.fetchBoatsOnSailDateChanges();
-
-    if (this.creatingNewSail) {
-      const startMoment = new Date();
-
-      startMoment.setDate(startMoment.getDate() + 1);
-
-      const start_date = new Date(startMoment);
-
-      this.sailStartDateTimeForm.controls.date.setValue(start_date.getDate());
-      this.sailStartDateTimeForm.controls.month.setValue(start_date.getMonth());
-      this.sailStartDateTimeForm.controls.year.setValue(start_date.getFullYear());
-      this.sailStartDateTimeForm.controls.hour.setValue(start_date.getHours());
-      this.sailStartDateTimeForm.controls.minute.setValue(start_date.getMinutes());
-
-      startMoment.setHours(startMoment.getHours() + 3);
-
-      const sailEnd = new Date(startMoment);
-
-      this.sailEndDateTimeForm.controls.date.setValue(sailEnd.getDate());
-      this.sailEndDateTimeForm.controls.month.setValue(sailEnd.getMonth());
-      this.sailEndDateTimeForm.controls.year.setValue(sailEnd.getFullYear());
-      this.sailEndDateTimeForm.controls.hour.setValue(sailEnd.getHours());
-      this.sailEndDateTimeForm.controls.minute.setValue(sailEnd.getMinutes());
-    }
-  }
-
   public editManifest(): void {
     this.goTo([editSailManifestRoute(this.sail_id)]);
-  }
-
-  private fetchBoatsOnSailDateChanges(): void {
-    this.sailForm
-      .controls
-      .end_at
-      .valueChanges
-      .pipe(
-        takeWhile(() => this.active),
-        debounce(() => interval(1000)),
-        distinctUntilChanged(),
-        switchMap(() => this.fetchAvailableBoats()),
-      )
-      .subscribe(
-        (boats) => {
-          this.availableBoats = boats;
-          this.dispatchAction(putBoats({ boats }));
-        },
-        error => console.error(error)
-      );
-  }
-
-  private fetchAvailableBoats(): Observable<Boat[]> {
-    const start_date: Date = this.sailForm.controls.start_at.value;
-    const end_date: Date = this.sailForm.controls.end_at.value;
-    return this.sailsService.fetchAvailableBoats(start_date.toISOString(), end_date.toISOString());
   }
 
   public setSailBoatOnKey(event, boat_id: string): void {
@@ -345,20 +146,6 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
   public get title(): string {
     return this.creatingNewSail ? 'New Sail Form' : 'Edit Sail Form';
-  }
-
-  private updateMaxOccupancy(boat_id): void {
-    const defaultMax = 6;
-    const boat = this.getBoat(boat_id) as Boat;
-
-    if (!boat) {
-      this.sailForm.controls.max_occupancy.patchValue(undefined);
-      return;
-    }
-
-    const boatMax = boat.max_occupancy || defaultMax;
-
-    this.sailForm.controls.max_occupancy.patchValue(boatMax);
   }
 
   public get nameErrors(): string[] {
@@ -473,17 +260,6 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     return should;
   }
 
-  private buildDate(date: Date, time: string) {
-    const [hours, minutes] = (time || '0:0').split(':');
-    const newDate = new Date(date);
-
-    newDate.setHours(+hours);
-    newDate.setMinutes(+minutes);
-    newDate.setSeconds(0);
-
-    return new Date(newDate);
-  }
-
   public createSail(): void {
     const data = this.sailForm.getRawValue();
 
@@ -512,6 +288,230 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.sailForm.markAsPristine();
     this.sailForm.markAsUntouched();
     this.dispatchAction(updateSail({ id: this.sail_id, sail: changedValue }));
+  }
+
+  private fetchBoatsOnSailDateChanges(): void {
+    this.sailForm
+      .controls
+      .end_at
+      .valueChanges
+      .pipe(
+        takeWhile(() => this.active),
+        debounce(() => interval(1000)),
+        distinctUntilChanged(),
+        switchMap(() => this.fetchAvailableBoats()),
+      )
+      .subscribe(
+        (boats) => {
+          this.availableBoats = boats;
+          this.dispatchAction(putBoats({ boats }));
+        },
+        error => console.error(error)
+      );
+  }
+
+  private fetchAvailableBoats(): Observable<Boat[]> {
+    const start_date: Date = this.sailForm.controls.start_at.value;
+    const end_date: Date = this.sailForm.controls.end_at.value;
+    return this.sailsService.fetchAvailableBoats(start_date.toISOString(), end_date.toISOString());
+  }
+
+  private updateMaxOccupancy(boat_id): void {
+    const defaultMax = 6;
+    const boat = this.getBoat(boat_id) as Boat;
+
+    if (!boat) {
+      this.sailForm.controls.max_occupancy.patchValue(undefined);
+      return;
+    }
+
+    const boatMax = boat.max_occupancy || defaultMax;
+
+    this.sailForm.controls.max_occupancy.patchValue(boatMax);
+  }
+
+  private buildDate(date: Date, time: string) {
+    const [hours, minutes] = (time || '0:0').split(':');
+    const newDate = new Date(date);
+
+    newDate.setHours(+hours);
+    newDate.setMinutes(+minutes);
+    newDate.setSeconds(0);
+
+    return new Date(newDate);
+  }
+
+  private updateForm(sail: Sail): void {
+
+    const formValues = this.sailForm.getRawValue();
+
+    this.sailForm.controls.category.setValue(formValues.category || sail.category);
+    this.sailForm.controls.name.setValue(formValues.name || sail.name);
+    this.sailForm.controls.description.setValue(formValues.description || sail.description);
+
+    const start = new Date(sail.start_at);
+
+    this.sailStartDateTimeForm.patchValue({
+      date: start.getDate(),
+      hour: start.getHours(),
+      minute: start.getMinutes(),
+      month: start.getMonth(),
+      year: start.getFullYear(),
+    });
+
+    const end = new Date(sail.end_at);
+
+    this.sailEndDateTimeForm.patchValue({
+      date: end.getDate(),
+      hour: end.getHours(),
+      minute: end.getMinutes(),
+      month: end.getMonth(),
+      year: end.getFullYear(),
+    });
+
+    this.sailForm.controls.boat_id.setValue(formValues.boat_id || sail.boat_id);
+
+    this.sailForm.markAsPristine();
+  }
+
+  private buildForm(): void {
+    const currentDate = new Date();
+
+    this.sailStartDateTimeForm = this.fb.group({
+      date: new FormControl(currentDate.getDate(), Validators.required),
+      month: new FormControl(currentDate.getMonth(), Validators.required),
+      year: new FormControl(currentDate.getFullYear(), Validators.required),
+      hour: new FormControl(currentDate.getHours(), Validators.required),
+      minute: new FormControl(currentDate.getMinutes(), Validators.required),
+    });
+
+    this.sailStartDateTimeForm.valueChanges.subscribe((value) => {
+      const start_date_time = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
+
+      this.sailForm.controls.start_at.setValue(start_date_time);
+      this.sailForm.controls.start_at.markAsDirty();
+      this.sailForm.controls.start_at.updateValueAndValidity();
+
+      const end_date_time = new Date(start_date_time);
+      end_date_time.setHours(end_date_time.getHours() + 3);
+
+      this.sailEndDateTimeForm.patchValue({
+        date: end_date_time.getDate(),
+        month: end_date_time.getMonth(),
+        year: end_date_time.getFullYear(),
+        hour: end_date_time.getHours(),
+        minute: end_date_time.getMinutes()
+      });
+
+      this.sailEndDateTimeForm.markAsDirty();
+      this.sailEndDateTimeForm.updateValueAndValidity();
+    });
+
+    this.sailEndDateTimeForm = this.fb.group({
+      date: new FormControl(currentDate.getDate(), Validators.required),
+      month: new FormControl(currentDate.getMonth(), Validators.required),
+      year: new FormControl(currentDate.getFullYear(), Validators.required),
+      hour: new FormControl(currentDate.getHours(), Validators.required),
+      minute: new FormControl(currentDate.getMinutes(), Validators.required),
+    });
+
+    this.sailEndDateTimeForm.valueChanges.subscribe((value) => {
+      const end_date_time = this.buildDate(new Date(value.year, value.month, value.date), `${value.hour}:${value.minute}`);
+      this.sailForm.controls.end_at.setValue(end_date_time);
+      this.sailForm.controls.end_at.markAsDirty();
+      this.sailForm.controls.end_at.updateValueAndValidity();
+    });
+
+    this.sailForm = this.fb.group({
+      category: this.fb.control(''),
+      name: new FormControl('', [
+        (control) => {
+          const name = control.value.trim();
+          const valid = control.pristine || !!name;
+          return valid ? null : { invalid: 'Sail name cannot be empty.' };
+        },
+        this.sail_id ? Validators.required : null,
+      ].filter(Boolean)),
+      description: new FormControl({ disabled: !!this.sail_request_id, value: undefined }),
+      start_at: new FormControl(undefined, [
+        Validators.required,
+        (control) => {
+          if (!this.sailForm) {
+            return null;
+          }
+
+          if (!control.value) {
+            return null;
+          }
+
+          const selectedDate = new Date(control.value);
+          const now = Date.now();
+          const end = this.sailForm.controls.end_at.value;
+
+          if (!end) {
+            return null;
+          }
+
+          const valid = !this.creatingNewSail || selectedDate.getTime() > now;
+          return valid ? null : { 'Start date cannot be in the past!': control.value };
+        },
+      ]),
+      end_at: new FormControl(undefined, [
+        Validators.required,
+        ((control) => {
+          if (!this.sailForm) {
+            return null;
+          }
+          if (!control.value) {
+            return null;
+          }
+          const selectedDate = new Date(control.value);
+          const start = this.sailForm.controls.start_at.value;
+          const endTime = selectedDate.getTime();
+          const startTime = start.getTime();
+          const valid = endTime > startTime;
+
+          return valid ? null : { 'End date must be greater than start date!': control.value };
+        }).bind(this),
+      ]),
+      boat_id: new FormControl(undefined, Validators.required),
+      max_occupancy: new FormControl(undefined, Validators.required),
+    });
+
+    this.sailForm
+      .controls
+      .boat_id
+      .valueChanges
+      .pipe(
+        takeWhile(() => this.active),
+      )
+      .subscribe(boat_id => this.updateMaxOccupancy(boat_id));
+
+    this.fetchBoatsOnSailDateChanges();
+
+    if (this.creatingNewSail) {
+      const startMoment = new Date();
+
+      startMoment.setDate(startMoment.getDate() + 1);
+
+      const start_date = new Date(startMoment);
+
+      this.sailStartDateTimeForm.controls.date.setValue(start_date.getDate());
+      this.sailStartDateTimeForm.controls.month.setValue(start_date.getMonth());
+      this.sailStartDateTimeForm.controls.year.setValue(start_date.getFullYear());
+      this.sailStartDateTimeForm.controls.hour.setValue(start_date.getHours());
+      this.sailStartDateTimeForm.controls.minute.setValue(start_date.getMinutes());
+
+      startMoment.setHours(startMoment.getHours() + 3);
+
+      const sailEnd = new Date(startMoment);
+
+      this.sailEndDateTimeForm.controls.date.setValue(sailEnd.getDate());
+      this.sailEndDateTimeForm.controls.month.setValue(sailEnd.getMonth());
+      this.sailEndDateTimeForm.controls.year.setValue(sailEnd.getFullYear());
+      this.sailEndDateTimeForm.controls.hour.setValue(sailEnd.getHours());
+      this.sailEndDateTimeForm.controls.minute.setValue(sailEnd.getMinutes());
+    }
   }
 
 }

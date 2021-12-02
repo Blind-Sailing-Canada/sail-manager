@@ -47,10 +47,6 @@ export class ClinicListPageComponent extends BasePageComponent implements OnInit
     this.fetchClinics(false);
   }
 
-  private fetchClinics(notify?: boolean): void {
-    this.dispatchAction(fetchClinics({ notify }));
-  }
-
   public get shouldEnableNewButton(): boolean {
     return !!this.user.access[UserAccessFields.CreateClinic];
   }
@@ -61,5 +57,9 @@ export class ClinicListPageComponent extends BasePageComponent implements OnInit
 
   public viewClinic(clinicId: string): void {
     this.goTo([viewClinicRoute(clinicId)]);
+  }
+
+  private fetchClinics(notify?: boolean): void {
+    this.dispatchAction(fetchClinics({ notify }));
   }
 }

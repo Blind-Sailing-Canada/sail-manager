@@ -26,6 +26,7 @@ export class ArrivalPageComponent extends SailChecklistBasePageComponent {
   ) {
     super(store, route, router, fb, null);
     this.checklist_type = 'after';
+
     if (fb) {
       this.buildForm();
     }

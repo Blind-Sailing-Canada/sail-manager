@@ -36,6 +36,4 @@ const reducerHandler = createReducer(
   }),
 );
 
-export function sailChecklistReducer(state: ISailChecklistState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const sailChecklistReducer = (state: ISailChecklistState | undefined, action: Action) => reducerHandler(state, action);

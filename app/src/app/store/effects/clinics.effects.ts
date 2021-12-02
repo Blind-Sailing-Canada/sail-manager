@@ -75,7 +75,7 @@ export class ClinicsEffects {
               putClinics({ clinics: returnedClinics }),
               action.notify && putSnack({ snack: { message: `Fetched ${returnedClinics.length} clinics.`, type: SnackType.INFO } })
             )),
-            catchError(errorCatcher(`Failed to fetch clinics.`))
+            catchError(errorCatcher('Failed to fetch clinics.'))
           )
       ),
       filter(action => action && action.type),
@@ -94,9 +94,9 @@ export class ClinicsEffects {
             concatMap(returnedClinic => of(
               putClinic({ clinicId: returnedClinic.id, clinic: returnedClinic }),
               goTo({ route: editClinicRoute(returnedClinic.id) }),
-              action.notify && putSnack({ snack: { message: `Created clinic.`, type: SnackType.INFO } })
+              action.notify && putSnack({ snack: { message: 'Created clinic.', type: SnackType.INFO } })
             )),
-            catchError(errorCatcher(`Failed to create clinic.`))
+            catchError(errorCatcher('Failed to create clinic.'))
           )
       ),
       filter(action => action && action.type),
@@ -114,7 +114,7 @@ export class ClinicsEffects {
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
-              action.notify && putSnack({ snack: { message: `Updated clinic.`, type: SnackType.INFO } })
+              action.notify && putSnack({ snack: { message: 'Updated clinic.', type: SnackType.INFO } })
             )),
             catchError(errorCatcher(`Failed to update clinic ${action.clinicId}.`))
           )
@@ -134,9 +134,9 @@ export class ClinicsEffects {
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
-              action.notify && putSnack({ snack: { message: `Enrolled in clinic.`, type: SnackType.INFO } })
+              action.notify && putSnack({ snack: { message: 'Enrolled in clinic.', type: SnackType.INFO } })
             )),
-            catchError(errorCatcher(`Failed to enroll in clinic.`))
+            catchError(errorCatcher('Failed to enroll in clinic.'))
           )
       ),
       filter(action => action && action.type),
@@ -154,9 +154,9 @@ export class ClinicsEffects {
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
-              action.notify && putSnack({ snack: { message: `Left clinic.`, type: SnackType.INFO } })
+              action.notify && putSnack({ snack: { message: 'Left clinic.', type: SnackType.INFO } })
             )),
-            catchError(errorCatcher(`Failed to leave clinic.`))
+            catchError(errorCatcher('Failed to leave clinic.'))
           )
       ),
       filter(action => action && action.type),
@@ -174,9 +174,9 @@ export class ClinicsEffects {
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
-              action.notify && putSnack({ snack: { message: `Added user to clinic.`, type: SnackType.INFO } })
+              action.notify && putSnack({ snack: { message: 'Added user to clinic.', type: SnackType.INFO } })
             )),
-            catchError(errorCatcher(`Failed to add user to clinic.`))
+            catchError(errorCatcher('Failed to add user to clinic.'))
           )
       ),
       filter(action => action && action.type),
@@ -194,9 +194,9 @@ export class ClinicsEffects {
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
-              action.notify && putSnack({ snack: { message: `Removed user from clinic.`, type: SnackType.INFO } })
+              action.notify && putSnack({ snack: { message: 'Removed user from clinic.', type: SnackType.INFO } })
             )),
-            catchError(errorCatcher(`Failed to remove user from clinic.`))
+            catchError(errorCatcher('Failed to remove user from clinic.'))
           )
       ),
       filter(action => action && action.type),
@@ -214,9 +214,9 @@ export class ClinicsEffects {
           .pipe(
             concatMap(returnedClinic => of(
               putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
-              action.notify && putSnack({ snack: { message: `Graduated user from clinic.`, type: SnackType.INFO } })
+              action.notify && putSnack({ snack: { message: 'Graduated user from clinic.', type: SnackType.INFO } })
             )),
-            catchError(errorCatcher(`Failed to graduate user from clinic.`))
+            catchError(errorCatcher('Failed to graduate user from clinic.'))
           )
       ),
       filter(action => action && action.type),

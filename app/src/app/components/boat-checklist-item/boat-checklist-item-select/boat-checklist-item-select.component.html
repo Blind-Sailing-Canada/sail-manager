@@ -1,0 +1,56 @@
+<form [formGroup]="selectItemFormGroup">
+  <mat-form-field>
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Property key</mat-label>
+    <input
+      aria-required="true"
+      attr.aria-label="Property key"
+      formControlName="key"
+      matInput
+      type="text"
+    >
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Property label</mat-label>
+    <input
+      aria-required="true"
+      attr.aria-label="Property label"
+      formControlName="label"
+      matInput
+      type="text"
+    >
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Options (comma separated)</mat-label>
+    <input
+      aria-required="true"
+      attr.aria-label="Comma separated options"
+      formControlName="options"
+      matInput
+      type="text"
+    >
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label
+      aria-hidden="true"
+      tabindex="-1"
+    >Default value</mat-label>
+    <input
+      attr.aria-label="Property default value"
+      formControlName="defaultValue"
+      matInput
+      type="text"
+    >
+  </mat-form-field>
+</form>

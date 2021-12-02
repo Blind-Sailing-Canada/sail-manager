@@ -1,0 +1,43 @@
+<mat-card *ngIf="!!boat">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>directions_boat</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Boats: {{boat?.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <a
+      *ngIf="shouldShowEditBoat"
+      [routerLink]="editBoat(boat_id)"
+      mat-raised-button
+      title="Click to edit this boat."
+    >Edit</a>
+    <a
+      (click)="goToBoatMaintenance()"
+      *ngIf="shouldShowEditBoat"
+      mat-raised-button
+      title="Click to view boat's maintenace page."
+    >Maintenance</a>
+    <a
+      mat-raised-button
+      (click)="goToBoatInstructions()"
+      title="Click to view boat's instructions page."
+    >Instructions</a>
+    <a
+      mat-raised-button
+      (click)="goToChecklists()"
+      title="Sail Checklists."
+    >Sail Checklists</a>
+  </mat-card-actions>
+
+  <mat-card-content>
+    <app-boat-table
+      [boat]="boat"
+      [showPictures]="true"
+    ></app-boat-table>
+  </mat-card-content>
+</mat-card>

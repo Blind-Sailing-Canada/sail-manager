@@ -41,29 +41,6 @@ export class EmailPasswordComponent extends BasePageComponent implements OnInit 
   public get email() { return this.form.get('email'); }
   public get password() { return this.form.get('password'); }
 
-  private buildForm(): void {
-    this.form = this.fb.group({
-      email: this.fb.control('', [
-        Validators.required,
-        Validators.maxLength(100),
-        Validators.email,
-      ]),
-      password: this.fb.control('', [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(100),
-      ]),
-    });
-  }
-
-  private get validateEmail(): string {
-    return `${this.form.controls.email.value}`.trim();
-  }
-
-  private get validatePassword(): string {
-    return `${this.form.controls.password.value}`.trim();
-  }
-
   public register(): void {
     const password = this.validatePassword;
     const email = this.validateEmail;
@@ -120,8 +97,31 @@ export class EmailPasswordComponent extends BasePageComponent implements OnInit 
           console.error(error);
         });
     } catch (error) {
-      this.dispatchMessage(`Failed to login: authentication not set up.`);
+      this.dispatchMessage('Failed to login: authentication not set up.');
     }
+  }
+
+  private buildForm(): void {
+    this.form = this.fb.group({
+      email: this.fb.control('', [
+        Validators.required,
+        Validators.maxLength(100),
+        Validators.email,
+      ]),
+      password: this.fb.control('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(100),
+      ]),
+    });
+  }
+
+  private get validateEmail(): string {
+    return `${this.form.controls.email.value}`.trim();
+  }
+
+  private get validatePassword(): string {
+    return `${this.form.controls.password.value}`.trim();
   }
 
 }

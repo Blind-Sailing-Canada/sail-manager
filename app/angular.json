@@ -25,7 +25,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["firebase/app", "marked", "@sentry/browser"],
+            "allowedCommonJsDependencies": [
+              "firebase/app",
+              "marked",
+              "@sentry/browser"
+            ],
             "outputPath": "app",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -91,18 +95,19 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "../api/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         }
       }
-    }},
-  "defaultProject": "app"
+    }
+  },
+  "defaultProject": "app",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

@@ -39,6 +39,4 @@ const reducerHandler = createReducer(
   }),
 );
 
-export function feedbackReducer(state: FeedbackState, action: Action) {
-  return reducerHandler(state, action);
-}
+export const feedbackReducer = (state: FeedbackState, action: Action) => reducerHandler(state, action);

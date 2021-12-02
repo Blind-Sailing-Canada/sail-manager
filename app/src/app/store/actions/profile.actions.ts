@@ -22,15 +22,15 @@ export enum PROFILE_ACTION_TYPES {
 export const fetchTotalProfileCount = createAction(PROFILE_ACTION_TYPES.FETCH_COUNT);
 export const fetchProfile = createAction(PROFILE_ACTION_TYPES.FETCH_ONE, props<{ id: string }>());
 export const searchProfilesByNameOrEmail = createAction(
-  PROFILE_ACTION_TYPES.SEARCH_BY_NAME_OR_EMAIL, props<{ text: string, notify?: boolean }>());
-export const fetchProfiles = createAction(PROFILE_ACTION_TYPES.FETCH_MANY, props<{ query: string, notify?: boolean }>());
+  PROFILE_ACTION_TYPES.SEARCH_BY_NAME_OR_EMAIL, props<{ text: string; notify?: boolean }>());
+export const fetchProfiles = createAction(PROFILE_ACTION_TYPES.FETCH_MANY, props<{ query: string; notify?: boolean }>());
 export const putTotalProfileCount = createAction(PROFILE_ACTION_TYPES.PUT_COUNT, props<{ count: number }>());
-export const putProfile = createAction(PROFILE_ACTION_TYPES.PUT_ONE, props<{ id: string, profile: Profile }>());
+export const putProfile = createAction(PROFILE_ACTION_TYPES.PUT_ONE, props<{ id: string; profile: Profile }>());
 export const putProfiles = createAction(PROFILE_ACTION_TYPES.PUT_MANY, props<{ profiles: Profile[] }>());
 export const resetProfiles = createAction(PROFILE_ACTION_TYPES.RESET);
 export const updateProfileInfo = createAction(
   PROFILE_ACTION_TYPES.UPDATE_INFO,
-  props<{ id: string, profile: Profile, notify?: boolean }>());
+  props<{ id: string; profile: Profile; notify?: boolean }>());
 export const reviewProfile = createAction(
   PROFILE_ACTION_TYPES.REVIEW_PROFILE,
-  props<{ id: string, profileReview: Partial<ProfileReview>, notify?: boolean }>());
+  props<{ id: string; profileReview: Partial<ProfileReview>; notify?: boolean }>());

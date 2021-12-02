@@ -18,7 +18,7 @@ import { Profile } from '../../../../../../api/src/types/profile/profile';
 import { ProfileStatus } from '../../../../../../api/src/types/profile/profile-status';
 
 import { ICDNState } from '../../../models/cdn-state.interface';
-import { FULL_ROUTES } from '../../../routes/routes';
+import { FullRoutes } from '../../../routes/routes';
 import {
   CDN_ACTION_STATE,
   uploadProfilePicture,
@@ -34,11 +34,13 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class ProfileEditPageComponent extends BasePageComponent implements OnInit {
 
-  private fileToUpload: File;
-  private profile_id: string;
   public ProfileStatus = ProfileStatus;
   public profileForm: FormGroup;
   public profilePictureInputId = 'profilePictureInput';
+
+  private fileToUpload: File;
+  private profile_id: string;
+
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -88,7 +90,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
       const profile = profilesState?.profiles[this.profile_id];
       if (profile) {
         if (profile.status !== ProfileStatus.Registration && profile.status !== ProfileStatus.Approved) {
-          this.goTo([FULL_ROUTES.ACCOUNT_REVIEW], undefined);
+          this.goTo([FullRoutes.ACCOUNT_REVIEW], undefined);
         }
         this.updateForm();
       }
@@ -99,35 +101,9 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
     return this.getProfile(this.profile_id);
   }
 
-  private buildForm(): void {
-    this.profileForm = this.fb.group({
-      name: new FormControl(null, Validators.required),
-      email: new FormControl(null, Validators.required),
-      phone: new FormControl(null),
-      photo: new FormControl(null),
-      bio: new FormControl(null),
-    });
-  }
-
   public formErrors(controlName: string): string[] {
     const errors = Object.keys(this.profileForm.controls[controlName].errors || {});
     return errors;
-  }
-
-  private updateForm(): void {
-    const profile = this.profile;
-    const controls = Object.keys(this.profileForm.controls);
-
-    controls
-      .forEach(control => this.profileForm
-        .controls[control]
-        .patchValue(profile[control]));
-
-    if (this.profile.status === ProfileStatus.Registration) {
-      this.profileForm.controls.photo.disable();
-    }
-
-    this.profileForm.markAsPristine();
   }
 
   public get shouldHideUpdateButton(): boolean {
@@ -179,5 +155,31 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   public uploadFileToCDN(files: File[]): void {
     this.fileToUpload = files[0];
     this.dispatchAction(uploadProfilePicture({ file: files[0], profile_id: this.profile_id, notify: true }));
+  }
+
+  private buildForm(): void {
+    this.profileForm = this.fb.group({
+      name: new FormControl(null, Validators.required),
+      email: new FormControl(null, Validators.required),
+      phone: new FormControl(null),
+      photo: new FormControl(null),
+      bio: new FormControl(null),
+    });
+  }
+
+  private updateForm(): void {
+    const profile = this.profile;
+    const controls = Object.keys(this.profileForm.controls);
+
+    controls
+      .forEach(control => this.profileForm
+        .controls[control]
+        .patchValue(profile[control]));
+
+    if (this.profile.status === ProfileStatus.Registration) {
+      this.profileForm.controls.photo.disable();
+    }
+
+    this.profileForm.markAsPristine();
   }
 }

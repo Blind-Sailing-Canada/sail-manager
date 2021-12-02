@@ -37,6 +37,14 @@ export class ImageListComponent implements OnChanges {
     }
   }
 
+  public canDelete(picture: Media): boolean {
+    if (!this.user) {
+      return false;
+    }
+
+    return this.user.profile.id === picture.posted_by_id || this.user.access[UserAccessFields.DeletePictures];
+  }
+
   private constructPicturesArray(): Media[] {
     if (!this.pictures || this.pictures.length === 0) {
       return [];
@@ -44,19 +52,9 @@ export class ImageListComponent implements OnChanges {
 
     if (typeof this.pictures[0] === 'string') {
       return (this.pictures as string[])
-        .map((picture) => {
-          return { url: picture } as Media;
-        });
+        .map((picture) => ({ url: picture } as Media));
     }
 
     return this.pictures as Media[];
-  }
-
-  public canDelete(picture: Media): boolean {
-    if (!this.user) {
-      return false;
-    }
-
-    return this.user.profile.id === picture.posted_by_id || this.user.access[UserAccessFields.DeletePictures];
   }
 }

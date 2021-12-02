@@ -38,7 +38,10 @@ import { BoatService } from './boat.service';
   } },
   query: {
     alwaysPaginate: false,
-    join: { instructions: { eager: true } },
+    join: {
+      checklist: { eager: true },
+      instructions: { eager: true },
+    },
   },
 })
 @Controller('boat')

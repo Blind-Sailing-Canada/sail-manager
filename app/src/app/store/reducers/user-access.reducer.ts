@@ -14,11 +14,7 @@ const initialState = {} as UserAccessState;
 const reducerHandler = createReducer(
   initialState,
   on(resetUserAccess, () => initialState),
-  on(putUserAccess, (state, action) => {
-    return Object.assign({}, state, { [action.profile_id]: action.access });
-  }),
+  on(putUserAccess, (state, action) => Object.assign({}, state, { [action.profile_id]: action.access })),
 );
 
-export function userAccessReducer(state: UserAccessState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const userAccessReducer = (state: UserAccessState | undefined, action: Action) => reducerHandler(state, action);

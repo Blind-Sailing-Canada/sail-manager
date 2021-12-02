@@ -22,23 +22,11 @@ const initialState: IAppState = {
 const reducerHandler = createReducer(
   initialState,
   on(resetApp, () => initialState),
-  on(startChangingAppFont, (state) => {
-    return Object.assign({}, state, { changingFont: true } as IAppState);
-  }),
-  on(finishChangingAppFont, (state) => {
-    return Object.assign({}, state, { changingFont: false } as IAppState);
-  }),
-  on(setAppFontSize, (state, action) => {
-    return Object.assign({}, state, { fontSize: action.fontSize } as IAppState);
-  }),
-  on(startLoading, (state) => {
-    return Object.assign({}, state, { loading: state.loading + 1 } as IAppState);
-  }),
-  on(finishLoading, (state) => {
-    return Object.assign({}, state, { loading: Math.max(0, state.loading - 1) } as IAppState);
-  }),
+  on(startChangingAppFont, (state) => Object.assign({}, state, { changingFont: true } as IAppState)),
+  on(finishChangingAppFont, (state) => Object.assign({}, state, { changingFont: false } as IAppState)),
+  on(setAppFontSize, (state, action) => Object.assign({}, state, { fontSize: action.fontSize } as IAppState)),
+  on(startLoading, (state) => Object.assign({}, state, { loading: state.loading + 1 } as IAppState)),
+  on(finishLoading, (state) => Object.assign({}, state, { loading: Math.max(0, state.loading - 1) } as IAppState)),
 );
 
-export function appReducer(state: IAppState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const appReducer = (state: IAppState | undefined, action: Action) => reducerHandler(state, action);

@@ -137,13 +137,6 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
     this.getSailPictures();
   }
 
-  private buildForm(): void {
-    this.form = this.fb.group({
-      pictures: this.fb.array([
-      ])
-    });
-  }
-
   public getSailPictures(): void {
     this.picturesService
       .getPictures(this.sail_id)
@@ -188,6 +181,13 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
           this.form.markAsPristine();
         });
     }
+  }
+
+  private buildForm(): void {
+    this.form = this.fb.group({
+      pictures: this.fb.array([
+      ])
+    });
   }
 
 }

@@ -15,14 +15,8 @@ const initialState = {} as PastSailsState;
 const reducerHandler = createReducer(
   initialState,
   on(resetPastSails, () => initialState),
-  on(putPastSailsForAll, (state, action) => {
-    return Object.assign({}, state, { all: action.sails });
-  }),
-  on(putPastSailsForUser, (state, action) => {
-    return Object.assign({}, state, { [action.profile_id]: action.sails });
-  })
+  on(putPastSailsForAll, (state, action) => Object.assign({}, state, { all: action.sails })),
+  on(putPastSailsForUser, (state, action) => Object.assign({}, state, { [action.profile_id]: action.sails }))
 );
 
-export function pastSailsReducer(state: PastSailsState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const pastSailsReducer = (state: PastSailsState | undefined, action: Action) => reducerHandler(state, action);

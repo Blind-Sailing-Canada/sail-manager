@@ -29,14 +29,15 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './app.component.html',
 })
 export class AppComponent extends BasePageComponent implements OnInit {
+  public userProfile: Profile;
+  public changingAppFont = false;
+
   private loadingTimer: any;
   private readonly LOADING_TIME = 1000;
   private readonly SNACK_DEFAULT_TIME = 15000;
   private readonly SNACK_GREET_TIME = 15000;
   private snackRef;
   private snacks: Snack[] = [];
-  public userProfile: Profile;
-  public changingAppFont = false;
   private currentFontSize;
 
   constructor(
@@ -104,6 +105,10 @@ export class AppComponent extends BasePageComponent implements OnInit {
     this.dispatchAction(putSnack({ snack: { message: `Changing font to ${size}`, type: SnackType.INFO, options: { duration: 300 } } }));
   }
 
+  public logout(): void {
+    this.dispatchAction(logOut({ message: 'Bye! See you soon!' }));
+  }
+
   private startLoadingTimer() {
     if (this.loadingTimer) {
       return;
@@ -122,10 +127,6 @@ export class AppComponent extends BasePageComponent implements OnInit {
       },
       this.LOADING_TIME,
     );
-  }
-
-  public logout(): void {
-    this.dispatchAction(logOut({ message: 'Bye! See you soon!' }));
   }
 
   private processSnacks(snacks) {

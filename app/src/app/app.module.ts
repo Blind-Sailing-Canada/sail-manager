@@ -5,8 +5,6 @@ import {
 import {
   ErrorHandler,
   Injectable,
-  // ErrorHandler,
-  // Injectable,
   InjectionToken,
   NgModule,
 } from '@angular/core';
@@ -33,9 +31,7 @@ import { store } from './store/store';
 export const REDUCER_TOKEN = new InjectionToken<ActionReducerMap<any>>(
   'Registered Reducers',
   {
-    factory: () => {
-      return store;
-    }
+    factory: () => store
   }
 );
 

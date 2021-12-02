@@ -4,7 +4,7 @@ import { MaintenanceResolvePageComponent } from './maintenance-resolve-page/main
 import { MaintenanceViewPageComponent } from './maintenance-view-page/maintenance-view-page.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SUB_ROUTES } from '../../routes/routes';
+import { SubRoutes } from '../../routes/routes';
 import { ResolveMaintenanceRequestGuard } from '../../auth/resolve-maintenance-request.guard';
 import { EditMaintenanceRequestGuard } from '../../auth/edit-maintenance-request.guard';
 
@@ -14,20 +14,20 @@ const routes: Routes = [
     component: MaintenanceListPageComponent,
   },
   {
-    path: SUB_ROUTES.CREATE_MAINTENANCE,
+    path: SubRoutes.CREATE_MAINTENANCE,
     component: MaintenanceEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.EDIT_MAINTENANCE}/:id`,
+    path: `${SubRoutes.EDIT_MAINTENANCE}/:id`,
     canActivate: [EditMaintenanceRequestGuard],
     component: MaintenanceEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.VIEW_MAINTENANCE}/:id`,
+    path: `${SubRoutes.VIEW_MAINTENANCE}/:id`,
     component: MaintenanceViewPageComponent,
   },
   {
-    path: `${SUB_ROUTES.RESOLVE_MAINTENANCE}/:id`,
+    path: `${SubRoutes.RESOLVE_MAINTENANCE}/:id`,
     canActivate: [ResolveMaintenanceRequestGuard],
     component: MaintenanceResolvePageComponent,
   }

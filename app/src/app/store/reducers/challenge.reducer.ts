@@ -15,9 +15,7 @@ const initialState: ChallengeState = {};
 const reducerHandler = createReducer(
   initialState,
   on(resetChallenges, () => initialState),
-  on(putChallenge, (state, action) => {
-    return Object.assign({}, state, { [action.challengeId]: action.challenge } as ChallengeState);
-  }),
+  on(putChallenge, (state, action) => Object.assign({}, state, { [action.challengeId]: action.challenge } as ChallengeState)),
   on(putChallenges, (state, action) => {
     const mappedChallenges = action
       .challenges
@@ -32,6 +30,4 @@ const reducerHandler = createReducer(
   }),
 );
 
-export function challengeReducer(state: ChallengeState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const challengeReducer = (state: ChallengeState | undefined, action: Action) => reducerHandler(state, action);

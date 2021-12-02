@@ -3,7 +3,7 @@ import {
   RouterModule,
   Routes,
 } from '@angular/router';
-import { SUB_ROUTES } from '../../routes/routes';
+import { SubRoutes } from '../../routes/routes';
 import { ArrivalPageComponent } from './arrival-page/arrival-page.component';
 import { DeparturePageComponent } from './departure-page/departure-page.component';
 import { SailChecklistEditPageComponent } from './sail-checklist-edit-page/sail-checklist-edit-page.component';
@@ -17,19 +17,19 @@ const routes: Routes = [
     component: SailChecklistListPageComponent,
   },
   {
-    path: `${SUB_ROUTES.VIEW_SAIL_CHECKLIST}/:sail_id`,
+    path: `${SubRoutes.VIEW_SAIL_CHECKLIST}/:sail_id`,
     component: SailChecklistViewPageComponent,
   },
   {
-    path: `${SUB_ROUTES.EDIT_SAIL_CHECKLIST}/:sail_id`,
+    path: `${SubRoutes.EDIT_SAIL_CHECKLIST}/:sail_id`,
     component: SailChecklistEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.DEPARTURE_SAIL_CHECKLIST}/:sail_id`,
+    path: `${SubRoutes.DEPARTURE_SAIL_CHECKLIST}/:sail_id`,
     component: DeparturePageComponent,
   },
   {
-    path: `${SUB_ROUTES.ARRIVAL_SAIL_CHECKLIST}/:sail_id`,
+    path: `${SubRoutes.ARRIVAL_SAIL_CHECKLIST}/:sail_id`,
     component: ArrivalPageComponent,
   },
 ];

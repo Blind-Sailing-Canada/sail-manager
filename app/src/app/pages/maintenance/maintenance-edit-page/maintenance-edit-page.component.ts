@@ -95,24 +95,6 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
     return (this.maintenanceForm.controls.pictures as FormArray).controls;
   }
 
-  private updateForm(): void {
-    const request = this.maintenance;
-    this.maintenanceForm.patchValue(request);
-
-    const pictures = (this.maintenanceForm.controls.pictures as FormArray);
-
-    while (pictures.length) {
-      pictures.removeAt(0);
-    }
-
-    request.pictures.forEach((pic) => {
-      pictures.push(this.fb.group(pic));
-    });
-
-    this.maintenanceForm.markAsUntouched();
-    this.maintenanceForm.markAsPristine();
-  }
-
   protected get maintenance(): BoatMaintenance {
     if (!this.maintenanceId) {
       return;
@@ -127,15 +109,6 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
 
   public get shouldEnableSubmitButton(): boolean {
     return this.maintenanceForm && this.maintenanceForm.valid && this.maintenanceForm.dirty;
-  }
-
-  private buildForm(boat_id?: string): void {
-    this.maintenanceForm = this.fb.group({
-      boat_id: this.fb.control(boat_id, Validators.required),
-      request_details: this.fb.control(undefined, Validators.required),
-      status: this.fb.control({ value: BoatMaintenanceStatus.New, disabled: !this.maintenanceId }),
-      service_details: this.fb.control({ value: undefined, disabled: !this.maintenanceId }),
-    });
   }
 
   public formErrors(controlName: string): string[] {
@@ -172,4 +145,30 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
     return a.id === b.id;
   }
 
+  private updateForm(): void {
+    const request = this.maintenance;
+    this.maintenanceForm.patchValue(request);
+
+    const pictures = (this.maintenanceForm.controls.pictures as FormArray);
+
+    while (pictures.length) {
+      pictures.removeAt(0);
+    }
+
+    request.pictures.forEach((pic) => {
+      pictures.push(this.fb.group(pic));
+    });
+
+    this.maintenanceForm.markAsUntouched();
+    this.maintenanceForm.markAsPristine();
+  }
+
+  private buildForm(boat_id?: string): void {
+    this.maintenanceForm = this.fb.group({
+      boat_id: this.fb.control(boat_id, Validators.required),
+      request_details: this.fb.control(undefined, Validators.required),
+      status: this.fb.control({ value: BoatMaintenanceStatus.New, disabled: !this.maintenanceId }),
+      service_details: this.fb.control({ value: undefined, disabled: !this.maintenanceId }),
+    });
+  }
 }

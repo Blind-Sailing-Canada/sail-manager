@@ -5,7 +5,7 @@ import {
 } from '@angular/router';
 import { CreateSailGuard } from '../../auth/create-sail.guard';
 import { ViewUserSailsGuard } from '../../auth/view-user-sails.guard';
-import { SUB_ROUTES } from '../../routes/routes';
+import { SubRoutes } from '../../routes/routes';
 import { SailCancelPageComponent } from './sail-cancel-page/sail-cancel-page.component';
 import { SailEditPageComponent } from './sail-edit-page/sail-edit-page.component';
 import { SailListPageComponent } from './sail-list-page/sail-list-page.component';
@@ -21,37 +21,37 @@ const routes: Routes = [
     component: SailListPageComponent,
   },
   {
-    path: SUB_ROUTES.CREATE_SAIL,
+    path: SubRoutes.CREATE_SAIL,
     canActivate: [CreateSailGuard],
     component: SailEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.CREATE_SAIL}/:sail_request_id`,
+    path: `${SubRoutes.CREATE_SAIL}/:sail_request_id`,
     canActivate: [CreateSailGuard],
     component: SailEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.EDIT_SAIL}/:id`,
+    path: `${SubRoutes.EDIT_SAIL}/:id`,
     component: SailEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.VIEW_SAIL}/:id`,
+    path: `${SubRoutes.VIEW_SAIL}/:id`,
     component: SailViewPageComponent,
   },
   {
-    path: `${SUB_ROUTES.CANCEL_SAIL}/:id`,
+    path: `${SubRoutes.CANCEL_SAIL}/:id`,
     component: SailCancelPageComponent,
   },
   {
-    path: `${SUB_ROUTES.EDIT_SAIL_MANIFEST}/:id`,
+    path: `${SubRoutes.EDIT_SAIL_MANIFEST}/:id`,
     component: SailManifestEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.VIEW_SAIL_PICTURES}/:id`,
+    path: `${SubRoutes.VIEW_SAIL_PICTURES}/:id`,
     component: SailPicturesPageComponent,
   },
   {
-    path: `${SUB_ROUTES.VIEW_SAIL_PER_PERSON}/:profile_id`,
+    path: `${SubRoutes.VIEW_SAIL_PER_PERSON}/:profile_id`,
     canActivate: [ViewUserSailsGuard],
     component: SailListPerPersonPageComponent,
   },

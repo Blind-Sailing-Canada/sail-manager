@@ -13,11 +13,11 @@ export enum IN_PROGRESS_SAILS_ACTION_TYPES {
 }
 
 export const fetchInProgressSailsForAll = createAction(
-  IN_PROGRESS_SAILS_ACTION_TYPES.FETCH_ALL, props<{ query?: string, notify?: boolean }>());
+  IN_PROGRESS_SAILS_ACTION_TYPES.FETCH_ALL, props<{ query?: string; notify?: boolean }>());
 export const fetchInProgressSailsForUser = createAction(
   IN_PROGRESS_SAILS_ACTION_TYPES.FETCH_USER,
-  props<{ id: string, query?: string, notify?: boolean }>());
+  props<{ id: string; query?: string; notify?: boolean }>());
 export const putInProgressSailsForAll = createAction(IN_PROGRESS_SAILS_ACTION_TYPES.PUT_ALL, props<{ sails: Sail[] }>());
 export const putInProgressSailsForUser = createAction(
-  IN_PROGRESS_SAILS_ACTION_TYPES.PUT_USER, props<{ profile_id: string, sails: Sail[] }>());
+  IN_PROGRESS_SAILS_ACTION_TYPES.PUT_USER, props<{ profile_id: string; sails: Sail[] }>());
 export const resetInProgressSails = createAction(IN_PROGRESS_SAILS_ACTION_TYPES.RESET);

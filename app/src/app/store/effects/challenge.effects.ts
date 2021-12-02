@@ -56,9 +56,9 @@ export class ChallengeEffects {
             .pipe(
               concatMap(returnedChallenge => of(
                 putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
-                action.notify && putSnack({ snack: { type: SnackType.INFO, message: `You joined this challenge.` } }),
+                action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'You joined this challenge.' } }),
               )),
-              catchError(errorCatcher(`Failed to join challenge.`))
+              catchError(errorCatcher('Failed to join challenge.'))
             )
         ),
         filter(action => action && action.type),
@@ -77,9 +77,9 @@ export class ChallengeEffects {
             .pipe(
               concatMap(returnedChallenge => of(
                 putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
-                action.notify && putSnack({ snack: { type: SnackType.INFO, message: `You left this challenge.` } }),
+                action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'You left this challenge.' } }),
               )),
-              catchError(errorCatcher(`Failed to leave challenge.`))
+              catchError(errorCatcher('Failed to leave challenge.'))
             )
         ),
         filter(action => action && action.type),
@@ -98,9 +98,9 @@ export class ChallengeEffects {
             .pipe(
               concatMap(returnedChallenge => of(
                 putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
-                action.notify && putSnack({ snack: { type: SnackType.INFO, message: `You have accomplished this challenge.` } }),
+                action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'You have accomplished this challenge.' } }),
               )),
-              catchError(errorCatcher(`Failed to save challenge accomplishment.`))
+              catchError(errorCatcher('Failed to save challenge accomplishment.'))
             )
         ),
         filter(action => action && action.type),
@@ -119,9 +119,9 @@ export class ChallengeEffects {
             .pipe(
               concatMap(returnedChallenge => of(
                 putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
-                action.notify && putSnack({ snack: { type: SnackType.INFO, message: `Posted challenge comment.` } }),
+                action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Posted challenge comment.' } }),
               )),
-              catchError(errorCatcher(`Failed to post challenge comment.`))
+              catchError(errorCatcher('Failed to post challenge comment.'))
             )
         ),
         filter(action => action && action.type),
@@ -140,9 +140,9 @@ export class ChallengeEffects {
             .pipe(
               concatMap(returnedChallenge => of(
                 putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
-                action.notify && putSnack({ snack: { type: SnackType.INFO, message: `Deleted challenge comment.` } }),
+                action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Deleted challenge comment.' } }),
               )),
-              catchError(errorCatcher(`Failed to delete challenge comment.`))
+              catchError(errorCatcher('Failed to delete challenge comment.'))
             )
         ),
         filter(action => action && action.type),
@@ -226,7 +226,7 @@ export class ChallengeEffects {
                 putChallenges({ challenges: returnedChallenges }),
                 action.notify && putSnack({ snack: { message: 'Fetch challenges', type: SnackType.INFO } }),
               )),
-              catchError(errorCatcher(`Failed to challenges.`))
+              catchError(errorCatcher('Failed to challenges.'))
             )
         ),
         filter(action => action && action.type),
@@ -248,7 +248,7 @@ export class ChallengeEffects {
                 goTo({ route: editChallengeRoute(returnedChallenge.id) }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Challenge created.' } }),
               )),
-              catchError(errorCatcher(`Failed to create challenge.`))
+              catchError(errorCatcher('Failed to create challenge.'))
             )
         ),
         filter(action => action && action.type),

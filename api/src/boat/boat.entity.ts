@@ -3,7 +3,8 @@ import {
   Column,
   Entity,
   Index,
-  OneToMany
+  OneToMany,
+  OneToOne
 } from 'typeorm';
 import { BaseModelEntity } from '../base/base.entity';
 import { BoatInstructionsEntity } from '../boat-instructions/boat-instructions.entity';
@@ -12,6 +13,8 @@ import { SailEntity } from '../sail/sail.entity';
 import { Boat } from '../types/boat/boat';
 import { BoatStatus } from '../types/boat/boat-status';
 import { BoatInstructionType } from '../types/boat-instructions/boat-instruction-type';
+import { BoatChecklist } from '../types/boat-checklist/boat-checklist';
+import { BoatChecklistEntity } from '../boat-checklist/boat-checklist.entity';
 
 @Entity('boats')
 export class BoatEntity extends BaseModelEntity implements Boat {
@@ -92,6 +95,12 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   @OneToMany(() => BoatInstructionsEntity, (instructions) => instructions.boat, { eager: true })
   instructions: BoatInstructions[]
 
+  @OneToOne(() => BoatChecklistEntity, (checklist) => checklist.boat, {
+    eager: true,
+    nullable: true,
+  })
+  checklist: BoatChecklist
+
   @Column({
     type: 'jsonb',
     array: false,
@@ -99,6 +108,16 @@ export class BoatEntity extends BaseModelEntity implements Boat {
     nullable: false,
   })
   pictures: string[];
+
+  @AfterInsert()
+  createChecklist() {
+    const checklist = BoatChecklistEntity.create({
+      boatId: this.id,
+      items: [],
+    });
+
+    checklist.save();
+  }
 
   @AfterInsert()
   createInstructions() {

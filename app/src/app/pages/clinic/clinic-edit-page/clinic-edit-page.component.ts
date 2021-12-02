@@ -34,13 +34,13 @@ import { Clinic } from '../../../../../../api/src/types/clinic/clinic';
 })
 export class ClinicEditPageComponent extends BasePageComponent implements OnInit {
 
-  private instructorFilterText = '';
   public clinic: Clinic;
   public clinicId: string;
   public filteredInstructors: Profile[] = [];
   public form: FormGroup;
   public instructors: Profile[] = [];
   public icons: string[] = [];
+  private instructorFilterText = '';
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -80,33 +80,6 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
     this.filterInstructors(filter, true);
   }
 
-  private getIcons(): void {
-    const ICON_LOCATION = environment.production ? 'cdn/list?directory=svg/icons' : 'cdn/list?directory=test/svg/icons';
-    this.http
-      .get<string[]>(ICON_LOCATION)
-      .pipe(
-        take(1)
-      )
-      .subscribe((icons) => {
-        this.icons = icons || [];
-        this.icons = this.icons
-          .filter(icon => icon.toLowerCase().endsWith('.svg'))
-          .map(icon => `cdn/files/${icon}`);
-      });
-
-  }
-  private filterInstructors(filter: string, refetch: boolean = false): void {
-    if (!filter) {
-      this.filteredInstructors = this.instructors;
-    } else {
-      if (refetch && filter && filter.length > 3) {
-        this.dispatchAction(searchProfilesByNameOrEmail({ text: filter, notify: true }));
-      }
-      this.filteredInstructors = this.instructors
-        .filter(instructor => instructor.name.includes(filter) || instructor.email.includes(filter));
-    }
-  }
-
   public get instructorName(): string {
     if (!this.form) {
       return null;
@@ -135,23 +108,6 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
       return;
     }
     this.setInstructor(profile_id);
-  }
-
-  private updateForm(): void {
-    this.form.patchValue({ ...this.clinic, badge: [this.clinic.badge].filter(Boolean) });
-    this.form.updateValueAndValidity();
-    this.form.markAsPristine();
-  }
-
-  private buildForm(): void {
-    this.form = this.fb.group({
-      badge: this.fb.control(null, Validators.required),
-      description: this.fb.control(undefined, Validators.required),
-      instructor_id: this.fb.control(null),
-      name: this.fb.control(undefined, Validators.required),
-      start_date: this.fb.control(null),
-      end_date: this.fb.control(null),
-    });
   }
 
   public formErrors(controlName: string): string[] {
@@ -200,4 +156,47 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
     this.dispatchAction(updateClinic({ clinic, clinicId: this.clinicId, notify: true }));
   }
 
+  private getIcons(): void {
+    const ICON_LOCATION = environment.production ? 'cdn/list?directory=svg/icons' : 'cdn/list?directory=test/svg/icons';
+    this.http
+      .get<string[]>(ICON_LOCATION)
+      .pipe(
+        take(1)
+      )
+      .subscribe((icons) => {
+        this.icons = icons || [];
+        this.icons = this.icons
+          .filter(icon => icon.toLowerCase().endsWith('.svg'))
+          .map(icon => `cdn/files/${icon}`);
+      });
+
+  }
+  private filterInstructors(filter: string, refetch: boolean = false): void {
+    if (!filter) {
+      this.filteredInstructors = this.instructors;
+    } else {
+      if (refetch && filter && filter.length > 3) {
+        this.dispatchAction(searchProfilesByNameOrEmail({ text: filter, notify: true }));
+      }
+      this.filteredInstructors = this.instructors
+        .filter(instructor => instructor.name.includes(filter) || instructor.email.includes(filter));
+    }
+  }
+
+  private updateForm(): void {
+    this.form.patchValue({ ...this.clinic, badge: [this.clinic.badge].filter(Boolean) });
+    this.form.updateValueAndValidity();
+    this.form.markAsPristine();
+  }
+
+  private buildForm(): void {
+    this.form = this.fb.group({
+      badge: this.fb.control(null, Validators.required),
+      description: this.fb.control(undefined, Validators.required),
+      instructor_id: this.fb.control(null),
+      name: this.fb.control(undefined, Validators.required),
+      start_date: this.fb.control(null),
+      end_date: this.fb.control(null),
+    });
+  }
 }

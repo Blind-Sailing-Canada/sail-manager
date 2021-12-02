@@ -15,9 +15,7 @@ const initialState = {} as IBoatState;
 const reducerHandler = createReducer(
   initialState,
   on(resetBoats, () => initialState),
-  on(putBoat, (state, action) => {
-    return Object.assign({}, state, { [action.id]: action.boat });
-  }),
+  on(putBoat, (state, action) => Object.assign({}, state, { [action.id]: action.boat })),
   on(putBoats, (state, action) => {
     const map = action
       .boats
@@ -33,6 +31,4 @@ const reducerHandler = createReducer(
   })
 );
 
-export function boatReducer(state: IBoatState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const boatReducer = (state: IBoatState | undefined, action: Action) => reducerHandler(state, action);

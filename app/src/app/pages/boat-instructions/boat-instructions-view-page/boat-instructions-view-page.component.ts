@@ -9,9 +9,10 @@ import { BoatInstructionsBasePageComponent } from '../boat-instructions-base-pag
 })
 export class BoatInstructionsViewPageComponent extends BoatInstructionsBasePageComponent {
 
+  public  rearrange: boolean;
+
   private arrivalChanged: boolean;
   private departureChanged: boolean;
-  public  rearrange: boolean;
 
   public toggleRearrange(): void {
     this.rearrange = !this.rearrange;

@@ -21,9 +21,9 @@ import {
 } from '../models/profile-state.interface';
 import {
   editProfileRoute,
-  FULL_ROUTES,
-  ROOT_ROUTES,
-  SUB_ROUTES,
+  FullRoutes,
+  RootRoutes,
+  SubRoutes,
 } from '../routes/routes';
 import { TokenService } from '../services/token.service';
 import { STORE_SLICES } from '../store/store';
@@ -57,7 +57,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     if (!token || !loggedInUser || this.tokenService.isExpired) {
       window.sessionStorage.setItem('redirectTo', url);
 
-      this.router.navigate([FULL_ROUTES.LOGIN]);
+      this.router.navigate([FullRoutes.LOGIN]);
       return Promise.resolve(null);
     }
 
@@ -69,7 +69,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       .then((profiles: IProfileMap) => profiles[loggedInUser.id]);
 
     if (!profile) {
-      this.router.navigate([FULL_ROUTES.LOGIN]);
+      this.router.navigate([FullRoutes.LOGIN]);
       return Promise.resolve(null);
     }
 
@@ -82,14 +82,14 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     const profile = await this.getProfile(url);
 
     if (!profile) {
-      this.router.navigate([ROOT_ROUTES.ROOT]);
+      this.router.navigate([RootRoutes.ROOT]);
       return;
     }
 
     let can = false;
 
-    const VIEW_PROFILE_ROUTE = `${ROOT_ROUTES.PROFILES}/${SUB_ROUTES.VIEW_PROFILE}/${profile.id}`;
-    const EDIT_PROFILE_ROUTE = `${ROOT_ROUTES.PROFILES}/${SUB_ROUTES.EDIT_PROFILE}/${profile.id}`;
+    const VIEW_PROFILE_ROUTE = `${RootRoutes.PROFILES}/${SubRoutes.VIEW_PROFILE}/${profile.id}`;
+    const EDIT_PROFILE_ROUTE = `${RootRoutes.PROFILES}/${SubRoutes.EDIT_PROFILE}/${profile.id}`;
 
     switch (profile.status) {
       case ProfileStatus.Approved:
@@ -106,7 +106,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     }
 
     if (!can) {
-      this.router.navigate([ROOT_ROUTES.LOGIN]);
+      this.router.navigate([RootRoutes.LOGIN]);
     }
 
     return can;
@@ -128,7 +128,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
     if (!profile) {
       window.sessionStorage.setItem('redirectTo', url);
-      this.router.navigate([ROOT_ROUTES.LOGIN]);
+      this.router.navigate([RootRoutes.LOGIN]);
 
       return false;
     }
@@ -144,7 +144,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       case ProfileStatus.PendingApproval:
       case ProfileStatus.Rejected:
       default:
-        redirectTo = FULL_ROUTES.ACCOUNT_REVIEW;
+        redirectTo = FullRoutes.ACCOUNT_REVIEW;
         break;
     }
 

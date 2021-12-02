@@ -35,6 +35,4 @@ const reducerHandler = createReducer(
   }),
 );
 
-export function requiredActionsReducer(state: RequiredActionsState, action: Action) {
-  return reducerHandler(state, action);
-}
+export const requiredActionsReducer = (state: RequiredActionsState, action: Action) => reducerHandler(state, action);

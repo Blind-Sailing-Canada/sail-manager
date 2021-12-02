@@ -41,16 +41,16 @@ export class MaintenanceListComponent {
     return description;
   }
 
-  private humanizeDateWithTime(date) {
-    return this.momentService.humanizeDateWithTime(date, false);
-  }
-
   public clickRequest(request: BoatMaintenance) {
     this.clicked.emit(request);
   }
 
   public refresh() {
     this.refreshRequest.emit();
+  }
+
+  private humanizeDateWithTime(date) {
+    return this.momentService.humanizeDateWithTime(date, false);
   }
 
 }

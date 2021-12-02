@@ -21,9 +21,7 @@ const initialState: ICDNState = {
 const reducerHandler = createReducer(
   initialState,
   on(resetCDN, () => initialState),
-  on(startUploading, (state, action) => {
-    return Object.assign({}, state, { [action.fileName]: { state: CDN_ACTION_STATE.UPLOADING } });
-  }),
+  on(startUploading, (state, action) => Object.assign({}, state, { [action.fileName]: { state: CDN_ACTION_STATE.UPLOADING } })),
   on(deletedFile, (state, action) => {
     const previousValue = state[action.filePath] || {};
     const newValue = {
@@ -101,6 +99,4 @@ const reducerHandler = createReducer(
   )
 );
 
-export function cdnReducer(state: ICDNState | undefined, action: Action) {
-  return reducerHandler(state, action);
-}
+export const cdnReducer = (state: ICDNState | undefined, action: Action) => reducerHandler(state, action);

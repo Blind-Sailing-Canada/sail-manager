@@ -3,7 +3,7 @@ import {
   RouterModule,
   Routes,
 } from '@angular/router';
-import { SUB_ROUTES } from '../../routes/routes';
+import { SubRoutes } from '../../routes/routes';
 import { SailRequestEditPageComponent } from './sail-request-edit-page/sail-request-edit-page.component';
 import { SailRequestListPageComponent } from './sail-request-list-page/sail-request-list-page.component';
 import { SailRequestViewPageComponent } from './sail-request-view-page/sail-request-view-page.component';
@@ -15,15 +15,15 @@ const routes: Routes = [
     component: SailRequestListPageComponent,
   },
   {
-    path: SUB_ROUTES.CREATE_SAIL_REQUEST,
+    path: SubRoutes.CREATE_SAIL_REQUEST,
     component: SailRequestEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.EDIT_SAIL_REQUEST}/:id`,
+    path: `${SubRoutes.EDIT_SAIL_REQUEST}/:id`,
     component: SailRequestEditPageComponent,
   },
   {
-    path: `${SUB_ROUTES.VIEW_SAIL_REQUEST}/:id`,
+    path: `${SubRoutes.VIEW_SAIL_REQUEST}/:id`,
     component: SailRequestViewPageComponent,
   },
 ];

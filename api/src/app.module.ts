@@ -35,6 +35,7 @@ import { SailRequestInterestModule } from './sail-request-interest/sail-request-
 import { AchievementModule } from './achievement/achievement.module';
 import { SettingModule } from './setting/setting.module';
 import { EmailModule } from './email/email.module';
+import { BoatChecklistModule } from './boat-checklist/boat-checklist.module';
 
 const DB_LOGGIN = [];
 
@@ -84,6 +85,7 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING);
     ScheduleModule.forRoot(),
     AchievementModule,
     AuthModule,
+    BoatChecklistModule,
     BoatInstructionsModule,
     BoatMaintenanceModule,
     BoatModule,

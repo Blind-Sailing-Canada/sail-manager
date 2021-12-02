@@ -31,31 +31,31 @@ export enum SAIL_ACTION_TYPES {
 
 export const sendSailNotification = createAction(
   SAIL_ACTION_TYPES.SEND_SAIL_NOTIFICATION,
-  props<{ sail_id: string, notificationType: string, notificationMessage: string, notify?: boolean }>(),
+  props<{ sail_id: string; notificationType: string; notificationMessage: string; notify?: boolean }>(),
 );
-export const cancelSail = createAction(SAIL_ACTION_TYPES.CANCEL, props<{ id: string, sail: Sail, notify?: boolean }>());
+export const cancelSail = createAction(SAIL_ACTION_TYPES.CANCEL, props<{ id: string; sail: Sail; notify?: boolean }>());
 export const postSailComment = createAction(
-  SAIL_ACTION_TYPES.POST_COMMENT, props<{ sail_id: string, comment: Comment, notify?: boolean }>());
+  SAIL_ACTION_TYPES.POST_COMMENT, props<{ sail_id: string; comment: Comment; notify?: boolean }>());
 export const deleteSailComment = createAction(
-  SAIL_ACTION_TYPES.DELETE_COMMENT, props<{ sail_id: string, commentId: string, notify?: boolean }>());
-export const completeSail = createAction(SAIL_ACTION_TYPES.COMPLETE, props<{ sail: Sail, notify?: boolean }>());
+  SAIL_ACTION_TYPES.DELETE_COMMENT, props<{ sail_id: string; commentId: string; notify?: boolean }>());
+export const completeSail = createAction(SAIL_ACTION_TYPES.COMPLETE, props<{ sail: Sail; notify?: boolean }>());
 export const createSail = createAction(SAIL_ACTION_TYPES.CREATE, props<{ sail: Sail }>());
 export const createSailFromSailRequest = createAction(
-  SAIL_ACTION_TYPES.CREATE_FROM_SAIL_REQUEST, props<{ sail: Sail, sail_request_id: string }>());
-export const startSail = createAction(SAIL_ACTION_TYPES.START, props<{ sail: Sail, notify?: boolean }>());
-export const fetchSail = createAction(SAIL_ACTION_TYPES.FETCH_ONE, props<{ id: string, notify?: boolean }>());
-export const fetchSails = createAction(SAIL_ACTION_TYPES.FETCH_MANY, props<{ notify?: boolean, query?: string }>());
-export const joinSailAsCrew = createAction(SAIL_ACTION_TYPES.JOIN_CREW, props<{ sail_id: string, notify?: boolean }>());
+  SAIL_ACTION_TYPES.CREATE_FROM_SAIL_REQUEST, props<{ sail: Sail; sail_request_id: string }>());
+export const startSail = createAction(SAIL_ACTION_TYPES.START, props<{ sail: Sail; notify?: boolean }>());
+export const fetchSail = createAction(SAIL_ACTION_TYPES.FETCH_ONE, props<{ id: string; notify?: boolean }>());
+export const fetchSails = createAction(SAIL_ACTION_TYPES.FETCH_MANY, props<{ notify?: boolean; query?: string }>());
+export const joinSailAsCrew = createAction(SAIL_ACTION_TYPES.JOIN_CREW, props<{ sail_id: string; notify?: boolean }>());
 export const joinSailAsPassenger = createAction(
-  SAIL_ACTION_TYPES.JOIN_PASSENGER, props<{ sail_id: string, notify?: boolean }>());
+  SAIL_ACTION_TYPES.JOIN_PASSENGER, props<{ sail_id: string; notify?: boolean }>());
 export const joinSailAsSkipper = createAction(
-  SAIL_ACTION_TYPES.JOIN_SKIPPER, props<{ sail_id: string, notify?: boolean }>());
-export const leaveSail = createAction(SAIL_ACTION_TYPES.LEAVE_SAIL, props<{ sail_id: string, notify?: boolean }>());
-export const putSail = createAction(SAIL_ACTION_TYPES.PUT_ONE, props<{ id: string, sail: Sail }>());
+  SAIL_ACTION_TYPES.JOIN_SKIPPER, props<{ sail_id: string; notify?: boolean }>());
+export const leaveSail = createAction(SAIL_ACTION_TYPES.LEAVE_SAIL, props<{ sail_id: string; notify?: boolean }>());
+export const putSail = createAction(SAIL_ACTION_TYPES.PUT_ONE, props<{ id: string; sail: Sail }>());
 export const putSails = createAction(SAIL_ACTION_TYPES.PUT_MANY, props<{ sails: Sail[] }>());
 export const putSailSearchResults = createAction(SAIL_ACTION_TYPES.PUT_SEARCH_RESULTS, props<{ sails: Sail[] }>());
-export const searchSails = createAction(SAIL_ACTION_TYPES.SEARCH, props<{ notify?: boolean, query?: any }>());
+export const searchSails = createAction(SAIL_ACTION_TYPES.SEARCH, props<{ notify?: boolean; query?: any }>());
 export const resetSails = createAction(SAIL_ACTION_TYPES.RESET);
 export const updateSail = createAction(
   SAIL_ACTION_TYPES.UPDATE_ONE,
-  props<{ id: string, sail: Sail, updateActions?: TypedAction<any>[] }>());
+  props<{ id: string; sail: Sail; updateActions?: TypedAction<any>[] }>());

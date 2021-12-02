@@ -5,95 +5,100 @@ import {
 } from '@angular/router';
 import { AdminGuard } from './auth/admin.guard';
 import { AuthGuard } from './auth/auth.guard';
-import { ROOT_ROUTES } from './routes/routes';
+import { RootRoutes } from './routes/routes';
 
 const routes: Routes = [
   {
-    path: ROOT_ROUTES.LOGIN,
+    path: RootRoutes.LOGIN,
     loadChildren: () => import('./pages/login/login.module').then(mod => mod.LoginModule)
   },
   {
-    path: ROOT_ROUTES.ERROR,
+    path: RootRoutes.ERROR,
     loadChildren: () => import('./pages/error/error.module').then(mod => mod.ErrorModule)
   },
   {
-    path: ROOT_ROUTES.ACCOUNT_REVIEW,
+    path: RootRoutes.ACCOUNT_REVIEW,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/account-review/account-review.module').then(mod => mod.AccountReviewModule)
   },
   {
-    path: ROOT_ROUTES.SAIL_REQUESTS,
+    path: RootRoutes.SAIL_REQUESTS,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/sail-request/sail-request.module').then(mod => mod.SailRequestModule)
   },
   {
-    path: ROOT_ROUTES.DASHBOARD,
+    path: RootRoutes.DASHBOARD,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/dashboard/dashboard.module').then(mod => mod.DashboardModule)
   },
   {
-    path: ROOT_ROUTES.MAINTENANCE,
+    path: RootRoutes.MAINTENANCE,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/maintenance/maintenance.module').then(mod => mod.MaintenanceModule)
   },
   {
-    path: ROOT_ROUTES.PROFILES,
+    path: RootRoutes.PROFILES,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/profile/profile.module').then(mod => mod.ProfileModule),
   },
   {
-    path: ROOT_ROUTES.BOATS,
+    path: RootRoutes.BOATS,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/boat/boat.module').then(mod => mod.BoatModule)
   },
   {
-    path: ROOT_ROUTES.BOAT_INSTRUCTIONS,
+    path: RootRoutes.BOAT_CHECKLIST,
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/boat-checklist/boat-checklist.module').then(mod => mod.BoatChecklistModule)
+  },
+  {
+    path: RootRoutes.BOAT_INSTRUCTIONS,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/boat-instructions/boat-instructions.module').then(mod => mod.BoatInstructionsModule)
   },
   {
-    path: ROOT_ROUTES.SAILS,
+    path: RootRoutes.SAILS,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/sail/sail.module').then(mod => mod.SailModule)
   },
   {
-    path: ROOT_ROUTES.SAIL_CHECKLISTS,
+    path: RootRoutes.SAIL_CHECKLISTS,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/sail-checklist/sail-checklist.module').then(mod => mod.SailChecklistModule)
   },
   {
-    path: ROOT_ROUTES.REQUIRED_ACTIONS,
+    path: RootRoutes.REQUIRED_ACTIONS,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/required-actions/required-actions.module').then(mod => mod.RequiredActionsModule)
   },
   {
-    path: ROOT_ROUTES.FEEDBACK,
+    path: RootRoutes.FEEDBACK,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/feedback/feedback.module').then(mod => mod.FeedbackModule)
   },
   {
-    path: ROOT_ROUTES.ADMIN,
+    path: RootRoutes.ADMIN,
     canActivate: [AuthGuard, AdminGuard],
     loadChildren: () => import('./pages/admin/admin.module').then(mod => mod.AdminModule)
   },
   {
-    path: ROOT_ROUTES.CHALLENGES,
+    path: RootRoutes.CHALLENGES,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/challenge/challenge.module').then(mod => mod.ChallengeModule)
   },
   {
-    path: ROOT_ROUTES.CLINICS,
+    path: RootRoutes.CLINICS,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/clinic/clinic.module').then(mod => mod.ClinicModule)
   },
   {
-    path: ROOT_ROUTES.HELP,
+    path: RootRoutes.HELP,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/help/help.module').then(mod => mod.HelpModule)
   },
   {
     path: '',
-    redirectTo: ROOT_ROUTES.DASHBOARD,
+    redirectTo: RootRoutes.DASHBOARD,
     pathMatch: 'full'
   }
 ];
