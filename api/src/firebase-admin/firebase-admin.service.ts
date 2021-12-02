@@ -1,12 +1,7 @@
 import * as admin from 'firebase-admin';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  Bucket,
-  File,
-  GetFilesOptions,
-  GetFilesResponse
-} from '@google-cloud/storage';
+import { GetFilesOptions } from '@google-cloud/storage';
 import {
   Injectable, NotFoundException
 } from '@nestjs/common';
@@ -61,18 +56,18 @@ export class FirebaseAdminService {
 
   public listFiles(query?: GetFilesOptions): Promise<string[]> {
     const storage: admin.storage.Storage = this.firebaseAdmin.storage();
-    const bucket: Bucket = storage.bucket();
+    const bucket = storage.bucket();
 
     return bucket
       .getFiles(query)
-      .then((response: GetFilesResponse) => response[0])
-      .then((files: File[]) => files.map(file => file.name));
+      .then((response) => response[0])
+      .then((files) => files.map(file => file.name));
   }
 
   public async getFileUrl(filePath: string): Promise<string> {
     const storage: admin.storage.Storage = this.firebaseAdmin.storage();
-    const bucket: Bucket = storage.bucket();
-    const file: File = bucket.file(filePath);
+    const bucket = storage.bucket();
+    const file = bucket.file(filePath);
 
     const exists = await file.exists().then(exists => exists[0]);
 
@@ -91,7 +86,7 @@ export class FirebaseAdminService {
 
   public async uploadCleanFile(prefix: string, filenameFolder: string, filename: string, contentType: string, stream) {
     const storage: admin.storage.Storage = this.firebaseAdmin.storage();
-    const bucket: Bucket = storage.bucket();
+    const bucket = storage.bucket();
 
     await bucket.deleteFiles({
       force: true,
@@ -103,9 +98,9 @@ export class FirebaseAdminService {
 
   public async uploadFile(destination: string, contentType: string, stream): Promise<string> {
     const storage: admin.storage.Storage = this.firebaseAdmin.storage();
-    const bucket: Bucket = storage.bucket();
+    const bucket = storage.bucket();
 
-    const file: File = bucket.file(destination);
+    const file = bucket.file(destination);
     const uuid = uuidv4();
 
     return file
@@ -134,7 +129,7 @@ export class FirebaseAdminService {
     const prefix = destination.substring(0, lastSlash).replace(/^cdn\/files\//, '');
 
     const storage: admin.storage.Storage = this.firebaseAdmin.storage();
-    const bucket: Bucket = storage.bucket();
+    const bucket = storage.bucket();
 
     return bucket
       .deleteFiles({
