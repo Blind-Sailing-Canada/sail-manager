@@ -93,7 +93,7 @@ export class BoatMaintenanceController {
       user.access.access[UserAccessFields.DeletePictures] ||
       user.access.access[UserAccessFields.CreateBoat] ||
       user.access.access[UserAccessFields.EditBoat] ||
-      user.access.access[UserAccessFields.EditMaintentanceRequest]
+      user.access.access[UserAccessFields.EditMaintenanceRequest]
     ) {
       shouldDelete = true;
     } else {
@@ -137,7 +137,7 @@ export class BoatMaintenanceController {
       user.roles.includes(ProfileRole.Admin) ||
       user.access.access[UserAccessFields.CreateBoat] ||
       user.access.access[UserAccessFields.EditBoat] ||
-      user.access.access[UserAccessFields.EditMaintentanceRequest]
+      user.access.access[UserAccessFields.EditMaintenanceRequest]
     ) {
       await CommentEntity.delete(commentId);
     } else {

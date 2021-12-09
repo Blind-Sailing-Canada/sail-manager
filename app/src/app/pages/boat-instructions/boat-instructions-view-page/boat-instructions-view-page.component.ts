@@ -18,11 +18,11 @@ export class BoatInstructionsViewPageComponent extends BoatInstructionsBasePageC
     this.rearrange = !this.rearrange;
   }
 
-  public departureReorderd(): void {
+  public departureReordered(): void {
     this.departureChanged = true;
   }
 
-  public arrivalReorderd(): void {
+  public arrivalReordered(): void {
     this.arrivalChanged = true;
   }
 

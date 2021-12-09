@@ -38,7 +38,6 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
   public maintenanceId: string;
   public maintenanceStatus = BoatMaintenanceStatus;
   public readonly maintenancePictureInputId = 'maintenancePictureInput';
-  protected uploadProcentage: number;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -117,7 +116,7 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
   }
 
   public get title(): string {
-    return this.creatingNewMaintenance ? 'New Maintenance Request Form' : 'Edit Maintenace Request Form';
+    return this.creatingNewMaintenance ? 'New Maintenance Request Form' : 'Edit Maintenance Request Form';
   }
 
   public submitForm(): void {

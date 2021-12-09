@@ -10,9 +10,9 @@ export class MomentService {
       return '';
     }
 
-    const formatedString = new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true });
+    const formattedString = new Date(date).toLocaleTimeString([], { month: 'long', day: '2-digit', year: 'numeric', hour12: true });
 
-    return formatedString;
+    return formattedString;
   }
 
   public describeDate(date: string | Date, short?: boolean): string {
@@ -31,11 +31,11 @@ export class MomentService {
       return '';
     }
 
-    const formatedValue = new Date(date)
+    const formattedValue = new Date(date)
       .toLocaleString('en-us', { year: 'numeric', month: '2-digit', day: '2-digit' })
       .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2');
 
-    return formatedValue;
+    return formattedValue;
   }
 
   public humanizeDateWithTime(date: string | Date, short: boolean): string {

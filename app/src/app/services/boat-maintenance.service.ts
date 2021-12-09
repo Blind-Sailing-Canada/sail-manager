@@ -45,7 +45,7 @@ export class BoatMaintenanceService {
     return this.http.patch<BoatMaintenance>(`${this.API_URL}/${id}`, maintenance);
   }
 
-  createMaintenaceRequest(maintenance: Partial<BoatMaintenance>): Observable<BoatMaintenance> {
+  createMaintenanceRequest(maintenance: Partial<BoatMaintenance>): Observable<BoatMaintenance> {
     return this.http.post<BoatMaintenance>(this.API_URL, maintenance);
   }
 

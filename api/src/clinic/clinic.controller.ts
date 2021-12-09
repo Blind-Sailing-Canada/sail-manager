@@ -43,7 +43,7 @@ export class ClinicController {
 
   constructor(
     public service: ClinicService,
-    @InjectQueue('clinic') private readonly cliniQueue: Queue) { }
+    @InjectQueue('clinic') private readonly clinicQueue: Queue) { }
 
   @Patch('/:clinic_id')
   async update(@Param('clinic_id') id: string, @Body() body) {
@@ -71,7 +71,7 @@ export class ClinicController {
 
       await newAttendant
         .save()
-        .then(() => this.cliniQueue.add('new-attendee', {
+        .then(() => this.clinicQueue.add('new-attendee', {
           clinic_id,
           profile_id,
         }));

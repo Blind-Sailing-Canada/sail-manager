@@ -17,7 +17,7 @@ export class BoatMaintenanceEmail {
       content: `
         <html>
           <body>
-            <h2>A new maintenace request was submitted</h2>
+            <h2>A new maintenance request was submitted</h2>
             <div>
               <label>Boat: </label> <span>${report.boat.name}</span>
             </div>
@@ -50,7 +50,7 @@ export class BoatMaintenanceEmail {
       content: `
         <html>
           <body>
-            <h2>Maintenace request was updated</h2>
+            <h2>Maintenance request was updated</h2>
             <div>
               <label>Boat: </label> <span>${report.boat.name}</span>
             </div>

@@ -122,17 +122,17 @@ app
     const destination = req.originalUrl.substring(12);
     const authorizationHeader = req.headers['authorization'];
 
-    const tmpfilelocation = `${tmpdir}/${req.files.file.name}`;
+    const tmpfileLocation = `${tmpdir}/${req.files.file.name}`;
 
-    console.log('tmpfilelocation', tmpfilelocation)
+    console.log('tmpfileLocation', tmpfileLocation)
 
-    await req.files.file.mv(tmpfilelocation).catch((error) =>{
+    await req.files.file.mv(tmpfileLocation).catch((error) =>{
       console.error(error);
       res.status(500).send('failed to save file')
     });
 
     sendFile(
-      tmpfilelocation,
+      tmpfileLocation,
       destination,
       authorizationHeader,
     )
@@ -145,7 +145,7 @@ app
         res.status(err.statusCode || 500).send(err.message);
       }).finally(() => {
 
-        fs.unlink(tmpfilelocation, () => console.log(`deleted uploaded file ${tmpfilelocation}`));
+        fs.unlink(tmpfileLocation, () => console.log(`deleted uploaded file ${tmpfileLocation}`));
       });
   })
   // PROXY API CALLS

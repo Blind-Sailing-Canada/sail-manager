@@ -3,7 +3,7 @@ import { ProfileLink } from '../../../../api/src/types/user/profile-link';
 
 export interface LinkAccountsDialogData {
   account: Profile;
-  fetchAccounts: (anemOrEmail: string) => void;
+  fetchAccounts: (nameOrEmail: string) => void;
   accounts: Profile[];
   linkAccounts: (profileA: Profile, profileB: Profile, linkType: ProfileLink) => void;
 }

@@ -11,6 +11,7 @@ import {
   Router,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
 import {
   maintenanceRoute,
   sailChecklistsRoute,
@@ -34,7 +35,7 @@ export class DeparturePageComponent extends SailChecklistBasePageComponent {
     @Inject(MatDialog) dialog: MatDialog,
   ) {
     super(store, route, router, fb, dialog);
-    this.checklist_type = 'before';
+    this.checklist_type = SailChecklistType.Before;
 
     if (fb) {
       this.buildForm();

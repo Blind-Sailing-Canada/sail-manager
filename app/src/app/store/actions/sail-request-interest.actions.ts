@@ -4,8 +4,8 @@ import {
 } from '@ngrx/store';
 
 export enum SAIL_REQUEST_INTEREST_ACTION_TYPES {
-  INTERESTED = '[Sail Request Intereset] Interested',
-  UNINTERESTED = '[Sail Request Intereset] Uninterested',
+  INTERESTED = '[Sail Request Interested] Interested',
+  UNINTERESTED = '[Sail Request Interested] Uninterested',
   RESET = 'Reset',
 }
 

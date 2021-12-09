@@ -103,15 +103,15 @@
     </fieldset>
     <mat-list-item *ngIf="!manifestControls.length">No sailors on this sail.</mat-list-item>
   </div>
-  <div *ngIf="occupanyExceeded">
-    <span>Sail max occupany exceeded!</span>
+  <div *ngIf="occupancyExceeded">
+    <span>Sail max occupancy exceeded!</span>
   </div>
 </ng-template>
 
 <ng-template #CARD_FOOTER>
   <mat-card-actions>
     <button
-      *ngIf="shoulEnableSubmitButton"
+      *ngIf="shouldEnableSubmitButton"
       mat-raised-button
       (click)="submitForm()"
     >Submit</button>

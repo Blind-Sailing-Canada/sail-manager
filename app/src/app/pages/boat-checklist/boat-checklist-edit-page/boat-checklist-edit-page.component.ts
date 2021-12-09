@@ -69,7 +69,6 @@ export class BoatChecklistEditPageComponent extends BasePageComponent implements
       this.boatChecklistService.update(this.boat.checklist.id, {
         items: formData,
       }).pipe(take(1)).subscribe((checklist) => {
-        console.log('created', checklist);
         this.dispatchAction(finishLoading());
         this.fetchBoat(this.boat_id);
       });
@@ -78,7 +77,6 @@ export class BoatChecklistEditPageComponent extends BasePageComponent implements
         boatId: this.boat_id,
         items: formData,
       }).pipe(take(1)).subscribe((checklist) => {
-        console.log('created', checklist);
         this.dispatchAction(finishLoading());
         this.fetchBoat(this.boat_id);
       });
@@ -121,8 +119,6 @@ export class BoatChecklistEditPageComponent extends BasePageComponent implements
       type: this.fb.control(BoatChecklistItemType.Select),
       options: this.fb.control(item?.options, Validators.required)
     }));
-
-    console.log(this.formItems);
   }
 
   public addInputItem(item?: BoatChecklistItem): void {

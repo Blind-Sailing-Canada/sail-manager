@@ -13,7 +13,7 @@ export class BaseQueueProcessor {
   }
 
   @OnQueueError()
-  onQueueErrror(error: Error) {
+  onQueueError(error: Error) {
     this.logger.log('OnQueueError HANDLER');
     Sentry.captureException(error);
   }

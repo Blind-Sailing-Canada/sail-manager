@@ -117,7 +117,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     }
     return this.sail.status === SailStatus.Cancelled;
   }
-  public get viewSailchecklistRouteLink(): string {
+  public get viewSailChecklistRouteLink(): string {
     return viewSailChecklistRoute(this.sail.id);
   }
 

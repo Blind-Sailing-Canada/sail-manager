@@ -146,7 +146,7 @@ export class GoogleCalendarService {
         calendarId: CALENDAR_ID,
         eventId: sail.calendar_id,
       })
-      .then(reponse => reponse.data);
+      .then(response => response.data);
 
     const currentAttendees = existingEvent.attendees;
 
@@ -187,7 +187,7 @@ export class GoogleCalendarService {
         calendarId: CALENDAR_ID,
         eventId: sail.calendar_id,
       })
-      .then(reponse => reponse.data);
+      .then(response => response.data);
 
     const currentAttendees = existingEvent.attendees;
 
@@ -219,7 +219,7 @@ export class GoogleCalendarService {
     }
 
     const skipperName = sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.person_name || 'n/a';
-    const crewnames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Crew).map(sailor => sailor.person_name);
+    const crewNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Crew).map(sailor => sailor.person_name);
     const sailorNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Sailor).map(sailor => sailor.person_name);
 
     const event = {
@@ -238,7 +238,7 @@ export class GoogleCalendarService {
             <div><label>End: </label>${toLocalDate(sail.end_at)}</div>
             <div><label>Boat: ${sail.boat.name} </label></div>
             <div><label>Skipper: </label>${skipperName}</div>
-            <div><label>Crew: </label>${crewnames.join(', ') || '-'}</div>
+            <div><label>Crew: </label>${crewNames.join(', ') || '-'}</div>
             <p><label>Sailors: </label> ${sailorNames.join(', ') || '-'}</p>
             <div><a href="${DOMAIN}/sails/view/${sail.id}">View sail</a></div>
           </body>

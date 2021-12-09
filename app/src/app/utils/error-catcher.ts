@@ -4,7 +4,7 @@ import { SnackType } from '../models/snack-state.interface';
 import { putSnack } from '../store/actions/snack.actions';
 
 export const errorCatcher = (userFriendlyMessage: string, actionsToDispatch?: Action[], actionsToDispatchWithError?: any) => (error) => {
-  console.error('Error catcher caught and error: VVV ERROR DIRED BELOW VVV');
+  console.error('Error catcher caught and error: VVV ERROR BELOW VVV');
   console.dir(error);
 
   return of(

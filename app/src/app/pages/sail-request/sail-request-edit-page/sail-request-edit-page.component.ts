@@ -139,7 +139,7 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
     return !!this.sail_request_id;
   }
 
-  public get shouldShowCancellButton() {
+  public get shouldShowCancelButton() {
     if (this.sailRequest.status !== SailRequestStatus.New) {
       return false;
     }

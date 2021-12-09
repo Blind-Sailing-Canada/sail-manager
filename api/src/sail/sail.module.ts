@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { EmailModule } from '../email/email.module';
 import { FirebaseAdminModule } from '../firebase-admin/firebase-admin.module';
-import { GoogleApiModule } from '../google-api/google-api.modeul';
+import { GoogleApiModule } from '../google-api/google-api.module';
 import { SailActionsController } from './sail-actions.controller';
 import { SailCategoryController } from './sail-category.controller';
 import { SailCommentsController } from './sail-comments.controller';

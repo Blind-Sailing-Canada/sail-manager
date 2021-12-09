@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { EmailModule } from '../email/email.module';
-import { GoogleApiModule } from '../google-api/google-api.modeul';
+import { GoogleApiModule } from '../google-api/google-api.module';
 import { ClinicController } from './clinic.controller';
 import { ClinicEntity } from './clinic.entity';
 import { ClinicProcessor } from './clinic.processor';

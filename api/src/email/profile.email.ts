@@ -8,11 +8,11 @@ export class ProfileEmail {
 
   newProfileEmail(profile: Profile): EmailInfo {
     const emailInfo: EmailInfo = {
-      subject: `COMPANY_NAME_SHORT_HEADER: New profile (${profile.name}) is awaiting aproval.`,
+      subject: `COMPANY_NAME_SHORT_HEADER: New profile (${profile.name}) is awaiting approval.`,
       content:  `
         <html>
           <body>
-            <h2>New profile ${profile.name} (${profile.email}) is awaiting aproval.</h2>
+            <h2>New profile ${profile.name} (${profile.email}) is awaiting approval.</h2>
             <a href="${DOMAIN}/admin">Review profile</a>
           </body>
         </html>

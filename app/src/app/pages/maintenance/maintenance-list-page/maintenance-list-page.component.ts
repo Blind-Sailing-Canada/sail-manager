@@ -54,7 +54,7 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
       return '';
     }
 
-    return this.getBoat(this.boat_id).name;
+    return this.getBoat(this.boat_id)?.name;
   }
   public fetchRecentNewRequests(boat_id: string, notify: boolean = false): void {
     if (boat_id) {

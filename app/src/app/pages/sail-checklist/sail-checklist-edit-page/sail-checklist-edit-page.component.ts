@@ -8,6 +8,7 @@ import {
   Router,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
 import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail-checklist-base-page';
 
 @Component({
@@ -25,7 +26,7 @@ export class SailChecklistEditPageComponent extends SailChecklistBasePageCompone
   ) {
     super(store, route, router, fb);
 
-    this.checklist_type = 'both';
+    this.checklist_type = SailChecklistType.Both;
 
     if (fb) {
       this.buildForm();

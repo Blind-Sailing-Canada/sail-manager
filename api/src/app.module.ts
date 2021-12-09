@@ -37,17 +37,17 @@ import { SettingModule } from './setting/setting.module';
 import { EmailModule } from './email/email.module';
 import { BoatChecklistModule } from './boat-checklist/boat-checklist.module';
 
-const DB_LOGGIN = [];
+const DB_LOGGING = [];
 
 if (process.env.NODE_ENV !== 'prod'){
-  DB_LOGGIN.push('query');
-  DB_LOGGIN.push('error');
+  DB_LOGGING.push('query');
+  DB_LOGGING.push('error');
 }
 
 const DB_CONNECTION_META: ConnectionOptions = {
   type: process.env.DB_TYPE as any,
   url: process.env.DB_CONNECTION_STRING,
-  logging: DB_LOGGIN,
+  logging: DB_LOGGING,
   entities: [
     // '**/*.entity.ts', // when debugging
     '**/*.entity.js',

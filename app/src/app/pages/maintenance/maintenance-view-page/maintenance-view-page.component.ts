@@ -175,7 +175,7 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
   }
 
   public get shouldEnableEditButton(): boolean {
-    return !!this.user.access[UserAccessFields.EditMaintentanceRequest];
+    return !!this.user.access[UserAccessFields.EditMaintenanceRequest];
   }
 
   public get shouldEnableResolveButton(): boolean {

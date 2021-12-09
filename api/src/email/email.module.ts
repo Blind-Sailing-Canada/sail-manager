@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AchievementEmail } from './achiement.email';
+import { AchievementEmail } from './achievement.email';
 import { BoatMaintenanceEmail } from './boat-maintenance.email';
 import { ChallengeEmail } from './challenge.email';
 import { ClinicEmail } from './clinic.email';

@@ -28,7 +28,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class SailChecklistBasePageComponent extends BasePageComponent implements OnInit {
   public checklistForm: FormGroup;
-  public checklist_type?: string;
+  public checklist_type?: SailChecklistType;
 
   constructor(
     store: Store<any>,
@@ -145,9 +145,7 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
         return accumulator;
       }, {});
 
-    console.log('boatChecklist', JSON.stringify(boatChecklist, null, 2));
-
-    if (this.checklist_type === 'before' || this.checklist_type === 'both') {
+    if (this.checklist_type === SailChecklistType.Before || this.checklist_type === SailChecklistType.Both) {
       beforeForm = {
         before: this.fb.group({
           checklist: this.fb.group(boatChecklist),
@@ -162,7 +160,7 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
       };
     }
 
-    if (this.checklist_type === 'after' || this.checklist_type === 'both') {
+    if (this.checklist_type === SailChecklistType.After || this.checklist_type === SailChecklistType.Both) {
       afterForm = {
         after: this.fb.group({
           checklist: this.fb.group(boatChecklist),
@@ -179,31 +177,31 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
       ...afterForm,
     });
 
-    console.log('this.checklistForm', JSON.stringify(this.checklistForm.getRawValue(), null, 2));
-
-    this.checklistForm.valueChanges.subscribe((value) => {
-      console.log('change', value);
-    });
-
   }
 
   private updateForm(sail: Sail): void {
-    console.log('updating form');
-    const boatChecklist = this.fb.group((this.sail?.boat?.checklist?.items || [])
-      .reduce((accumulator, item) => {
-        accumulator[item.key] = this.fb.control(item.defaultValue);
-        return accumulator;
-      }, {}));
 
-    if (this.checklist_type === 'before' || this.checklist_type === 'both') {
-      (this.checklistForm.controls.before as FormGroup).setControl('checklist', boatChecklist);
+    if (this.checklist_type === SailChecklistType.Before || this.checklist_type === SailChecklistType.Both) {
+      const boatChecklistBefore = this.fb.group((this.sail?.boat?.checklist?.items || [])
+        .reduce((accumulator, item) => {
+          accumulator[item.key] = this.fb.control(item.defaultValue);
+          return accumulator;
+        }, {}));
+
+      (this.checklistForm.controls.before as FormGroup).setControl('checklist', boatChecklistBefore);
 
       const before = sail.checklists.find(checklist => checklist.checklist_type === SailChecklistType.Before);
       this.checklistForm.controls.before.patchValue(before);
     }
 
-    if (this.checklist_type === 'after' || this.checklist_type === 'both') {
-      (this.checklistForm.controls.after as FormGroup).setControl('checklist', boatChecklist);
+    if (this.checklist_type === SailChecklistType.After || this.checklist_type === SailChecklistType.Both) {
+      const boatChecklistAfter = this.fb.group((this.sail?.boat?.checklist?.items || [])
+        .reduce((accumulator, item) => {
+          accumulator[item.key] = this.fb.control(item.defaultValue);
+          return accumulator;
+        }, {}));
+
+      (this.checklistForm.controls.after as FormGroup).setControl('checklist', boatChecklistAfter);
 
       const after = sail.checklists.find(checklist => checklist.checklist_type === SailChecklistType.After);
       this.checklistForm.controls.after.patchValue(after);
@@ -211,21 +209,22 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
 
     const formManifest = this.checklistForm.controls.peopleManifest as FormArray;
 
-    formManifest.clear();
+    if (formManifest) {
+      formManifest.clear();
 
-    sail.manifest.forEach(sailor => formManifest.push(this.fb.group({
-      guest_ofName: this.fb.control(sailor.guest_of?.name),
-      person_name: this.fb.control(sailor.person_name),
-      sailor_role: this.fb.control(sailor.sailor_role),
-      attended: this.fb.control(sailor.attended || false),
-      profile: this.fb.control(sailor.profile),
-      id: this.fb.control(sailor.id),
-    })));
+      sail.manifest.forEach(sailor => formManifest.push(this.fb.group({
+        guest_ofName: this.fb.control(sailor.guest_of?.name),
+        person_name: this.fb.control(sailor.person_name),
+        sailor_role: this.fb.control(sailor.sailor_role),
+        attended: this.fb.control(sailor.attended || false),
+        profile: this.fb.control(sailor.profile),
+        id: this.fb.control(sailor.id),
+      })));
+    }
 
     this.checklistForm.markAsUntouched();
     this.checklistForm.markAsPristine();
 
-    console.log('updated checklistForm', JSON.stringify(this.checklistForm.getRawValue(), null, 2));
   }
 
 }

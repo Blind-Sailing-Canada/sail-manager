@@ -57,7 +57,8 @@
           height="50px"
           width="50px"
         >
-        {{clinic.name}}</td>
+        {{clinic.name}}
+      </td>
       <td
         (click)="showProfileDialog(clinic.instructor)"
         *ngIf="clinic.instructor"
@@ -89,7 +90,7 @@
   <h3>Enrollment</h3>
   <mat-list>
     <mat-list-item *ngFor="let student of clinic?.attendance">
-      <div class="enrollment-list-item-conent">
+      <div class="enrollment-list-item-content">
         <app-profile-bullet
           class="clickable"
           (click)="showProfileDialog(student.attendant)"

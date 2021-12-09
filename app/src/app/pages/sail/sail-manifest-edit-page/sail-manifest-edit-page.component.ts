@@ -59,7 +59,6 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     this.getSail(this.sail_id);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
       if (this.sail) {
-        console.log('updating form', this.sail);
         this.updateForm(this.sail);
       }
     });
@@ -104,9 +103,6 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   }
 
   public addGuest(name: string, guest_of_id: string): void {
-    console.log(name);
-    console.log(guest_of_id);
-
     this.addSailor({ name }, SailorRole.Guest, guest_of_id);
   }
 
@@ -177,11 +173,11 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
       });
   }
 
-  public get shoulEnableSubmitButton(): boolean {
-    return this.manifestForm.dirty && !this.occupanyExceeded;
+  public get shouldEnableSubmitButton(): boolean {
+    return this.manifestForm.dirty && !this.occupancyExceeded;
   }
 
-  public get occupanyExceeded(): boolean {
+  public get occupancyExceeded(): boolean {
     const manifest = this.manifestForm.getRawValue().manifest as SailManifest[];
 
     return manifest.length > this.sail.max_occupancy;

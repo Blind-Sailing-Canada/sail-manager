@@ -31,7 +31,7 @@ export enum STORE_SLICES {
   FEEDBACKS = 'feedbacks',
   FUTURE_SAILS = 'futureSails',
   INSTRUCTIONS = 'instructions',
-  IN_PROGRESS_SAILS = 'inProgessSails',
+  IN_PROGRESS_SAILS = 'inProgressSails',
   LOGIN = 'login',
   PAST_SAILS = 'pastSails',
   PROFILES = 'profiles',

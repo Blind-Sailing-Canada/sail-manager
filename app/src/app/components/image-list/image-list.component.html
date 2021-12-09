@@ -19,7 +19,7 @@
     <div *ngIf="allowDelete && canDelete(picture)">
       <button
         (click)="deleteClick.emit(picture)"
-        aria-lael="Click to delete this picture"
+        aria-label="Click to delete this picture"
         mat-raised-button
       >Delete</button>
     </div>
@@ -30,6 +30,9 @@
     >
       <label>by: </label> {{picture.posted_by.name}}
     </div>
-    <pre *ngIf="picture.description" tabindex="0">{{picture.description}}</pre>
+    <pre
+      *ngIf="picture.description"
+      tabindex="0"
+    >{{picture.description}}</pre>
   </div>
 </div>

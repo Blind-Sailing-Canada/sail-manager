@@ -65,7 +65,7 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
     return this.maintenanceResolveForm.dirty && this.maintenanceResolveForm.valid;
   }
 
-  public submitMaintenaceResolveForm(): void {
+  public submitMaintenanceResolveForm(): void {
     const maintenance: Partial<BoatMaintenance> = {
       service_details: this.maintenanceResolveForm.controls.service_details.value.trim(),
       serviced_at: new Date(),

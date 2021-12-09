@@ -93,7 +93,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
           const blob = new Blob([data], { type: 'text/csv' });
           const date = new Date();
 
-          const fileName = `bsac-sail-requests-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.csv`;
+          const fileName = `sail-requests-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.csv`;
 
           const link = document.createElement('a');
 

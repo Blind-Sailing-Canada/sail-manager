@@ -168,7 +168,7 @@ export class SailEffects {
           .joinAsPassenger(action.sail_id)
           .pipe(
             mergeMap(sail => of(
-              putSnack({ snack: { type: SnackType.INFO, message: 'You joined the sail as a passanger!' } }),
+              putSnack({ snack: { type: SnackType.INFO, message: 'You joined the sail as a passenger!' } }),
               putSail({ sail, id: action.sail_id })
             )),
             catchError(errorCatcher('Failed to join sail as passenger'))

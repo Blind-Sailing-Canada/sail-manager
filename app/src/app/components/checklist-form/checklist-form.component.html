@@ -1,7 +1,6 @@
 <form [formGroup]="form">
-
   <ng-container formGroupName="checklist">
-    <ng-container *ngFor="let item of boatChecklist.items">
+    <ng-container *ngFor="let item of boatChecklist?.items">
       <ng-container [ngSwitch]="item.type">
         <app-form-text-input
           *ngSwitchCase="BoatChecklistItemType.Input"

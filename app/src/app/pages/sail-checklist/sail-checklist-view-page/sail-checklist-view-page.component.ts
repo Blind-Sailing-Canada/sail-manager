@@ -15,7 +15,6 @@ import {
   arrivalSailChecklistRoute,
   departureSailChecklistRoute,
   editSailChecklistRoute,
-  viewSailPeopleManifestRoute,
 } from '../../../routes/routes';
 import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail-checklist-base-page';
 
@@ -34,20 +33,16 @@ export class SailChecklistViewPageComponent extends SailChecklistBasePageCompone
   ) {
     super(store, route, router, undefined, dialog);
   }
-  public get editSailchecklistRouteLink(): string {
+  public get editSailChecklistRouteLink(): string {
     return editSailChecklistRoute(this.sail_id);
   }
 
-  public get departureSailchecklistRouteLink(): string {
+  public get departureSailChecklistRouteLink(): string {
     return departureSailChecklistRoute(this.sail_id);
   }
 
-  public get arrivalSailchecklistRouteLink(): string {
+  public get arrivalSailChecklistRouteLink(): string {
     return arrivalSailChecklistRoute(this.sail_id);
-  }
-
-  public gotToPeopleManifestRouteLink(): void {
-    this.goTo([viewSailPeopleManifestRoute(this.sail_id)]);
   }
 
   public get shouldAllowEdit(): boolean {

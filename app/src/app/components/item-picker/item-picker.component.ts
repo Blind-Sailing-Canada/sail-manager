@@ -54,7 +54,7 @@ export class ItemPickerComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit(): void {
-    const typeahead = fromEvent(this.itemFilter.nativeElement, 'input')
+    const typeAhead = fromEvent(this.itemFilter.nativeElement, 'input')
       .pipe(
         takeWhile(() => this.active),
         map((e: any) => e.target.value),
@@ -63,9 +63,9 @@ export class ItemPickerComponent implements OnChanges, AfterViewInit, OnDestroy 
         switchMap(text => of(text))
       );
 
-    typeahead
-      .subscribe((filt) => {
-        this.filter = filt;
+    typeAhead
+      .subscribe((filter) => {
+        this.filter = filter;
         this.filterItems();
       });
   }

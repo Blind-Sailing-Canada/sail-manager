@@ -33,7 +33,7 @@ export class UserProfileComponent {
     }
   }
 
-  public goToAcheivement(clinicId: string): void {
+  public goToAchievement(clinicId: string): void {
     this.viewClinic.emit(clinicId);
   }
 

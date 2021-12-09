@@ -134,7 +134,7 @@ export class BoatMaintenanceEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.boatMaintenanceService
-            .createMaintenaceRequest(action.maintenance)
+            .createMaintenanceRequest(action.maintenance)
             .pipe(
               mergeMap(maintenance => of(
                 putBoatMaintenance({ maintenance, id: maintenance.id }),

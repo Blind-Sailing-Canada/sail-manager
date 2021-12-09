@@ -76,7 +76,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
           const blob = new Blob([data], { type: 'text/csv' });
           const date = new Date();
 
-          const fileName = `bsac-sails-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.csv`;
+          const fileName = `sails-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.csv`;
 
           const link = document.createElement('a');
 

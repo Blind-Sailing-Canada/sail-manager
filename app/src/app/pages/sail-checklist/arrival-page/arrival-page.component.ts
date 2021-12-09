@@ -8,6 +8,7 @@ import {
   Router,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
 import { createMaintenanceRoute } from '../../../routes/routes';
 import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail-checklist-base-page';
 
@@ -25,7 +26,7 @@ export class ArrivalPageComponent extends SailChecklistBasePageComponent {
     @Inject(FormBuilder) fb: FormBuilder,
   ) {
     super(store, route, router, fb, null);
-    this.checklist_type = 'after';
+    this.checklist_type = SailChecklistType.After;
 
     if (fb) {
       this.buildForm();

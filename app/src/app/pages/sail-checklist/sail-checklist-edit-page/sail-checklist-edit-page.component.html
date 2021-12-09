@@ -72,7 +72,7 @@
     id="stepLabelWeather"
     role="heading"
     tabindex="-1"
-  >Step 2 of 4: Weather (Forcasted and Observed)</h4>
+  >Step 2 of 4: Weather (Forecasted and Observed)</h4>
   <mat-form-field [formGroup]="beforeFormControls">
     <mat-label
       tabindex="-1"
@@ -96,6 +96,7 @@
     aria-level="3"
   >Step 3 of 4: Before Departure</h4>
   <app-checklist-form
+    [boatChecklist]="sail.boat.checklist"
     [form]="beforeFormControls"
     when="Before"
   ></app-checklist-form>
@@ -107,6 +108,7 @@
     aria-level="3"
   >Step 4 of 4: After Arrival</h4>
   <app-checklist-form
+    [boatChecklist]="sail.boat.checklist"
     [form]="afterFormControls"
     when="After"
   ></app-checklist-form>

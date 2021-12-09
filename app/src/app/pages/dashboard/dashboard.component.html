@@ -24,7 +24,7 @@
       <ng-container *ngTemplateOutlet="TemplateMyFutureSails"></ng-container>
       <ng-container *ngTemplateOutlet="TemplateAvailableSails"></ng-container>
       <ng-container *ngTemplateOutlet="TemplateMyPastSails"></ng-container>
-      <ng-container *ngTemplateOutlet="TempalteOtherPastSails"></ng-container>
+      <ng-container *ngTemplateOutlet="TemplateOtherPastSails"></ng-container>
     </mat-accordion>
   </mat-card-content>
 </mat-card>
@@ -195,7 +195,7 @@
   </mat-expansion-panel>
 </ng-template>
 
-<ng-template #TempalteOtherPastSails>
+<ng-template #TemplateOtherPastSails>
   <mat-expansion-panel *ngIf="allPastSails.length > 0">
     <mat-expansion-panel-header>
       <mat-panel-title>

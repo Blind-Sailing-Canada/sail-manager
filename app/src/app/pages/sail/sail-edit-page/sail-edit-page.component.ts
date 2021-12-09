@@ -240,8 +240,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     }
     const dateString = this.sailForm.controls[`${type}`].value as string;
 
-    const formatedDateString = this.momentService.humanizeDateWithTime(dateString, false);
-    return formatedDateString;
+    const formattedDateString = this.momentService.humanizeDateWithTime(dateString, false);
+    return formattedDateString;
   }
 
   public get shouldEnableUpdateButton(): boolean {

@@ -31,16 +31,14 @@
       (click)="clickSail(sail)"
       (keyup.enter)="clickSail(sail)"
       *ngFor="let sail of sails; let i = index"
-      attr.aria-label="Sail {{ i + 1 }} of {{sails.length}}: {{generateSailDiscription(sail)}}"
+      attr.aria-label="Sail {{ i + 1 }} of {{sails.length}}: {{generateSailDescription(sail)}}"
       attr.aria-posinset="{{ i + 1 }}"
       attr.aria-setsize="{{sails.length}}"
       class="clickable"
       role="listitem"
       tabindex="0"
     >
-      <td
-        aria-hidden="true"
-      >
+      <td aria-hidden="true">
         {{sail.start_at | humanDateWithTime:true }}
       </td>
       <td
@@ -49,14 +47,10 @@
       >
         {{sail.name}}
       </td>
-      <td
-        aria-hidden="true"
-      >
+      <td aria-hidden="true">
         {{sail.boat?.name || 'n/a'}}
       </td>
-      <td
-        aria-hidden="true"
-      >
+      <td aria-hidden="true">
         <div
           class="sail-occupancy"
           aria-hidden="true"

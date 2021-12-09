@@ -19,28 +19,22 @@
 <ng-template #controls>
   <a
     *ngIf="shouldAllowEdit"
-    [routerLink]="editSailchecklistRouteLink"
+    [routerLink]="editSailChecklistRouteLink"
     aria-label="Edit entire checklist"
     mat-raised-button
   >Edit</a>
   <a
     *ngIf="shouldAllowEdit"
-    [routerLink]="departureSailchecklistRouteLink"
+    [routerLink]="departureSailChecklistRouteLink"
     aria-label="Edit departure checklist"
     mat-raised-button
   >Departure</a>
   <a
     *ngIf="shouldAllowEdit"
-    [routerLink]="arrivalSailchecklistRouteLink"
+    [routerLink]="arrivalSailChecklistRouteLink"
     aria-label="Edit arrival checklist"
     mat-raised-button
   >Arrival</a>
-  <a
-    (click)="gotToPeopleManifestRouteLink()"
-    *ngIf="shouldAllowEdit"
-    aria-label="View people manifest"
-    mat-raised-button
-  >Manifest</a>
 </ng-template>
 <ng-template #checklistContent>
   <app-checklist-summary

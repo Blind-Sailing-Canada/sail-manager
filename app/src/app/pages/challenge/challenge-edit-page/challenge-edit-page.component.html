@@ -15,7 +15,7 @@
     <ng-container *ngTemplateOutlet="CHALLENGE_START_DATE_TEMPLATE"></ng-container>
     <ng-container *ngTemplateOutlet="CHALLENGE_END_DATE_TEMPLATE"></ng-container>
     <ng-container *ngTemplateOutlet="CHALLENGE_BADGE_TEMPLATE"></ng-container>
-    <ng-container *ngTemplateOutlet="CHALLEGE_STATUS_TEMPLATE"></ng-container>
+    <ng-container *ngTemplateOutlet="CHALLENGE_STATUS_TEMPLATE"></ng-container>
   </mat-card-content>
   <mat-card-footer>
     <mat-card-actions>
@@ -52,7 +52,10 @@
       >
     </mat-form-field>
   </form>
-  <mat-error tabindex="0" *ngFor="let error of (form.pristine ? []: formErrors('name'))">{{error}}</mat-error>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (form.pristine ? []: formErrors('name'))"
+  >{{error}}</mat-error>
 </ng-template>
 
 <ng-template #CHALLENGE_DESCRIPTION_TEMPLATE>
@@ -66,13 +69,16 @@
       <mat-label aria-hidden="true">Challenge description</mat-label>
       <textarea
         formControlName="description"
-        aria-labeledby="step2"
+        aria-labelledby="step2"
         matInput
         title="Challenge description"
       ></textarea>
     </mat-form-field>
   </form>
-  <mat-error tabindex="0" *ngFor="let error of (form.pristine ? []: formErrors('description'))">{{error}}</mat-error>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (form.pristine ? []: formErrors('description'))"
+  >{{error}}</mat-error>
 </ng-template>
 
 <ng-template #CHALLENGE_START_DATE_TEMPLATE>
@@ -120,7 +126,7 @@
       <mat-label aria-hidden="true">Challenge badge</mat-label>
       <textarea
         formControlName="badge"
-        aria-labeledby="step5"
+        aria-labelledby="step5"
         matInput
         title="Challenge badge"
       ></textarea>
@@ -128,7 +134,7 @@
   </form>
 </ng-template>
 
-<ng-template #CHALLEGE_STATUS_TEMPLATE>
+<ng-template #CHALLENGE_STATUS_TEMPLATE>
   <h4
     aria-hidden="true"
     id="step4"

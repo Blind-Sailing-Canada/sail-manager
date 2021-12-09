@@ -193,7 +193,7 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
       this.user.access[UserAccessFields.JudgeChallenge];
   }
 
-  public get userAccompliedChallenge(): boolean {
+  public get userAccomplishedChallenge(): boolean {
     return this
       .challenge
       .participants

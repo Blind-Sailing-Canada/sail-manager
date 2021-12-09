@@ -25,7 +25,7 @@ export class SailListComponent {
     @Inject(MomentService) private momentService: MomentService,
   ) { }
 
-  public generateSailDiscription(sail: Sail): string {
+  public generateSailDescription(sail: Sail): string {
     const duration = this.duration(sail.start_at, sail.end_at);
     const start = this.humanizeDateWithTime(sail.start_at);
     const name = sail.name;

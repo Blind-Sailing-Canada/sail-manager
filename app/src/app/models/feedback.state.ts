@@ -4,11 +4,11 @@ export interface Feedbacks {
   [propName: string]: SailFeedback;
 }
 
-export interface FeedbackssFetching {
+export interface FeedbacksFetching {
   [propName: string]: boolean;
 }
 
 export interface FeedbackState {
-  fetching: FeedbackssFetching;
+  fetching: FeedbacksFetching;
   feedbacks: Feedbacks;
 }

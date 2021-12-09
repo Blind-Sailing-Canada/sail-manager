@@ -31,12 +31,6 @@ export class BoatListComponent {
   constructor(
   ) { }
 
-  public generateBoatDiscription(boat: Boat): string {
-    const description = `test ${boat.name}`;
-
-    return description;
-  }
-
   public clickBoat(boat: Boat) {
     this.clicked.emit(boat);
   }

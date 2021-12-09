@@ -1,5 +1,5 @@
 export enum BoatStatus {
-  HauledOout = 'hauled out',
+  HauledOut = 'hauled out',
   InService = 'in service',
   OutOfService = 'out of service',
 }

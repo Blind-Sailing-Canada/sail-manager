@@ -95,9 +95,9 @@
     </select>
   </mat-form-field>
   <mat-error
-      tabindex="0"
-      *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('boat_id'))"
-    >{{error}}</mat-error>
+    tabindex="0"
+    *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('boat_id'))"
+  >{{error}}</mat-error>
 </ng-template>
 <ng-template #TemplateRequestDetails>
   <h4
@@ -111,7 +111,7 @@
       tabindex="-1"
     >Request details</mat-label>
     <textarea
-      aria-labeledby="step2"
+      aria-labelledby="step2"
       cdkAutosizeMaxRows="10"
       cdkAutosizeMinRows="1"
       cdkTextareaAutosize
@@ -122,9 +122,9 @@
     ></textarea>
   </mat-form-field>
   <mat-error
-      tabindex="0"
-      *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('request_details'))"
-    >{{error}}</mat-error>
+    tabindex="0"
+    *ngFor="let error of (maintenanceForm.pristine ? []: formErrors('request_details'))"
+  >{{error}}</mat-error>
 </ng-template>
 <ng-template #TemplateRequestServiceDetails>
   <h4
@@ -139,7 +139,7 @@
     >Service details (fill out when resolving this request)</mat-label>
     <textarea
       [required]="isServiceDetailsRequired"
-      aria-labeledby="step2"
+      aria-labelledby="step2"
       cdkAutosizeMaxRows="10"
       cdkAutosizeMinRows="1"
       cdkTextareaAutosize

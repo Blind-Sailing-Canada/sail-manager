@@ -362,7 +362,7 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     this.dispatchAction(startChangingAppFont());
     setTimeout(
       () => {
-        this.setFontSizeRecursivly(main, fontSize);
+        this.setFontSizeRecursively(main, fontSize);
         this.dispatchAction(finishChangingAppFont());
       },
       500,
@@ -469,7 +469,7 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     this.goTo([viewProfileRoute(id)]);
   }
 
-  private setFontSizeRecursivly(startFrom: HTMLElement, fontSize: string): void {
+  private setFontSizeRecursively(startFrom: HTMLElement, fontSize: string): void {
     startFrom
       .childNodes
       .forEach((element: HTMLElement) => {
@@ -480,7 +480,7 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
         const newSize = `font-size: ${fontSize} !important;`;
         element.style.cssText += `; ${newSize}`;
 
-        this.setFontSizeRecursivly(element, fontSize);
+        this.setFontSizeRecursively(element, fontSize);
       });
   }
 

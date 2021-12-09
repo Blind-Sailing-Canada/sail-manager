@@ -10,7 +10,7 @@ export enum UserAccessFields {
   EditBoat = 'editBoat',
   EditChallenge = 'editChallenge',
   EditClinic = 'editClinic',
-  EditMaintentanceRequest = 'editMaintenanceRequest',
+  EditMaintenanceRequest = 'editMaintenanceRequest',
   EditSail = 'editSail',
   EditSailRequest = 'editSailRequest',
   EditUserAccess = 'editUserAccess',

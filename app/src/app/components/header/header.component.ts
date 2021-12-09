@@ -24,7 +24,7 @@ import {
 })
 export class HeaderComponent {
   @Input() userProfile: Profile;
-  @Output() logoutListner: EventEmitter<void> = new EventEmitter<void>();
+  @Output() logoutListener: EventEmitter<void> = new EventEmitter<void>();
   public WindowWidth = WINDOW_WIDTH;
 
   constructor(
@@ -33,7 +33,7 @@ export class HeaderComponent {
   ) { }
 
   public logout(): void {
-    this.logoutListner.emit();
+    this.logoutListener.emit();
     this.firebaseService.logout();
   }
 

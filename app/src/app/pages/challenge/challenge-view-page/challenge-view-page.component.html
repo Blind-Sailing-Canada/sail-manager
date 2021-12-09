@@ -34,7 +34,7 @@
   >Edit</a>
   <button
     (click)="openChallengeCompleteDialog(user.profile)"
-    *ngIf="userJoinedChallenge && !userAccompliedChallenge"
+    *ngIf="userJoinedChallenge && !userAccomplishedChallenge"
     mat-raised-button
     title="Click here to when you have accomplished this challenge to submit your results."
   >Accomplished</button>
@@ -46,7 +46,7 @@
   >Join</button>
   <button
     (click)="leaveThisChallenge()"
-    *ngIf="userJoinedChallenge && !userAccompliedChallenge"
+    *ngIf="userJoinedChallenge && !userAccomplishedChallenge"
     mat-raised-button
     title="Click here to leave this challenge."
   >Leave</button>
@@ -161,7 +161,7 @@
         >
           <div
             aria-hidden="true"
-            class="accomplist-by-list-item"
+            class="accomplished-by-list-item"
           >
             <div>
               <app-profile-bullet
@@ -203,7 +203,7 @@
         >
           <div
             aria-hidden="true"
-            class="accomplist-by-list-item"
+            class="accomplished-by-list-item"
           >
             <app-profile-bullet
               (click)="showProfileDialog(participant.participant)"

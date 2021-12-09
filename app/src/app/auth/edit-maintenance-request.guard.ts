@@ -45,7 +45,7 @@ export class EditMaintenanceRequestGuard implements CanActivate {
     const isAdmin = tokenData.roles.includes(ProfileRole.Admin);
     const access = tokenData.access.access || {};
 
-    const hasAccess = access[UserAccessFields.EditMaintentanceRequest];
+    const hasAccess = access[UserAccessFields.EditMaintenanceRequest];
 
     return isAdmin || hasAccess;
 

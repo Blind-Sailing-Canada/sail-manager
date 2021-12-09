@@ -36,7 +36,7 @@ export class ListFilterComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    const typeahead = fromEvent(this.listFilterInput.nativeElement, 'input')
+    const typeAhead = fromEvent(this.listFilterInput.nativeElement, 'input')
       .pipe(
         takeWhile(() => this.active),
         map((event: any) => (event.target.value || '') as string),
@@ -44,7 +44,7 @@ export class ListFilterComponent implements AfterViewInit, OnDestroy {
         map(text => text ? text.trim() : ''),
       );
 
-    typeahead
+      typeAhead
       .subscribe((filterText: string) => {
         this.filter.emit(filterText);
       });

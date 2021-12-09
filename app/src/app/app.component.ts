@@ -34,8 +34,8 @@ export class AppComponent extends BasePageComponent implements OnInit {
 
   private loadingTimer: any;
   private readonly LOADING_TIME = 1000;
-  private readonly SNACK_DEFAULT_TIME = 15000;
-  private readonly SNACK_GREET_TIME = 15000;
+  private readonly SNACK_DEFAULT_TIME = 5000;
+  private readonly SNACK_GREET_TIME = 5000;
   private snackRef;
   private snacks: Snack[] = [];
   private currentFontSize;

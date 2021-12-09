@@ -26,7 +26,7 @@ export class MaintenanceListComponent {
     @Inject(MomentService) private momentService: MomentService
   ) { }
 
-  public generateRequestDiscription(request: BoatMaintenance): string {
+  public generateRequestDescription(request: BoatMaintenance): string {
     const boatName = request.boat.name;
     const requestDate = this.humanizeDateWithTime(request.created_at);
     const requesterName = request.requested_by.name;

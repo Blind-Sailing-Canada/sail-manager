@@ -71,7 +71,7 @@
   >Cancel</a>
   <a
     *ngIf="canViewChecklist"
-    [routerLink]="viewSailchecklistRouteLink"
+    [routerLink]="viewSailChecklistRouteLink"
     mat-raised-button
     title="Go to sail's checklist page"
   >Checklist</a>
@@ -225,7 +225,7 @@
             colspan="2"
             aria-hidden="true"
             tabindex="-1"
-          >Cancelation Details</th>
+          >Cancellation Details</th>
         </tr>
         <tr
           aria-label="Cancel date"
@@ -425,7 +425,7 @@
       <tr
         (click)="!!sailPassengers[i] && !!sailPassengers[i].profile && showProfileDialog(sailPassengers[i].profile, 'passenger')"
         (keyup.enter)="!!sailPassengers[i] && !!sailPassengers[i].profile && showProfileDialog(sailPassengers[i].profile, 'passenger')"
-        *ngFor="let unusedvariable of passengerSpots; let i = index;"
+        *ngFor="let unusedVariable of passengerSpots; let i = index;"
         [title]="getPassengerLabel(i)"
         attr.aria-label="Sail sailor {{i + 1}} of {{passengerSpots.length}}"
         role="listitem"
