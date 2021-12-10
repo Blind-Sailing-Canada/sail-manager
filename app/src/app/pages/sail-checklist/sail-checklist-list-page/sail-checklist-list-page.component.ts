@@ -21,9 +21,10 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class SailChecklistListPageComponent extends BasePageComponent implements OnInit {
 
-  public checklistIds: string[] = [];
-  public boat_id: string = null;
   public boatName: string = null;
+  public boat_id: string = null;
+  public checklistIds: string[] = [];
+  public checklists: SailChecklist[] = [];
   public excludeSailId: string = null;
 
   constructor(
@@ -42,7 +43,13 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
     this.excludeSailId = this.route.snapshot.queryParams.excludeSailId;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS);
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.CHECKLISTS);
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.CHECKLISTS, ({all: sailChecklists}) => {
+      const ids = Object.keys(sailChecklists || {});
+      this.checklists = ids
+        .map(id => this.sailChecklists[id])
+        .filter(checklist => checklist.sail_id !== this.excludeSailId)
+        .filter(checklist => this.boat_id ? checklist.sail.boat_id === this.boat_id : true);
+    });
 
     if (this.boat_id) {
       if (this.excludeSailId) {
@@ -53,16 +60,6 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
     } else {
       this.dispatchAction(findSailChecklists({ query: '' }));
     }
-  }
-
-  public get checklists(): SailChecklist[] {
-    const ids = Object.keys(this.sailChecklists || {});
-    const list: SailChecklist[] = ids
-      .filter(id => id !== this.excludeSailId)
-      .map(id => this.sailChecklists[id])
-      .filter(checklist => this.boat_id ? checklist.sail.boat_id === this.boat_id : true);
-
-    return list;
   }
 
   public formatDate(date: Date | string): string {

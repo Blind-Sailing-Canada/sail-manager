@@ -1,5 +1,5 @@
 import {
-  Body, Controller, Get, Param, Patch, Query, UseGuards
+  Body, Controller, Get, Param, Patch, Query, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Not } from 'typeorm';
@@ -8,6 +8,8 @@ import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
 import { SailManifestEntity } from '../sail-manifest/sail-manifest.entity';
 import { SailEntity } from '../sail/sail.entity';
+import { ProfileRole } from '../types/profile/profile-role';
+import { SailorRole } from '../types/sail-manifest/sailor-role';
 import { JwtObject } from '../types/token/jwt-object';
 import { User } from '../user/user.decorator';
 import { SailChecklistEntity } from './sail-checklist.entity';
@@ -22,30 +24,21 @@ export class SailChecklistController {
   @Get('/')
   async fetchChecklists(@Query('boat_id') boat_id: string, @Query('exclude_sail_id') exclude_sail_id: string) {
 
-    if (boat_id) {
-      if (exclude_sail_id) {
-        return SailChecklistEntity.find({
-          relations: ['sail'],
-          where: {
-            'sail.boat_id': boat_id,
-            sail_id: Not(exclude_sail_id),
-          },
-
-          order: { created_at: 'DESC' },
-        });
-      }
-
+    if (!boat_id) {
       return SailChecklistEntity.find({
         relations: ['sail'],
-        where: { 'sail.boat_id': boat_id },
+        where: { sail_id: Not(exclude_sail_id) },
         order: { created_at: 'DESC' },
       });
     }
 
-    return SailChecklistEntity.find({
+    const checklists = await SailChecklistEntity.find({
       relations: ['sail'],
+      where: { sail: { boat_id } },
       order: { created_at: 'DESC' },
     });
+
+    return checklists.filter(checklist => checklist.sail_id !== exclude_sail_id);
   }
 
   @Get('/:checklist_id')
@@ -56,6 +49,22 @@ export class SailChecklistController {
   @Patch('/sail/:sail_id/update')
   async updateSailChecklist(@User() user: JwtObject, @Param('sail_id') sail_id: string, @Body() checklistInfo) {
     const before = checklistInfo.before;
+
+    const sail = await SailEntity.findOne(sail_id);
+
+    const allowedToUpdate = user.roles.some(role => role === ProfileRole.Coordinator || role === ProfileRole.Admin)
+      || sail.manifest
+        .some(
+          (sailor) => sailor.profile_id === user.profile_id
+            && [
+              SailorRole.Skipper,
+              SailorRole.Crew,
+            ].includes(sailor.sailor_role)
+        );
+
+    if (!allowedToUpdate) {
+      throw new UnauthorizedException('You are not allowed to update this checklist.');
+    }
 
     if (before) {
       await SailChecklistEntity.update(before.id, before);
