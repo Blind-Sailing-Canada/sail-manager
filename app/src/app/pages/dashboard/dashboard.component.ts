@@ -200,10 +200,6 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
     return should;
   }
 
-  public get shouldShowBoatsControls(): boolean {
-    return !!this.user.access[UserAccessFields.EditBoat] || !!this.user.access[UserAccessFields.CreateBoat];
-  }
-
   public viewUserSailsRouteLink(profile_id: string): string {
     return viewUserSailsRoute(profile_id);
   }
