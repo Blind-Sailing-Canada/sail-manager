@@ -3,15 +3,15 @@ module.exports = {
   'language': 'en',
   // words - list of words to be always considered correct
   'words': [
-    'relativetimeformat',
+    'Disenroll',
+    'Filesize',
+    'ICDN',
+    'PHRF',
+    'UNPATCHED',
+    'disenroll',
     'fileupload',
     'formatjs',
-    'ICDN',
-    'UNPATCHED',
     'keyvalue',
-    'Filesize',
-    'disenroll',
-    'Disenroll',
-    'PHRF',
+    'relativetimeformat',
   ],
 };
