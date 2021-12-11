@@ -18,7 +18,7 @@ export class SettingController {
   constructor(public service: SettingService) { }
 
   @Post('/for-user/:profile_id')
-  async saveSettinsForUser(@User() user: JwtObject, @Param('profile_id') profile_id: string, @Body() settingsInfo) {
+  async saveSettingsForUser(@User() user: JwtObject, @Param('profile_id') profile_id: string, @Body() settingsInfo) {
 
     if (user.profile_id !== profile_id) {
       throw new UnauthorizedException();
@@ -36,7 +36,7 @@ export class SettingController {
   }
 
   @Get('/for-user/:profile_id')
-  getSettinsForUser(@User() user: JwtObject, @Param('profile_id') profile_id: string) {
+  getSettingsForUser(@User() user: JwtObject, @Param('profile_id') profile_id: string) {
     if (user.profile_id !== profile_id) {
       throw new UnauthorizedException();
     }

@@ -6,13 +6,14 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "prebuild": "rimraf dist",
     "build": "nest build",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "prebuild": "rimraf dist",
+    "spellcheck": "cspell 'src/**/*.*'",
     "start": "nest start",
-    "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main"
   },
   "dependencies": {
     "@google-cloud/storage": "5.14.4",

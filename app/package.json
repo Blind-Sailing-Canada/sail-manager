@@ -12,6 +12,7 @@
     "lint": "ng lint",
     "ng": "ng",
     "run:server": "node ./src/server/server.js",
+    "spellcheck": "cspell 'src/**/*.*'",
     "start": "ng serve",
     "start:server": "node ./app/server/server.js"
   },
@@ -78,7 +79,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint"
+      "pre-commit": "yarn lint && yarn spellcheck"
     }
   },
   "engines": {
