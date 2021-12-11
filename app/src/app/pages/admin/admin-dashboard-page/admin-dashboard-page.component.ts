@@ -50,6 +50,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   public searchedProfiles: Profile[];
   public createUserDialogRef: MatDialogRef<CreateUserDialogComponent>;
+  public pendingProfiles: Profile[];
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -69,6 +70,13 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
       if (!this.searchedProfiles) {
         this.searchedProfiles = this.profilesArray;
       }
+
+      const profiles = this.profiles || {} as IProfileMap;
+      const profile_ids = Object.keys(profiles);
+      this.pendingProfiles = profile_ids
+        .filter(id => !!profiles[id])
+        .filter(id => profiles[id].status === ProfileStatus.PendingApproval)
+        .map(id => profiles[id]);
     });
 
     this.fetchPendingProfiles();
@@ -76,7 +84,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
   }
 
   ngAfterViewInit(): void {
-    const typeahead = fromEvent(this.profileSearchInput.nativeElement, 'input')
+    const typeAhead = fromEvent(this.profileSearchInput.nativeElement, 'input')
       .pipe(
         takeWhile(() => this.active),
         map((e: any) => (e.target.value || '') as string),
@@ -92,7 +100,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
         }),
       );
 
-    typeahead
+    typeAhead
       .subscribe((profiles) => {
         this.dispatchAction(
           putSnack({ snack: { type: SnackType.INFO, message: `Found ${profiles.length} users.` } })
@@ -108,17 +116,6 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
     this.searchedProfiles = null;
     this.profileSearchInput.nativeElement.value = '';
     this.dispatchAction(fetchProfiles({ query: '', notify: true }));
-  }
-
-  public get pendingApproval(): Profile[] {
-    const profiles = this.profiles || {} as IProfileMap;
-    const profile_ids = Object.keys(profiles);
-    const pendingProfiles = profile_ids
-      .filter(id => !!profiles[id])
-      .filter(id => profiles[id].status === ProfileStatus.PendingApproval)
-      .map(id => profiles[id]);
-
-    return pendingProfiles;
   }
 
   public get totalProfileCount(): number {

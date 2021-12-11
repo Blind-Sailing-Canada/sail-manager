@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  OnChanges,
   Output,
 } from '@angular/core';
 import { Profile } from '../../../../../api/src/types/profile/profile';
@@ -22,30 +23,29 @@ import {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnChanges {
+
   @Input() userProfile: Profile;
   @Output() logoutListener: EventEmitter<void> = new EventEmitter<void>();
+
   public WindowWidth = WINDOW_WIDTH;
+  public viewHelpLink: string;
+  public viewProfileLink: string;
+  public viewProfileSettingsLink: string;
 
   constructor(
     @Inject(WindowService) public windowServer: WindowService,
     @Inject(FirebaseService) private firebaseService: FirebaseService,
   ) { }
 
+  ngOnChanges(): void {
+    this.viewProfileLink = viewProfileRoute(this.userProfile?.id);
+    this.viewHelpLink = helpRoute.toString();
+    this.viewProfileSettingsLink = profileSettingsRoute.toString();
+  }
+
   public logout(): void {
     this.logoutListener.emit();
     this.firebaseService.logout();
-  }
-
-  public get viewProfileLink(): string {
-    return viewProfileRoute(this.userProfile.id);
-  }
-
-  public get viewProfileSettingsLink(): string {
-    return profileSettingsRoute.toString();
-  }
-
-  public get viewHelpLink(): string {
-    return helpRoute.toString();
   }
 }

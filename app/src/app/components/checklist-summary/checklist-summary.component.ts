@@ -3,8 +3,10 @@ import {
   EventEmitter,
   Inject,
   Input,
+  OnChanges,
   Output,
 } from '@angular/core';
+import { Boat } from '../../../../../api/src/types/boat/boat';
 import { Profile } from '../../../../../api/src/types/profile/profile';
 import { SailChecklist } from '../../../../../api/src/types/sail-checklist/sail-checklist';
 import { SailChecklistType } from '../../../../../api/src/types/sail-checklist/sail-checklist-type';
@@ -17,17 +19,33 @@ import { MomentService } from '../../services/moment.service';
   templateUrl: './checklist-summary.component.html',
   styleUrls: ['./checklist-summary.component.css']
 })
-export class ChecklistSummaryComponent {
+export class ChecklistSummaryComponent implements OnChanges {
 
   @Input() sail: Sail;
-  @Output() sailViewer: EventEmitter<string> = new EventEmitter();
+  @Output() openBoatDialog: EventEmitter<Boat> = new EventEmitter<Boat>();
   @Output() openProfileDialog: EventEmitter<Profile> = new EventEmitter<Profile>();
+  @Output() sailViewer: EventEmitter<string> = new EventEmitter();
 
   public SAILOR_ROLE = SailorRole;
+  public beforeDeparture: SailChecklist;
+  public afterArrival: SailChecklist;
 
   constructor(
     @Inject(MomentService) private momentService: MomentService,
   ) { }
+
+
+  ngOnChanges(): void {
+    this.beforeDeparture = this
+      .sail
+      .checklists
+      .find(checklist => checklist.checklist_type === SailChecklistType.Before);
+
+    this.afterArrival = this
+      .sail
+      .checklists
+      .find(checklist => checklist.checklist_type === SailChecklistType.After);
+  }
 
   public formatDate(date: Date | string): string {
     return this.momentService.format(date);
@@ -37,22 +55,16 @@ export class ChecklistSummaryComponent {
     this.sailViewer.emit(this.sail.id);
   }
 
+  public viewBoat(): void {
+    if (!this.sail.boat) {
+      return;
+    }
+
+    this.openBoatDialog.emit(this.sail.boat);
+  }
+
   public get sailName(): string {
-    return this.sail.name;
-  }
-
-  public get beforeDeparture(): SailChecklist {
-    return this
-      .sail
-      .checklists
-      .find(checklist => checklist.checklist_type === SailChecklistType.Before);
-  }
-
-  public get afterArrival(): SailChecklist {
-    return this
-      .sail
-      .checklists
-      .find(checklist => checklist.checklist_type === SailChecklistType.After);
+    return `${this.sail.name} #${this.sail.entity_number}`;
   }
 
   public get destination(): string {

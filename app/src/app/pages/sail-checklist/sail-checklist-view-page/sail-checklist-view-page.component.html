@@ -38,6 +38,7 @@
 </ng-template>
 <ng-template #checklistContent>
   <app-checklist-summary
+    (openBoatDialog)="showBoatDialog($event)"
     (openProfileDialog)="showProfileDialog($event)"
     (sailViewer)="viewSail($event)"
     [sail]="sail"

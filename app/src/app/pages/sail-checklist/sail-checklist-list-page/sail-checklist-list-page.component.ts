@@ -9,6 +9,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SailChecklist } from '../../../../../../api/src/types/sail-checklist/sail-checklist';
+import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
 import { MomentService } from '../../../services/moment.service';
 import { findSailChecklists } from '../../../store/actions/sail-checklist.actions';
 import { STORE_SLICES } from '../../../store/store';
@@ -45,8 +46,10 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CHECKLISTS, ({all: sailChecklists}) => {
       const ids = Object.keys(sailChecklists || {});
+
       this.checklists = ids
         .map(id => this.sailChecklists[id])
+        .filter(checklist => checklist.checklist_type === SailChecklistType.Before)
         .filter(checklist => checklist.sail_id !== this.excludeSailId)
         .filter(checklist => this.boat_id ? checklist.sail.boat_id === this.boat_id : true);
     });
@@ -63,7 +66,7 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
   }
 
   public formatDate(date: Date | string): string {
-    return this.momentService.format(date);
+    return this.momentService.humanizeDateWithTime(date, true);
   }
 
 }

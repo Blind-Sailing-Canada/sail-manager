@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
 } from '@angular/core';
 import { Profile } from '../../../../../api/src/types/profile/profile';
@@ -11,19 +12,21 @@ import { Profile } from '../../../../../api/src/types/profile/profile';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
-export class UserProfileComponent {
+export class UserProfileComponent implements OnChanges {
 
   @Input() profile: Profile;
   @Input() actions: any;
   @Output() actionsClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() viewClinic: EventEmitter<string> = new EventEmitter<string>();
 
-  public actionClicked(event): void {
-    this.actionsClicked.emit(event);
+  public roles: string;
+
+  ngOnChanges(): void {
+    this.roles = this.profile.roles.join(', ');
   }
 
-  public get roles(): string {
-    return this.profile.roles.join(', ');
+  public actionClicked(event): void {
+    this.actionsClicked.emit(event);
   }
 
   public triggerClick(elementId: string): void {
