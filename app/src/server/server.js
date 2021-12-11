@@ -14,9 +14,10 @@ const jwt = require('express-jwt');
 
 const DIST_DIR = path.resolve('./app');
 
-const port = process.env.PORT || 4000;
-const API_HOST = 'http://localhost:3000';
-const CDN_HOST = 'http://localhost:3000';
+const PORT = +process.env.PORT || 4000;
+const API_PORT = +process.env.API_PORT || 3000;
+const API_HOST = `http://localhost:${API_PORT}`;
+const CDN_HOST = `http://localhost:${API_PORT}`;
 
 const compression = require('compression');
 const express = require('express');
@@ -37,7 +38,7 @@ const sendFile = async (filepath, destination, authorizationHeader) => {
       .submit(
         {
           host: 'localhost',
-          port: '3000',
+          port: API_PORT,
           path: `/fba/upload/${destination}`,
           headers: {
             ...form.getHeaders(),
@@ -168,7 +169,7 @@ app
   })
   .use(Sentry.Handlers.errorHandler())
   // Start server
-  .listen(port, () => {
-    console.info('Port: ' + port);
+  .listen(PORT, () => {
+    console.info('Port: ' + PORT);
     console.info('DIST_DIR: ' + DIST_DIR);
   });

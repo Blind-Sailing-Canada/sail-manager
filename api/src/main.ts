@@ -94,20 +94,24 @@ async function bootstrap() {
     return next();
   });
 
-  const options = new DocumentBuilder()
-    .setTitle('Mysql typeorm')
-    .setVersion('1.0')
-    .addServer('/')
-    .addServer('/api')
-    .addServer('http://localhost:3000')
-    .build();
+  const API_PORT = +process.env.API_PORT || 3000;
 
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  if (process.env.NODE_ENV !== 'prod') {
+    const options = new DocumentBuilder()
+      .setTitle('Sail Manager API')
+      .setVersion('1.0')
+      .addServer('/')
+      .addServer('/api')
+      .addServer(`http://localhost:${API_PORT}`)
+      .build();
 
-  console.log('api server listening on port 3000');
+    const document = SwaggerModule.createDocument(app, options);
+    SwaggerModule.setup('api', app, document);
+  }
 
-  await app.listen(3000);
+  console.log(`api server listening on port ${API_PORT}`);
+
+  await app.listen(API_PORT);
 }
 
 bootstrap();

@@ -57,7 +57,7 @@ footer {
   display: flex;
   text-align: center;
   margin-bottom: 5px;
-  margin-top: 5px;
+  margin-top: 20px;
   align-items: baseline !important;
   justify-content: space-between !important;
 }
