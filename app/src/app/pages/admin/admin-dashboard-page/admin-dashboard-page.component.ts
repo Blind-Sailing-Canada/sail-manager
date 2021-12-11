@@ -50,7 +50,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   public searchedProfiles: Profile[];
   public createUserDialogRef: MatDialogRef<CreateUserDialogComponent>;
-  public pendingProfiles: Profile[];
+  public pendingApproval: Profile[];
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -73,7 +73,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
       const profiles = this.profiles || {} as IProfileMap;
       const profile_ids = Object.keys(profiles);
-      this.pendingProfiles = profile_ids
+      this.pendingApproval = profile_ids
         .filter(id => !!profiles[id])
         .filter(id => profiles[id].status === ProfileStatus.PendingApproval)
         .map(id => profiles[id]);
