@@ -3,6 +3,7 @@ module.exports = {
   'language': 'en',
   // words - list of words to be always considered correct
   'words': [
+    'ILIKE',
     'backoff',
     'commentable',
     'disenroll',

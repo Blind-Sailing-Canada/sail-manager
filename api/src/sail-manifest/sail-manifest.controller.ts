@@ -5,7 +5,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import {
-  In, Like, Not
+  ILike,
+  In, Not
 } from 'typeorm';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
@@ -86,7 +87,7 @@ export class SailManifestController {
             where: {
               status: ProfileStatus.Approved,
               id: Not(In(notAvailable)),
-              name: Like(`%${sailorName}%`),
+              name: ILike(`%${sailorName}%`),
             },
           });
     } else {

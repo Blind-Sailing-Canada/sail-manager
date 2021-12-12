@@ -1,4 +1,9 @@
 {
+    "editor.rulers": [
+        100,
+        120,
+        140
+      ],
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "eslint.format.enable": true,

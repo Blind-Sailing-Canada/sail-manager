@@ -218,28 +218,28 @@ export class SailController {
 
     if (sailStatus) {
       searchQuery = searchQuery
-        .andWhere(`sail.sailStatus='${sailName}'`);
+        .andWhere('sail.status=:sailStatus', { sailStatus });
     }
 
     if (sailName) {
       searchQuery = searchQuery
-        .andWhere(`sail.name LIKE '%${sailName}%'`);
+        .andWhere('sail.name ILIKE :sailName', { sailName: `%${sailName}%` });
     }
 
     if (start) {
       searchQuery = searchQuery
-        .andWhere(`sail.start_at >= '${start}'`);
+        .andWhere('sail.start_at >= :start', { start });
     }
 
     if (end) {
       searchQuery = searchQuery
-        .andWhere(`sail.end_at <= '${end}'`);
+        .andWhere('sail.end_at <= :end', { end });
     }
 
     if (boatName) {
       searchQuery = searchQuery
         .leftJoin('sail.boat', 'boat')
-        .andWhere(`boat.name LIKE '${boatName}%'`);
+        .andWhere('boat.name ILIKE :boatName', { boatName: `%${boatName}%` });
     }
 
     if (sailorNames?.length) {
@@ -250,11 +250,15 @@ export class SailController {
         .having(`COUNT(*) = ${sailorNames.length}`);
 
       const sailorSearchQuery = sailorNames
-        .map(sailorName => `manifest.person_name LIKE '${sailorName}%' OR profile.name LIKE '${sailorName}%'`)
+        .map((_, index) => `manifest.person_name ILIKE :sailorName${index} OR profile.name ILIKE :sailorName${index}`)
         .join(' OR ');
 
-      searchQuery = searchQuery
-        .andWhere(`(${sailorSearchQuery})`);
+      const sailNameData = sailorNames.reduce((red, sailorName, index) => {
+        red[`sailorName${index}`] = `%${sailorName}%`;
+        return red;
+      }, {});
+
+      searchQuery = searchQuery.andWhere(`(${sailorSearchQuery})`, sailNameData);
     }
 
     const foundSails = await searchQuery.select('sail.id').getMany();
