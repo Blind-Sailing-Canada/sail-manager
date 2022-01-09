@@ -7,14 +7,15 @@ import {
   OneToOne
 } from 'typeorm';
 import { BaseModelEntity } from '../base/base.entity';
-import { BoatInstructionsEntity } from '../boat-instructions/boat-instructions.entity';
-import { BoatInstructions } from '../types/boat-instructions/boat-instructions';
-import { SailEntity } from '../sail/sail.entity';
 import { Boat } from '../types/boat/boat';
-import { BoatStatus } from '../types/boat/boat-status';
-import { BoatInstructionType } from '../types/boat-instructions/boat-instruction-type';
 import { BoatChecklist } from '../types/boat-checklist/boat-checklist';
 import { BoatChecklistEntity } from '../boat-checklist/boat-checklist.entity';
+import { BoatInstructionType } from '../types/boat-instructions/boat-instruction-type';
+import { BoatInstructions } from '../types/boat-instructions/boat-instructions';
+import { BoatInstructionsEntity } from '../boat-instructions/boat-instructions.entity';
+import { BoatStatus } from '../types/boat/boat-status';
+import { DocumentEntity } from '../document/document.entity';
+import { SailEntity } from '../sail/sail.entity';
 
 @Entity('boats')
 export class BoatEntity extends BaseModelEntity implements Boat {
@@ -108,6 +109,13 @@ export class BoatEntity extends BaseModelEntity implements Boat {
     nullable: false,
   })
   pictures: string[];
+
+  @OneToMany(() => DocumentEntity, (document) => document.boat, {
+    createForeignKeyConstraints: false,
+    nullable: true,
+    eager: true,
+  })
+  documents: DocumentEntity[]
 
   @AfterInsert()
   createChecklist() {

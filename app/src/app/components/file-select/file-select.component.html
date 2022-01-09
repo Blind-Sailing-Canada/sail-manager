@@ -25,11 +25,11 @@
     <button
       mat-raised-button
       (click)="original_file_input.click()"
-      title="Click to select a new photo"
+      title="Click to select a new {{fileTypeLabel}}"
     >
       <app-icon-text
-        icon="add_a_photo"
-        text="Add new photo"
+        icon="{{icon}}"
+        text="Add new {{fileTypeLabel}}"
       ></app-icon-text>
     </button>
     <button

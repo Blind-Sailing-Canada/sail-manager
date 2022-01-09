@@ -47,6 +47,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/boat/boat.module').then(mod => mod.BoatModule)
   },
   {
+    path: RootRoutes.DOCUMENTS,
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/document/document.module').then(mod => mod.DocumentModule)
+  },
+  {
     path: RootRoutes.BOAT_CHECKLIST,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/boat-checklist/boat-checklist.module').then(mod => mod.BoatChecklistModule)

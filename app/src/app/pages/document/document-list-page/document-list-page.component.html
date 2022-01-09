@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>local_library</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >Documents</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="CONTENT_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #CONTROLS_TEMPLATE>
+  <button
+    *ngIf="shouldEnableNewButton"
+    (click)="goToNewDocument()"
+    title="Go to new document page"
+    mat-raised-button
+  >New</button>
+</ng-template>
+
+<ng-template #CONTENT_TEMPLATE>
+  <app-table>
+    <tr aria-hidden="true">
+      <th aria-hidden="true">Document</th>
+      <th aria-hidden="true">Created Date</th>
+      <th aria-hidden="true">Updated Date</th>
+    </tr>
+    <tr
+      *ngFor="let document of documentsArray; let i = index;"
+      attr.aria-label="Document {{i+1}} of {{documentsArray.length}}: {{document.title}}}}."
+      role="listitem"
+      tabindex="0"
+      class="clickable"
+      (click)="viewDocument(document.id)"
+    >
+      <td aria-hidden="true">{{document.title}}</td>
+      <td aria-hidden="true">{{document.created_at | humanDate}}</td>
+      <td aria-hidden="true">{{document.updated_at | humanDate}}</td>
+    </tr>
+    <tr *ngIf="!documentsArray?.length">
+      <td
+        colspan="3"
+        tabindex="0"
+      >There are no documents.</td>
+    </tr>
+  </app-table>
+</ng-template>

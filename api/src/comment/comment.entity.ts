@@ -12,9 +12,10 @@ import {
 import { BaseModelEntity } from '../base/base.entity';
 import { BoatMaintenanceEntity } from '../boat-maintenance/boat-maintenance.entity';
 import { ChallengeEntity } from '../challenge/challenge.entity';
+import { Comment } from '../types/comment/comment';
+import { DocumentEntity } from '../document/document.entity';
 import { ProfileEntity } from '../profile/profile.entity';
 import { SailEntity } from '../sail/sail.entity';
-import { Comment } from '../types/comment/comment';
 
 @Entity('comments')
 @Index([
@@ -83,4 +84,17 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
     },
   ])
   challenge: ChallengeEntity
+
+  @ManyToOne(() => DocumentEntity, () => null, { createForeignKeyConstraints: false })
+  @JoinColumn([
+    {
+      name: 'commentable_id',
+      referencedColumnName: 'id',
+    },
+    {
+      name: 'commentable_type',
+      referencedColumnName: 'entity_type',
+    },
+  ])
+  document: DocumentEntity
 }

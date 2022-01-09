@@ -1,0 +1,13 @@
+mat-selection-list {
+  display: flex !important;
+  flex-direction: row  !important;
+  flex-wrap: wrap !important;
+}
+
+mat-list-option {
+  width: unset !important;
+}
+
+::ng-deep .mat-list-text {
+  padding: unset !important;
+}

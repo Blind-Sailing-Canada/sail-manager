@@ -4,25 +4,27 @@ import { boatReducer } from './reducers/boat.reducer';
 import { cdnReducer } from './reducers/cdn.reducer';
 import { challengeReducer } from './reducers/challenge.reducer';
 import { clinicsReducer } from './reducers/clinics.reducer';
+import { documentReducer } from './reducers/document.reducer';
 import { feedbackReducer } from './reducers/feedback.reducer';
+import { futureSailsReducer } from './reducers/future-sails.reducer';
 import { inProgressSailsReducer } from './reducers/in-progress-sails.reducer';
 import { instructionsReducer } from './reducers/instructions.reducer';
 import { loginReducer } from './reducers/login.reducer';
 import { pastSailsReducer } from './reducers/past-sails.reducer';
 import { profileReducer } from './reducers/profile.reducer';
 import { requiredActionsReducer } from './reducers/required-actions.reducer';
-import { sailChecklistReducer } from './reducers/sail-checklist.reducer';
-import { sailRequestReducer } from './reducers/sail-request.reducer';
-import { sailReducer } from './reducers/sail.reducer';
-import { snackReducer } from './reducers/snack.reducer';
-import { futureSailsReducer } from './reducers/future-sails.reducer';
-import { userAccessReducer } from './reducers/user-access.reducer';
-import { todaySailsReducer } from './reducers/today-sails.reducer';
 import { sailCategoryReducer } from './reducers/sail-category.reducer';
+import { sailChecklistReducer } from './reducers/sail-checklist.reducer';
+import { sailReducer } from './reducers/sail.reducer';
+import { sailRequestReducer } from './reducers/sail-request.reducer';
+import { snackReducer } from './reducers/snack.reducer';
+import { todaySailsReducer } from './reducers/today-sails.reducer';
+import { userAccessReducer } from './reducers/user-access.reducer';
 
 export enum STORE_SLICES {
   APP = 'app',
   BOATS = 'boats',
+  DOCUMENTS = 'documents',
   BOAT_MAINTENANCES = 'maintenances',
   CDN = 'cdn',
   CHALLENGES = 'challenges',
@@ -48,6 +50,7 @@ export enum STORE_SLICES {
 export const store = {
   [STORE_SLICES.APP]: appReducer,
   [STORE_SLICES.BOATS]: boatReducer,
+  [STORE_SLICES.DOCUMENTS]: documentReducer,
   [STORE_SLICES.BOAT_MAINTENANCES]: boatMaintenanceReducer,
   [STORE_SLICES.CDN]: cdnReducer,
   [STORE_SLICES.CHALLENGES]: challengeReducer,

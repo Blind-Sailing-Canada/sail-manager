@@ -7,6 +7,7 @@ export enum RootRoutes {
   CHALLENGES = 'challenges',
   CLINICS = 'clinics',
   DASHBOARD = 'dashboard',
+  DOCUMENTS = 'documents',
   ERROR = 'error',
   FEEDBACK = 'feedback',
   HELP = 'help',
@@ -31,6 +32,7 @@ export enum SubRoutes {
   CREATE_BOAT_CHECKLIST = 'create',
   CREATE_CHALLENGE = 'create',
   CREATE_CLINIC = 'create',
+  CREATE_DOCUMENT = 'create',
   CREATE_MAINTENANCE = 'create',
   CREATE_SAIL = 'create',
   CREATE_SAIL_REQUEST = 'create',
@@ -41,6 +43,7 @@ export enum SubRoutes {
   EDIT_CHALLENGE = 'edit',
   EDIT_CLINIC = 'edit',
   EDIT_CLINIC_ENROLLMENT = 'edit-enrollment',
+  EDIT_DOCUMENT = 'edit',
   EDIT_MAINTENANCE = 'edit',
   EDIT_PROFILE = 'edit',
   EDIT_PROFILE_PRIVILEGES = 'edit-privileges',
@@ -52,6 +55,7 @@ export enum SubRoutes {
   EMAIL_AND_PASSWORD = 'email-password',
   LIST_CHALLENGES = 'list',
   LIST_CLINICS = 'list',
+  LIST_DOCUMENTS = 'list',
   LIST_FEEDBACK = 'list',
   LIST_LOGS = 'list',
   LIST_SAIL_CATEGORIES = 'list',
@@ -65,6 +69,7 @@ export enum SubRoutes {
   VIEW_BOAT_INSTRUCTIONS = 'view',
   VIEW_CHALLENGE = 'view',
   VIEW_CLINIC = 'view',
+  VIEW_DOCUMENT = 'view',
   VIEW_FEEDBACK = 'view',
   VIEW_LOGS = 'view',
   VIEW_MAINTENANCE = 'view',
@@ -90,10 +95,10 @@ export enum FullRoutes {
   CHALLENGES = ROOT + RootRoutes.CHALLENGES,
   CLINICS = ROOT + RootRoutes.CLINICS,
   DASHBOARD = ROOT + RootRoutes.DASHBOARD,
+  DOCUMENTS = ROOT + RootRoutes.DOCUMENTS,
   FEEDBACK = ROOT + RootRoutes.FEEDBACK,
   HELP = ROOT + RootRoutes.HELP,
   LOGIN = ROOT + RootRoutes.LOGIN,
-  LOGS = ROOT + RootRoutes.LOGS,
   MAINTENANCE = ROOT + RootRoutes.MAINTENANCE,
   PROFILE = ROOT + RootRoutes.PROFILES,
   REQUIRED_ACTIONS = ROOT + RootRoutes.REQUIRED_ACTIONS,
@@ -107,6 +112,7 @@ export enum FullRoutes {
   CREATE_BOAT = BOATS + SEPARATOR + SubRoutes.CREATE_BOAT,
   CREATE_CHALLENGE = CHALLENGES + SEPARATOR + SubRoutes.CREATE_CHALLENGE,
   CREATE_CLINIC = CLINICS + SEPARATOR + SubRoutes.CREATE_CLINIC,
+  CREATE_DOCUMENT = DOCUMENTS + SEPARATOR + SubRoutes.CREATE_DOCUMENT,
   CREATE_MAINTENANCE = MAINTENANCE + SEPARATOR + SubRoutes.CREATE_MAINTENANCE,
   CREATE_SAIL = SAILS + SEPARATOR + SubRoutes.CREATE_SAIL,
   CREATE_SAIL_REQUEST = SAIL_REQUESTS + SEPARATOR + SubRoutes.CREATE_SAIL_REQUEST,
@@ -117,6 +123,7 @@ export enum FullRoutes {
   EDIT_CHALLENGE = CHALLENGES + SEPARATOR + SubRoutes.EDIT_CHALLENGE,
   EDIT_CLINIC = CLINICS + SEPARATOR + SubRoutes.EDIT_CLINIC,
   EDIT_CLINIC_ENROLLMENT = CLINICS + SEPARATOR + SubRoutes.EDIT_CLINIC_ENROLLMENT,
+  EDIT_DOCUMENT = DOCUMENTS + SEPARATOR + SubRoutes.EDIT_DOCUMENT,
   EDIT_MAINTENANCE = MAINTENANCE + SEPARATOR + SubRoutes.EDIT_MAINTENANCE,
   EDIT_PROFILE = PROFILE + SEPARATOR + SubRoutes.EDIT_PROFILE,
   EDIT_PROFILE_PRIVILEGES = ADMIN + SEPARATOR + SubRoutes.EDIT_PROFILE_PRIVILEGES,
@@ -128,8 +135,8 @@ export enum FullRoutes {
   EMAIL_AND_PASSWORD = LOGIN + SEPARATOR + SubRoutes.EMAIL_AND_PASSWORD,
   LIST_CHALLENGES = CHALLENGES + SEPARATOR + SubRoutes.LIST_CHALLENGES,
   LIST_CLINICS = CLINICS + SEPARATOR + SubRoutes.LIST_CLINICS,
+  LIST_DOCUMENTS = DOCUMENTS + SEPARATOR + SubRoutes.LIST_DOCUMENTS,
   LIST_FEEDBACK = FEEDBACK + SEPARATOR + SubRoutes.LIST_FEEDBACK,
-  LIST_LOGS = LOGS + SEPARATOR + SubRoutes.LIST_LOGS,
   LIST_SAIL_CATEGORIES = ADMIN + SEPARATOR + SubRoutes.LIST_SAIL_CATEGORIES,
   LIST_SAIL_PATHS = SAIL_PATHS + SEPARATOR + SubRoutes.LIST_SAIL_PATHS,
   PROFILE_SETTINGS = PROFILE + SEPARATOR + SubRoutes.PROFILE_SETTINGS,
@@ -141,8 +148,8 @@ export enum FullRoutes {
   VIEW_BOAT_INSTRUCTIONS = BOAT_INSTRUCTIONS + SEPARATOR + SubRoutes.VIEW_BOAT_INSTRUCTIONS,
   VIEW_CHALLENGE = CHALLENGES + SEPARATOR + SubRoutes.VIEW_CHALLENGE,
   VIEW_CLINIC = CLINICS + SEPARATOR + SubRoutes.VIEW_CLINIC,
+  VIEW_DOCUMENT = DOCUMENTS + SEPARATOR + SubRoutes.VIEW_DOCUMENT,
   VIEW_FEEDBACK = FEEDBACK + SEPARATOR + SubRoutes.VIEW_FEEDBACK,
-  VIEW_LOGS = LOGS + SEPARATOR + SubRoutes.VIEW_LOGS,
   VIEW_MAINTENANCE = MAINTENANCE + SEPARATOR + SubRoutes.VIEW_MAINTENANCE,
   VIEW_PROFILE = PROFILE + SEPARATOR + SubRoutes.VIEW_PROFILE,
   VIEW_REQUIRED_ACTION = REQUIRED_ACTIONS + SEPARATOR + SubRoutes.VIEW_REQUIRED_ACTION,
@@ -163,17 +170,19 @@ export const clinicsRoute = FullRoutes.CLINICS;
 export const createBoatRoute = FullRoutes.CREATE_BOAT;
 export const createChallengeRoute = FullRoutes.CREATE_CHALLENGE;
 export const createClinicRoute = FullRoutes.CREATE_CLINIC;
+export const createDocumentRoute = FullRoutes.CREATE_DOCUMENT;
 export const createMaintenanceRoute = FullRoutes.CREATE_MAINTENANCE;
 export const createSailFromRequestRoute = (sail_request_id: string) => `${FullRoutes.CREATE_SAIL}/${sail_request_id}`;
 export const createSailRequestRoute = FullRoutes.CREATE_SAIL_REQUEST;
 export const createSailRoute = FullRoutes.CREATE_SAIL;
 export const departureSailChecklistRoute = (id: string) => `${FullRoutes.DEPARTURE_SAIL_CHECKLIST}/${id}`;
+export const editBoatChecklistRoute = (boat_id: string) => `${FullRoutes.EDIT_BOAT_CHECKLIST}/${boat_id}`;
 export const editBoatInstructionsRoute = (boat_id: string) => `${FullRoutes.EDIT_BOAT_INSTRUCTIONS}/${boat_id}`;
 export const editBoatRoute = (boat_id: string) => `${FullRoutes.EDIT_BOAT}/${boat_id}`;
-export const editBoatChecklistRoute = (boat_id: string) => `${FullRoutes.EDIT_BOAT_CHECKLIST}/${boat_id}`;
 export const editChallengeRoute = (challengeId: string) => `${FullRoutes.EDIT_CHALLENGE}/${challengeId}`;
 export const editClinicEnrollmentRoute = (clinicId: string) => `${FullRoutes.EDIT_CLINIC_ENROLLMENT}/${clinicId}`;
 export const editClinicRoute = (clinicId: string) => `${FullRoutes.EDIT_CLINIC}/${clinicId}`;
+export const editDocumentRoute = (document_id: string) => `${FullRoutes.EDIT_DOCUMENT}/${document_id}`;
 export const editMaintenanceRoute = (maintenanceId: string) => `${FullRoutes.EDIT_MAINTENANCE}/${maintenanceId}`;
 export const editProfilePrivilegesRoute = (profile_id: string) => `${FullRoutes.EDIT_PROFILE_PRIVILEGES}/${profile_id}`;
 export const editProfileRoute = (profile_id: string) => `${FullRoutes.EDIT_PROFILE}/${profile_id}`;
@@ -185,8 +194,8 @@ export const editSailRoute = (sail_id: string) => `${FullRoutes.EDIT_SAIL}/${sai
 export const helpRoute = FullRoutes.HELP;
 export const listChallengesRoute = `${FullRoutes.LIST_CHALLENGES}`;
 export const listClinicsRoute = () => `${FullRoutes.LIST_CLINICS}`;
+export const listDocumentsRoute = () => `${FullRoutes.LIST_DOCUMENTS}`;
 export const listFeedbackRoute = (sail_id: string) => `${FullRoutes.LIST_FEEDBACK}/${sail_id}`;
-export const listLogsRoute = `${FullRoutes.LIST_LOGS}`;
 export const listSailCategoriesRoute = FullRoutes.LIST_SAIL_CATEGORIES;
 export const listSailPathsRoute = (sail_id: string) => `${FullRoutes.LIST_SAIL_PATHS}/${sail_id}`;
 export const loginWithEmailAndPassword = FullRoutes.EMAIL_AND_PASSWORD;
@@ -203,8 +212,8 @@ export const viewBoatInstructionsRoute = (boat_id: string) => `${FullRoutes.VIEW
 export const viewBoatRoute = (boat_id: string) => `${FullRoutes.VIEW_BOAT}/${boat_id}`;
 export const viewChallengeRoute = (challengeId: string) => `${FullRoutes.VIEW_CHALLENGE}/${challengeId}`;
 export const viewClinicRoute = (clinicId: string) => `${FullRoutes.VIEW_CLINIC}/${clinicId}`;
+export const viewDocumentRoute = (document_id: string) => `${FullRoutes.VIEW_DOCUMENT}/${document_id}`;
 export const viewFeedbackRoute = (feedbackId: string) => `${FullRoutes.VIEW_FEEDBACK}/${feedbackId}`;
-export const viewLogsRoute = (profile_id: string) => `${FullRoutes.VIEW_LOGS}/${profile_id}`;
 export const viewMaintenanceRoute = (maintenanceId: string) => `${FullRoutes.VIEW_MAINTENANCE}/${maintenanceId}`;
 export const viewProfileRoute = (profile_id: string) => `${FullRoutes.VIEW_PROFILE}/${profile_id}`;
 export const viewRequiredActionRoute = (required_action_id: string) => `${FullRoutes.VIEW_REQUIRED_ACTION}/${required_action_id}`;

@@ -12,30 +12,31 @@ import {
 } from 'nest-raven';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { BoatModule } from './boat/boat.module';
-import { ProfileModule } from './profile/profile.module';
-import { SailModule } from './sail/sail.module';
-import { SailRequestModule } from './sail-request/sail-request.module';
-import { SailManifestModule } from './sail-manifest/sail-manifest.module';
-import { CommentModule } from './comment/comment.module';
-import { BoatMaintenanceModule } from './boat-maintenance/boat-maintenance.module';
-import { MediaModule } from './media/media.module';
-import { RequiredActionModule } from './required-action/required-action.module';
-import { ClinicModule } from './clinic/clinic.module';
-import { SailFeedbackModule } from './sail-feedback/sail-feedback.module';
-import { BoatInstructionsModule } from './boat-instructions/boat-instructions.module';
-import { SailChecklistModule } from './sail-checklist/sail-checklist.module';
-import { ChallengeModule } from './challenge/challenge.module';
-import { UserModule } from './user/user.module';
-import { UserAccessModule } from './user-access/user-access.module';
-import { TokenModule } from './token/token.module';
-import { AuthModule } from './auth/auth.module';
-import { FirebaseAdminModule } from './firebase-admin/firebase-admin.module';
-import { SailRequestInterestModule } from './sail-request-interest/sail-request-interest.module';
 import { AchievementModule } from './achievement/achievement.module';
-import { SettingModule } from './setting/setting.module';
-import { EmailModule } from './email/email.module';
+import { AuthModule } from './auth/auth.module';
 import { BoatChecklistModule } from './boat-checklist/boat-checklist.module';
+import { BoatInstructionsModule } from './boat-instructions/boat-instructions.module';
+import { BoatMaintenanceModule } from './boat-maintenance/boat-maintenance.module';
+import { BoatModule } from './boat/boat.module';
+import { ChallengeModule } from './challenge/challenge.module';
+import { ClinicModule } from './clinic/clinic.module';
+import { CommentModule } from './comment/comment.module';
+import { DocumentModule } from './document/document.module';
+import { EmailModule } from './email/email.module';
+import { FirebaseAdminModule } from './firebase-admin/firebase-admin.module';
+import { MediaModule } from './media/media.module';
+import { ProfileModule } from './profile/profile.module';
+import { RequiredActionModule } from './required-action/required-action.module';
+import { SailChecklistModule } from './sail-checklist/sail-checklist.module';
+import { SailFeedbackModule } from './sail-feedback/sail-feedback.module';
+import { SailManifestModule } from './sail-manifest/sail-manifest.module';
+import { SailModule } from './sail/sail.module';
+import { SailRequestInterestModule } from './sail-request-interest/sail-request-interest.module';
+import { SailRequestModule } from './sail-request/sail-request.module';
+import { SettingModule } from './setting/setting.module';
+import { TokenModule } from './token/token.module';
+import { UserAccessModule } from './user-access/user-access.module';
+import { UserModule } from './user/user.module';
 
 const DB_LOGGING = [];
 
@@ -91,6 +92,7 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING);
     BoatModule,
     ChallengeModule,
     ClinicModule,
+    DocumentModule,
     CommentModule,
     EmailModule,
     FirebaseAdminModule,

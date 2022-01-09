@@ -1,0 +1,101 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>note_add</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >{{formTitle}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="CONTENT_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-action-row>
+      <button
+        (click)="createDocument()"
+        *ngIf="shouldEnableCreateButton"
+        mat-raised-button
+      >Create</button>
+      <button
+        (click)="saveDocument()"
+        *ngIf="shouldEnableSaveButton"
+        mat-raised-button
+      >Save</button>
+    </mat-action-row>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #CONTROLS_TEMPLATE>
+</ng-template>
+
+<ng-template #CONTENT_TEMPLATE>
+  <form
+    *ngIf="form"
+    [formGroup]="form"
+  >
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        id="titleInputLabel"
+      >Document title</mat-label>
+      <input
+        formControlName="title"
+        aria-labelledby="titleInputLabel"
+        matInput
+        type="text"
+      >
+    </mat-form-field>
+    <mat-error
+      tabindex="0"
+      *ngFor="let error of (form.pristine ? []: formErrors('title'))"
+    >{{error}}</mat-error>
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        id="descriptionInputLabel"
+      >Document description</mat-label>
+      <textarea
+        formControlName="description"
+        aria-labelledby="descriptionInputLabel"
+        matInput
+      ></textarea>
+    </mat-form-field>
+    <mat-error
+      tabindex="0"
+      *ngFor="let error of (form.pristine ? []: formErrors('description'))"
+    >{{error}}</mat-error>
+    <mat-form-field *ngIf="document_id">
+      <mat-label
+        aria-hidden="true"
+        id="fileLocationInputLabel"
+      >Document location</mat-label>
+      <input
+        aria-labelledby="fileLocationInputLabel"
+        formControlName="fileLocation"
+        matInput
+        type="text"
+      >
+    </mat-form-field>
+    <app-file-select
+      (action)="uploadFileToCDN($event)"
+      *ngIf="document_id"
+      [id]="documentInputId"
+      [multiple]="false"
+      [progress]="uploadProgress"
+      actionDescription="Choose document file to upload:"
+      actionName="Upload"
+      fileFilter=".pdf, .txt, .doc, .docx"
+      fileTypeLabel="document"
+      icon="note_add"
+      title="New Document Upload Form"
+    ></app-file-select>
+    <p
+      tabindex="0"
+      *ngIf="!document_id"
+    ><b>Note:</b> You will be able to upload document file after the document is created.</p>
+  </form>
+</ng-template>

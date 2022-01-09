@@ -81,7 +81,13 @@ export class FirebaseAdminService {
       await file.makePublic();
     }
 
-    return file.publicUrl();
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+
+    return await file.getSignedUrl({
+      action: 'read',
+      expires: date,
+    }).then(response => response[0]);
   }
 
   public async uploadCleanFile(prefix: string, filenameFolder: string, filename: string, contentType: string, stream) {

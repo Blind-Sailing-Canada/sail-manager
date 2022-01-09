@@ -1,0 +1,109 @@
+<mat-card *ngIf="document">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>menu_book</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >Document: {{document?.title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="CONTENT_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #CONTROLS_TEMPLATE>
+  <button
+    (click)="editDocument()"
+    *ngIf="shouldEnableEditButton"
+    mat-raised-button
+    title="Go to edit document page"
+  >Edit</button>
+</ng-template>
+
+<ng-template #CONTENT_TEMPLATE>
+  <app-table>
+    <tr
+      attr.aria-label="Title: {{document.title}}"
+      role="listitem"
+      tabindex="0"
+    >
+      <th aria-hidden="true">Title</th>
+      <td aria-hidden="true">
+        {{document.title}}
+      </td>
+    </tr>
+    <tr
+      attr.aria-label="Uploaded by: {{document.author? document.author.name: 'no one'}}"
+      role="listitem"
+      tabindex="0"
+    >
+      <th aria-hidden="true">Uploaded by</th>
+      <td
+        (click)="showProfileDialog(document.author)"
+        *ngIf="document.author"
+        aria-hidden="true"
+        class="clickable"
+      >
+        <app-profile-bullet [profile]="document.author"></app-profile-bullet>
+      </td>
+      <td
+        aria-hidden="true"
+        *ngIf="!document.author"
+      >not assigned</td>
+    </tr>
+    <tr
+      attr.aria-label="Created date: {{document.created_at | humanDate}}"
+      role="listitem"
+      tabindex="0"
+    >
+      <th aria-hidden="true">Created date</th>
+      <td aria-hidden="true">
+        {{document.created_at | humanDate}}
+      </td>
+    </tr>
+    <tr
+      attr.aria-label="Updated date: {{document.updated_at | humanDate}}"
+      role="listitem"
+      tabindex="0"
+    >
+      <th aria-hidden="true">Updated date</th>
+      <td aria-hidden="true">
+        {{document.updated_at | humanDate}}
+      </td>
+    </tr>
+    <tr
+      attr.aria-label="Document link: {{document.fileLocation}}"
+      role="listitem"
+      tabindex="0"
+    >
+      <th aria-hidden="true">Link</th>
+      <td aria-hidden="true">
+        <a
+          target="_blank"
+          href="{{document.fileLocation}}"
+          rel="noopener"
+        >{{document.fileLocation}}</a>
+      </td>
+    </tr>
+    <tr class="table-spacer">
+      <td colspan="2"></td>
+    </tr>
+    <tr>
+      <th colspan="2">Description</th>
+    </tr>
+    <tr>
+      <td
+        colspan="2"
+        class="table-description"
+      >
+        <pre>{{document.description}}</pre>
+      </td>
+    </tr>
+  </app-table>
+</ng-template>

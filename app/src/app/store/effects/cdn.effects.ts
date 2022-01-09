@@ -40,6 +40,7 @@ import {
   uploadBoatPicture,
   uploadChallengePicture,
   uploadDepartureInstructionsPicture,
+  uploadDocument,
   uploadError,
   uploadMaintenancePicture,
   uploadProfilePicture,
@@ -161,6 +162,35 @@ export class CDNEffects {
                 `Failed to upload maintenance picture: ${action.file.name}`,
                 null,
                 error => [uploadError({ error, fileName: action.file.name, message: 'Failed to upload pictures' })]))
+          )
+      ),
+      tap(() => this.store.dispatch(finishLoading())),
+    )
+  );
+
+  uploadDocument$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(uploadDocument),
+      tap(() => this.store.dispatch(startLoading())),
+      exhaustMap(
+        action => this.service
+          .uploadDocument(action.file, action.document_id)
+          .pipe(
+            concatMap((event: HttpEvent<string>) => {
+              const processResult = this.processHttpEvent(event, action.file, action.notify);
+
+              if (processResult) {
+                return processResult;
+              }
+
+              console.error(`unhandled http event: ${event.type}`);
+              return of(putSnack({ snack: { message: 'something went wrong...', type: SnackType.ERROR } }));
+            }),
+            catchError(
+              errorCatcher(
+                `Failed to upload document: ${action.file.name}`,
+                null,
+                error => [uploadError({ error, fileName: action.file.name, message: 'Failed to upload document' })]))
           )
       ),
       tap(() => this.store.dispatch(finishLoading())),
@@ -341,7 +371,7 @@ export class CDNEffects {
         if (notify) {
           return of(
             finishUploading({ fileName: file.name, url: event.body }),
-            putSnack({ snack: { message: 'Uploaded picture', type: SnackType.INFO } })
+            putSnack({ snack: { message: 'Uploaded file', type: SnackType.INFO } })
           );
         }
         return of(finishUploading({ fileName: file.name, url: event.body }));

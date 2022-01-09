@@ -10,10 +10,12 @@ export class FileSelectComponent {
   @Input() actionDescription: string;
   @Input() actionName: string;
   @Input() fileFilter: string;
+  @Input() fileTypeLabel = 'photo';
+  @Input() icon = 'add_a_photo';
+  @Input() id = 'fileInput';
   @Input() multiple: boolean;
   @Input() progress: number;
   @Input() title: string;
-  @Input() id = 'fileInput';
   @Output() action: EventEmitter<File[]> = new EventEmitter<File[]>();
 
   public selectedFiles: File[] = [];

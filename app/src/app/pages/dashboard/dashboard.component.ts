@@ -20,6 +20,7 @@ import {
   createSailRequestRoute,
   listChallengesRoute,
   listClinicsRoute,
+  listDocumentsRoute,
   sailRequestsRoute,
   sailsRoute,
   viewRequiredActionRoute,
@@ -66,6 +67,7 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   public allInProgressSails: Sail[] = [];
   public allPastSails: Sail[] = [];
   public clinicsLink = listClinicsRoute;
+  public documentsLink = listDocumentsRoute;
   public listChallengesLink = listChallengesRoute;
   public myInProgressSails: Sail[] = [];
   public myRequiredActions: RequiredAction[] = [];

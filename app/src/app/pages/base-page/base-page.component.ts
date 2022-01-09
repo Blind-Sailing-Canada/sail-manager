@@ -57,20 +57,23 @@ import {
   fetchBoat,
   fetchBoats,
 } from '../../store/actions/boat.actions';
+import { Boat } from '../../../../../api/src/types/boat/boat';
+import { BoatMaintenance } from '../../../../../api/src/types/boat-maintenance/boat-maintenance';
+import { Clinic } from '../../../../../api/src/types/clinic/clinic';
+import { Document } from '../../../../../api/src/types/document/document';
+import { DocumentState } from '../../models/document.state';
+import { Profile } from '../../../../../api/src/types/profile/profile';
+import { ProfileRole } from '../../../../../api/src/types/profile/profile-role';
+import { STORE_SLICES } from '../../store/store';
+import { SailChecklist } from '../../../../../api/src/types/sail-checklist/sail-checklist';
+import { SailRequest } from '../../../../../api/src/types/sail-request/sail-request';
 import { fetchClinic } from '../../store/actions/clinic.actions';
+import { fetchDocument } from '../../store/actions/document.actions';
 import { fetchProfile } from '../../store/actions/profile.actions';
+import { fetchSail } from '../../store/actions/sail.actions';
 import { fetchSailChecklist } from '../../store/actions/sail-checklist.actions';
 import { fetchSailRequest } from '../../store/actions/sail-request.actions';
-import { fetchSail } from '../../store/actions/sail.actions';
 import { putSnack } from '../../store/actions/snack.actions';
-import { STORE_SLICES } from '../../store/store';
-import { Boat } from '../../../../../api/src/types/boat/boat';
-import { SailChecklist } from '../../../../../api/src/types/sail-checklist/sail-checklist';
-import { Profile } from '../../../../../api/src/types/profile/profile';
-import { BoatMaintenance } from '../../../../../api/src/types/boat-maintenance/boat-maintenance';
-import { SailRequest } from '../../../../../api/src/types/sail-request/sail-request';
-import { Clinic } from '../../../../../api/src/types/clinic/clinic';
-import { ProfileRole } from '../../../../../api/src/types/profile/profile-role';
 
 @Component({
   template: ''
@@ -211,6 +214,10 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return (this.store[STORE_SLICES.CLINICS] || {}) as ClinicsState;
   }
 
+  public get documents(): DocumentState {
+    return (this.store[STORE_SLICES.DOCUMENTS] || {}) as DocumentState;
+  }
+
   public get profilesArray(): Profile[] {
     return Object.values<Profile>((this.store[STORE_SLICES.PROFILES] || {}).profiles || {} as IProfileMap).filter(profile => !!profile);
   }
@@ -269,6 +276,18 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
       return;
     }
     return this.clinics[id];
+  }
+
+  public getDocument(id: string): Document {
+    if (!id) {
+      return;
+    }
+
+    if (this.documents[id] === undefined) {
+      this.fetchDocument(id);
+      return;
+    }
+    return this.documents[id];
   }
 
   public getProfile(id: string): Profile {
@@ -399,6 +418,14 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     }
     this.fetching[id] = true;
     this.dispatchAction(fetchClinic({ clinicId: id }));
+  }
+
+  protected fetchDocument(id: string): void {
+    if (this.fetching[id]) {
+      return;
+    }
+    this.fetching[id] = true;
+    this.dispatchAction(fetchDocument({ id }));
   }
 
   protected fetchSail(id: string, options = {} as any): void {

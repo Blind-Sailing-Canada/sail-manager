@@ -50,6 +50,11 @@ export class CDNService {
     return this.uploadFile(endpoint, fileToUpload);
   }
 
+  public uploadDocument(fileToUpload: File, document_id: string): Observable<HttpEvent<string>> {
+    const endpoint = `documents/${document_id}/${fileToUpload.name}`;
+    return this.uploadFile(endpoint, fileToUpload);
+  }
+
   public uploadSailPicture(fileToUpload: File, sail_id: string): Observable<HttpEvent<string>> {
     const endpoint = `images/sails/${sail_id}/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);

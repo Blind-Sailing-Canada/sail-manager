@@ -182,7 +182,10 @@ export class FirebaseAdminController {
 
     this.service
       .getFileUrl(bucketPath)
-      .then(url => response.redirect(url))
+      .then(url => {
+        console.log('signed file url', url);
+        response.redirect(url);
+      })
       .catch((error) => {
         this.logError(error);
         response.status(404).send('not found');

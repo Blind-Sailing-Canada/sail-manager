@@ -1,6 +1,6 @@
 
 export interface Base {
-  id: string;
   created_at: Date;
+  id: string;
   updated_at: Date;
 }

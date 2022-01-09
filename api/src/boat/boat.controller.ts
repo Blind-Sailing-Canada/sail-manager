@@ -41,6 +41,7 @@ import { BoatService } from './boat.service';
     join: {
       checklist: { eager: true },
       instructions: { eager: true },
+      documents: { eager: true },
     },
   },
 })
