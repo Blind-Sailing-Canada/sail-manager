@@ -3,7 +3,7 @@ import {
   createReducer,
   on,
 } from '@ngrx/store';
-import { ChallengeState } from '../../models/challenge-state.interface';
+import { ChallengeState } from '../../models/challenge-state';
 import {
   putChallenge,
   putChallenges,

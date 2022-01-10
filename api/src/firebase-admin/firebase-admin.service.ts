@@ -132,16 +132,23 @@ export class FirebaseAdminService {
 
   public deleteFile(destination: string): Promise<string> {
     const lastSlash = destination.lastIndexOf('/');
-    const prefix = destination.substring(0, lastSlash).replace(/^cdn\/files\//, '');
+    const isProd = process.env.NODE_ENV === 'prod';
+
+    const prefix = `${isProd? '' : '/test'}${destination.substring(0, lastSlash).replace(/^cdn\/files\//, '')}/`;
 
     const storage: admin.storage.Storage = this.firebaseAdmin.storage();
     const bucket = storage.bucket();
 
+    console.log('Firebase trying to delete', prefix);
+
     return bucket
       .deleteFiles({
-        force: true,
+        force: true, //this no longer works for deleting entire folders?
         prefix,
       })
-      .then(() => 'deleted');
+      .then((response) => {
+        console.log('Firebase delete response:', response);
+        return 'deleted';
+      });
   }
 }

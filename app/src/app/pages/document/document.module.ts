@@ -16,9 +16,11 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { ProfileBulletModule } from '../../components/profile-bullet/profile-bullet.module';
 import { ProfileDialogModule } from '../../components/profile-dialog/profile-dialog.module';
 import { TableModule } from '../../components/table/table.module';
+import { DocumentBasePageComponent } from './document-base-page/document-base-page';
 
 @NgModule({
   declarations: [
+    DocumentBasePageComponent,
     DocumentEditPageComponent,
     DocumentListPageComponent,
     DocumentViewPageComponent,

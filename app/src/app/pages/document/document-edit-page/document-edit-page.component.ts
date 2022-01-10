@@ -15,18 +15,18 @@ import {
 import { Store } from '@ngrx/store';
 
 import { STORE_SLICES } from '../../../store/store';
-import { BasePageComponent } from '../../base-page/base-page.component';
 import { Document } from '../../../../../../api/src/types/document/document';
 import { createDocument, updateDocument } from '../../../store/actions/document.actions';
 import { CDN_ACTION_STATE, uploadDocument } from '../../../store/actions/cdn.actions';
 import { ICDNState } from '../../../models/cdn-state.interface';
+import { DocumentBasePageComponent } from '../document-base-page/document-base-page';
 
 @Component({
   selector: 'app-document-edit-page',
   templateUrl: './document-edit-page.component.html',
   styleUrls: ['./document-edit-page.component.css']
 })
-export class DocumentEditPageComponent extends BasePageComponent implements OnInit {
+export class DocumentEditPageComponent extends DocumentBasePageComponent implements OnInit {
 
   public document: Document;
   public document_id: string;
@@ -46,13 +46,15 @@ export class DocumentEditPageComponent extends BasePageComponent implements OnIn
   }
 
   ngOnInit() {
+    super.ngOnInit();
+
     if (!this.user) {
       return;
     }
 
     this.document_id = this.route.snapshot.params.document_id;
 
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.DOCUMENTS, (clinics) => {
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.DOCUMENTS, () => {
       this.document = this.getDocument(this.document_id);
 
       if (this.document) {
@@ -151,6 +153,8 @@ export class DocumentEditPageComponent extends BasePageComponent implements OnIn
       title: this.fb.control(null, Validators.required),
       description: this.fb.control(undefined, Validators.required),
       fileLocation: this.fb.control(undefined, this.document_id ? Validators.required : undefined),
+      documentable_type: this.fb.control(this.entity_type),
+      documentable_id: this.fb.control(this.entity_id),
     });
   }
 }

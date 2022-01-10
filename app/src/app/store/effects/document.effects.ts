@@ -16,7 +16,7 @@ import {
 } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SnackType } from '../../models/snack-state.interface';
-import { editDocumentRoute } from '../../routes/routes';
+import { editDocumentRoute, listDocumentsRoute } from '../../routes/routes';
 import { DocumentService } from '../../services/document.service';
 import { errorCatcher } from '../../utils/error-catcher';
 import {
@@ -26,10 +26,12 @@ import {
 } from '../actions/app.actions';
 import {
   createDocument,
+  deleteDocument,
   fetchDocument,
   fetchDocuments,
   putDocument,
   putDocuments,
+  removeDocument,
   updateDocument,
 } from '../actions/document.actions';
 import { putSnack } from '../actions/snack.actions';
@@ -81,13 +83,13 @@ export class DocumentEffects {
       ofType(fetchDocuments),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.documentService.fetchAll()
+        action => this.documentService.fetchAll(action.entity_type, action.entity_id)
           .pipe(
             mergeMap((documents) => {
               if (action.notify) {
                 return of(
                   putDocuments({ documents }),
-                  putSnack({ snack: { type: SnackType.INFO, message: 'refreshed' } }),
+                  putSnack({ snack: { type: SnackType.INFO, message: `Fetched ${documents.length} documents` } }),
                 );
               }
               return of(putDocuments({ documents }));
@@ -107,6 +109,24 @@ export class DocumentEffects {
           .pipe(
             map(document => putDocument({ document, id: action.id })),
             catchError(errorCatcher(`Failed to fetch document: ${action.id}`))
+          )),
+      tap(() => this.store.dispatch(finishLoading())),
+    ),
+  );
+
+  deleteDocument$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(deleteDocument),
+      tap(() => this.store.dispatch(startLoading())),
+      mergeMap(
+        action => this.documentService.delete(action.id)
+          .pipe(
+            mergeMap(
+              () => of(
+                goTo({ route: listDocumentsRoute(), actionToPerformAfter: removeDocument({ id: action.id }) }),
+              )
+            ),
+            catchError(errorCatcher(`Failed to delete document: ${action.id}`))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

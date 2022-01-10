@@ -4,7 +4,7 @@ import {
   Action,
 } from '@ngrx/store';
 import { DocumentState } from '../../models/document.state';
-import { putDocument, putDocuments, resetDocuments } from '../actions/document.actions';
+import { putDocument, putDocuments, removeDocument, resetDocuments } from '../actions/document.actions';
 
 const initialState = {} as DocumentState;
 
@@ -24,6 +24,13 @@ const reducerHandler = createReducer(
       );
 
     return Object.assign({}, state, map);
+  }),
+  on(removeDocument, (state, action) => {
+    const newState = {...state};
+
+    delete newState[action.id];
+
+    return newState;
   })
 );
 

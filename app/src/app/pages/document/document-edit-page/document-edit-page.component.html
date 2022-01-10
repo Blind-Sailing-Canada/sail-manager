@@ -8,6 +8,9 @@
       tabindex="0"
       role="heading"
     >{{formTitle}}</mat-card-title>
+    <mat-card-subtitle *ngIf="entity">
+      {{subheading}}
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
   <mat-card-content>
@@ -62,6 +65,9 @@
         formControlName="description"
         aria-labelledby="descriptionInputLabel"
         matInput
+        cdkAutosizeMaxRows="10"
+        cdkAutosizeMinRows="1"
+        cdkTextareaAutosize
       ></textarea>
     </mat-form-field>
     <mat-error

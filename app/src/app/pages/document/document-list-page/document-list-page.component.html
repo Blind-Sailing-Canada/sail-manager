@@ -8,6 +8,9 @@
       tabindex="0"
       role="heading"
     >Documents</mat-card-title>
+    <mat-card-subtitle *ngIf="entity">
+      {{subheading}}
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
   <mat-card-content>

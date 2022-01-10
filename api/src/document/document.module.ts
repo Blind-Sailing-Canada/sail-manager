@@ -4,11 +4,13 @@ import { AuthModule } from '../auth/auth.module';
 import { DocumentEntity } from './document.entity';
 import { DocumentController } from './document.controller';
 import { DocumentService } from './document.service';
+import { FirebaseAdminModule } from '../firebase-admin/firebase-admin.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([DocumentEntity]),
     AuthModule,
+    FirebaseAdminModule,
+    TypeOrmModule.forFeature([DocumentEntity]),
   ],
   controllers: [DocumentController],
   providers: [DocumentService],

@@ -30,7 +30,10 @@ export class AppEffects {
       ofType(goTo),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => of(this.router.navigate([action.route], action.data))
+        action => of(
+          this.router.navigate([action.route], action.data)
+            .then(() => action.actionToPerformAfter && this.store.dispatch(action.actionToPerformAfter))
+        )
         .pipe(
           catchError(errorCatcher(`Failed to navigate to ${action.route}.`))
         )

@@ -74,6 +74,9 @@ import { fetchSail } from '../../store/actions/sail.actions';
 import { fetchSailChecklist } from '../../store/actions/sail-checklist.actions';
 import { fetchSailRequest } from '../../store/actions/sail-request.actions';
 import { putSnack } from '../../store/actions/snack.actions';
+import { ChallengeState } from '../../models/challenge-state';
+import { fetchChallenge } from '../../store/actions/challenge.actions';
+import { Challenge } from '../../../../../api/src/types/challenge/challenge';
 
 @Component({
   template: ''
@@ -166,6 +169,11 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return this.store[STORE_SLICES.BOATS] || {} as IBoatMap;
   }
 
+  public get challenges(): ChallengeState {
+    return this.store[STORE_SLICES.CHALLENGES] || {} as ChallengeState;
+  }
+
+
   public get boatsArray(): Boat[] {
     return Object.values(this.boats);
   }
@@ -240,6 +248,18 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     }
 
     return sail;
+  }
+
+  public getChallenge(id: string): Challenge {
+    const challenge = this.challenges[id];
+
+    if (challenge) {
+      delete this.fetching[id];
+    } else if (challenge === undefined && !this.fetching[id]) {
+      this.fetchChallenge(id);
+    }
+
+    return challenge;
   }
 
   public getSailRequest(id: string): SailRequest {
@@ -432,6 +452,13 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     if (!this.fetching[id]) {
       this.fetching[id] = true;
       this.dispatchAction(fetchSail({ id, ...options }));
+    }
+  }
+
+  protected fetchChallenge(id: string, options = {} as any): void {
+    if (!this.fetching[id]) {
+      this.fetching[id] = true;
+      this.dispatchAction(fetchChallenge({ id, ...options }));
     }
   }
 

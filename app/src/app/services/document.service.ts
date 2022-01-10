@@ -5,6 +5,7 @@ import {
   Injectable,
 } from '@angular/core';
 import { Document } from '../../../../api/src/types/document/document';
+import { EntityType } from '../models/entity-type';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,16 @@ export class DocumentService {
     return this.http.get<Document>(`${this.API_URL}/${id}`);
   }
 
-  fetchAll(): Observable<Document[]> {
+  fetchAll(documentable_type?: EntityType, documentable_id?: string): Observable<Document[]> {
+    const query = {
+      documentable_id,
+      documentable_type
+    };
+
+    if (documentable_type && documentable_id) {
+      return this.http.get<Document[]>(`${this.API_URL}?s=${JSON.stringify(query)}`);
+    }
+
     return this.http.get<Document[]>(this.API_URL);
   }
 
@@ -27,11 +37,15 @@ export class DocumentService {
     return this.http.get<Document[]>(`${this.API_URL}?filter=name||$contL||${name}`);
   }
 
-  update(id: string, document: Partial<Document>): Observable<Document> {
-    return this.http.patch<Document>(`${this.API_URL}/${id}`, document);
+  update(document_id: string, document: Partial<Document>): Observable<Document> {
+    return this.http.patch<Document>(`${this.API_URL}/${document_id}`, document);
   }
 
   create(document: Partial<Document>): Observable<Document> {
     return this.http.post<Document>(`${this.API_URL}`, document);
+  }
+
+  delete(document_id: string): Observable<any>  {
+    return this.http.delete<any>(`${this.API_URL}/${document_id}`);
   }
 }

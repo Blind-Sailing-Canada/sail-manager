@@ -10,9 +10,11 @@ import {
 import { Store } from '@ngrx/store';
 import { Boat } from '../../../../../../api/src/types/boat/boat';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
+import { EntityType } from '../../../models/entity-type';
 import {
   editBoatChecklistRoute,
   editBoatRoute,
+  listDocumentsRoute,
   maintenanceRoute,
   sailChecklistsRoute,
   viewBoatInstructionsRoute,
@@ -48,6 +50,15 @@ export class BoatViewPageComponent extends BasePageComponent implements OnInit {
       [sailChecklistsRoute],
       {
         queryParams: { boat_id: this.boat_id, boatName: this.boat.name },
+      }
+    );
+  }
+
+  public goToBoatDocuments(): void {
+    this.goTo(
+      [listDocumentsRoute()],
+      {
+        queryParams: { entity_type: EntityType.Boat, entity_id: this.boat_id },
       }
     );
   }

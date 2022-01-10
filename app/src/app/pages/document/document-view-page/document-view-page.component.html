@@ -24,6 +24,12 @@
     mat-raised-button
     title="Go to edit document page"
   >Edit</button>
+  <button
+    (click)="delete()"
+    *ngIf="shouldEnableEditButton"
+    mat-raised-button
+    title="Delete this document"
+  >Delete</button>
 </ng-template>
 
 <ng-template #CONTENT_TEMPLATE>
@@ -73,9 +79,18 @@
       tabindex="0"
     >
       <th aria-hidden="true">Updated date</th>
-      <td aria-hidden="true">
-        {{document.updated_at | humanDate}}
-      </td>
+      <td aria-hidden="true">{{document.updated_at | humanDate}}</td>
+    </tr>
+    <tr
+      *ngIf="entity"
+      attr.aria-label="Assigned to : {{assignedTo}}"
+      role="listitem"
+      tabindex="0"
+      class="clickable"
+      (click)="goToEntity()"
+    >
+      <th aria-hidden="true">Assigned to</th>
+      <td aria-hidden="true">{{assignedTo}}</td>
     </tr>
     <tr
       attr.aria-label="Document link: {{document.fileLocation}}"
