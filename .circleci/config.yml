@@ -4,12 +4,12 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.1
-  # The heroku orb contains a set of prepackaged CircleCI configuration you can utilize to deploy applications to heroku
-  # Orbs reduce the amount of configuration required for common tasks.
-  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/heroku
-  # NOTE: Environment variables containing the necessary secrets can be setup in the CircleCI UI
-  # See here https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
-  heroku: circleci/heroku@1.2
+  # # The heroku orb contains a set of prepackaged CircleCI configuration you can utilize to deploy applications to heroku
+  # # Orbs reduce the amount of configuration required for common tasks.
+  # # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/heroku
+  # # NOTE: Environment variables containing the necessary secrets can be setup in the CircleCI UI
+  # # See here https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+  # heroku: circleci/heroku@1.2
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
       - image: cimg/node:14.17.3
         auth:
           username: $DOCKER_USER
-          password: $DOCKER_PASSWORD  # context / project UI env-var reference
+          password: $DOCKER_PASSWORD
     steps:
       - checkout
       - heroku/install
@@ -27,30 +27,39 @@ jobs:
 
       - run: docker --version
   
-      # build and push Docker image
-      - run: chmod +x ./build-docker.sh
+      # build and push Docker sail-manager-be
       - run: 
-          name: Build docker image
-          command: docker build -t bsac/sail-manager:$CIRCLE_SHA1 .
+          name: Build Docker sail-manager-be image
+          command: cd ./api && chmod +x ./build-docker.sh && docker build -t bsac/sail-manager-be:$CIRCLE_SHA1 .
       - run:
-          name: Push to DockerHub
+          name: Push sail-manager-be to DockerHub
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-            docker image push bsac/sail-manager:$CIRCLE_SHA1
+            docker image push bsac/sail-manager-be:$CIRCLE_SHA1
+      
+      # build and push Docker sail-manager-fe
+      - run: 
+          name: Build Docker sail-manager-fe image
+          command: cd ./app && chmod +x ./build-docker.sh && docker build -t bsac/sail-manager-fe:$CIRCLE_SHA1 .
+      - run:
+          name: Push sail-manager-fe to DockerHub
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+            docker image push bsac/sail-manager-be:$CIRCLE_SHA1
 
-      - heroku/push-docker-image:
-          process-types: web
-      - heroku/release-docker-image:
-          process-types: web
+      # HEROKU FLOW
+      # # build and push Docker image
+      # - run: chmod +x ./build-docker.sh
+      # - run: 
+      #     name: Build docker image
+      #     command: docker build -t bsac/sail-manager:$CIRCLE_SHA1 .
       # - run:
-      #     name: Deploy to Heroku
+      #     name: Push to DockerHub
       #     command: |
-      #       docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
-      #       docker tag bsac/sail-manager:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
-      #       docker push registry.heroku.com/$HEROKU_APP_NAME/web
-      # - run:
-      #     name: Release Heroku App
-      #     command: |
-      #       curl https://cli-assets.heroku.com/install.sh | sh
-      #       heroku container:login
-      #       heroku container:release -a bsac-sail-manager web
+      #       docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      #       docker image push bsac/sail-manager:$CIRCLE_SHA1
+
+      # - heroku/push-docker-image:
+      #     process-types: web
+      # - heroku/release-docker-image:
+      #     process-types: web

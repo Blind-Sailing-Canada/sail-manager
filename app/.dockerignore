@@ -1,0 +1,10 @@
+.env
+.eslintrc.js
+.git
+.gitignore
+.vscode
+README.md
+app
+cspell.config
+dist
+node_modules
