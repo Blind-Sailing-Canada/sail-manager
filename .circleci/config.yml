@@ -20,7 +20,7 @@ jobs:
           password: $DOCKER_PASSWORD
     steps:
       - checkout
-      - heroku/install
+      # - heroku/install
 
       - setup_remote_docker:
           version: 19.03.13
@@ -45,7 +45,7 @@ jobs:
           name: Push sail-manager-fe to DockerHub
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-            docker image push bsac/sail-manager-be:$CIRCLE_SHA1
+            docker image push bsac/sail-manager-fe:$CIRCLE_SHA1
 
       # HEROKU FLOW
       # # build and push Docker image
