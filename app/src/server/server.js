@@ -15,9 +15,14 @@ const jwt = require('express-jwt');
 const DIST_DIR = path.resolve('./app');
 
 const PORT = +process.env.PORT || 4000;
-const API_PORT = +process.env.API_PORT || 3000;
-const API_HOST = `http://localhost:${API_PORT}`;
-const CDN_HOST = `http://localhost:${API_PORT}`;
+
+const SAIL_MANAGER_BE_PORT = +process.env.SAIL_MANAGER_BE_PORT || 3000;
+const SAIL_MANAGER_BE_URL = process.env.SAIL_MANAGER_BE_URL || 'http://localhost'
+const CDN_HOST_URL = process.env.CDN_HOST_URL || 'http://localhost'
+const CDN_HOST_PORT = +process.env.SAIL_MANAGER_BE_PORT || 3000;
+
+const API_HOST = `${SAIL_MANAGER_BE_URL}:${SAIL_MANAGER_BE_PORT}`;
+const CDN_HOST = `${CDN_HOST_URL}:${CDN_HOST_PORT}`;
 
 const compression = require('compression');
 const express = require('express');
@@ -37,8 +42,8 @@ const sendFile = async (filepath, destination, authorizationHeader) => {
     form
       .submit(
         {
-          host: 'localhost',
-          port: API_PORT,
+          host: CDN_HOST_URL,
+          port: CDN_HOST_PORT,
           path: `/fba/upload/${destination}`,
           headers: {
             ...form.getHeaders(),
