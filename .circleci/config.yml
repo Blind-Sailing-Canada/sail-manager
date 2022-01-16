@@ -33,12 +33,11 @@ jobs:
           command: |
             cd ./api 
             chmod +x ./build-docker.sh 
-            docker build -t bsac/sail-manager-be:$CIRCLE_SHA1 .
+            docker build -t bsac/sail-manager-be:latest .
       - run:
           name: Push sail-manager-be to DockerHub
           command: |
             echo -n "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
-            docker image push bsac/sail-manager-be:$CIRCLE_SHA1
             docker image push bsac/sail-manager-be:latest
       
       # build and push Docker sail-manager-fe
@@ -48,12 +47,11 @@ jobs:
             cp -r ./api ./app/api
             cd ./app
             chmod +x ./build-docker.sh
-            docker build -t bsac/sail-manager-fe:$CIRCLE_SHA1 .
+            docker build -t bsac/sail-manager-fe:latest .
       - run:
           name: Push sail-manager-fe to DockerHub
           command: |
             echo -n "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
-            docker image push bsac/sail-manager-fe:$CIRCLE_SHA1
             docker image push bsac/sail-manager-fe:latest
 
       # HEROKU FLOW
