@@ -94,7 +94,13 @@ app
     return next()
   })
   .use(Sentry.Handlers.requestHandler())
-  .use(sslRedirect.default())
+
+
+  if (process.env.NODE_ENV === 'prod') {
+    app.use(sslRedirect.default())
+  }
+
+  app
   .use(compression())
   .use(express.json())
   .use(fileUpload({
