@@ -14,20 +14,20 @@ export class BaseQueueProcessor {
 
   @OnQueueError()
   onQueueError(error: Error) {
-    this.logger.log('OnQueueError HANDLER');
+    this.logger.log('OnQueueError HANDLER', error);
     Sentry.captureException(error);
   }
 
   @OnQueueFailed()
   onError(job: Job, error) {
-    this.logger.log('OnQueueFailed HANDLER');
+    this.logger.log('OnQueueFailed HANDLER', error);
     Sentry.captureException(error);
     this.logger.error(`Failed job ${job.id} of type ${job.name}: ${error.message}`, error.stack);
   }
 
   @OnGlobalQueueError()
   onGlobalError(job: Job, error) {
-    this.logger.log('OnGlobalQueueError HANDLER');
+    this.logger.log('OnGlobalQueueError HANDLER', error);
     Sentry.captureException(error);
     this.logger.error(`Failed job ${job.id} of type ${job.name}: ${error.message}`, error.stack);
   }

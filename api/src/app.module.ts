@@ -59,7 +59,7 @@ const DB_CONNECTION_META: ConnectionOptions = {
   namingStrategy: new SnakeNamingStrategy(),
 };
 
-const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING);
+const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\n'));
 
 @Module({
   imports: [
