@@ -47,7 +47,7 @@ if (process.env.NODE_ENV !== 'prod'){
 
 const DB_CONNECTION_META: ConnectionOptions = {
   type: process.env.DB_TYPE as any,
-  url: process.env.DB_CONNECTION_STRING,
+  url: process.env.DB_CONNECTION_STRING.replace(/\\n/gm, '\n'),
   logging: DB_LOGGING,
   entities: [
     // '**/*.entity.ts', // when debugging
