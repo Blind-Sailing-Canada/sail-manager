@@ -2,6 +2,8 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+console.log('process.env', process.env)
+
 const sslRedirect = require('heroku-ssl-redirect');
 
 const Sentry = require("@sentry/node");
