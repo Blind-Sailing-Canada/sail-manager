@@ -31,9 +31,9 @@ jobs:
       - run: 
           name: Build Docker sail-manager-be image
           command: |
-          cd ./api 
-          chmod +x ./build-docker.sh 
-          docker build -t bsac/sail-manager-be:$CIRCLE_SHA1 .
+            cd ./api 
+            chmod +x ./build-docker.sh 
+            docker build -t bsac/sail-manager-be:$CIRCLE_SHA1 .
       - run:
           name: Push sail-manager-be to DockerHub
           command: |
@@ -44,10 +44,10 @@ jobs:
       - run: 
           name: Build Docker sail-manager-fe image
           command: |
-          cp -r ./api ./app/api
-          cd ./app
-          chmod +x ./build-docker.sh
-          docker build -t bsac/sail-manager-fe:$CIRCLE_SHA1 .
+            cp -r ./api ./app/api
+            cd ./app
+            chmod +x ./build-docker.sh
+            docker build -t bsac/sail-manager-fe:$CIRCLE_SHA1 .
       - run:
           name: Push sail-manager-fe to DockerHub
           command: |
