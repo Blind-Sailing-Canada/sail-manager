@@ -1,6 +1,6 @@
 export const jwtConstants = {
   expiresIn: +process.env.JWT_EXPIRES_IN,
-  secret: process.env.JWT_SECRET,
+  secret: process.env.JWT_SECRET.replace(/\\n/gm, '\n'),
 };
 
 export const googleConstants = {
