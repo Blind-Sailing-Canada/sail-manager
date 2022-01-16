@@ -101,7 +101,7 @@ export class AuthService {
 
     await this.emailService.sendToEmail({
       to: [email],
-      subject: `${process.env.COMPANY_NAME_SHORT_HEADER}: reset password`,
+      subject: 'COMPANY_NAME_SHORT_HEADER: reset password',
       content: `
         <h1>Hello, ${name}!</h1>
         <p>Blind Sailing of Canada Association has create a new account for created for you which you can use to sign up for sails.</p>
