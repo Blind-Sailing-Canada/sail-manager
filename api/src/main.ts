@@ -18,6 +18,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AllExceptionFilter } from './utils/all-exception.filter';
 import { LoggingInterceptor } from './utils/logging.interceptor';
 
+console.log('process.env', process.env);
+
 async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
