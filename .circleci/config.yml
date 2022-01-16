@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Push sail-manager-be to DockerHub
           command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+            echo -n "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
             docker image push bsac/sail-manager-be:$CIRCLE_SHA1
       
       # build and push Docker sail-manager-fe
@@ -51,7 +51,7 @@ jobs:
       - run:
           name: Push sail-manager-fe to DockerHub
           command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+            echo -n "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
             docker image push bsac/sail-manager-fe:$CIRCLE_SHA1
 
       # HEROKU FLOW
