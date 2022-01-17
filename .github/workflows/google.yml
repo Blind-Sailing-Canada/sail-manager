@@ -63,6 +63,7 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |-
+        cp -r ./api ./app/api
         cd ./app
         docker build \
           --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$FE_IMAGE:$GITHUB_SHA" \
