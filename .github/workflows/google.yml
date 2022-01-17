@@ -22,17 +22,19 @@ env:
   GAR_LOCATION: ${{ secrets.GAR_LOCATION }}
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
-  DEPLOYMENT_NAME: ${{ secrets.DEPLOYMENT_NAME }}
   REPOSITORY: ${{ secrets.REPOSITORY }}
-  IMAGE: ${{ secrets.IMAGE }}
+  BE_DEPLOYMENT_NAME: ${{ secrets.BE_DEPLOYMENT_NAME }}
+  BE_IMAGE: ${{ secrets.BE_IMAGE }}
+  FE_DEPLOYMENT_NAME: ${{ secrets.FE_DEPLOYMENT_NAME }}
+  FE_IMAGE: ${{ secrets.FE_IMAGE }}
 
 permissions:
     contents: 'read'
     id-token: 'write'
 
 jobs:
-  setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+  setup-build-publish-deploy-be:
+    name: BE Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     environment: production
 
@@ -62,15 +64,16 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |-
+        cd ./api
         docker build \
-          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
+          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$BE_IMAGE:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
     # Push the Docker image to Google Artifact Registry
     - name: Publish
       run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$BE_IMAGE:$GITHUB_SHA"
     # Set up kustomize
     - name: Set up Kustomize
       run: |-
@@ -80,7 +83,7 @@ jobs:
     - name: Deploy
       run: |-
         # replacing the image name in the k8s template
-        ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
+        ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$BE_IMAGE:$GITHUB_SHA
         ./kustomize build . | kubectl apply -f -
-        kubectl rollout status deployment/$DEPLOYMENT_NAME
+        kubectl rollout status deployment/$BE_DEPLOYMENT_NAME
         kubectl get services -o wide
