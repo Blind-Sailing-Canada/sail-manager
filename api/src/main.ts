@@ -96,7 +96,7 @@ async function bootstrap() {
     return next();
   });
 
-  const API_PORT = +process.env.API_PORT || 3000;
+  const API_PORT = +process.env.API_PORT || +process.env.SAIL_MANAGER_BE_PORT || 8081;
 
   if (process.env.NODE_ENV !== 'prod') {
     const options = new DocumentBuilder()
