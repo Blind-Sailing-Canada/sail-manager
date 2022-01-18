@@ -16,12 +16,12 @@ const jwt = require('express-jwt');
 
 const DIST_DIR = path.resolve('./app');
 
-const PORT = +process.env.PORT || 4000;
+const PORT = +process.env.PORT || +process.env.SAIL_MANAGER_FE_PORT || 8080;
 
-const SAIL_MANAGER_BE_PORT = +process.env.SAIL_MANAGER_BE_PORT || 3000;
+const SAIL_MANAGER_BE_PORT = +process.env.SAIL_MANAGER_BE_PORT || 8081;
 const SAIL_MANAGER_BE_URL = process.env.SAIL_MANAGER_BE_URL || 'http://localhost'
 const CDN_HOST_URL = process.env.CDN_HOST_URL || 'http://localhost'
-const CDN_HOST_PORT = +process.env.SAIL_MANAGER_BE_PORT || 3000;
+const CDN_HOST_PORT = +process.env.SAIL_MANAGER_BE_PORT || 8081;
 
 const API_HOST = `${SAIL_MANAGER_BE_URL}:${SAIL_MANAGER_BE_PORT}`;
 const CDN_HOST = `${CDN_HOST_URL}:${CDN_HOST_PORT}`;
