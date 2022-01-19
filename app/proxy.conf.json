@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://localhost:3000",
+    "target": "http://localhost:8081",
     "secure": false,
     "pathRewrite": {
       "^/api": ""
@@ -9,7 +9,7 @@
     "logLevel": "debug"
   },
   "/cdn": {
-    "target": "http://localhost:3000/fba",
+    "target": "http://localhost:8081/fba",
     "secure": false,
     "pathRewrite": {
       "^/cdn/upload/": "/upload/test/",

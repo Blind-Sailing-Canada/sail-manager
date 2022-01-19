@@ -37,16 +37,9 @@ export class AuthController {
   ) { }
 
   @Get('firebase-public-config')
-  getFirebasePublicConfig(): Promise<any> {
-    const config = {
-      apiKey: process.env.FIREBASE_PUBLIC_CONFIG_API_KEY,
-      appId: process.env.FIREBASE_PUBLIC_CONFIG_APP_ID,
-      authDomain: process.env.FIREBASE_PUBLIC_CONFIG_AUTH_DOMAIN,
-      databaseURL: process.env.FIREBASE_PUBLIC_CONFIG_DATABASE_URL,
-      messagingSenderId: process.env.FIREBASE_PUBLIC_CONFIG_MESSAGING_SENDER_ID,
-      projectId: process.env.FIREBASE_PUBLIC_CONFIG_PROJECT_ID,
-      storageBucket: process.env.FIREBASE_PUBLIC_CONFIG_STORAGE_BUCKET,
-    };
+  getFirebasePublicConfig() {
+    const base64Confirg = Buffer.from(process.env.FIREBASE_CONFIG_BASE64, 'base64');
+    const config = JSON.parse(base64Confirg.toString('utf-8'));
 
     return Promise.resolve(config);
   }

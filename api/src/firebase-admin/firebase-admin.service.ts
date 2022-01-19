@@ -5,7 +5,6 @@ import { GetFilesOptions } from '@google-cloud/storage';
 import {
   Injectable, NotFoundException
 } from '@nestjs/common';
-import { ServiceAccount } from 'firebase-admin';
 import { DOMAIN } from '../auth/constants';
 
 @Injectable()
@@ -13,20 +12,17 @@ export class FirebaseAdminService {
   private readonly firebaseAdmin;
 
   constructor() {
+    const adminBase64Confirg = Buffer.from(process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_BASE64, 'base64');
+    const adminConfig = JSON.parse(adminBase64Confirg.toString('utf-8'));
 
-    const serviceAccount: ServiceAccount = {
-      projectId: process.env.FIREBASE_ADMIN_SDK_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_ADMIN_SDK_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_ADMIN_SDK_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    };
+    const fireBaseBase64Confirg = Buffer.from(process.env.FIREBASE_CONFIG_BASE64, 'base64');
+    const fireBaseConfig = JSON.parse(fireBaseBase64Confirg.toString('utf-8'));
 
-    this.firebaseAdmin = admin
-      .initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: process.env.FIREBASE_DATABASE_URL,
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-      });
-
+    this.firebaseAdmin = admin.initializeApp({
+      credential: admin.credential.cert(adminConfig),
+      databaseURL: process.env.FIREBASE_DATABASE_URL,
+      storageBucket: fireBaseConfig.storageBucket,
+    });
   }
 
   public createAdminUser() {
