@@ -1,9 +1,10 @@
 {
-  "name": "sail-manager-app",
-  "description": "fontend for sail manager",
-  "version": "1.0.0",
+  "author": "it@blindsailing.ca",
+  "description": "frontend for sail manager",
   "license": "MIT",
+  "name": "sail-manager-app",
   "private": true,
+  "version": "1.0.0",
   "scripts": {
     "build": "yarn build:app && yarn build:server",
     "build:app": "ng build --configuration production --stats-json",
@@ -83,7 +84,7 @@
     }
   },
   "engines": {
-    "yarn": "^1.19.1",
-    "node": "^14.0.0"
+    "yarn": "^1.22.17",
+    "node": "^16.0.0"
   }
 }
