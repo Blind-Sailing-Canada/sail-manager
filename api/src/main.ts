@@ -70,7 +70,11 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(session(sess));
   app.use((req, res, next) => {
-    if (req.originalUrl.startsWith('/fba/upload/images/')){
+    if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/images/')){
+      return next();
+    }
+
+    if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/documents/')){
       return next();
     }
 
