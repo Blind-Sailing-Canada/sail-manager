@@ -20,7 +20,6 @@ export class FirebaseAdminService {
 
     this.firebaseAdmin = admin.initializeApp({
       credential: admin.credential.cert(adminConfig),
-      databaseURL: process.env.FIREBASE_DATABASE_URL,
       storageBucket: fireBaseConfig.storageBucket,
     });
   }
