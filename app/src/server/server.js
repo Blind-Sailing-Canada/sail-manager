@@ -2,8 +2,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-console.log('process.env', process.env)
-
 const sslRedirect = require('heroku-ssl-redirect');
 
 const Sentry = require("@sentry/node");
@@ -119,10 +117,14 @@ app
     let allowed = false;
 
     switch(req.files.file.mimetype) {
+      case 'application/octet-stream': // word docx
+      case 'application/pdf':
+      case 'application/rtf':
+      case 'image/gif':
       case 'image/jpeg':
       case 'image/jpg':
       case 'image/png':
-      case 'image/gif':
+      case 'text/plain':
         allowed = true;
         break;
       default:
@@ -130,7 +132,7 @@ app
     }
 
     if (!allowed) {
-      return res.status(400).send('File type not allowed.');
+      return res.status(400).send(`File type not allowed: req.files.file.mimetype.`);
     }
 
     const destination = req.originalUrl.substring(12);
