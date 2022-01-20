@@ -154,6 +154,17 @@ app
     )
       .then((url) => {
         console.log('GOT URL ', url);
+
+        try {
+          const jsonUrl = typeof url === 'object' ? url : JSON.parse(url)
+
+          if (jsonUrl.message) {
+            return res.status(500).send(jsonUrl.message)
+          }
+        } catch (error) {
+          console.error(error)
+        }
+
         res.send(url)
       })
       .catch(err => {
