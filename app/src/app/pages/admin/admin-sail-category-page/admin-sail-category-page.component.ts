@@ -54,7 +54,7 @@ export class AdminSailCategoryPageComponent extends BasePageComponent implements
   }
 
   public removeSailCategory(category: SailCategory): void {
-    this.dispatchAction(deleteSailCategory({ id: category.id }));
+    this.dispatchAction(deleteSailCategory({ sail_category_id: category.id }));
   }
 
   private buildForm(): void {

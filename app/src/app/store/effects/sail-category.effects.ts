@@ -43,7 +43,7 @@ export class SailCategoryEffects {
           action => this.sailCategoryService.create(action.category)
             .pipe(
               mergeMap(createdSailCategory => of(
-                putSailCategory({ category: createdSailCategory, id: createdSailCategory.id }),
+                putSailCategory({ category: createdSailCategory, sail_category_id: createdSailCategory.id }),
                 putSnack({ snack: { type: SnackType.INFO, message: 'Sail category created.' } }),
               )),
               catchError(errorCatcher('Failed to create sail category.'))
@@ -59,13 +59,13 @@ export class SailCategoryEffects {
         ofType(deleteSailCategory),
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
-          action => this.sailCategoryService.delete(action.id)
+          action => this.sailCategoryService.delete(action.sail_category_id)
             .pipe(
               mergeMap(() => of(
-                removeSailCategory({ id: action.id }),
+                removeSailCategory({ sail_category_id: action.sail_category_id }),
                 putSnack({ snack: { type: SnackType.INFO, message: 'Sail category deleted.' } }),
               )),
-              catchError(errorCatcher(`'Failed to delete sail category ${action.id}.`))
+              catchError(errorCatcher(`'Failed to delete sail category ${action.sail_category_id}.`))
             )
         ),
         tap(() => this.store.dispatch(finishLoading())),

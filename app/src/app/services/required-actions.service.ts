@@ -12,7 +12,7 @@ export class RequiredActionsService {
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  public fetchNewRequiredActionsForUser(userId: string): Observable<RequiredAction[]> {
+  public fetchNewRequiredActionsForUser(user_id: string): Observable<RequiredAction[]> {
     return this.http
     .get<RequiredAction[]>(
       `${this.API_URL}/my-required-actions`);

@@ -59,8 +59,11 @@
         id="descriptionInputLabel"
       >Clinic description</mat-label>
       <textarea
-        formControlName="description"
         aria-labelledby="descriptionInputLabel"
+        cdkAutosizeMaxRows="10"
+        cdkAutosizeMinRows="1"
+        cdkTextareaAutosize
+        formControlName="description"
         matInput
       ></textarea>
     </mat-form-field>

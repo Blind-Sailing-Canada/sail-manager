@@ -49,13 +49,13 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .fetchClinic(action.clinicId)
+          .fetchClinic(action.clinic_id)
           .pipe(
             concatMap(returnedClinic => of(
-              putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
+              putClinic({ clinic_id: action.clinic_id, clinic: returnedClinic }),
               action.notify && putSnack({ snack: { message: 'Fetched clinic.', type: SnackType.INFO } })
             )),
-            catchError(errorCatcher(`Failed to fetch clinic ${action.clinicId}.`))
+            catchError(errorCatcher(`Failed to fetch clinic ${action.clinic_id}.`))
           )
       ),
       filter(action => action && action.type),
@@ -92,7 +92,7 @@ export class ClinicsEffects {
           .createClinic(action.clinic)
           .pipe(
             concatMap(returnedClinic => of(
-              putClinic({ clinicId: returnedClinic.id, clinic: returnedClinic }),
+              putClinic({ clinic_id: returnedClinic.id, clinic: returnedClinic }),
               goTo({ route: editClinicRoute(returnedClinic.id) }),
               action.notify && putSnack({ snack: { message: 'Created clinic.', type: SnackType.INFO } })
             )),
@@ -110,13 +110,13 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .updateClinic(action.clinicId, action.clinic)
+          .updateClinic(action.clinic_id, action.clinic)
           .pipe(
             concatMap(returnedClinic => of(
-              putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
+              putClinic({ clinic_id: action.clinic_id, clinic: returnedClinic }),
               action.notify && putSnack({ snack: { message: 'Updated clinic.', type: SnackType.INFO } })
             )),
-            catchError(errorCatcher(`Failed to update clinic ${action.clinicId}.`))
+            catchError(errorCatcher(`Failed to update clinic ${action.clinic_id}.`))
           )
       ),
       filter(action => action && action.type),
@@ -130,10 +130,10 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .enrollInClinic(action.clinicId, action.profile_id)
+          .enrollInClinic(action.clinic_id, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
-              putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
+              putClinic({ clinic_id: action.clinic_id, clinic: returnedClinic }),
               action.notify && putSnack({ snack: { message: 'Enrolled in clinic.', type: SnackType.INFO } })
             )),
             catchError(errorCatcher('Failed to enroll in clinic.'))
@@ -150,10 +150,10 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .leaveClinic(action.clinicId, action.profile_id)
+          .leaveClinic(action.clinic_id, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
-              putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
+              putClinic({ clinic_id: action.clinic_id, clinic: returnedClinic }),
               action.notify && putSnack({ snack: { message: 'Left clinic.', type: SnackType.INFO } })
             )),
             catchError(errorCatcher('Failed to leave clinic.'))
@@ -170,10 +170,10 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .addUserToClinic(action.clinicId, action.profile_id)
+          .addUserToClinic(action.clinic_id, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
-              putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
+              putClinic({ clinic_id: action.clinic_id, clinic: returnedClinic }),
               action.notify && putSnack({ snack: { message: 'Added user to clinic.', type: SnackType.INFO } })
             )),
             catchError(errorCatcher('Failed to add user to clinic.'))
@@ -190,10 +190,10 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .removeUserToClinic(action.clinicId, action.profile_id)
+          .removeUserToClinic(action.clinic_id, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
-              putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
+              putClinic({ clinic_id: action.clinic_id, clinic: returnedClinic }),
               action.notify && putSnack({ snack: { message: 'Removed user from clinic.', type: SnackType.INFO } })
             )),
             catchError(errorCatcher('Failed to remove user from clinic.'))
@@ -210,10 +210,10 @@ export class ClinicsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.service
-          .graduateUserFromClinic(action.clinicId, action.profile_id)
+          .graduateUserFromClinic(action.clinic_id, action.profile_id)
           .pipe(
             concatMap(returnedClinic => of(
-              putClinic({ clinicId: action.clinicId, clinic: returnedClinic }),
+              putClinic({ clinic_id: action.clinic_id, clinic: returnedClinic }),
               action.notify && putSnack({ snack: { message: 'Graduated user from clinic.', type: SnackType.INFO } })
             )),
             catchError(errorCatcher('Failed to graduate user from clinic.'))

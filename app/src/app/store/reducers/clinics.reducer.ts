@@ -16,7 +16,7 @@ const initialState: ClinicsState = {
 const reducerHandler = createReducer(
   initialState,
   on(resetClinics, () => initialState),
-  on(putClinic, (state, action) => Object.assign({}, state, { [action.clinicId]: action.clinic })),
+  on(putClinic, (state, action) => Object.assign({}, state, { [action.clinic_id]: action.clinic })),
   on(putClinics, (state, action) => {
     const newClinics = action.clinics
       .reduce(

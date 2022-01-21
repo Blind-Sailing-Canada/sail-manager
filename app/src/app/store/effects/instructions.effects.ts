@@ -73,7 +73,7 @@ export class InstructionsEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.instructionsService
-          .updateInstructions(action.id, action.instructions)
+          .updateInstructions(action.instruction_id, action.instructions)
           .pipe(
             mergeMap((instructions) => {
               if (action.notify) {
@@ -84,7 +84,7 @@ export class InstructionsEffects {
               }
               return of(putInstructions({ instructions }));
             }),
-            catchError(errorCatcher(`Failed to update instructions ${action.id}.`))
+            catchError(errorCatcher(`Failed to update instructions ${action.instruction_id}.`))
           )
       ),
       tap(() => this.store.dispatch(finishLoading())),
@@ -103,10 +103,10 @@ export class InstructionsEffects {
               if (action.notify) {
                 return of(
                   putSnack({ snack: { message: 'Updated boat instructions', type: SnackType.INFO } }),
-                  putBoat({ boat, id: action.boat_id }),
+                  putBoat({ boat, boat_id: action.boat_id }),
                 );
               }
-              return of(putBoat({ boat, id: action.boat_id }));
+              return of(putBoat({ boat, boat_id: action.boat_id }));
             }),
             catchError(errorCatcher(`Failed to update boat instructions ${action.boat_id}.`))
           )

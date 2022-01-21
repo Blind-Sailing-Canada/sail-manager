@@ -35,7 +35,7 @@ import { Clinic } from '../../../../../../api/src/types/clinic/clinic';
 export class ClinicEditPageComponent extends BasePageComponent implements OnInit {
 
   public clinic: Clinic;
-  public clinicId: string;
+  public clinic_id: string;
   public filteredInstructors: Profile[] = [];
   public form: FormGroup;
   public instructors: Profile[] = [];
@@ -58,14 +58,14 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
       return;
     }
 
-    this.clinicId = this.route.snapshot.params.clinicId;
+    this.clinic_id = this.route.snapshot.params.clinic_id;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES, () => {
       this.instructors = this.profilesArray;
       this.filterInstructors(this.instructorFilterText, false);
     });
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CLINICS, (clinics) => {
-      this.clinic = this.getClinic(this.clinicId);
+      this.clinic = this.getClinic(this.clinic_id);
 
       if (this.clinic) {
         this.updateForm();
@@ -116,11 +116,11 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
   }
 
   public get shouldEnableCreateButton(): boolean {
-    return !this.clinicId && this.form && this.form.valid && this.form.dirty;
+    return !this.clinic_id && this.form && this.form.valid && this.form.dirty;
   }
 
   public get shouldEnableSaveButton(): boolean {
-    return this.clinicId && this.form && this.form.valid && this.form.dirty;
+    return this.clinic_id && this.form && this.form.valid && this.form.dirty;
   }
 
   public createClinic(): void {
@@ -134,7 +134,7 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
   }
 
   public get formTitle(): string {
-    return this.clinicId ? 'Edit Clinic Form' : 'New Clinic Form';
+    return this.clinic_id ? 'Edit Clinic Form' : 'New Clinic Form';
   }
 
   public saveClinic(): void {
@@ -153,7 +153,7 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
       clinic.badge = (clinic.badge as any as string[])[0];
     }
 
-    this.dispatchAction(updateClinic({ clinic, clinicId: this.clinicId, notify: true }));
+    this.dispatchAction(updateClinic({ clinic, clinic_id: this.clinic_id, notify: true }));
   }
 
   private getIcons(): void {

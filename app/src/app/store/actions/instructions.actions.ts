@@ -22,7 +22,7 @@ export const putInstructions = createAction(
   INSTRUCTIONS_ACTION_TYPES.PUT_INSTRUCTIONS, props<{ instructions: any | any[] }>());
 export const resetInstructions = createAction(INSTRUCTIONS_ACTION_TYPES.RESET);
 export const updateInstructions = createAction(
-  INSTRUCTIONS_ACTION_TYPES.UPDATE_INSTRUCTIONS, props<{ id: string; instructions: any; notify?: boolean }>());
+  INSTRUCTIONS_ACTION_TYPES.UPDATE_INSTRUCTIONS, props<{ instruction_id: string; instructions: any; notify?: boolean }>());
 export const updateBoatInstructions = createAction(
   INSTRUCTIONS_ACTION_TYPES.UPDATE_BOAT_INSTRUCTIONS,
-  props<{ boat_id: string; instructions: { [instructionId: string]: Partial<BoatInstructions> }; notify?: boolean }>());
+  props<{ boat_id: string; instructions: { [instruction_id: string]: Partial<BoatInstructions> }; notify?: boolean }>());

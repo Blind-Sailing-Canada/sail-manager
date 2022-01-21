@@ -41,10 +41,10 @@ export class FeedbackEffects {
       ofType(fetchFeedback),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.service.fetchFeedback(action.feedbackId)
+        action => this.service.fetchFeedback(action.feedback_id)
           .pipe(
-            concatMap(returnedFeedback => of(putFeedback({ feedbackId: action.feedbackId, feedback: returnedFeedback }))),
-            catchError(errorCatcher(`Failed to fetch feedback ${action.feedbackId}.`))
+            concatMap(returnedFeedback => of(putFeedback({ feedback_id: action.feedback_id, feedback: returnedFeedback }))),
+            catchError(errorCatcher(`Failed to fetch feedback ${action.feedback_id}.`))
           )
       ),
       tap(() => this.store.dispatch(finishLoading())),
@@ -75,7 +75,7 @@ export class FeedbackEffects {
         action => this.service.submitFeedback(action.feedback)
           .pipe(
             concatMap(returnedFeedback => of(
-              putFeedback({ feedbackId: returnedFeedback.id, feedback: returnedFeedback }),
+              putFeedback({ feedback_id: returnedFeedback.id, feedback: returnedFeedback }),
               action.completeRequiredAction,
               action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Feedback submitted.' } }),
               goTo({ route: '/' }),

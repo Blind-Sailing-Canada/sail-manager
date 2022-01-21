@@ -12,11 +12,11 @@ import { ChallengeViewPageComponent } from './challenge-view-page/challenge-view
 
 const routes: Routes = [
   {
-    path: `${SubRoutes.VIEW_CHALLENGE}/:challengeId`,
+    path: `${SubRoutes.VIEW_CHALLENGE}/:challenge_id`,
     component: ChallengeViewPageComponent,
   },
   {
-    path: `${SubRoutes.EDIT_CHALLENGE}/:challengeId`,
+    path: `${SubRoutes.EDIT_CHALLENGE}/:challenge_id`,
     canActivate: [EditChallengeGuard],
     component: ChallengeEditPageComponent,
   },

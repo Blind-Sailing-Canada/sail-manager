@@ -15,7 +15,7 @@ const initialState: ChallengeState = {};
 const reducerHandler = createReducer(
   initialState,
   on(resetChallenges, () => initialState),
-  on(putChallenge, (state, action) => Object.assign({}, state, { [action.challengeId]: action.challenge } as ChallengeState)),
+  on(putChallenge, (state, action) => Object.assign({}, state, { [action.challenge_id]: action.challenge } as ChallengeState)),
   on(putChallenges, (state, action) => {
     const mappedChallenges = action
       .challenges

@@ -14,9 +14,10 @@ export enum FEEDBACK_ACTION_TYPES {
   SUBMIT_FEEDBACK = '[Feedback] Submit feedback',
 }
 
-export const fetchFeedback = createAction(FEEDBACK_ACTION_TYPES.FETCH_FEEDBACK, props<{feedbackId: string}>());
+export const fetchFeedback = createAction(FEEDBACK_ACTION_TYPES.FETCH_FEEDBACK, props<{feedback_id: string}>());
 export const fetchFeedbacksForSail = createAction(FEEDBACK_ACTION_TYPES.FETCH_FEEDBACKS_FOR_SAIL, props<{sail_id: string}>());
-export const putFeedback = createAction(FEEDBACK_ACTION_TYPES.PUT_FEEDBACK, props<{feedbackId: string; feedback: Partial<SailFeedback>}>());
+export const putFeedback = createAction(
+  FEEDBACK_ACTION_TYPES.PUT_FEEDBACK, props<{feedback_id: string; feedback: Partial<SailFeedback>}>());
 export const putFeedbacks = createAction(FEEDBACK_ACTION_TYPES.PUT_FEEDBACKS, props<{feedbacks: Partial<SailFeedback>[]}>());
 export const resetFeedback = createAction(FEEDBACK_ACTION_TYPES.RESET);
 export const submitFeedback = createAction(

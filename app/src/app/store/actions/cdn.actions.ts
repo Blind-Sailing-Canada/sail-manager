@@ -53,6 +53,6 @@ export const uploadArrivalInstructionsPicture = createAction(
 export const uploadSailPicture = createAction(
   CDN_ACTION_TYPES.UPLOAD_SAIL_PICTURE, props<{ file: File; sail_id: string; notify?: boolean }>());
 export const uploadChallengePicture = createAction(
-  CDN_ACTION_TYPES.UPLOAD_CHALLENGE_PICTURE, props<{ file: File; challengeId: string; notify?: boolean }>());
+  CDN_ACTION_TYPES.UPLOAD_CHALLENGE_PICTURE, props<{ file: File; challenge_id: string; notify?: boolean }>());
 export const uploadBoatMaintenancePicture = createAction(
-  CDN_ACTION_TYPES.UPLOAD_BOAT_MAINTENANCE_PICTURE, props<{ file: File; maintenanceId: string; notify?: boolean }>());
+  CDN_ACTION_TYPES.UPLOAD_BOAT_MAINTENANCE_PICTURE, props<{ file: File; boat_maintenance_id: string; notify?: boolean }>());

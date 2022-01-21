@@ -106,7 +106,7 @@ export class DocumentViewPageComponent extends BasePageComponent implements OnIn
   }
 
   public delete(): void {
-    this.dispatchAction(deleteDocument({id: this.document_id}));
+    this.dispatchAction(deleteDocument({document_id: this.document_id}));
   }
 
 }

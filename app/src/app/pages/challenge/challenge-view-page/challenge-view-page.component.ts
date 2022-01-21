@@ -23,7 +23,8 @@ import { UserAccessFields } from '../../../../../../api/src/types/user-access/us
 import { ChallengeCompleteDialogComponent } from '../../../components/challenge-complete-dialog/challenge-complete-dialog.component';
 import { ICDNState } from '../../../models/cdn-state.interface';
 import { ChallengeCompleteDialogData } from '../../../models/challenge-complete-dialog-data.interface';
-import { editChallengeRoute } from '../../../routes/routes';
+import { EntityType } from '../../../models/entity-type';
+import { editChallengeRoute, listDocumentsRoute } from '../../../routes/routes';
 import {
   CDN_ACTION_STATE,
   deleteFile,
@@ -49,7 +50,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class ChallengeViewPageComponent extends BasePageComponent implements OnInit {
 
-  public challengeId: string;
+  public challenge_id: string;
   public challenge: Challenge;
   public challengeActiveParticipants: ChallengeParticipant[];
   public challengeFinishedParticipants: ChallengeParticipant[];
@@ -74,10 +75,10 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
   }
 
   ngOnInit() {
-    this.challengeId = this.route.snapshot.params.challengeId;
+    this.challenge_id = this.route.snapshot.params.challenge_id;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CHALLENGES, () => {
-      this.challenge = this.store[STORE_SLICES.CHALLENGES][this.challengeId];
+      this.challenge = this.store[STORE_SLICES.CHALLENGES][this.challenge_id];
 
       if (!this.challenge) {
         return;
@@ -169,7 +170,7 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
 
     });
 
-    this.dispatchAction(fetchChallenge({ challengeId: this.challengeId }));
+    this.dispatchAction(fetchChallenge({ challenge_id: this.challenge_id }));
   }
 
   public openChallengeCompleteDialog(challenger: Profile): void {
@@ -177,7 +178,7 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
       challenger,
       challenge: this.challenge,
       result: '',
-      submit: (challengeId, challengerId, result) => this.challengeAccomplished(challengeId, challengerId, result),
+      submit: (challenge_id, challengerId, result) => this.challengeAccomplished(challenge_id, challengerId, result),
     };
 
     this.dialog
@@ -211,16 +212,16 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
 
   public uploadNewPicture(pictures: File[]): void {
     this.fileToUpload = pictures[0];
-    this.dispatchAction(uploadChallengePicture({ file: pictures[0], challengeId: this.challengeId, notify: true }));
+    this.dispatchAction(uploadChallengePicture({ file: pictures[0], challenge_id: this.challenge_id, notify: true }));
   }
 
   public editChallenge(): void {
-    this.goTo([editChallengeRoute(this.challengeId)]);
+    this.goTo([editChallengeRoute(this.challenge_id)]);
   }
 
   public deletePicture(picture: Media): void {
     this.dispatchAction(deleteFile({ filePath: picture.url, notify: true }));
-    this.dispatchAction(deleteChallengePicture({ challengeId: this.challengeId, pictureId: picture.id }));
+    this.dispatchAction(deleteChallengePicture({ challenge_id: this.challenge_id, picture_id: picture.id }));
   }
 
   public get shouldAllowSaveButton(): boolean {
@@ -230,31 +231,41 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
   public save(): void {
     const pictures: Media[] = this.picturesForm.value.pictures;
 
-    this.dispatchAction(postChallengePictures({ pictures, challengeId: this.challengeId, notify: true }));
+    this.dispatchAction(postChallengePictures({ pictures, challenge_id: this.challenge_id, notify: true }));
   }
 
   public postNewComment(comment: Comment): void {
-    this.dispatchAction(postChallengeComment({ comment, challengeId: this.challengeId, notify: true }));
+    this.dispatchAction(postChallengeComment({ comment, challenge_id: this.challenge_id, notify: true }));
   }
 
-  public deleteComment(commentId: string): void {
-    this.dispatchAction(deleteChallengeComment({ commentId, challengeId: this.challengeId, notify: true }));
+  public deleteComment(comment_id: string): void {
+    this.dispatchAction(deleteChallengeComment({ comment_id, challenge_id: this.challenge_id, notify: true }));
   }
 
   public joinThisChallenge(): void {
-    this.dispatchAction(joinChallenge({ challengeId: this.challengeId, notify: true }));
+    this.dispatchAction(joinChallenge({ challenge_id: this.challenge_id, notify: true }));
   }
 
   public leaveThisChallenge(): void {
-    this.dispatchAction(leaveChallenge({ challengeId: this.challengeId, notify: true }));
+    this.dispatchAction(leaveChallenge({ challenge_id: this.challenge_id, notify: true }));
   }
 
   public get canEditNewChallenge() {
     return !!this.user.access[UserAccessFields.EditChallenge];
   }
 
-  private challengeAccomplished(challengeId: string, challengerId: string, note: string): void {
-    this.dispatchAction(completeUserChallenge({ challengerId, note, challengeId, notify: true }));
+  public goToClinicDocuments(): void {
+    this.goTo(
+      [listDocumentsRoute()],
+      {
+        queryParams: { entity_type: EntityType.Challenge, entity_id: this.challenge_id },
+      }
+    );
+  }
+
+
+  private challengeAccomplished(challenge_id: string, challengerId: string, note: string): void {
+    this.dispatchAction(completeUserChallenge({ challengerId, note, challenge_id, notify: true }));
   }
 
   private buildForm(): void {

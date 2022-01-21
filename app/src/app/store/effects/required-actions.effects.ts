@@ -40,10 +40,10 @@ export class RequiredActionsEffects {
       ofType(fetchNewRequiredActionsForUser),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.service.fetchNewRequiredActionsForUser(action.userId)
+        action => this.service.fetchNewRequiredActionsForUser(action.user_id)
           .pipe(
             concatMap(returnedActions => of(putRequiredActions({ actions: returnedActions }))),
-            catchError(errorCatcher(`Failed to fetch required actions for user ${action.userId}.`))
+            catchError(errorCatcher(`Failed to fetch required actions for user ${action.user_id}.`))
           )
       ),
       tap(() => this.store.dispatch(finishLoading())),

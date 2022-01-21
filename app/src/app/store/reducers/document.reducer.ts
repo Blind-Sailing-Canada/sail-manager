@@ -11,7 +11,7 @@ const initialState = {} as DocumentState;
 const reducerHandler = createReducer(
   initialState,
   on(resetDocuments, () => initialState),
-  on(putDocument, (state, action) => Object.assign({}, state, { [action.id]: action.document })),
+  on(putDocument, (state, action) => Object.assign({}, state, { [action.document_id]: action.document })),
   on(putDocuments, (state, action) => {
     const map = action
       .documents
@@ -28,7 +28,7 @@ const reducerHandler = createReducer(
   on(removeDocument, (state, action) => {
     const newState = {...state};
 
-    delete newState[action.id];
+    delete newState[action.document_id];
 
     return newState;
   })

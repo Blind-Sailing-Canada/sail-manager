@@ -103,7 +103,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
         if (sail === undefined && !this.fetching[this.sail_id]) {
           this.fetching[this.sail_id] = true;
-          this.dispatchAction(fetchSail({ id: this.sail_id }));
+          this.dispatchAction(fetchSail({ sail_id: this.sail_id }));
           return;
         }
 

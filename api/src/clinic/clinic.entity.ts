@@ -11,6 +11,7 @@ import { ClinicAttendanceEntity } from './clinic-attendance.entity';
 import { Clinic } from '../types/clinic/clinic';
 import { ClinicStatus } from '../types/clinic/clinic-status';
 import { ProfileEntity } from '../profile/profile.entity';
+import { DocumentEntity } from '../document/document.entity';
 
 @Entity('clinics')
 export class ClinicEntity extends BaseModelEntity implements Clinic {
@@ -21,6 +22,12 @@ export class ClinicEntity extends BaseModelEntity implements Clinic {
   })
   @Index('clinics_name')
   name: string;
+
+  @Column({
+    default: ClinicEntity.name,
+    nullable: false,
+  })
+  entity_type: string
 
   @Column()
   description: string;
@@ -67,4 +74,11 @@ export class ClinicEntity extends BaseModelEntity implements Clinic {
 
   @OneToMany(() => ClinicAttendanceEntity, attendance => attendance.clinic, { eager: true })
   attendance: ClinicAttendanceEntity[];
+
+  @OneToMany(() => DocumentEntity, (document) => document.clinic, {
+    createForeignKeyConstraints: false,
+    nullable: true,
+    eager: true,
+  })
+  documents: DocumentEntity[]
 }

@@ -11,8 +11,9 @@ import {
 import { Store } from '@ngrx/store';
 import { Clinic } from '../../../../../../api/src/types/clinic/clinic';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
+import { EntityType } from '../../../models/entity-type';
 import {
-  editClinicRoute,
+  editClinicRoute, listDocumentsRoute,
 } from '../../../routes/routes';
 import {
   enrollInClinic,
@@ -31,7 +32,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 export class ClinicViewPageComponent extends BasePageComponent implements OnInit {
 
   public clinic: Clinic;
-  public clinicId: string;
+  public clinic_id: string;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -47,16 +48,25 @@ export class ClinicViewPageComponent extends BasePageComponent implements OnInit
       return;
     }
 
-    this.clinicId = this.route.snapshot.params.clinicId;
+    this.clinic_id = this.route.snapshot.params.clinic_id;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CLINICS, () => {
-      this.clinic = (this.store[STORE_SLICES.CLINICS] || {})[this.clinicId];
+      this.clinic = (this.store[STORE_SLICES.CLINICS] || {})[this.clinic_id];
 
-      if (this.clinicId && this.clinic === undefined) {
-        this.clinic = this.getClinic(this.clinicId);
+      if (this.clinic_id && this.clinic === undefined) {
+        this.clinic = this.getClinic(this.clinic_id);
       }
     });
+  }
+
+  public goToClinicDocuments(): void {
+    this.goTo(
+      [listDocumentsRoute()],
+      {
+        queryParams: { entity_type: EntityType.Clinic, entity_id: this.clinic_id },
+      }
+    );
   }
 
   public get shouldEnableEditButton(): boolean {
@@ -64,7 +74,7 @@ export class ClinicViewPageComponent extends BasePageComponent implements OnInit
   }
 
   public editClinic(): void {
-    this.goTo([editClinicRoute(this.clinicId)]);
+    this.goTo([editClinicRoute(this.clinic_id)]);
   }
 
   public get shouldEnableEnrollButton(): boolean {
@@ -72,11 +82,11 @@ export class ClinicViewPageComponent extends BasePageComponent implements OnInit
   }
 
   public enrollInClinic(): void {
-    this.dispatchAction(enrollInClinic({ clinicId: this.clinicId, profile_id: this.user.profile.id, notify: true }));
+    this.dispatchAction(enrollInClinic({ clinic_id: this.clinic_id, profile_id: this.user.profile.id, notify: true }));
   }
 
   public disenrollFromClinic(): void {
-    this.dispatchAction(leaveClinic({ clinicId: this.clinicId, profile_id: this.user.profile.id, notify: true }));
+    this.dispatchAction(leaveClinic({ clinic_id: this.clinic_id, profile_id: this.user.profile.id, notify: true }));
   }
 
   public get shouldEnableDisenrollButton(): boolean {
@@ -84,11 +94,11 @@ export class ClinicViewPageComponent extends BasePageComponent implements OnInit
   }
 
   public removeUserFromClinic(profile_id: string): void {
-    this.dispatchAction(removeUserFromClinic({ profile_id, clinicId: this.clinicId, notify: true }));
+    this.dispatchAction(removeUserFromClinic({ profile_id, clinic_id: this.clinic_id, notify: true }));
   }
 
   public graduateUserFromClinic(profile_id: string): void {
-    this.dispatchAction(graduateUserFromClinic({ profile_id, clinicId: this.clinicId, notify: true }));
+    this.dispatchAction(graduateUserFromClinic({ profile_id, clinic_id: this.clinic_id, notify: true }));
   }
 
   public get shouldEnableEditEnrollmentButton(): boolean {

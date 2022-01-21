@@ -45,7 +45,7 @@ export class SailChecklistEffects {
           .pipe(
             mergeMap(checklist => of(
               putSnack({ snack: { type: SnackType.INFO, message: 'Sail checklist created!' } }),
-              putSailChecklist({ checklist, id: checklist.id })
+              putSailChecklist({ checklist, sail_checklist_id: checklist.id })
             )),
             catchError(errorCatcher('Failed to create sail checklist')),
           )),
@@ -58,14 +58,14 @@ export class SailChecklistEffects {
       ofType(updateSailChecklist),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailChecklistService.update(action.id, action.checklist)
+        action => this.sailChecklistService.update(action.sail_checklist_id, action.checklist)
           .pipe(
             mergeMap(checklist => of(
-              putSailChecklist({ checklist, id: action.id }),
+              putSailChecklist({ checklist, sail_checklist_id: action.sail_checklist_id }),
               ...(action.updateActions || []),
               putSnack({ snack: { type: SnackType.INFO, message: 'Saved' } }),
             )),
-            catchError(errorCatcher(`Failed to update sail checklist: ${action.id}`)),
+            catchError(errorCatcher(`Failed to update sail checklist: ${action.sail_checklist_id}`)),
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),
@@ -93,19 +93,22 @@ export class SailChecklistEffects {
       ofType(fetchSailChecklist),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailChecklistService.fetchOne(action.id)
+        action => this.sailChecklistService.fetchOne(action.sail_checklist_id)
           .pipe(
             mergeMap((checklist) => {
               if (action.notify) {
                 return of(
-                  putSailChecklist({ checklist, id: action.id }),
+                  putSailChecklist({ checklist, sail_checklist_id: action.sail_checklist_id }),
                   putSnack({ snack: { type: SnackType.INFO, message: 'refreshed' } }),
                 );
               }
-              return of(putSailChecklist({ checklist, id: action.id }));
+              return of(putSailChecklist({ checklist, sail_checklist_id: action.sail_checklist_id }));
             }),
             catchError(
-              errorCatcher(`Failed to fetch sail checklist: ${action.id}`, [putSailChecklist({ checklist: null, id: action.id })])),
+              errorCatcher(
+                `Failed to fetch sail checklist: ${action.sail_checklist_id}`,
+                [putSailChecklist({ checklist: null, sail_checklist_id: action.sail_checklist_id })],
+                )),
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

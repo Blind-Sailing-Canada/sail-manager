@@ -58,7 +58,7 @@ export class CDNEffects {
       tap(() => this.store.dispatch(startLoading())),
       exhaustMap(
         action => this.service
-          .uploadChallengePicture(action.file, action.challengeId)
+          .uploadChallengePicture(action.file, action.challenge_id)
           .pipe(
             concatMap((event: HttpEvent<string>) => {
               const processResult = this.processHttpEvent(event, action.file, action.notify);
@@ -87,7 +87,7 @@ export class CDNEffects {
       tap(() => this.store.dispatch(startLoading())),
       exhaustMap(
         action => this.service
-          .uploadBoatMaintenancePicture(action.file, action.maintenanceId)
+          .uploadBoatMaintenancePicture(action.file, action.boat_maintenance_id)
           .pipe(
             concatMap((event: HttpEvent<string>) => {
               const processResult = this.processHttpEvent(event, action.file, action.notify);

@@ -193,7 +193,7 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
     const boat: Boat = formData as Boat;
 
     if (this.boat_id) {
-      this.dispatchAction(updateBoat({ boat, id: this.boat_id, }));
+      this.dispatchAction(updateBoat({ boat, boat_id: this.boat_id, }));
     } else {
       this.dispatchAction(createBoat({ boat }));
     }

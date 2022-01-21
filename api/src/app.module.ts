@@ -54,8 +54,8 @@ const DB_CONNECTION_META: ConnectionOptions = {
     '**/*.entity.js',
   ],
   synchronize: process.env.DB_SYNCHRONIZE === 'true',
-  ssl: true,
-  extra: { ssl: { rejectUnauthorized: false } },
+  // ssl: process.env.NODE_ENV === 'prod',
+  // extra: { ssl: { rejectUnauthorized: false } },
   namingStrategy: new SnakeNamingStrategy(),
 };
 

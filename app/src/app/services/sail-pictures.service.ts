@@ -21,8 +21,8 @@ export class SailPicturesService {
     return this.http.put<Media[]>(this.API_URL(sail_id), pictures);
   }
 
-  public deletePicture(sail_id: string, pictureId: string): Observable<Media[]> {
-    return this.http.delete<Media[]>(`${this.API_URL(sail_id)}/${pictureId}`);
+  public deletePicture(sail_id: string, picture_id: string): Observable<Media[]> {
+    return this.http.delete<Media[]>(`${this.API_URL(sail_id)}/${picture_id}`);
   }
 
   private readonly API_URL = (sail_id: string) => `/api/sail/${sail_id}/pictures`;

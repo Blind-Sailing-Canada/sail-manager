@@ -1,4 +1,4 @@
-<h4 *ngIf="maintenances[maintenanceId] === null">
+<h4 *ngIf="maintenances[boat_maintenance_id] === null">
   Looks like this maintenance request is missing.
 </h4>
 <mat-card *ngIf="maintenance">
@@ -181,48 +181,50 @@
 <ng-template #TemplateRequestPictures>
   <mat-accordion>
     <mat-expansion-panel>
-  <mat-expansion-panel-header><h4 tabindex="0">Pictures</h4></mat-expansion-panel-header>
-  <div>
-    <mat-slide-toggle
-      color="warn"
-      [(ngModel)]="allowDelete"
-    >Delete Mode</mat-slide-toggle>
-  </div>
-  <app-image-list
-    (deleteClick)="deletePicture($event)"
-    (goToProfile)="showProfileDialog($event)"
-    [allowDelete]="allowDelete"
-    [pictures]="maintenance.pictures"
-    [showAuthor]="true"
-    [user]="user"
-  ></app-image-list>
-  <app-image-form
-    (deleteClick)="deleteCDNFile($event)"
-    [allowDescription]="true"
-    [allowTitle]="true"
-    [allowDelete]="true"
-    [form]="picturesForm"
-    controlArrayName="pictures"
-  ></app-image-form>
-  <app-file-select
-    (action)="uploadNewPicture($event)"
-    [id]="maintenancePictureInput"
-    [multiple]="false"
-    [progress]="uploadProgress"
-    actionDescription="Upload pictures of related to this boat maintenance"
-    actionName="Upload"
-    fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp"
-    title="Upload pictures of related to this boat maintenance"
-  ></app-file-select>
-  <mat-action-row>
-    <button
-      (click)="save()"
-      *ngIf="shouldAllowSaveButton"
-      mat-raised-button
-    >Post pictures</button>
-  </mat-action-row>
-</mat-expansion-panel>
-</mat-accordion>
+      <mat-expansion-panel-header>
+        <h4 tabindex="0">Pictures</h4>
+      </mat-expansion-panel-header>
+      <div>
+        <mat-slide-toggle
+          color="warn"
+          [(ngModel)]="allowDelete"
+        >Delete Mode</mat-slide-toggle>
+      </div>
+      <app-image-list
+        (deleteClick)="deletePicture($event)"
+        (goToProfile)="showProfileDialog($event)"
+        [allowDelete]="allowDelete"
+        [pictures]="maintenance.pictures"
+        [showAuthor]="true"
+        [user]="user"
+      ></app-image-list>
+      <app-image-form
+        (deleteClick)="deleteCDNFile($event)"
+        [allowDescription]="true"
+        [allowTitle]="true"
+        [allowDelete]="true"
+        [form]="picturesForm"
+        controlArrayName="pictures"
+      ></app-image-form>
+      <app-file-select
+        (action)="uploadNewPicture($event)"
+        [id]="maintenancePictureInput"
+        [multiple]="false"
+        [progress]="uploadProgress"
+        actionDescription="Upload pictures of related to this boat maintenance"
+        actionName="Upload"
+        fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp"
+        title="Upload pictures of related to this boat maintenance"
+      ></app-file-select>
+      <mat-action-row>
+        <button
+          (click)="save()"
+          *ngIf="shouldAllowSaveButton"
+          mat-raised-button
+        >Post pictures</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
 </ng-template>
 
 <ng-template #TemplateRequestComments>

@@ -16,11 +16,11 @@ const routes: Routes = [
     redirectTo: SubRoutes.LIST_CLINICS,
   },
   {
-    path: `${SubRoutes.VIEW_CLINIC}/:clinicId`,
+    path: `${SubRoutes.VIEW_CLINIC}/:clinic_id`,
     component: ClinicViewPageComponent,
   },
   {
-    path: `${SubRoutes.EDIT_CLINIC}/:clinicId`,
+    path: `${SubRoutes.EDIT_CLINIC}/:clinic_id`,
     canActivate: [EditClinicGuard],
     component: ClinicEditPageComponent,
   },

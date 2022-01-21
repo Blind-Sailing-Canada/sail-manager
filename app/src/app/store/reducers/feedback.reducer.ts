@@ -34,7 +34,7 @@ const reducerHandler = createReducer(
   }),
   on(putFeedback, (state, action) => {
     const existingFeedback = Object.assign({}, state.feedbacks);
-    existingFeedback[action.feedbackId] = action.feedback as SailFeedback;
+    existingFeedback[action.feedback_id] = action.feedback as SailFeedback;
     return Object.assign({}, state, { feedbacks: existingFeedback } as FeedbackState);
   }),
 );

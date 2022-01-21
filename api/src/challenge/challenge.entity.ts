@@ -10,6 +10,7 @@ import { Challenge } from '../types/challenge/challenge';
 import { ChallengeStatus } from '../types/challenge/challenge-status';
 import { CommentEntity } from '../comment/comment.entity';
 import { MediaEntity } from '../media/media.entity';
+import { DocumentEntity } from '../document/document.entity';
 
 @Entity('challenges')
 export class ChallengeEntity extends BaseModelEntity implements Challenge {
@@ -73,4 +74,11 @@ export class ChallengeEntity extends BaseModelEntity implements Challenge {
     eager: true,
   })
   pictures: MediaEntity[];
+
+  @OneToMany(() => DocumentEntity, (document) => document.challenge, {
+    createForeignKeyConstraints: false,
+    nullable: true,
+    eager: true,
+  })
+  documents: DocumentEntity[]
 }

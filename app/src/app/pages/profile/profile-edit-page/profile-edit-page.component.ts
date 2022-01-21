@@ -122,7 +122,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   public save(): void {
     if (this.profile.status === ProfileStatus.Registration) {
       const profile = this.profileForm.getRawValue();
-      this.dispatchAction(updateProfileInfo({ profile, id: this.profile_id }));
+      this.dispatchAction(updateProfileInfo({ profile, profile_id: this.profile_id }));
       return;
     }
 
@@ -137,7 +137,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
         },
         {}
       ) as any;
-    this.dispatchAction(updateProfileInfo({ id: this.profile_id, profile: changedValue, notify: true }));
+    this.dispatchAction(updateProfileInfo({ profile_id: this.profile_id, profile: changedValue, notify: true }));
   }
 
   public get isNewRegistration(): boolean {

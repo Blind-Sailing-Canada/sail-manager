@@ -13,6 +13,7 @@ import { ChallengeEntity } from '../challenge/challenge.entity';
 import { CommentEntity } from '../comment/comment.entity';
 import { Document } from '../types/document/document';
 import { ProfileEntity } from '../profile/profile.entity';
+import { ClinicEntity } from '../clinic/clinic.entity';
 
 @Entity('documents')
 @Index([
@@ -70,6 +71,19 @@ export class DocumentEntity extends BaseModelEntity implements Document  {
     },
   ])
   boat: BoatEntity
+
+  @ManyToOne(() => ClinicEntity, () => null, { createForeignKeyConstraints: false })
+  @JoinColumn([
+    {
+      name: 'documentable_id',
+      referencedColumnName: 'id',
+    },
+    {
+      name: 'documentable_type',
+      referencedColumnName: 'entity_type',
+    },
+  ])
+  clinic: ClinicEntity
 
   @ManyToOne(() => ChallengeEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([

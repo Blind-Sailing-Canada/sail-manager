@@ -38,7 +38,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class MaintenanceViewPageComponent extends BasePageComponent implements OnInit {
 
-  public maintenanceId: string;
+  public boat_maintenance_id: string;
   public fileToDelete: string;
   public fileToUpload: File;
   public pictures: Media[];
@@ -59,7 +59,7 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
   }
 
   ngOnInit() {
-    this.maintenanceId = this.route.snapshot.params.id;
+    this.boat_maintenance_id = this.route.snapshot.params.id;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.BOAT_MAINTENANCES, () => {
       (this.picturesForm.get('pictures') as FormArray).clear();
@@ -136,11 +136,11 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
   }
 
   public get editMaintenanceLink(): string {
-    return editMaintenanceRoute(this.maintenanceId);
+    return editMaintenanceRoute(this.boat_maintenance_id);
   }
 
   public get resolveMaintenanceLink(): string {
-    return resolveMaintenanceRoute(this.maintenanceId);
+    return resolveMaintenanceRoute(this.boat_maintenance_id);
   }
 
   public get title(): string {
@@ -153,25 +153,25 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
   }
 
   public get maintenance(): BoatMaintenance {
-    if (!this.maintenanceId) {
+    if (!this.boat_maintenance_id) {
       return;
     }
 
-    const request = this.maintenances[this.maintenanceId];
+    const request = this.maintenances[this.boat_maintenance_id];
 
     if (request === undefined) {
-      this.fetchBoatMaintenance(this.maintenanceId);
+      this.fetchBoatMaintenance(this.boat_maintenance_id);
     }
 
     return request;
   }
 
   public postNewComment(comment: Comment): void {
-    this.dispatchAction(postBoatMaintenanceComment({ comment, id: this.maintenanceId, notify: true }));
+    this.dispatchAction(postBoatMaintenanceComment({ comment, boat_maintenance_id: this.boat_maintenance_id, notify: true }));
   }
 
-  public deleteComment(commentId: string): void {
-    this.dispatchAction(deleteBoatMaintenanceComment({ commentId, maintenanceId: this.maintenanceId, notify: true }));
+  public deleteComment(comment_id: string): void {
+    this.dispatchAction(deleteBoatMaintenanceComment({ comment_id, boat_maintenance_id: this.boat_maintenance_id, notify: true }));
   }
 
   public get shouldEnableEditButton(): boolean {
@@ -189,17 +189,17 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
 
   public uploadNewPicture(pictures: File[]): void {
     this.fileToUpload = pictures[0];
-    this.dispatchAction(uploadBoatMaintenancePicture({ file: pictures[0], maintenanceId: this.maintenanceId, notify: true }));
+    this.dispatchAction(uploadBoatMaintenancePicture({ file: pictures[0], boat_maintenance_id: this.boat_maintenance_id, notify: true }));
   }
 
   public deletePicture(picture: Media): void {
-    this.dispatchAction(deleteBoatMaintenancePicture({ maintenanceId: this.maintenanceId, pictureId: picture.id }));
+    this.dispatchAction(deleteBoatMaintenancePicture({ boat_maintenance_id: this.boat_maintenance_id, picture_id: picture.id }));
   }
 
   public save(): void {
     const pictures: Media[] = this.picturesForm.value.pictures;
 
-    this.dispatchAction(postBoatMaintenancePictures({ pictures, maintenanceId: this.maintenanceId, notify: true }));
+    this.dispatchAction(postBoatMaintenancePictures({ pictures, boat_maintenance_id: this.boat_maintenance_id, notify: true }));
   }
 
   public get shouldAllowSaveButton(): boolean {

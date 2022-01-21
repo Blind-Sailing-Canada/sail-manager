@@ -29,13 +29,17 @@ export class BoatInstructionsViewPageComponent extends BoatInstructionsBasePageC
   public save(): void {
     if (this.departureChanged) {
       this.dispatchAction(
-        updateInstructions({ id: this.departure.id, instructions: { instructions: this.departure.instructions }, notify: true }),
+        updateInstructions({
+          instruction_id: this.departure.id,
+          instructions: { instructions: this.departure.instructions },
+          notify: true,
+        }),
       );
     }
 
     if (this.arrivalChanged) {
       this.dispatchAction(
-        updateInstructions({ id: this.arrival.id, instructions: { instructions: this.arrival.instructions }, notify: true }),
+        updateInstructions({ instruction_id: this.arrival.id, instructions: { instructions: this.arrival.instructions }, notify: true }),
       );
     }
 

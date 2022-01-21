@@ -74,17 +74,6 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
     }
   }
 
-  public get subheading(): string {
-    switch(this.entity_type) {
-      case EntityType.Boat:
-        return `Boat: ${(this.entity as Boat)?.name}`;
-      case EntityType.Challenge:
-        return `Boat: ${(this.entity as Challenge)?.name}`;
-      default:
-        return '';
-    }
-  }
-
   public get shouldEnableNewButton(): boolean {
     return !!this.user.access[UserAccessFields.CreateDocument];
   }

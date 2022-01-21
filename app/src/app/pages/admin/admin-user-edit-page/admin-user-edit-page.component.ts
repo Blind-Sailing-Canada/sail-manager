@@ -159,7 +159,7 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
 
     this.dispatchAction(reviewProfile({
       profileReview,
-      id: this.profile_id,
+      profile_id: this.profile_id,
       notify: true,
     }));
   }

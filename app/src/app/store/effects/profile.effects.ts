@@ -61,10 +61,10 @@ export class ProfileEffects {
       ofType(fetchProfile),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.profileService.fetchOne(action.id)
+        action => this.profileService.fetchOne(action.profile_id)
           .pipe(
-            map(profile => putProfile({ profile, id: action.id })),
-            catchError(errorCatcher(`Failed to fetch profile: ${action.id}`))
+            map(profile => putProfile({ profile, profile_id: action.profile_id })),
+            catchError(errorCatcher(`Failed to fetch profile: ${action.profile_id}`))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),
@@ -114,13 +114,13 @@ export class ProfileEffects {
       ofType(updateProfileInfo),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.profileService.updateInfo(action.id, action.profile)
+        action => this.profileService.updateInfo(action.profile_id, action.profile)
           .pipe(
             mergeMap(profile => of(
-              putProfile({ profile, id: action.id }),
+              putProfile({ profile, profile_id: action.profile_id }),
               action.notify && putSnack({ snack: { message: 'saved', type: SnackType.INFO } }),
             )),
-            catchError(errorCatcher(`Failed to update profile info: ${action.id}`))
+            catchError(errorCatcher(`Failed to update profile info: ${action.profile_id}`))
           )),
       filter(action => action && action.type),
       tap(() => this.store.dispatch(finishLoading())),
@@ -132,15 +132,15 @@ export class ProfileEffects {
       ofType(reviewProfile),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.profileService.reviewProfile(action.id, action.profileReview)
+        action => this.profileService.reviewProfile(action.profile_id, action.profileReview)
           .pipe(
             mergeMap(reviewResult => of(
-              putProfile({ profile: reviewResult.profile, id: action.id }),
-              putUserAccess({ access: reviewResult.access, profile_id: action.id }),
+              putProfile({ profile: reviewResult.profile, profile_id: action.profile_id }),
+              putUserAccess({ access: reviewResult.access, profile_id: action.profile_id }),
               reviewResult && putRequiredAction({ action_id: action.profileReview.required_action_id, action: reviewResult.action }),
               action.notify && putSnack({ snack: { message: 'saved', type: SnackType.INFO } }),
             )),
-            catchError(errorCatcher(`Failed to update profile info: ${action.id}`))
+            catchError(errorCatcher(`Failed to update profile info: ${action.profile_id}`))
           )),
       filter(action => action && action.type),
       tap(() => this.store.dispatch(finishLoading())),

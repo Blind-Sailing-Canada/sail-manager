@@ -60,13 +60,13 @@ export class CDNService {
     return this.uploadFile(endpoint, fileToUpload);
   }
 
-  public uploadChallengePicture(fileToUpload: File, challengeId: string): Observable<HttpEvent<string>> {
-    const endpoint = `images/challenges/${challengeId}/${fileToUpload.name}`;
+  public uploadChallengePicture(fileToUpload: File, challenge_id: string): Observable<HttpEvent<string>> {
+    const endpoint = `images/challenges/${challenge_id}/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);
   }
 
-  public uploadBoatMaintenancePicture(fileToUpload: File, maintenanceId: string): Observable<HttpEvent<string>> {
-    const endpoint = `images/boat-maintenance/${maintenanceId}/${fileToUpload.name}`;
+  public uploadBoatMaintenancePicture(fileToUpload: File, boat_maintenance_id: string): Observable<HttpEvent<string>> {
+    const endpoint = `images/boat-maintenance/${boat_maintenance_id}/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);
   }
 

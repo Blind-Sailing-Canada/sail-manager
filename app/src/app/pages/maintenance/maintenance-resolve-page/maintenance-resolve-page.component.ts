@@ -27,7 +27,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 export class MaintenanceResolvePageComponent extends BasePageComponent implements OnInit {
 
   public maintenanceResolveForm: FormGroup;
-  public maintenanceId: string;
+  public boat_maintenance_id: string;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -39,7 +39,7 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
   }
 
   ngOnInit() {
-    this.maintenanceId = this.route.snapshot.params.id;
+    this.boat_maintenance_id = this.route.snapshot.params.id;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
 
@@ -54,7 +54,7 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
   }
 
   public get maintenance(): BoatMaintenance {
-    return this.maintenances[this.maintenanceId];
+    return this.maintenances[this.boat_maintenance_id];
   }
 
   public get shouldEnableSubmit(): boolean {
@@ -73,7 +73,7 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
       status: BoatMaintenanceStatus.Resolved,
     };
 
-    this.dispatchAction(updateBoatMaintenance({ maintenance, id: this.maintenanceId, notify: true }));
+    this.dispatchAction(updateBoatMaintenance({ maintenance, boat_maintenance_id: this.boat_maintenance_id, notify: true }));
   }
 
   private buildForm(): void {

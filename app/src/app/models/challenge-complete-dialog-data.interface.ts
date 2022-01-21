@@ -5,5 +5,5 @@ export interface ChallengeCompleteDialogData {
   challenge: Challenge;
   challenger: Profile;
   result: string;
-  submit: (challengeId: string, challengerId: string, result: string) => void;
+  submit: (challenge_id: string, challengerId: string, result: string) => void;
 }

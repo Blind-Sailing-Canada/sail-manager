@@ -207,6 +207,6 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   }
 
   private fetchNewRequiredActionsForUser(): void {
-    this.dispatchAction(fetchNewRequiredActionsForUser({ userId: this.user.profile.id }));
+    this.dispatchAction(fetchNewRequiredActionsForUser({ user_id: this.user.profile.id }));
   }
 }

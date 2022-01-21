@@ -52,10 +52,10 @@ export class ChallengeEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.service
-            .joinChallenge(action.challengeId)
+            .joinChallenge(action.challenge_id)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
+                putChallenge({ challenge_id: action.challenge_id, challenge: returnedChallenge }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'You joined this challenge.' } }),
               )),
               catchError(errorCatcher('Failed to join challenge.'))
@@ -73,10 +73,10 @@ export class ChallengeEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.service
-            .leaveChallenge(action.challengeId)
+            .leaveChallenge(action.challenge_id)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
+                putChallenge({ challenge_id: action.challenge_id, challenge: returnedChallenge }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'You left this challenge.' } }),
               )),
               catchError(errorCatcher('Failed to leave challenge.'))
@@ -94,10 +94,10 @@ export class ChallengeEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.service
-            .completeUserChallenge(action.challengeId, action.challengerId, action.note)
+            .completeUserChallenge(action.challenge_id, action.challengerId, action.note)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
+                putChallenge({ challenge_id: action.challenge_id, challenge: returnedChallenge }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'You have accomplished this challenge.' } }),
               )),
               catchError(errorCatcher('Failed to save challenge accomplishment.'))
@@ -115,10 +115,10 @@ export class ChallengeEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.service
-            .postChallengeComment(action.challengeId, action.comment)
+            .postChallengeComment(action.challenge_id, action.comment)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
+                putChallenge({ challenge_id: action.challenge_id, challenge: returnedChallenge }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Posted challenge comment.' } }),
               )),
               catchError(errorCatcher('Failed to post challenge comment.'))
@@ -136,10 +136,10 @@ export class ChallengeEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.service
-            .deleteChallengeComment(action.challengeId, action.commentId)
+            .deleteChallengeComment(action.challenge_id, action.comment_id)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
+                putChallenge({ challenge_id: action.challenge_id, challenge: returnedChallenge }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Deleted challenge comment.' } }),
               )),
               catchError(errorCatcher('Failed to delete challenge comment.'))
@@ -157,13 +157,13 @@ export class ChallengeEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.service
-            .deleteChallengePicture(action.challengeId, action.pictureId)
+            .deleteChallengePicture(action.challenge_id, action.picture_id)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
-                action.notify && putSnack({ snack: { type: SnackType.INFO, message: `Delete challenge picture ${action.pictureId}.` } }),
+                putChallenge({ challenge_id: action.challenge_id, challenge: returnedChallenge }),
+                action.notify && putSnack({ snack: { type: SnackType.INFO, message: `Delete challenge picture ${action.picture_id}.` } }),
               )),
-              catchError(errorCatcher(`Failed to delete challenge picture ${action.pictureId}.`))
+              catchError(errorCatcher(`Failed to delete challenge picture ${action.picture_id}.`))
             )
         ),
         filter(action => action && action.type),
@@ -178,13 +178,13 @@ export class ChallengeEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.service
-            .postChallengePictures(action.challengeId, action.pictures)
+            .postChallengePictures(action.challenge_id, action.pictures)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
+                putChallenge({ challenge_id: action.challenge_id, challenge: returnedChallenge }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: `Posted ${action.pictures.length} pictures.` } }),
               )),
-              catchError(errorCatcher(`Failed to post challenge pictures ${action.challengeId}.`))
+              catchError(errorCatcher(`Failed to post challenge pictures ${action.challenge_id}.`))
             )
         ),
         filter(action => action && action.type),
@@ -199,13 +199,13 @@ export class ChallengeEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.service
-            .fetchChallenge(action.challengeId)
+            .fetchChallenge(action.challenge_id)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: action.challengeId, challenge: returnedChallenge }),
+                putChallenge({ challenge_id: action.challenge_id, challenge: returnedChallenge }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Challenge fetched.' } }),
               )),
-              catchError(errorCatcher(`Failed to fetch challenge ${action.challengeId}.`))
+              catchError(errorCatcher(`Failed to fetch challenge ${action.challenge_id}.`))
             )
         ),
         filter(action => action && action.type),
@@ -244,7 +244,7 @@ export class ChallengeEffects {
             .createChallenge(action.challenge)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: returnedChallenge.id, challenge: returnedChallenge }),
+                putChallenge({ challenge_id: returnedChallenge.id, challenge: returnedChallenge }),
                 goTo({ route: editChallengeRoute(returnedChallenge.id) }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Challenge created.' } }),
               )),
@@ -263,14 +263,14 @@ export class ChallengeEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.service
-            .updateChallenge(action.challengeId, action.challenge)
+            .updateChallenge(action.challenge_id, action.challenge)
             .pipe(
               concatMap(returnedChallenge => of(
-                putChallenge({ challengeId: returnedChallenge.id, challenge: returnedChallenge }),
+                putChallenge({ challenge_id: returnedChallenge.id, challenge: returnedChallenge }),
                 goTo({ route: editChallengeRoute(returnedChallenge.id) }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Challenge updated.' } }),
               )),
-              catchError(errorCatcher(`Failed to update challenge ${action.challengeId}.`))
+              catchError(errorCatcher(`Failed to update challenge ${action.challenge_id}.`))
             )
         ),
         filter(action => action && action.type),

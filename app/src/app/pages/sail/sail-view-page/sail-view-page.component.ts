@@ -103,8 +103,8 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     this.dispatchAction(postSailComment({ comment, sail_id: this.sail_id, notify: true }));
   }
 
-  public deleteComment(commentId: string): void {
-    this.dispatchAction(deleteSailComment({ commentId, sail_id: this.sail_id, notify: true }));
+  public deleteComment(comment_id: string): void {
+    this.dispatchAction(deleteSailComment({ comment_id, sail_id: this.sail_id, notify: true }));
   }
 
   public goToSailPicturesPage(): void {

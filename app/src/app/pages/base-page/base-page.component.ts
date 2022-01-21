@@ -182,16 +182,16 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return this.store[STORE_SLICES.SAIL_REQUESTS] || {} as ISailRequestState;
   }
 
-  public getChecklist(id: string): SailChecklist {
-    const checklist = this.store[STORE_SLICES.CHECKLISTS].all[id];
+  public getChecklist(sail_checklist_id: string): SailChecklist {
+    const checklist = this.store[STORE_SLICES.CHECKLISTS].all[sail_checklist_id];
 
-    if (checklist === undefined && !this.fetching[id]) {
-      this.fetching[id] = true;
-      this.dispatchAction(fetchSailChecklist({ id }));
+    if (checklist === undefined && !this.fetching[sail_checklist_id]) {
+      this.fetching[sail_checklist_id] = true;
+      this.dispatchAction(fetchSailChecklist({ sail_checklist_id }));
     }
 
-    if (checklist && this.fetching[id]) {
-      delete this.fetching[id];
+    if (checklist && this.fetching[sail_checklist_id]) {
+      delete this.fetching[sail_checklist_id];
     }
 
     return checklist;
@@ -322,10 +322,10 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return this.profiles[id];
   }
 
-  public fetchBoat(id: string): void {
-    if (!this.fetching[id]) {
-      this.fetching[id] = true;
-      this.dispatchAction(fetchBoat({ id }));
+  public fetchBoat(boat_id: string): void {
+    if (!this.fetching[boat_id]) {
+      this.fetching[boat_id] = true;
+      this.dispatchAction(fetchBoat({ boat_id }));
     }
   }
 
@@ -333,12 +333,12 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     this.dispatchAction(fetchBoatMaintenances({ query, notify }));
   }
 
-  public fetchBoatMaintenance(id: string, notify?: boolean): void {
-    if (this.fetching[id]) {
+  public fetchBoatMaintenance(boat_maintenance_id: string, notify?: boolean): void {
+    if (this.fetching[boat_maintenance_id]) {
       return;
     }
-    this.fetching[id] = true;
-    this.dispatchAction(fetchBoatMaintenance({ id, notify }));
+    this.fetching[boat_maintenance_id] = true;
+    this.dispatchAction(fetchBoatMaintenance({ boat_maintenance_id, notify }));
   }
 
   public fetchBoats(notify?: boolean): void {
@@ -424,12 +424,12 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return JSON.parse(JSON.stringify(obj));
   }
 
-  protected fetchProfile(id: string): void {
-    if (this.fetching[id]) {
+  protected fetchProfile(profile_id: string): void {
+    if (this.fetching[profile_id]) {
       return;
     }
-    this.fetching[id] = true;
-    this.dispatchAction(fetchProfile({ id }));
+    this.fetching[profile_id] = true;
+    this.dispatchAction(fetchProfile({ profile_id }));
   }
 
   protected fetchClinic(id: string): void {
@@ -437,28 +437,28 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
       return;
     }
     this.fetching[id] = true;
-    this.dispatchAction(fetchClinic({ clinicId: id }));
+    this.dispatchAction(fetchClinic({ clinic_id: id }));
   }
 
-  protected fetchDocument(id: string): void {
-    if (this.fetching[id]) {
+  protected fetchDocument(document_id: string): void {
+    if (this.fetching[document_id]) {
       return;
     }
-    this.fetching[id] = true;
-    this.dispatchAction(fetchDocument({ id }));
+    this.fetching[document_id] = true;
+    this.dispatchAction(fetchDocument({ document_id }));
   }
 
-  protected fetchSail(id: string, options = {} as any): void {
-    if (!this.fetching[id]) {
-      this.fetching[id] = true;
-      this.dispatchAction(fetchSail({ id, ...options }));
+  protected fetchSail(sail_id: string, options = {} as any): void {
+    if (!this.fetching[sail_id]) {
+      this.fetching[sail_id] = true;
+      this.dispatchAction(fetchSail({ sail_id, ...options }));
     }
   }
 
-  protected fetchChallenge(id: string, options = {} as any): void {
-    if (!this.fetching[id]) {
-      this.fetching[id] = true;
-      this.dispatchAction(fetchChallenge({ id, ...options }));
+  protected fetchChallenge(challenge_id: string, options = {} as any): void {
+    if (!this.fetching[challenge_id]) {
+      this.fetching[challenge_id] = true;
+      this.dispatchAction(fetchChallenge({ challenge_id, ...options }));
     }
   }
 

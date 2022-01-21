@@ -31,8 +31,8 @@ export class CommentListComponent {
     this.profileClick.emit(profile);
   }
 
-  public deleteComment(commentId: string): void {
-    this.commentDelete.emit(commentId);
+  public deleteComment(comment_id: string): void {
+    this.commentDelete.emit(comment_id);
   }
 
   public canDeleteComment(comment: Comment): boolean {

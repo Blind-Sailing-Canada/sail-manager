@@ -124,11 +124,11 @@ export class SailEffects {
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.sailService
-          .cancelSail(action.id, action.sail)
+          .cancelSail(action.sail_id, action.sail)
           .pipe(
             mergeMap(sail => of(
               action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'You cancelled this sail!' } }),
-              putSail({ sail, id: action.id }),
+              putSail({ sail, id: action.sail_id }),
               goTo({ route: viewSailRoute(sail.id) })
             )),
             catchError(errorCatcher('Failed to cancel the sail.'))
@@ -238,7 +238,7 @@ export class SailEffects {
       ofType(deleteSailComment),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.deleteComment(action.sail_id, action.commentId)
+        action => this.sailService.deleteComment(action.sail_id, action.comment_id)
           .pipe(
             mergeMap(sail => of(
               (action.notify ? putSnack({ snack: { type: SnackType.INFO, message: 'Comment deleted' } }) : EMPTY),
@@ -353,18 +353,18 @@ export class SailEffects {
       ofType(fetchSail),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchOne(action.id)
+        action => this.sailService.fetchOne(action.sail_id)
           .pipe(
             mergeMap((sail) => {
               if (action.notify) {
                 return of(
-                  putSail({ sail, id: action.id }),
+                  putSail({ sail, id: action.sail_id }),
                   putSnack({ snack: { type: SnackType.INFO, message: 'refreshed' } }),
                 );
               }
-              return of(putSail({ sail, id: action.id }));
+              return of(putSail({ sail, id: action.sail_id }));
             }),
-            catchError(errorCatcher(`Failed to fetch sail: ${action.id}`, [putSail({ sail: null, id: action.id })])),
+            catchError(errorCatcher(`Failed to fetch sail: ${action.sail_id}`, [putSail({ sail: null, id: action.sail_id })])),
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

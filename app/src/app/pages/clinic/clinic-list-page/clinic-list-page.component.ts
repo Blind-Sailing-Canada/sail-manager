@@ -55,8 +55,8 @@ export class ClinicListPageComponent extends BasePageComponent implements OnInit
     this.goTo([createClinicRoute]);
   }
 
-  public viewClinic(clinicId: string): void {
-    this.goTo([viewClinicRoute(clinicId)]);
+  public viewClinic(clinic_id: string): void {
+    this.goTo([viewClinicRoute(clinic_id)]);
   }
 
   private fetchClinics(notify?: boolean): void {

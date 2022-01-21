@@ -118,8 +118,8 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
     return viewUserSailsRoute(profile_id);
   }
 
-  public goToClinic(clinicId: string): void {
-    this.goTo([viewClinicRoute(clinicId)]);
+  public goToClinic(clinic_id: string): void {
+    this.goTo([viewClinicRoute(clinic_id)]);
   }
 
   public linkAccounts(profileA: Profile, profileB: Profile, linkType: ProfileLink): void {

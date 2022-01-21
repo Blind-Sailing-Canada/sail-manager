@@ -42,23 +42,23 @@ export class FeedbackViewPageComponent extends BasePageComponent implements OnIn
     return `Feedback for sail "${sailName}"`;
   }
 
-  public get feedbackId(): string {
-    return this.route.snapshot.params.feedbackId;
+  public get feedback_id(): string {
+    return this.route.snapshot.params.feedback_id;
   }
 
   public get feedback(): SailFeedback {
     const feedbackState: FeedbackState = this.store[STORE_SLICES.FEEDBACKS];
     const allFeedback = feedbackState.feedbacks;
 
-    const feedback = allFeedback[this.feedbackId];
+    const feedback = allFeedback[this.feedback_id];
 
-    if (feedback === undefined && !this.fetching[this.feedbackId]) {
-      this.fetching[this.feedbackId] = true;
-      this.dispatchAction(fetchFeedback({ feedbackId: this.feedbackId }));
+    if (feedback === undefined && !this.fetching[this.feedback_id]) {
+      this.fetching[this.feedback_id] = true;
+      this.dispatchAction(fetchFeedback({ feedback_id: this.feedback_id }));
     }
 
     if (feedback || feedback === null) {
-      delete this.fetching[this.feedbackId];
+      delete this.fetching[this.feedback_id];
     }
 
     return feedback;

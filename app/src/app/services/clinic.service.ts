@@ -19,32 +19,32 @@ export class ClinicService {
     return this.http.post<Clinic>(`${this.API_URL}`, clinic);
   }
 
-  public updateClinic(clinicId: string, clinic: Partial<Clinic>): Observable<Clinic> {
-    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}`, clinic);
+  public updateClinic(clinic_id: string, clinic: Partial<Clinic>): Observable<Clinic> {
+    return this.http.patch<Clinic>(`${this.API_URL}/${clinic_id}`, clinic);
   }
 
-  public enrollInClinic(clinicId: string, profile_id: string): Observable<Clinic> {
-    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}/enroll/${profile_id}`, undefined);
+  public enrollInClinic(clinic_id: string, profile_id: string): Observable<Clinic> {
+    return this.http.patch<Clinic>(`${this.API_URL}/${clinic_id}/enroll/${profile_id}`, undefined);
   }
 
-  public leaveClinic(clinicId: string, profile_id: string): Observable<Clinic> {
-    return this.http.delete<Clinic>(`${this.API_URL}/${clinicId}/leave/${profile_id}`);
+  public leaveClinic(clinic_id: string, profile_id: string): Observable<Clinic> {
+    return this.http.delete<Clinic>(`${this.API_URL}/${clinic_id}/leave/${profile_id}`);
   }
 
-  public addUserToClinic(clinicId: string, profile_id: string): Observable<Clinic> {
-    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}/add-user/${profile_id}`, undefined);
+  public addUserToClinic(clinic_id: string, profile_id: string): Observable<Clinic> {
+    return this.http.patch<Clinic>(`${this.API_URL}/${clinic_id}/add-user/${profile_id}`, undefined);
   }
 
-  public graduateUserFromClinic(clinicId: string, profile_id: string): Observable<Clinic> {
-    return this.http.patch<Clinic>(`${this.API_URL}/${clinicId}/graduate-user/${profile_id}`, undefined);
+  public graduateUserFromClinic(clinic_id: string, profile_id: string): Observable<Clinic> {
+    return this.http.patch<Clinic>(`${this.API_URL}/${clinic_id}/graduate-user/${profile_id}`, undefined);
   }
 
-  public removeUserToClinic(clinicId: string, profile_id: string): Observable<Clinic> {
-    return this.http.delete<Clinic>(`${this.API_URL}/${clinicId}/remove-user/${profile_id}`);
+  public removeUserToClinic(clinic_id: string, profile_id: string): Observable<Clinic> {
+    return this.http.delete<Clinic>(`${this.API_URL}/${clinic_id}/remove-user/${profile_id}`);
   }
 
-  public fetchClinic(clinicId: string): Observable<Clinic> {
-    return this.http.get<Clinic>(`${this.API_URL}/${clinicId}`);
+  public fetchClinic(clinic_id: string): Observable<Clinic> {
+    return this.http.get<Clinic>(`${this.API_URL}/${clinic_id}`);
   }
 
   public fetchClinics(query?: string): Observable<Clinic[]> {

@@ -46,7 +46,7 @@ export class BoatEffects {
           action => this.boatService.create(action.boat)
             .pipe(
               mergeMap(boat => of(
-                putBoat({ boat, id: boat.id }),
+                putBoat({ boat, boat_id: boat.id }),
                 putSnack({ snack: { type: SnackType.INFO, message: 'Boat created.' } }),
                 goTo({ route: editBoatRoute(boat.id) }),
               )),
@@ -63,13 +63,13 @@ export class BoatEffects {
         ofType(updateBoat),
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
-          action => this.boatService.update(action.id, action.boat)
+          action => this.boatService.update(action.boat_id, action.boat)
             .pipe(
               mergeMap(boat => of(
-                putBoat({ boat, id: boat.id }),
+                putBoat({ boat, boat_id: boat.id }),
                 putSnack({ snack: { type: SnackType.INFO, message: 'Boat updated.' } }),
               )),
-              catchError(errorCatcher(`'Failed to update boat ${action.id}.`))
+              catchError(errorCatcher(`'Failed to update boat ${action.boat_id}.`))
             )
         ),
         tap(() => this.store.dispatch(finishLoading())),
@@ -103,10 +103,10 @@ export class BoatEffects {
       ofType(fetchBoat),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.boatService.fetchOne(action.id)
+        action => this.boatService.fetchOne(action.boat_id)
           .pipe(
-            map(boat => putBoat({ boat, id: action.id })),
-            catchError(errorCatcher(`Failed to fetch boat: ${action.id}`))
+            map(boat => putBoat({ boat, boat_id: action.boat_id })),
+            catchError(errorCatcher(`Failed to fetch boat: ${action.boat_id}`))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

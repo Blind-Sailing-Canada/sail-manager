@@ -35,7 +35,7 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
 
   public creatingNewMaintenance: boolean;
   public maintenanceForm: FormGroup;
-  public maintenanceId: string;
+  public boat_maintenance_id: string;
   public maintenanceStatus = BoatMaintenanceStatus;
   public readonly maintenancePictureInputId = 'maintenancePictureInput';
 
@@ -51,8 +51,8 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
   ngOnInit() {
     const boat_id = this.route.snapshot.queryParams.boat_id;
 
-    this.maintenanceId = this.route.snapshot.params.id;
-    this.creatingNewMaintenance = !this.maintenanceId;
+    this.boat_maintenance_id = this.route.snapshot.params.id;
+    this.creatingNewMaintenance = !this.boat_maintenance_id;
 
     this.buildForm(boat_id);
 
@@ -79,7 +79,7 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
   }
 
   public goToViewMaintenance(): void {
-    this.goTo([viewMaintenanceRoute(this.maintenanceId)]);
+    this.goTo([viewMaintenanceRoute(this.boat_maintenance_id)]);
   }
 
   public get isServiceDetailsRequired(): boolean {
@@ -95,12 +95,12 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
   }
 
   protected get maintenance(): BoatMaintenance {
-    if (!this.maintenanceId) {
+    if (!this.boat_maintenance_id) {
       return;
     }
-    const request = this.maintenances[this.maintenanceId];
+    const request = this.maintenances[this.boat_maintenance_id];
     if (!request && request !== null) {
-      this.fetchBoatMaintenance(this.maintenanceId, false);
+      this.fetchBoatMaintenance(this.boat_maintenance_id, false);
     }
 
     return request;
@@ -136,7 +136,8 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
             return red;
           },
           {}) as BoatMaintenance;
-      this.dispatchAction(updateBoatMaintenance({ id: this.maintenanceId, maintenance: changedValues, notify: true }));
+      this.dispatchAction(
+        updateBoatMaintenance({ boat_maintenance_id: this.boat_maintenance_id, maintenance: changedValues, notify: true }));
     }
   }
 
@@ -166,8 +167,8 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
     this.maintenanceForm = this.fb.group({
       boat_id: this.fb.control(boat_id, Validators.required),
       request_details: this.fb.control(undefined, Validators.required),
-      status: this.fb.control({ value: BoatMaintenanceStatus.New, disabled: !this.maintenanceId }),
-      service_details: this.fb.control({ value: undefined, disabled: !this.maintenanceId }),
+      status: this.fb.control({ value: BoatMaintenanceStatus.New, disabled: !this.boat_maintenance_id }),
+      service_details: this.fb.control({ value: undefined, disabled: !this.boat_maintenance_id }),
     });
   }
 }

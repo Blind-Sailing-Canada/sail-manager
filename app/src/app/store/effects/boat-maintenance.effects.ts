@@ -50,10 +50,10 @@ export class BoatMaintenanceEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.boatMaintenanceService
-            .postMaintenanceComment(action.id, action.comment)
+            .postMaintenanceComment(action.boat_maintenance_id, action.comment)
             .pipe(
               mergeMap(maintenance => of(
-                putBoatMaintenance({ maintenance, id: maintenance.id }),
+                putBoatMaintenance({ maintenance, boat_maintenance_id: maintenance.id }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Comment posted.' } }),
               )),
               catchError(errorCatcher('Failed to post comment.'))
@@ -71,10 +71,10 @@ export class BoatMaintenanceEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.boatMaintenanceService
-            .deleteMaintenanceComment(action.maintenanceId, action.commentId)
+            .deleteMaintenanceComment(action.boat_maintenance_id, action.comment_id)
             .pipe(
               mergeMap(maintenance => of(
-                putBoatMaintenance({ maintenance, id: maintenance.id }),
+                putBoatMaintenance({ maintenance, boat_maintenance_id: maintenance.id }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Comment deleted.' } }),
               )),
               catchError(errorCatcher('Failed to delete comment.'))
@@ -92,10 +92,10 @@ export class BoatMaintenanceEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.boatMaintenanceService
-            .deleteMaintenancePicture(action.maintenanceId, action.pictureId)
+            .deleteMaintenancePicture(action.boat_maintenance_id, action.picture_id)
             .pipe(
               mergeMap(maintenance => of(
-                putBoatMaintenance({ maintenance, id: maintenance.id }),
+                putBoatMaintenance({ maintenance, boat_maintenance_id: maintenance.id }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Picture deleted.' } }),
               )),
               catchError(errorCatcher('Failed to delete picture.'))
@@ -113,13 +113,13 @@ export class BoatMaintenanceEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.boatMaintenanceService
-            .postMaintenancePictures(action.maintenanceId, action.pictures)
+            .postMaintenancePictures(action.boat_maintenance_id, action.pictures)
             .pipe(
               concatMap(maintenance => of(
-                putBoatMaintenance({ maintenance, id: action.maintenanceId }),
+                putBoatMaintenance({ maintenance, boat_maintenance_id: action.boat_maintenance_id }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: `Posted ${action.pictures.length} pictures.` } }),
               )),
-              catchError(errorCatcher(`Failed to post maintenance pictures ${action.maintenanceId}.`))
+              catchError(errorCatcher(`Failed to post maintenance pictures ${action.boat_maintenance_id}.`))
             )
         ),
         filter(action => action && action.type),
@@ -137,7 +137,7 @@ export class BoatMaintenanceEffects {
             .createMaintenanceRequest(action.maintenance)
             .pipe(
               mergeMap(maintenance => of(
-                putBoatMaintenance({ maintenance, id: maintenance.id }),
+                putBoatMaintenance({ maintenance, boat_maintenance_id: maintenance.id }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Boat Maintenance Request created.' } }),
                 goTo({ route: editMaintenanceRoute(maintenance.id) }),
               )),
@@ -156,13 +156,13 @@ export class BoatMaintenanceEffects {
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
           action => this.boatMaintenanceService
-            .updateMaintenanceRequest(action.id, action.maintenance)
+            .updateMaintenanceRequest(action.boat_maintenance_id, action.maintenance)
             .pipe(
               mergeMap(maintenance => of(
-                putBoatMaintenance({ maintenance, id: maintenance.id }),
+                putBoatMaintenance({ maintenance, boat_maintenance_id: maintenance.id }),
                 action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Maintenance request updated.' } }),
               )),
-              catchError(errorCatcher(`'Failed to update maintenance request ${action.id}.`))
+              catchError(errorCatcher(`'Failed to update maintenance request ${action.boat_maintenance_id}.`))
             )
         ),
         filter(action => action && action.type),
@@ -195,10 +195,10 @@ export class BoatMaintenanceEffects {
       ofType(fetchBoatMaintenance),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.boatMaintenanceService.fetchOne(action.id)
+        action => this.boatMaintenanceService.fetchOne(action.boat_maintenance_id)
           .pipe(
-            map(maintenance => putBoatMaintenance({ maintenance, id: action.id })),
-            catchError(errorCatcher(`Failed to fetch boat maintenance: ${action.id}`))
+            map(maintenance => putBoatMaintenance({ maintenance, boat_maintenance_id: action.boat_maintenance_id })),
+            catchError(errorCatcher(`Failed to fetch boat maintenance: ${action.boat_maintenance_id}`))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

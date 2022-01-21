@@ -17,12 +17,12 @@ export class ChallengeService {
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  public joinChallenge(challengeId: string): Observable<Challenge> {
-    return this.http.post<Challenge>(`${this.API_URL}/${challengeId}/join`, null);
+  public joinChallenge(challenge_id: string): Observable<Challenge> {
+    return this.http.post<Challenge>(`${this.API_URL}/${challenge_id}/join`, null);
   }
 
-  public leaveChallenge(challengeId: string): Observable<Challenge> {
-    return this.http.delete<Challenge>(`${this.API_URL}/${challengeId}/leave`);
+  public leaveChallenge(challenge_id: string): Observable<Challenge> {
+    return this.http.delete<Challenge>(`${this.API_URL}/${challenge_id}/leave`);
   }
 
   public fetchChallenges(query: string): Observable<Challenge[]> {
@@ -32,36 +32,36 @@ export class ChallengeService {
     return this.http.get<Challenge[]>(`${this.API_URL}`);
   }
 
-  public postChallengeComment(challengeId: string, comment: Partial<Comment>): Observable<Challenge> {
-    return this.http.post<Challenge>(`${this.API_URL}/${challengeId}/comments`, comment);
+  public postChallengeComment(challenge_id: string, comment: Partial<Comment>): Observable<Challenge> {
+    return this.http.post<Challenge>(`${this.API_URL}/${challenge_id}/comments`, comment);
   }
 
-  public deleteChallengeComment(challengeId: string, commentId: string): Observable<Challenge> {
-    return this.http.delete<Challenge>(`${this.API_URL}/${challengeId}/comments/${commentId}`);
+  public deleteChallengeComment(challenge_id: string, comment_id: string): Observable<Challenge> {
+    return this.http.delete<Challenge>(`${this.API_URL}/${challenge_id}/comments/${comment_id}`);
   }
 
-  public deleteChallengePicture(challengeId: string, pictureId: string): Observable<Challenge> {
-    return this.http.delete<Challenge>(`${this.API_URL}/${challengeId}/pictures/${pictureId}`);
+  public deleteChallengePicture(challenge_id: string, picture_id: string): Observable<Challenge> {
+    return this.http.delete<Challenge>(`${this.API_URL}/${challenge_id}/pictures/${picture_id}`);
   }
 
-  public postChallengePictures(challengeId: string, pictures: Partial<Media>[]): Observable<Challenge> {
-    return this.http.patch<Challenge>(`${this.API_URL}/${challengeId}/pictures`, pictures);
+  public postChallengePictures(challenge_id: string, pictures: Partial<Media>[]): Observable<Challenge> {
+    return this.http.patch<Challenge>(`${this.API_URL}/${challenge_id}/pictures`, pictures);
   }
 
-  public fetchChallenge(challengeId: string): Observable<Challenge> {
-    return this.http.get<Challenge>(`${this.API_URL}/${challengeId}`);
+  public fetchChallenge(challenge_id: string): Observable<Challenge> {
+    return this.http.get<Challenge>(`${this.API_URL}/${challenge_id}`);
   }
 
   public createChallenge(challenge: Partial<Challenge>): Observable<Challenge> {
     return this.http.post<Challenge>(`${this.API_URL}`, challenge);
   }
 
-  public updateChallenge(challengeId: string, challenge: Partial<Challenge>): Observable<Challenge> {
-    return this.http.patch<Challenge>(`${this.API_URL}/${challengeId}`, challenge);
+  public updateChallenge(challenge_id: string, challenge: Partial<Challenge>): Observable<Challenge> {
+    return this.http.patch<Challenge>(`${this.API_URL}/${challenge_id}`, challenge);
   }
 
-  public completeUserChallenge(challengeId: string, profile_id: string, note?: string): Observable<Challenge> {
-    return this.http.patch<Challenge>(`${this.API_URL}/${challengeId}/accomplished-by/${profile_id}`, { note });
+  public completeUserChallenge(challenge_id: string, profile_id: string, note?: string): Observable<Challenge> {
+    return this.http.patch<Challenge>(`${this.API_URL}/${challenge_id}/accomplished-by/${profile_id}`, { note });
   }
 
   public fetchCount(query?: string): Observable<number> {

@@ -68,8 +68,11 @@
     <mat-form-field>
       <mat-label aria-hidden="true">Challenge description</mat-label>
       <textarea
-        formControlName="description"
         aria-labelledby="step2"
+        cdkAutosizeMaxRows="10"
+        cdkAutosizeMinRows="1"
+        cdkTextareaAutosize
+        formControlName="description"
         matInput
         title="Challenge description"
       ></textarea>
@@ -125,8 +128,11 @@
     <mat-form-field>
       <mat-label aria-hidden="true">Challenge badge</mat-label>
       <textarea
-        formControlName="badge"
         aria-labelledby="step5"
+        cdkAutosizeMaxRows="10"
+        cdkAutosizeMinRows="1"
+        cdkTextareaAutosize
+        formControlName="badge"
         matInput
         title="Challenge badge"
       ></textarea>

@@ -67,7 +67,7 @@ export class SailCancelPageComponent extends BasePageComponent implements OnInit
     cancelledSail.cancelled_by_id = this.user.profile.id;
     cancelledSail.cancelled_at = new Date();
 
-    this.dispatchAction(cancelSail({ id: this.sail_id, sail: cancelledSail, notify: true }));
+    this.dispatchAction(cancelSail({ sail_id: this.sail_id, sail: cancelledSail, notify: true }));
   }
 
   private updateForm(sail: Sail): void {

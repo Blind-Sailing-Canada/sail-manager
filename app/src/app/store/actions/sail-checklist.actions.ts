@@ -18,14 +18,16 @@ export enum SAIL_CHECKLIST_ACTION_TYPES {
 
 export const createSailChecklist = createAction(SAIL_CHECKLIST_ACTION_TYPES.CREATE, props<{ checklist: Partial<SailChecklist> }>());
 export const fetchSailChecklist = createAction(
-  SAIL_CHECKLIST_ACTION_TYPES.FETCH_ONE, props<{ id: string; resolve?: boolean; notify?: boolean }>());
+  SAIL_CHECKLIST_ACTION_TYPES.FETCH_ONE, props<{ sail_checklist_id: string; resolve?: boolean; notify?: boolean }>());
 export const findSailChecklists = createAction(SAIL_CHECKLIST_ACTION_TYPES.FIND, props<{query: string}>());
 export const putSailChecklist = createAction(
-  SAIL_CHECKLIST_ACTION_TYPES.PUT_ONE, props<{ id: string; checklist: Partial<SailChecklist> }>());
+  SAIL_CHECKLIST_ACTION_TYPES.PUT_ONE, props<{ sail_checklist_id: string; checklist: Partial<SailChecklist> }>());
 export const putSailChecklists = createAction(SAIL_CHECKLIST_ACTION_TYPES.PUT_MANY, props<{ checklists: Partial<SailChecklist>[] }>());
 export const resetSailChecklists = createAction(SAIL_CHECKLIST_ACTION_TYPES.RESET);
 export const updateSailChecklist = createAction(
-  SAIL_CHECKLIST_ACTION_TYPES.UPDATE_ONE, props<{ id: string; checklist: Partial<SailChecklist>; updateActions?: TypedAction<any>[] }>());
+  SAIL_CHECKLIST_ACTION_TYPES.UPDATE_ONE,
+  props<{ sail_checklist_id: string; checklist: Partial<SailChecklist>; updateActions?: TypedAction<any>[] }>(),
+  );
 export const updateSailChecklists = createAction(
     SAIL_CHECKLIST_ACTION_TYPES.UPDATE_SAIL_CHECKLISTS,
     props<{ sail_id: string; checklistsData}>(),

@@ -48,7 +48,7 @@ export class DocumentEffects {
           action => this.documentService.create(action.document)
             .pipe(
               mergeMap(document => of(
-                putDocument({ document, id: document.id }),
+                putDocument({ document, document_id: document.id }),
                 putSnack({ snack: { type: SnackType.INFO, message: 'Document created.' } }),
                 goTo({ route: editDocumentRoute(document.id) }),
               )),
@@ -65,13 +65,13 @@ export class DocumentEffects {
         ofType(updateDocument),
         tap(() => this.store.dispatch(startLoading())),
         mergeMap(
-          action => this.documentService.update(action.id, action.document)
+          action => this.documentService.update(action.document_id, action.document)
             .pipe(
               mergeMap(document => of(
-                putDocument({ document, id: document.id }),
+                putDocument({ document, document_id: document.id }),
                 putSnack({ snack: { type: SnackType.INFO, message: 'Document updated.' } }),
               )),
-              catchError(errorCatcher(`'Failed to update document ${action.id}.`))
+              catchError(errorCatcher(`'Failed to update document ${action.document_id}.`))
             )
         ),
         tap(() => this.store.dispatch(finishLoading())),
@@ -105,10 +105,10 @@ export class DocumentEffects {
       ofType(fetchDocument),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.documentService.fetchOne(action.id)
+        action => this.documentService.fetchOne(action.document_id)
           .pipe(
-            map(document => putDocument({ document, id: action.id })),
-            catchError(errorCatcher(`Failed to fetch document: ${action.id}`))
+            map(document => putDocument({ document, document_id: action.document_id })),
+            catchError(errorCatcher(`Failed to fetch document: ${action.document_id}`))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),
@@ -119,14 +119,14 @@ export class DocumentEffects {
       ofType(deleteDocument),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.documentService.delete(action.id)
+        action => this.documentService.delete(action.document_id)
           .pipe(
             mergeMap(
               () => of(
-                goTo({ route: listDocumentsRoute(), actionToPerformAfter: removeDocument({ id: action.id }) }),
+                goTo({ route: listDocumentsRoute(), actionToPerformAfter: removeDocument({ document_id: action.document_id }) }),
               )
             ),
-            catchError(errorCatcher(`Failed to delete document: ${action.id}`))
+            catchError(errorCatcher(`Failed to delete document: ${action.document_id}`))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

@@ -11,7 +11,7 @@ const initialState = {} as SailCategoryState;
 const reducerHandler = createReducer(
   initialState,
   on(resetSailCategory, () => initialState),
-  on(putSailCategory, (state, action) => Object.assign({}, state, { [action.id]: action.category })),
+  on(putSailCategory, (state, action) => Object.assign({}, state, { [action.sail_category_id]: action.category })),
   on(putSailCategories, (state, action) => {
     const map = action
       .categories
@@ -27,7 +27,7 @@ const reducerHandler = createReducer(
   }),
   on(removeSailCategory, (state, action) => {
     const newState = { ...state };
-    delete newState[action.id];
+    delete newState[action.sail_category_id];
 
     return newState;
   })

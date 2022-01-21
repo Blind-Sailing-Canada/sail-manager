@@ -22,7 +22,7 @@ const routes: Routes = [
     component: FeedbackListPageComponent,
   },
   {
-    path: `${SubRoutes.VIEW_FEEDBACK}/:feedbackId`,
+    path: `${SubRoutes.VIEW_FEEDBACK}/:feedback_id`,
     component: FeedbackViewPageComponent,
   },
   {

@@ -31,7 +31,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class ChallengeEditPageComponent extends BasePageComponent implements OnInit {
 
-  public challengeId: string;
+  public challenge_id: string;
   public form: FormGroup;
   public ChallengeStatus = ChallengeStatus;
 
@@ -47,25 +47,25 @@ export class ChallengeEditPageComponent extends BasePageComponent implements OnI
   }
 
   ngOnInit() {
-    this.challengeId = this.route.snapshot.params.challengeId;
+    this.challenge_id = this.route.snapshot.params.challenge_id;
 
-    if (!this.challengeId) {
+    if (!this.challenge_id) {
       return;
     }
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CHALLENGES, () => {
-      const challenge = this.store[STORE_SLICES.CHALLENGES][this.challengeId];
+      const challenge = this.store[STORE_SLICES.CHALLENGES][this.challenge_id];
 
       if (challenge) {
         this.updateForm(challenge);
       }
     });
 
-    this.dispatchAction(fetchChallenge({ challengeId: this.challengeId }));
+    this.dispatchAction(fetchChallenge({ challenge_id: this.challenge_id }));
   }
 
   public get title(): string {
-    if (this.challengeId) {
+    if (this.challenge_id) {
       return 'Update Challenge Form';
     }
 
@@ -73,11 +73,11 @@ export class ChallengeEditPageComponent extends BasePageComponent implements OnI
   }
 
   public get shouldEnableCreateButton(): boolean {
-    return this.form && this.form.valid && this.form.dirty && !this.challengeId;
+    return this.form && this.form.valid && this.form.dirty && !this.challenge_id;
   }
 
   public get shouldEnableUpdateButton(): boolean {
-    return this.form && this.form.valid && this.form.dirty && !!this.challengeId;
+    return this.form && this.form.valid && this.form.dirty && !!this.challenge_id;
   }
 
   public formErrors(controlName: string): string[] {
@@ -125,7 +125,7 @@ export class ChallengeEditPageComponent extends BasePageComponent implements OnI
       challenge.start_date = date;
     }
 
-    this.dispatchAction(updateChallenge({ challenge, challengeId: this.challengeId, notify: true }));
+    this.dispatchAction(updateChallenge({ challenge, challenge_id: this.challenge_id, notify: true }));
 
   }
 

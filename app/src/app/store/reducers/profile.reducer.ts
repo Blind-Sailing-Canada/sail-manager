@@ -18,7 +18,7 @@ const reducerHandler = createReducer(
   on(resetProfiles, () => initialState),
   on(putTotalProfileCount, (state, action) => Object.assign({}, state, { totalCount: action.count })),
   on(putProfile, (state, action) => {
-    const updatedProfiles = Object.assign({}, state.profiles, { [action.id]: action.profile });
+    const updatedProfiles = Object.assign({}, state.profiles, { [action.profile_id]: action.profile });
     return Object.assign({}, state, { profiles: updatedProfiles });
   }),
   on(putProfiles, (state, action) => {

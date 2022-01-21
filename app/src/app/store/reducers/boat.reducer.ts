@@ -15,7 +15,7 @@ const initialState = {} as IBoatState;
 const reducerHandler = createReducer(
   initialState,
   on(resetBoats, () => initialState),
-  on(putBoat, (state, action) => Object.assign({}, state, { [action.id]: action.boat })),
+  on(putBoat, (state, action) => Object.assign({}, state, { [action.boat_id]: action.boat })),
   on(putBoats, (state, action) => {
     const map = action
       .boats

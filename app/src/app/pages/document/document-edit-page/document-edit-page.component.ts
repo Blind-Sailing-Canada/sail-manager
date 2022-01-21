@@ -139,7 +139,7 @@ export class DocumentEditPageComponent extends DocumentBasePageComponent impleme
       ) as Document;
 
 
-    this.dispatchAction(updateDocument({ document, id: this.document_id, notify: true }));
+    this.dispatchAction(updateDocument({ document, document_id: this.document_id, notify: true }));
   }
 
   private updateForm(): void {

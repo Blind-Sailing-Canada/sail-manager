@@ -31,7 +31,7 @@ const reducerHandler = createReducer(
     return Object.assign({}, state, { all: newAll } as ISailChecklistState);
   }),
   on(putSailChecklist, (state, action) => {
-    const newAll = Object.assign({}, state.all, { [action.id]: action.checklist });
+    const newAll = Object.assign({}, state.all, { [action.sail_checklist_id]: action.checklist });
     return Object.assign({}, state, { all: newAll } as ISailChecklistState);
   }),
 );

@@ -32,8 +32,8 @@ export class SailService {
     return this.http.post<Sail>(`${this.API_URL}/${sail_id}/comments`, comment);
   }
 
-  public deleteComment(sail_id: string, commentId: string): Observable<Sail> {
-    return this.http.delete<Sail>(`${this.API_URL}/${sail_id}/comments/${commentId}`);
+  public deleteComment(sail_id: string, comment_id: string): Observable<Sail> {
+    return this.http.delete<Sail>(`${this.API_URL}/${sail_id}/comments/${comment_id}`);
   }
 
   public startSail(id: string): Observable<Sail> {

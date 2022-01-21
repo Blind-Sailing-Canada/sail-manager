@@ -14,7 +14,7 @@ export enum REQUIRED_ACTIONS_ACTION_TYPES {
 }
 
 export const fetchNewRequiredActionsForUser = createAction(
-  REQUIRED_ACTIONS_ACTION_TYPES.FETCH_NEW_ACTIONS_FOR_USER, props<{userId: string}>());
+  REQUIRED_ACTIONS_ACTION_TYPES.FETCH_NEW_ACTIONS_FOR_USER, props<{user_id: string}>());
 export const completeRequiredAction = createAction(
   REQUIRED_ACTIONS_ACTION_TYPES.COMPLETE_REQUIRED_ACTION, props<{action_id: string; notify?: boolean}>());
 export const dismissRequiredAction = createAction(

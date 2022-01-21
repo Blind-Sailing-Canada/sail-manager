@@ -21,16 +21,16 @@ export class BoatMaintenanceService {
     return this.http.post<BoatMaintenance>(`${this.API_URL}/${id}/comments`, comment);
   }
 
-  postMaintenancePictures(maintenanceId: string, pictures: Partial<Media>[]): Observable<BoatMaintenance> {
-    return this.http.patch<BoatMaintenance>(`${this.API_URL}/${maintenanceId}/pictures`, pictures);
+  postMaintenancePictures(boat_maintenance_id: string, pictures: Partial<Media>[]): Observable<BoatMaintenance> {
+    return this.http.patch<BoatMaintenance>(`${this.API_URL}/${boat_maintenance_id}/pictures`, pictures);
   }
 
-  deleteMaintenanceComment(maintenanceId: string, commentId: string): Observable<BoatMaintenance> {
-    return this.http.delete<BoatMaintenance>(`${this.API_URL}/${maintenanceId}/comments/${commentId}`);
+  deleteMaintenanceComment(boat_maintenance_id: string, comment_id: string): Observable<BoatMaintenance> {
+    return this.http.delete<BoatMaintenance>(`${this.API_URL}/${boat_maintenance_id}/comments/${comment_id}`);
   }
 
-  deleteMaintenancePicture(maintenanceId: string, pictureId: string): Observable<BoatMaintenance> {
-    return this.http.delete<BoatMaintenance>(`${this.API_URL}/${maintenanceId}/pictures/${pictureId}`);
+  deleteMaintenancePicture(boat_maintenance_id: string, picture_id: string): Observable<BoatMaintenance> {
+    return this.http.delete<BoatMaintenance>(`${this.API_URL}/${boat_maintenance_id}/pictures/${picture_id}`);
   }
 
   fetchMaintenanceRequests(query: string): Observable<BoatMaintenance[]> {

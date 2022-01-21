@@ -36,8 +36,8 @@ export class UserProfileComponent implements OnChanges {
     }
   }
 
-  public goToAchievement(clinicId: string): void {
-    this.viewClinic.emit(clinicId);
+  public goToAchievement(clinic_id: string): void {
+    this.viewClinic.emit(clinic_id);
   }
 
 }

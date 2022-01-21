@@ -67,8 +67,8 @@ export class ChallengeListPageComponent extends BasePageComponent implements OnI
     this.dispatchAction(fetchChallenges({ notify: false }));
   }
 
-  public viewChallenge(challengeId: string): void {
-    this.goTo([viewChallengeRoute(challengeId)]);
+  public viewChallenge(challenge_id: string): void {
+    this.goTo([viewChallengeRoute(challenge_id)]);
   }
 
   public get canCreateNewChallenge(): boolean {
