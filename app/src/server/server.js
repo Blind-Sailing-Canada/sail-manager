@@ -108,6 +108,10 @@ app
     debug: true,
   }))
   .post('/cdn/upload/*', jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }), async (req, res) => {
+    if (req.user?.status !== 'APPROVED') {
+      return res.status(401).send('Not authorized to upload files.');
+    }
+
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send('No files were uploaded.');
     }
