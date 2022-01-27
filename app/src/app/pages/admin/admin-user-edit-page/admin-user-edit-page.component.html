@@ -7,7 +7,7 @@
       role="heading"
       tabindex="0"
       id="pageTitle"
-    >Edit User Privileges</mat-card-title>
+    >Edit User's Privileges</mat-card-title>
     <mat-card-subtitle
       role="heading"
       aria-level="2"
@@ -79,8 +79,6 @@
               checkboxPosition="before"
               *ngFor="let role of profileRoles | keyvalue; let i = index"
               [value]="role.value"
-              tabindex="0"
-              role="option"
             >{{role.value}}</mat-list-option>
           </mat-selection-list>
         </mat-expansion-panel>

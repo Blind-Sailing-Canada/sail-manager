@@ -50,7 +50,7 @@
       <th aria-hidden="true">Instructor</th>
     </tr>
     <tr
-      attr.aria-label="{{clinic.name}}, lead by {{clinic.instructor?.name || 'no one'}}."
+      attr.aria-label="{{clinic.name}}, led by {{clinic.instructor?.name || 'no one'}}."
       role="listitem"
       tabindex="0"
     >
@@ -93,6 +93,7 @@
     </tr>
   </app-table>
   <h3>Enrollment</h3>
+  <p *ngIf="!clinic?.attendance?.length">Nobody is enrolled.</p>
   <mat-list>
     <mat-list-item *ngFor="let student of clinic?.attendance">
       <div class="enrollment-list-item-content">

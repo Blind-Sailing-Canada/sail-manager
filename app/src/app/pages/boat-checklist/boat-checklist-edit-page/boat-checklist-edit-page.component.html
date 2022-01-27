@@ -19,7 +19,10 @@
           *ngSwitchCase="BoatChecklistItemType.Select"
           title="#{{i+1}}"
         >
-          <app-boat-checklist-item-select [selectItemFormGroup]="asFormGroup(item)"></app-boat-checklist-item-select>
+          <app-boat-checklist-item-select
+            [index]="i"
+            [selectItemFormGroup]="asFormGroup(item)"
+          ></app-boat-checklist-item-select>
           <button
             (click)="deleteItem(i)"
             title="delete item #{{i+1}}"
@@ -34,7 +37,10 @@
           *ngSwitchCase="BoatChecklistItemType.Input"
           title="#{{i+1}}"
         >
-          <app-boat-checklist-item-input [inputItemFormGroup]="asFormGroup(item)"></app-boat-checklist-item-input>
+          <app-boat-checklist-item-input
+            [index]="i"
+            [inputItemFormGroup]="asFormGroup(item)"
+          ></app-boat-checklist-item-input>
           <button
             (click)="deleteItem(i)"
             title="delete item #{{i+1}}"

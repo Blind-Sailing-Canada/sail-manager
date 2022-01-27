@@ -2,11 +2,13 @@
   <mat-form-field>
     <mat-label
       aria-hidden="true"
+      id="key_{{index}}"
       tabindex="-1"
     >Property key</mat-label>
     <input
-      aria-required="true"
-      attr.aria-label="Property key"
+      [attr.aria-required]="isRequired('key')"
+      [required]="isRequired('key')"
+      attr.labelledby="key_{{index}}"
       formControlName="key"
       matInput
       type="text"
@@ -16,11 +18,13 @@
   <mat-form-field>
     <mat-label
       aria-hidden="true"
+      id="label_{{index}}"
       tabindex="-1"
     >Property label</mat-label>
     <input
-      aria-required="true"
-      attr.aria-label="Property label"
+      [attr.aria-required]="isRequired('label')"
+      [required]="isRequired('label')"
+      attr.labelledby="label_{{index}}"
       formControlName="label"
       matInput
       type="text"
@@ -30,10 +34,13 @@
   <mat-form-field>
     <mat-label
       aria-hidden="true"
+      id="defaultValue_{{index}}"
       tabindex="-1"
     >Default value</mat-label>
     <input
-      attr.aria-label="Property default value"
+      [attr.aria-required]="isRequired('defaultValue')"
+      [required]="isRequired('defaultValue')"
+      attr.labelledby="defaultValue_{{index}}"
       formControlName="defaultValue"
       matInput
       type="text"

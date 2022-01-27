@@ -34,7 +34,7 @@
     </tr>
     <tr
       *ngFor="let clinic of clinicsArray; let i = index;"
-      attr.aria-label="Clinic {{i+1}} of {{clinicsArray.length}}: {{clinic.name}}, lead by {{clinic.instructor?.name || 'no one'}}."
+      attr.aria-label="Clinic {{i+1}} of {{clinicsArray.length}}: {{clinic.name}}, led by {{clinic.instructor?.name || 'no one'}}."
       role="listitem"
       tabindex="0"
       class="clickable"
