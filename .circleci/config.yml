@@ -27,44 +27,44 @@ jobs:
 
       - run: docker --version
   
-      # build and push Docker sail-manager-be
-      - run: 
-          name: Build Docker sail-manager-be image
-          command: |
-            cd ./api 
-            chmod +x ./build-docker.sh 
-            docker build -t bsac/sail-manager-be:latest .
-      - run:
-          name: Push sail-manager-be to DockerHub
-          command: |
-            echo -n "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
-            docker image push bsac/sail-manager-be:latest
+#       # build and push Docker sail-manager-be
+#       - run: 
+#           name: Build Docker sail-manager-be image
+#           command: |
+#             cd ./api 
+#             chmod +x ./build-docker.sh 
+#             docker build -t bsac/sail-manager-be:latest .
+#       - run:
+#           name: Push sail-manager-be to DockerHub
+#           command: |
+#             echo -n "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
+#             docker image push bsac/sail-manager-be:latest
       
-      # build and push Docker sail-manager-fe
-      - run: 
-          name: Build Docker sail-manager-fe image
-          command: |
-            cp -r ./api ./app/api
-            cd ./app
-            chmod +x ./build-docker.sh
-            docker build -t bsac/sail-manager-fe:latest .
-      - run:
-          name: Push sail-manager-fe to DockerHub
-          command: |
-            echo -n "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
-            docker image push bsac/sail-manager-fe:latest
+#       # build and push Docker sail-manager-fe
+#       - run: 
+#           name: Build Docker sail-manager-fe image
+#           command: |
+#             cp -r ./api ./app/api
+#             cd ./app
+#             chmod +x ./build-docker.sh
+#             docker build -t bsac/sail-manager-fe:latest .
+#       - run:
+#           name: Push sail-manager-fe to DockerHub
+#           command: |
+#             echo -n "$DOCKER_PASSWORD" | docker login -u $DOCKER_USER --password-stdin
+#             docker image push bsac/sail-manager-fe:latest
 
       # HEROKU FLOW
-      # # build and push Docker image
-      # - run: chmod +x ./build-docker.sh
-      # - run: 
-      #     name: Build docker image
-      #     command: docker build -t bsac/sail-manager:$CIRCLE_SHA1 .
-      # - run:
-      #     name: Push to DockerHub
-      #     command: |
-      #       docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      #       docker image push bsac/sail-manager:$CIRCLE_SHA1
+      # build and push Docker image
+      - run: chmod +x ./build-docker.sh
+      - run: 
+          name: Build docker image
+          command: docker build -t bsac/sail-manager:$CIRCLE_SHA1 .
+      - run:
+          name: Push to DockerHub
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+            docker image push bsac/sail-manager:$CIRCLE_SHA1
 
       - heroku/push-docker-image:
           process-types: web
