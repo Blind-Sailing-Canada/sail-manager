@@ -45,6 +45,13 @@ if (process.env.NODE_ENV !== 'prod'){
   DB_LOGGING.push('error');
 }
 
+const DB_SSL = {} as any;
+
+if (process.env.DB_SSL === 'true') {
+  DB_SSL.ssl = process.env.NODE_ENV === 'prod';
+  DB_SSL.extra = { ssl: { rejectUnauthorized: false } };
+}
+
 const DB_CONNECTION_META: ConnectionOptions = {
   type: process.env.DB_TYPE as any,
   url: process.env.DB_CONNECTION_STRING.replace(/\\n/gm, '\n'),
@@ -54,9 +61,8 @@ const DB_CONNECTION_META: ConnectionOptions = {
     '**/*.entity.js',
   ],
   synchronize: process.env.DB_SYNCHRONIZE === 'true',
-  // ssl: process.env.NODE_ENV === 'prod',
-  // extra: { ssl: { rejectUnauthorized: false } },
   namingStrategy: new SnakeNamingStrategy(),
+  ...DB_SSL,
 };
 
 const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\n'));
