@@ -40,7 +40,7 @@ export class ProfileSettingsPageComponent extends BasePageComponent implements O
       .fetchSettingsForProfile(this.user.profile.id)
       .pipe(take(1))
       .subscribe((settings) => {
-        this.updateForm(settings.settings);
+        this.updateForm(settings?.settings || {});
       });
   }
 
@@ -56,7 +56,7 @@ export class ProfileSettingsPageComponent extends BasePageComponent implements O
       )
       .pipe(take(1))
       .subscribe((settings) => {
-        this.updateForm(settings.settings);
+        this.updateForm(settings?.settings || {});
         this.dispatchAction(putSnack({ snack: { message: 'Saved', type: SnackType.INFO } }));
       });
   }
