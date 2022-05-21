@@ -69,7 +69,7 @@ export class AuthController {
     const authorization = req.headers.authorization;
 
     if (!authorization) {
-      return 'piss off mate! first warning.';
+      return 'not authorized';
     }
 
     const token = authorization.split(' ', 2)[1];
@@ -78,13 +78,12 @@ export class AuthController {
     try {
       user = this.jwtService.verify(token, { ignoreExpiration: true });
     } catch (tokenError) {
-      // tslint:disable-next-line: no-console
       console.error(tokenError);
-      return 'piss off mate! second warning.';
+      return 'no jwt';
     }
 
     if (!user) {
-      return 'piss off mate! third warning.';
+      return 'no user';
     }
 
     const profile_id = user.profile_id;

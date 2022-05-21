@@ -151,9 +151,17 @@ export class AuthService {
     }
 
     const existingUser = await UserEntity
-      .findOne({ where: { provider_user_id: providerUser.id } });
+      .findOne({
+        relations: ['profile'],
+        where: { provider_user_id: providerUser.id },
+      });
 
     if (existingUser) {
+      if (!existingUser.profile) {
+        await this.createNewProfileForExistingUser(providerUser, existingUser.id);
+        await existingUser.reload();
+      }
+
       return existingUser;
     }
 
@@ -301,6 +309,50 @@ export class AuthService {
     });
 
     return UserEntity.findOne(newUser.id);
+  }
+
+  private async createNewProfileForExistingUser(user: ProviderUser, existingUserEntityId: string, expires = true): Promise<ProfileEntity> {
+
+    this.logger.log(`CREATING NEW PROFILE FOR EXISTING USER ${JSON.stringify(user, null, 2)}`);
+
+    const expires_at = expires ? new Date(new Date().getTime() + (30 * 60 * 1000)): null;
+
+    const newProfile = ProfileEntity
+      .create({
+        id: uuidv4(),
+        email: user.email,
+        expires_at: expires_at,
+        name: user.name,
+        photo: user.photo,
+        roles: user.roles || [],
+        status: user.status || ProfileStatus.Registration,
+      });
+
+    const newUserAccess = UserAccessEntity
+      .create({
+        access: {
+          ...DefaultUserAccess,
+          ...user.access,
+        },
+        profile: newProfile,
+      });
+
+    const newUser = UserEntity
+      .create({
+        id: existingUserEntityId,
+        provider: user.provider,
+        provider_user_id: user.id,
+        profile: newProfile,
+        original_profile_id: newProfile.id,
+      });
+
+    await getConnection().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.save(newProfile);
+      await transactionalEntityManager.save(newUserAccess);
+      await transactionalEntityManager.save(newUser);
+    });
+
+    return ProfileEntity.findOne(newProfile.id);
   }
 
 }
