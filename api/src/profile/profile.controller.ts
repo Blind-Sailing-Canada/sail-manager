@@ -117,7 +117,7 @@ export class ProfileController {
     await getManager()
       .transaction(async transactionalEntityManager => {
         if (review.roles || review.status) {
-          const newInfo: Partial<Profile> = {};
+          const newInfo: Partial<Profile> = { expires_at: null };
 
           if (review.roles) {
             newInfo.roles = review.roles;
