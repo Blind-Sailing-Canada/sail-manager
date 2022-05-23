@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   ManyToOne,
   Unique
 } from 'typeorm';
@@ -62,6 +63,7 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
   checklist: Map<string, string>
 
   @Column()
+  @Index()
   sail_id: string;
 
   @ManyToOne(() => SailEntity, (sail) => sail.feedback)
@@ -71,6 +73,7 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
     nullable: true,
     default: null,
   })
+  @Index()
   submitted_by_id: string;
 
   @ManyToOne(() => ProfileEntity, (profile) => profile.sail_checklists, { eager: true })

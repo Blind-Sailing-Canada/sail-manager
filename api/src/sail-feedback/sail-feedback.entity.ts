@@ -22,6 +22,7 @@ export class SailFeedbackEntity extends BaseModelEntity implements SailFeedback 
   rating: number;
 
   @Column()
+  @Index()
   sail_id: string;
 
   @ManyToOne(() => SailEntity, (sail) => sail.feedback)

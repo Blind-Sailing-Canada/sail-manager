@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   ManyToOne
 } from 'typeorm';
 import { BaseModelEntity } from '../base/base.entity';
@@ -12,11 +13,12 @@ import { BoatInstructionType } from '../types/boat-instructions/boat-instruction
 @Entity('boat_instructions')
 export class BoatInstructionsEntity extends BaseModelEntity implements BoatInstructions {
 
+  @Column()
+  @Index()
+  boat_id: string;
+
   @ManyToOne(() => BoatEntity, (boat) => boat.instructions)
   boat: BoatEntity;
-
-  @Column()
-  boat_id: string;
 
   @Column()
   description: string;

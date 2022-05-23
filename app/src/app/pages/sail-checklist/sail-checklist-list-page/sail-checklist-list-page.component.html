@@ -29,7 +29,11 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <app-checklist-summary
+          (openBoatDialog)="showBoatDialog($event)"
+          (openProfileDialog)="showProfileDialog($event)"
           (sailViewer)="viewSail($event)"
+          [afterArrival]="checklist.afterChecklist"
+          [beforeDeparture]="checklist.beforeChecklist"
           [sail]="checklist.sail"
         ></app-checklist-summary>
       </mat-expansion-panel>

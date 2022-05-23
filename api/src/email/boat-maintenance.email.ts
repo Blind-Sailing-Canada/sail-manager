@@ -84,11 +84,12 @@ export class BoatMaintenanceEmail {
 
     report
       .comments
-      .filter(existingComment => existingComment.id !== comment.id)
+      ?.filter(existingComment => existingComment.id !== comment.id)
       .forEach(existingComment => sendTo.add(existingComment.author.email));
 
     const emailInfo: EmailInfo = {
       subject: 'New comment on maintenance request',
+      bcc: Array.from(sendTo),
       content: `
         <html>
           <body>

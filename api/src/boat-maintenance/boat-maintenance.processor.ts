@@ -51,14 +51,23 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
 
   @Process('new-comment')
   async sendNewCommentEmail(job: Job) {
-    const request = await BoatMaintenanceEntity.findOneOrFail(job.data.maintenanceId);
-    const comment = await CommentEntity.findOneOrFail(job.data.commentId);
-    const fleetManager =  await ProfileEntity.fleetManager();
+    try {
+      const request = await BoatMaintenanceEntity.findOneOrFail(job.data.maintenanceId);
+      const comment = await CommentEntity.findOneOrFail(job.data.commentId);
+      const fleetManager =  await ProfileEntity.fleetManager();
 
-    const emailInfo = this.boatMaintenanceEmail.newMaintenanceRequestCommentEmail(request,comment);
+      if (!fleetManager) {
+        return;
+      }
 
-    emailInfo.bcc.push(fleetManager.email);
+      const emailInfo = this.boatMaintenanceEmail.newMaintenanceRequestCommentEmail(request,comment);
 
-    return this.emailService.sendBccEmail(emailInfo);
+      emailInfo.bcc.push(fleetManager.email);
+
+      return this.emailService.sendBccEmail(emailInfo);
+    } catch (error) {
+      this.logger.error(error);
+    }
+
   }
 }

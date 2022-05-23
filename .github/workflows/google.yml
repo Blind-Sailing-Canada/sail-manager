@@ -10,121 +10,121 @@
 #
 # For more support on how to run the workflow, please visit https://github.com/google-github-actions/setup-gcloud/tree/master/example-workflows/gke-kustomize
 
-name: Build and Deploy to GKE
+# name: Build and Deploy to GKE
 
-on:
-  push:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
 
-env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GAR_LOCATION: ${{ secrets.GAR_LOCATION }}
-  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
-  GKE_ZONE: ${{ secrets.GKE_ZONE }}
-  REPOSITORY: ${{ secrets.REPOSITORY }}
-  BE_DEPLOYMENT_NAME: ${{ secrets.BE_DEPLOYMENT_NAME }}
-  BE_IMAGE: ${{ secrets.BE_IMAGE }}
-  FE_DEPLOYMENT_NAME: ${{ secrets.FE_DEPLOYMENT_NAME }}
-  FE_IMAGE: ${{ secrets.FE_IMAGE }}
+# env:
+#   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+#   GAR_LOCATION: ${{ secrets.GAR_LOCATION }}
+#   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
+#   GKE_ZONE: ${{ secrets.GKE_ZONE }}
+#   REPOSITORY: ${{ secrets.REPOSITORY }}
+#   BE_DEPLOYMENT_NAME: ${{ secrets.BE_DEPLOYMENT_NAME }}
+#   BE_IMAGE: ${{ secrets.BE_IMAGE }}
+#   FE_DEPLOYMENT_NAME: ${{ secrets.FE_DEPLOYMENT_NAME }}
+#   FE_IMAGE: ${{ secrets.FE_IMAGE }}
 
-permissions:
-    contents: 'read'
-    id-token: 'write'
+# permissions:
+#     contents: 'read'
+#     id-token: 'write'
 
-jobs:
-  setup-build-publish-deploy-fe:
-    name: FE Setup, Build, Publish, and Deploy
-    runs-on: ubuntu-latest
-    environment: production
+# jobs:
+#   setup-build-publish-deploy-fe:
+#     name: FE Setup, Build, Publish, and Deploy
+#     runs-on: ubuntu-latest
+#     environment: production
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v2
 
-    # Configure Workload Identity Federation and generate an access token.
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0.4.0'
-      with:
-        credentials_json: '${{ secrets.GCP_CREDENTIALS_JSON  }}'
-        token_format: 'access_token'
+#     # Configure Workload Identity Federation and generate an access token.
+#     - id: 'auth'
+#       name: 'Authenticate to Google Cloud'
+#       uses: 'google-github-actions/auth@v0.4.0'
+#       with:
+#         credentials_json: '${{ secrets.GCP_CREDENTIALS_JSON  }}'
+#         token_format: 'access_token'
 
-    - name: Docker configuration
-      run: |-
-        echo ${{steps.auth.outputs.access_token}} | docker login -u oauth2accesstoken --password-stdin https://$GAR_LOCATION-docker.pkg.dev
-    # Get the GKE credentials so we can deploy to the cluster
-    - name: Set up GKE credentials
-      uses: google-github-actions/get-gke-credentials@v0.4.0
-      with:
-        cluster_name: ${{ env.GKE_CLUSTER }}
-        location: ${{ env.GKE_ZONE }}
+#     - name: Docker configuration
+#       run: |-
+#         echo ${{steps.auth.outputs.access_token}} | docker login -u oauth2accesstoken --password-stdin https://$GAR_LOCATION-docker.pkg.dev
+#     # Get the GKE credentials so we can deploy to the cluster
+#     - name: Set up GKE credentials
+#       uses: google-github-actions/get-gke-credentials@v0.4.0
+#       with:
+#         cluster_name: ${{ env.GKE_CLUSTER }}
+#         location: ${{ env.GKE_ZONE }}
 
-    # Build the Docker image
-    - name: Build
-      run: |-
-        cp -r ./api ./app/api
-        cd ./app
-        docker build \
-          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$FE_IMAGE:latest" \
-          --build-arg GITHUB_SHA="$GITHUB_SHA" \
-          --build-arg GITHUB_REF="$GITHUB_REF" \
-          .
-    # Push the Docker image to Google Artifact Registry
-    - name: Publish
-      run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$FE_IMAGE:latest"
+#     # Build the Docker image
+#     - name: Build
+#       run: |-
+#         cp -r ./api ./app/api
+#         cd ./app
+#         docker build \
+#           --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$FE_IMAGE:latest" \
+#           --build-arg GITHUB_SHA="$GITHUB_SHA" \
+#           --build-arg GITHUB_REF="$GITHUB_REF" \
+#           .
+#     # Push the Docker image to Google Artifact Registry
+#     - name: Publish
+#       run: |-
+#         docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$FE_IMAGE:latest"
  
-  setup-build-publish-deploy-be:
-    name: BE Setup, Build, Publish, and Deploy
-    runs-on: ubuntu-latest
-    environment: production
+#   setup-build-publish-deploy-be:
+#     name: BE Setup, Build, Publish, and Deploy
+#     runs-on: ubuntu-latest
+#     environment: production
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v2
 
-    # Configure Workload Identity Federation and generate an access token.
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0.4.0'
-      with:
-        credentials_json: '${{ secrets.GCP_CREDENTIALS_JSON  }}'
-        token_format: 'access_token'
+#     # Configure Workload Identity Federation and generate an access token.
+#     - id: 'auth'
+#       name: 'Authenticate to Google Cloud'
+#       uses: 'google-github-actions/auth@v0.4.0'
+#       with:
+#         credentials_json: '${{ secrets.GCP_CREDENTIALS_JSON  }}'
+#         token_format: 'access_token'
 
-    - name: Docker configuration
-      run: |-
-        echo ${{steps.auth.outputs.access_token}} | docker login -u oauth2accesstoken --password-stdin https://$GAR_LOCATION-docker.pkg.dev
-    # Get the GKE credentials so we can deploy to the cluster
-    - name: Set up GKE credentials
-      uses: google-github-actions/get-gke-credentials@v0.4.0
-      with:
-        cluster_name: ${{ env.GKE_CLUSTER }}
-        location: ${{ env.GKE_ZONE }}
-
-    # Build the Docker image
-    - name: Build
-      run: |-
-        cd ./api
-        docker build \
-          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$BE_IMAGE:latest" \
-          --build-arg GITHUB_SHA="$GITHUB_SHA" \
-          --build-arg GITHUB_REF="$GITHUB_REF" \
-          .
-    # Push the Docker image to Google Artifact Registry
-    - name: Publish
-      run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$BE_IMAGE:latest"
-#     # Set up kustomize
-#     - name: Set up Kustomize
+#     - name: Docker configuration
 #       run: |-
-#         curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-#         chmod u+x ./kustomize
-#     # Deploy the Docker image to the GKE cluster
-#     - name: Deploy
+#         echo ${{steps.auth.outputs.access_token}} | docker login -u oauth2accesstoken --password-stdin https://$GAR_LOCATION-docker.pkg.dev
+#     # Get the GKE credentials so we can deploy to the cluster
+#     - name: Set up GKE credentials
+#       uses: google-github-actions/get-gke-credentials@v0.4.0
+#       with:
+#         cluster_name: ${{ env.GKE_CLUSTER }}
+#         location: ${{ env.GKE_ZONE }}
+
+#     # Build the Docker image
+#     - name: Build
 #       run: |-
-#         # replacing the image name in the k8s template
-#         ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$BE_IMAGE:$GITHUB_SHA
-#         ./kustomize build . | kubectl apply -f -
-#         kubectl rollout status deployment/$BE_DEPLOYMENT_NAME
-#         kubectl get services -o wide
+#         cd ./api
+#         docker build \
+#           --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$BE_IMAGE:latest" \
+#           --build-arg GITHUB_SHA="$GITHUB_SHA" \
+#           --build-arg GITHUB_REF="$GITHUB_REF" \
+#           .
+#     # Push the Docker image to Google Artifact Registry
+#     - name: Publish
+#       run: |-
+#         docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$BE_IMAGE:latest"
+# #     # Set up kustomize
+# #     - name: Set up Kustomize
+# #       run: |-
+# #         curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+# #         chmod u+x ./kustomize
+# #     # Deploy the Docker image to the GKE cluster
+# #     - name: Deploy
+# #       run: |-
+# #         # replacing the image name in the k8s template
+# #         ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$BE_IMAGE:$GITHUB_SHA
+# #         ./kustomize build . | kubectl apply -f -
+# #         kubectl rollout status deployment/$BE_DEPLOYMENT_NAME
+# #         kubectl get services -o wide

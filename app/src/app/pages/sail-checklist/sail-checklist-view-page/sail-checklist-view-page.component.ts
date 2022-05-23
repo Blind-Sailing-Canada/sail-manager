@@ -10,6 +10,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { _USER_RUNTIME_CHECKS } from '@ngrx/store/src/tokens';
+import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
 import { SailorRole } from '../../../../../../api/src/types/sail-manifest/sailor-role';
 import {
   arrivalSailChecklistRoute,
@@ -53,5 +54,13 @@ export class SailChecklistViewPageComponent extends SailChecklistBasePageCompone
       .manifest
       .filter(sailor => sailor.profile_id === user.id)
       .some(sailor => [SailorRole.Crew, SailorRole.Skipper].includes(sailor.sailor_role));
+  }
+
+  public get beforeChecklist() {
+    return this.sail?.checklists?.find(checklist => checklist.checklist_type === SailChecklistType.Before);
+  }
+
+  public get afterChecklist() {
+    return this.sail?.checklists?.find(checklist => checklist.checklist_type === SailChecklistType.After);
   }
 }

@@ -152,6 +152,11 @@
     aria-live="polite"
     tabindex="0"
   >Current boat: {{boatName || 'not assigned'}}</p>
+  <p
+    *ngIf="boatName && boatNotInServiceWarning()"
+    aria-live="polite"
+    tabindex="0"
+  >Attention: this boat is not in service!</p>
   <button
     (click)="setSailBoat()"
     *ngIf="sailForm.controls['boat_id']?.value"
@@ -164,13 +169,13 @@
       tabindex="0"
     >List of Available Boats During This Time</h3>
     <mat-list-item
-      tabindex="0"
       (click)="setSailBoat(boat.id)"
       (keydown)="setSailBoatOnKey($event, boat.id)"
       *ngFor="let boat of availableBoats; let i = index"
-      attr.aria-label="Boat {{i + 1}} of {{availableBoats.length}} {{boat.name}}. Click to assign as sail's boat."
+      attr.aria-label="Boat {{i + 1}} of {{availableBoats.length}} {{boat.name}}{{boatNotInServiceWarning(boat.id)}}. Click to assign as sail's boat."
       role="listitem"
-    >{{i + 1 }}. {{boat.name}}</mat-list-item>
+      tabindex="0"
+    >{{i + 1 }}. {{boat.name}} {{boatNotInServiceWarning(boat.id)}}</mat-list-item>
     <mat-list-item *ngIf="!availableBoats || availableBoats.length === 0">No boats are available during this time.
     </mat-list-item>
   </mat-action-list>

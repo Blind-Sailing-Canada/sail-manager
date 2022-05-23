@@ -35,9 +35,11 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   author: ProfileEntity
 
   @Column({ nullable: true })
+  @Index()
   commentable_id: string;
 
   @Column({ nullable: true })
+  @Index()
   commentable_type: string;
 
   @TreeChildren()
@@ -46,7 +48,11 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   @TreeParent()
   parent: CommentEntity;
 
-  @ManyToOne(() => SailEntity, () => null, { createForeignKeyConstraints: false })
+  @ManyToOne(() => SailEntity, () => null, {
+    createForeignKeyConstraints: false ,
+    eager: false,
+    primary: true,
+  })
   @JoinColumn([
     {
       name: 'commentable_id',
@@ -59,7 +65,11 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   ])
   sail: SailEntity
 
-  @ManyToOne(() => BoatMaintenanceEntity, () => null, { createForeignKeyConstraints: false })
+  @ManyToOne(() => BoatMaintenanceEntity, () => null, {
+    createForeignKeyConstraints: false ,
+    eager: false,
+    primary: true,
+  })
   @JoinColumn([
     {
       name: 'commentable_id',
@@ -72,7 +82,11 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   ])
   boat_maintenance: BoatMaintenanceEntity
 
-  @ManyToOne(() => ChallengeEntity, () => null, { createForeignKeyConstraints: false })
+  @ManyToOne(() => ChallengeEntity, () => null, {
+    createForeignKeyConstraints: false ,
+    eager: false,
+    primary: true,
+  })
   @JoinColumn([
     {
       name: 'commentable_id',
@@ -85,7 +99,11 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   ])
   challenge: ChallengeEntity
 
-  @ManyToOne(() => DocumentEntity, () => null, { createForeignKeyConstraints: false })
+  @ManyToOne(() => DocumentEntity, () => null, {
+    createForeignKeyConstraints: false ,
+    eager: false,
+    primary: true,
+  })
   @JoinColumn([
     {
       name: 'commentable_id',

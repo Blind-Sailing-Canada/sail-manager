@@ -108,7 +108,7 @@ export class SailEntity extends BaseModelEntity implements Sail {
 
   @ManyToOne(() => ProfileEntity, undefined, {
     nullable: true,
-    primary: false,
+    primary: true,
     eager: true,
   })
   @JoinColumn()
@@ -121,10 +121,10 @@ export class SailEntity extends BaseModelEntity implements Sail {
   cancelled_at: Date;
 
   @Column()
+  @Index()
   boat_id: string;
 
   @ManyToOne(() => BoatEntity, boat => boat.sails, { eager: true })
-  @Index()
   boat: BoatEntity;
 
   @OneToMany(() => SailManifestEntity, manifest => manifest.sail, { eager: true })
@@ -140,13 +140,14 @@ export class SailEntity extends BaseModelEntity implements Sail {
   @OneToMany(() => SailFeedbackEntity, (feedback) => feedback.sail)
   feedback: SailFeedbackEntity[];
 
-  @OneToMany(() => SailChecklistEntity, (checklist) => checklist.sail, { eager: true })
+  @OneToMany(() => SailChecklistEntity, (checklist) => checklist.sail, { eager: false })
   checklists: SailChecklistEntity[];
 
   @Column({
     nullable: true,
     default: null,
   })
+  @Index()
   sail_request_id: string;
 
   @OneToOne(() => SailRequestEntity, { nullable: true })

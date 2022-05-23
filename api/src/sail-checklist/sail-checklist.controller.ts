@@ -24,26 +24,31 @@ export class SailChecklistController {
   @Get('/')
   async fetchChecklists(@Query('boat_id') boat_id: string, @Query('exclude_sail_id') exclude_sail_id: string) {
 
-    if (!boat_id) {
-      return SailChecklistEntity.find({
-        relations: ['sail'],
-        where: { sail_id: Not(exclude_sail_id) },
-        order: { created_at: 'DESC' },
-      });
+    const where = {} as any;
+
+    if (boat_id) {
+      where.sail = { boat_id };
+    }
+
+    if (exclude_sail_id) {
+      where.sail_id = Not(exclude_sail_id);
     }
 
     const checklists = await SailChecklistEntity.find({
-      relations: ['sail'],
-      where: { sail: { boat_id } },
       order: { created_at: 'DESC' },
+      relations: ['sail'],
+      where,
     });
 
-    return checklists.filter(checklist => checklist.sail_id !== exclude_sail_id);
+    return checklists;
   }
 
   @Get('/:checklist_id')
   async fetchChecklist(@Param('checklist_id') checklist_id: string) {
-    return SailChecklistEntity.findOneOrFail(checklist_id, { relations: ['sail'] });
+    return SailChecklistEntity.findOne({
+      where: { id: checklist_id } ,
+      relations: ['sail'],
+    });
   }
 
   @Patch('/sail/:sail_id/update')
@@ -104,6 +109,6 @@ export class SailChecklistController {
       }
     }
 
-    return SailEntity.findOne(sail_id);
+    return SailEntity.findOne(sail_id, { relations: ['checklists'] });
   }
 }

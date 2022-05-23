@@ -41,6 +41,8 @@
     (openBoatDialog)="showBoatDialog($event)"
     (openProfileDialog)="showProfileDialog($event)"
     (sailViewer)="viewSail($event)"
+    [afterArrival]="afterChecklist"
+    [beforeDeparture]="beforeChecklist"
     [sail]="sail"
   ></app-checklist-summary>
 </ng-template>

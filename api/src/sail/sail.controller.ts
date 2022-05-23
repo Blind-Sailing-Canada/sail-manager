@@ -270,6 +270,7 @@ export class SailController {
         .find({
           where: { id: In(sail_ids) },
           order: { end_at: 'DESC' },
+          relations: ['checklists'],
         });
     }
 

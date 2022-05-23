@@ -88,12 +88,13 @@ export class BoatEntity extends BaseModelEntity implements Boat {
     default: BoatEntity.name,
     nullable: false,
   })
+  @Index()
   entity_type: string
 
-  @OneToMany(() => SailEntity, sail => sail.boat)
+  @OneToMany(() => SailEntity, sail => sail.boat, { eager: false })
   sails: SailEntity[]
 
-  @OneToMany(() => BoatInstructionsEntity, (instructions) => instructions.boat, { eager: true })
+  @OneToMany(() => BoatInstructionsEntity, instructions => instructions.boat, { eager: true })
   instructions: BoatInstructions[]
 
   @OneToOne(() => BoatChecklistEntity, (checklist) => checklist.boat, {
@@ -113,7 +114,7 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   @OneToMany(() => DocumentEntity, (document) => document.boat, {
     createForeignKeyConstraints: false,
     nullable: true,
-    eager: true,
+    eager: false,
   })
   documents: DocumentEntity[]
 

@@ -188,7 +188,10 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
 
     this.sailManifestService
       .updateManifest(this.sail_id, manifest)
-      .subscribe(sail => this.dispatchAction(putSail({ sail, id: this.sail_id })));
+      .subscribe(sail => {
+        this.dispatchAction(putSail({ sail, id: this.sail_id }));
+        this.dispatchMessage('Manifest saved');
+      });
   }
 
 

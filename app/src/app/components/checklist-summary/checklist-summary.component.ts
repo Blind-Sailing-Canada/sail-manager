@@ -3,13 +3,11 @@ import {
   EventEmitter,
   Inject,
   Input,
-  OnChanges,
   Output,
 } from '@angular/core';
 import { Boat } from '../../../../../api/src/types/boat/boat';
 import { Profile } from '../../../../../api/src/types/profile/profile';
 import { SailChecklist } from '../../../../../api/src/types/sail-checklist/sail-checklist';
-import { SailChecklistType } from '../../../../../api/src/types/sail-checklist/sail-checklist-type';
 import { SailorRole } from '../../../../../api/src/types/sail-manifest/sailor-role';
 import { Sail } from '../../../../../api/src/types/sail/sail';
 import { MomentService } from '../../services/moment.service';
@@ -19,33 +17,20 @@ import { MomentService } from '../../services/moment.service';
   templateUrl: './checklist-summary.component.html',
   styleUrls: ['./checklist-summary.component.css']
 })
-export class ChecklistSummaryComponent implements OnChanges {
+export class ChecklistSummaryComponent {
 
   @Input() sail: Sail;
+  @Input() beforeDeparture: SailChecklist;
+  @Input() afterArrival: SailChecklist;
   @Output() openBoatDialog: EventEmitter<Boat> = new EventEmitter<Boat>();
   @Output() openProfileDialog: EventEmitter<Profile> = new EventEmitter<Profile>();
   @Output() sailViewer: EventEmitter<string> = new EventEmitter();
 
   public SAILOR_ROLE = SailorRole;
-  public beforeDeparture: SailChecklist;
-  public afterArrival: SailChecklist;
 
   constructor(
     @Inject(MomentService) private momentService: MomentService,
   ) { }
-
-
-  ngOnChanges(): void {
-    this.beforeDeparture = this
-      .sail
-      .checklists
-      .find(checklist => checklist.checklist_type === SailChecklistType.Before);
-
-    this.afterArrival = this
-      .sail
-      .checklists
-      .find(checklist => checklist.checklist_type === SailChecklistType.After);
-  }
 
   public formatDate(date: Date | string): string {
     return this.momentService.format(date);
@@ -68,11 +53,11 @@ export class ChecklistSummaryComponent implements OnChanges {
   }
 
   public get destination(): string {
-    return this.beforeDeparture.sail_destination;
+    return this.beforeDeparture?.sail_destination;
   }
 
   public get weather(): string {
-    return this.beforeDeparture.weather;
+    return this.beforeDeparture?.weather;
   }
 
   public showProfileDialog(profile: Profile): void {

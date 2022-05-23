@@ -46,6 +46,7 @@ import { SailorRole } from '../../../../../../api/src/types/sail-manifest/sailor
 import { Profile } from '../../../../../../api/src/types/profile/profile';
 import { SailCategory } from '../../../../../../api/src/types/sail/sail-category';
 import { fetchSailCategories } from '../../../store/actions/sail-category.actions';
+import { BoatStatus } from '../../../../../../api/src/types/boat/boat-status';
 
 @Component({
   selector: 'app-sail-edit-page',
@@ -196,6 +197,12 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     const boat_id = this.sailForm.controls.boat_id.value;
     const boat = this.getBoat(boat_id);
     return boat?.name;
+  }
+
+  public boatNotInServiceWarning(boatId?: string): string {
+    const boat_id = boatId ?? this.sailForm.controls.boat_id.value;
+    const boat = this.getBoat(boat_id);
+    return boat?.status !== BoatStatus.InService? 'Warning: this boat is not in service' : '';
   }
 
   public get skipperName(): string {
