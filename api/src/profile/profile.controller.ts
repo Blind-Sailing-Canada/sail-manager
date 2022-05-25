@@ -152,13 +152,13 @@ export class ProfileController {
               { status: RequiredActionStatus.Completed }
             );
         }
+
+        if (review.status === ProfileStatus.Approved && profile.status !== ProfileStatus.Approved) {
+          this.profileQueue.add('profile-approved', { profile_id });
+        }
       });
 
-    if (review.status === ProfileStatus.Approved && profile.status !== ProfileStatus.Approved) {
-      this.profileQueue.add('profile-approved', { profile_id });
-    }
-
-    await this.authService.logout(profile_id);
+    await this.authService.logout(profile_id).catch(error => console.error(error));
 
     return {
       access: await UserAccessEntity.findOne({ profile_id: profile_id }),
@@ -188,8 +188,6 @@ export class ProfileController {
 
       await this.authService.logout(user.profile_id);
 
-      this.profileQueue.add('new-profile', { profile_id: id });
-
       await getManager().transaction(async transactionalEntityManager => {
         const admins = await ProfileEntity.admins();
 
@@ -202,8 +200,9 @@ export class ProfileController {
         }));
 
         await transactionalEntityManager.save(required_actions);
+        await transactionalEntityManager.save(updatedProfile);
 
-        await ProfileEntity.save(updatedProfile);
+        this.profileQueue.add('new-profile', { profile_id: id });
       });
     } else {
       await ProfileEntity.save(updatedProfile);

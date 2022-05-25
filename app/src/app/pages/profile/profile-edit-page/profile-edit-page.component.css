@@ -1,0 +1,8 @@
+.profile-edit-form {
+  counter-reset: form-section;
+}
+
+.form-section-header::before {
+  counter-increment: form-section;
+  content: "Step " counter(form-section) " of ";
+}

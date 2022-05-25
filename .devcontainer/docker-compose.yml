@@ -33,11 +33,11 @@ services:
     environment:
       POSTGRES_PASSWORD: password
 
-  adminer:
-    image: adminer
+  dbeaver:
+    image: dbeaver/cloudbeaver:latest
     restart: always
     ports:
-      - 8080:8080
+      - 8080:8978
   
 volumes:
   sail_manager:

@@ -36,7 +36,7 @@ async function bootstrap() {
 
   Sentry.captureEvent({
     level: Sentry.Severity.Info,
-    message: 'Sentry initialized in main.ts',
+    message: 'Sentry initialized in API main.ts',
   });
 
   process

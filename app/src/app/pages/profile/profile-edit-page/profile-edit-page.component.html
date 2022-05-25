@@ -9,6 +9,12 @@
       role="heading"
       tabindex="0"
     >Account Registration Form</mat-card-title>
+    <mat-card-subtitle
+      *ngIf="isNewRegistration"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >You must submit this form within 1 hour or your account will be deleted.</mat-card-subtitle>
     <mat-card-title
       *ngIf="!isNewRegistration"
       id="pageTitle"
@@ -42,7 +48,10 @@
   >Register</button>
 </ng-template>
 <ng-template #formContent>
-  <form [formGroup]="profileForm">
+  <form
+    [formGroup]="profileForm"
+    class='profile-edit-form'
+  >
     <ng-container>
       <ng-container *ngTemplateOutlet="profileName"></ng-container>
     </ng-container>
@@ -52,7 +61,7 @@
     <ng-container>
       <ng-container *ngTemplateOutlet="profilePhone"></ng-container>
     </ng-container>
-    <ng-container>
+    <ng-container *ngIf="!isNewRegistration">
       <ng-container *ngTemplateOutlet="profilePicture"></ng-container>
     </ng-container>
     <ng-container>
@@ -63,9 +72,10 @@
 <ng-template #profileName>
   <h4
     aria-hidden="true"
+    class='form-section-header'
     id="formStepName"
     tabindex="-1"
-  >Step 1 of 5: Your Name</h4>
+  >{{totalFormSteps}}: Your Name (required)</h4>
   <mat-form-field [formGroup]="profileForm">
     <mat-label
       aria-hidden="true"
@@ -88,9 +98,10 @@
 <ng-template #profileEmail>
   <h4
     aria-hidden="true"
+    class='form-section-header'
     id="formStepEmail"
     tabindex="-1"
-  >Step 2 of 5: Your Email Address</h4>
+  >{{totalFormSteps}}: Your Email Address (required)</h4>
   <mat-form-field [formGroup]="profileForm">
     <mat-label
       aria-hidden="true"
@@ -113,9 +124,10 @@
 <ng-template #profilePhone>
   <h4
     aria-hidden="true"
+    class='form-section-header'
     id="formStepPhone"
     tabindex="-1"
-  >Step 3 of 5: Your Phone Number</h4>
+  >{{totalFormSteps}}: Your Phone Number</h4>
   <mat-form-field [formGroup]="profileForm">
     <mat-label
       aria-hidden="true"
@@ -132,9 +144,10 @@
 <ng-template #profilePicture>
   <h4
     aria-hidden="true"
+    class='form-section-header'
     id="formStepPicture"
     tabindex="-1"
-  >Step 4 of 5: URL to Your Profile Picture</h4>
+  >{{totalFormSteps}}: URL to Your Profile Picture</h4>
   <mat-form-field [formGroup]="profileForm">
     <mat-label
       aria-hidden="true"
@@ -163,15 +176,17 @@
   <h4
     *ngIf="!isNewRegistration"
     aria-hidden="true"
+    class='form-section-header'
     id="formStepBio"
     tabindex="-1"
-  >Step 5 of 5: Your Self Description</h4>
+  >{{totalFormSteps}}: Your Self Description</h4>
   <h4
     *ngIf="isNewRegistration"
     aria-hidden="true"
+    class='form-section-header'
     id="formStepBio"
     tabindex="-1"
-  >Step 5 of 5: Indicate your role</h4>
+  >{{totalFormSteps}}: Indicate your role</h4>
   <mat-form-field [formGroup]="profileForm">
     <mat-label
       aria-hidden="true"

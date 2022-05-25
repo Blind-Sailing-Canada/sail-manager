@@ -58,6 +58,10 @@ export class GoogleCalendarService {
   }
 
   async createSailEvent(sail: Sail, message: string) {
+    if (sail.calendar_id) {
+      return this.updateSailEvent(sail, message);
+    }
+
     if (!this.connected) {
       await this.connect();
     }

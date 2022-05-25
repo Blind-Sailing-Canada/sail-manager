@@ -28,12 +28,14 @@ export class AuthInterceptor implements HttpInterceptor {
     const expired = this.tokenService.isExpired;
     const path = req.url;
     const csrfToken = sessionStorage.getItem('csrfToken');
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     let newRequest = req
       .clone({
         headers: req
           .headers
           .set('CSRF-Token', csrfToken || 'no-csrf-token-set')
+          .set('x-timezone', timezone)
       });
 
     if (path !== '/api/auth/logout' && token && expired) {

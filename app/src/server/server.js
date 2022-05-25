@@ -76,7 +76,7 @@ app
 
     try {
       Sentry.captureEvent({
-        level: Sentry.Severity.Log,
+        level: Sentry.Severity.Info,
         message: `[FE:SERVER] ${request.method} ${request.url}`,
         request:{
           url: request.url,

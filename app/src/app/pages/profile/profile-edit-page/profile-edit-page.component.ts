@@ -37,6 +37,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   public ProfileStatus = ProfileStatus;
   public profileForm: FormGroup;
   public profilePictureInputId = 'profilePictureInput';
+  public totalFormSteps = 5;
 
   private fileToUpload: File;
   private profile_id: string;
@@ -178,6 +179,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
 
     if (this.profile.status === ProfileStatus.Registration) {
       this.profileForm.controls.photo.disable();
+      this.totalFormSteps = 4;
     }
 
     this.profileForm.markAsPristine();

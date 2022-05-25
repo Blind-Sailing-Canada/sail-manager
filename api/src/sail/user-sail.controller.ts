@@ -1,5 +1,5 @@
 import {
-  Controller,  Get, Param, Query, UseGuards
+  Controller,  Get, Headers, Param, Query, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -80,12 +80,30 @@ export class UserSailController {
   }
 
   @Get('/today')
-  async todaySails(@Query('profile_id') profile_id) {
+  async todaySails(@Query('profile_id') profile_id, @Headers('x-timezone') time_zone) {
+
+    let timeZone = 'UTC';
+
+    try {
+      new Date().toLocaleString('en-US', { timeZone: time_zone });
+      timeZone = time_zone;
+    } catch(error) {
+      console.error(error);
+    }
+
+    const localDateString = `(CURRENT_DATE AT TIME ZONE '${timeZone}')::date::text`;
+    const localStartDateString = `(start_at AT TIME ZONE '${timeZone}')::date::text`;
+    const localEndDateString = `(end_at AT TIME ZONE '${timeZone}')::date::text`;
+
+    const localDate = `(CURRENT_DATE AT TIME ZONE '${timeZone}')`;
+    const localStartDate = `(start_at AT TIME ZONE '${timeZone}')`;
+    const localEndDate = `(end_at AT TIME ZONE '${timeZone}')`;
+
     const sails = await SailEntity
       .find(
         { where: `
-          (to_char(start_at, 'YYYY-MM-DD') = CURRENT_DATE::text OR to_char(end_at, 'YYYY-MM-DD') = CURRENT_DATE::text) OR
-          (start_at < NOW() AND end_at > NOW())
+          (${localStartDateString} = ${localDateString} OR ${localEndDateString} = ${localDateString}) OR
+          (${localStartDate} < ${localDate} AND ${localEndDate} > ${localDate})
           ` }
       );
 

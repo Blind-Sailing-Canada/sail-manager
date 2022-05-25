@@ -15,6 +15,7 @@ import { ProfileEntity } from '../profile/profile.entity';
 import { SailEntity } from '../sail/sail.entity';
 import { ProfileStatus } from '../types/profile/profile-status';
 import { SailManifest } from '../types/sail-manifest/sail-manifest';
+import { SailStatus } from '../types/sail/sail-status';
 import { SailManifestEntity } from './sail-manifest.entity';
 import { SailManifestService } from './sail-manifest.service';
 
@@ -64,13 +65,18 @@ export class SailManifestController {
   }
 
   @Get('/available-sailors')
-  async getAvailableSailors(@Query('start_at') start: string, @Query('end_at') end: string, @Query('sailorName') sailorName, @Query('limit') limit = 5 ) {
+  async getAvailableSailors(@Query('start_at') start: string,
+    @Query('end_at') end: string,
+    @Query('sailorName') sailorName,
+    @Query('limit') limit = 5
+  ) {
     const sailsDuringThisTime = await SailEntity
       .find(
         { where: `
-            (start_at <= '${start}'::timestamp with time zone AND end_at >= '${start}'::timestamp with time zone) OR
-            (start_at <= '${end}'::timestamp with time zone AND end_at >= '${end}'::timestamp with time zone)
-          ` }
+        SailEntity.status NOT IN ('${SailStatus.Cancelled}', '${SailStatus.Completed}') AND
+        ((start_at <= '${start}'::timestamp with time zone AND end_at >= '${start}'::timestamp with time zone) OR
+        (start_at <= '${end}'::timestamp with time zone AND end_at >= '${end}'::timestamp with time zone))
+        ` }
       );
 
     const notAvailable = sailsDuringThisTime.reduce((red, sail) => {
