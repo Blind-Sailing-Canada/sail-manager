@@ -207,4 +207,8 @@
       matInput
     ></textarea>
   </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (profileForm.pristine ? []: formErrors('bio'))"
+  >{{error}}</mat-error>
 </ng-template>

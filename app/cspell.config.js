@@ -12,6 +12,7 @@ module.exports = {
     'fileupload',
     'formatjs',
     'keyvalue',
+    'maxlength',
     'relativetimeformat',
   ],
 };

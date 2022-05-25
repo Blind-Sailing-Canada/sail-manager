@@ -2,6 +2,7 @@ import {
   Injectable, PipeTransform
 } from '@nestjs/common';
 import { Profile } from '../../types/profile/profile';
+import validator from 'validator';
 
 @Injectable()
 export class ProfileUpdateSanitizer implements PipeTransform {
@@ -20,7 +21,7 @@ export class ProfileUpdateSanitizer implements PipeTransform {
     const keys = Object.keys(createDTO).filter(key => createDTO[key] !== undefined);
 
     return keys.reduce((profile, key) => {
-      profile[key] = createDTO[key];
+      profile[key] =  validator.escape(createDTO[key]);
       return profile;
     }, {} as Profile);
   }

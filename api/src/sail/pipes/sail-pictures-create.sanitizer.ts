@@ -2,6 +2,7 @@ import {
   Injectable, PipeTransform
 } from '@nestjs/common';
 import { Media } from '../../types/media/media';
+import validator from 'validator';
 
 @Injectable()
 export class SailPicturesCreateSanitizer implements PipeTransform {
@@ -23,7 +24,7 @@ export class SailPicturesCreateSanitizer implements PipeTransform {
       const keys = Object.keys(createDTO).filter(key => createDTO[key] !== undefined);
 
       return keys.reduce((profile, key) => {
-        profile[key] = createDTO[key];
+        profile[key] = validator.escape(createDTO[key]);
         return profile;
       }, {} as Partial<Media>);
     });

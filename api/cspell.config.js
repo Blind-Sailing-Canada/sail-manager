@@ -8,6 +8,7 @@ module.exports = {
     'commentable',
     'disenroll',
     'lanczos',
+    'maxlength',
     'nestjs',
     'nestjsx',
     'phrf',

@@ -103,14 +103,26 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   }
 
   public formErrors(controlName: string): string[] {
-    const errors = Object.keys(this.profileForm.controls[controlName].errors || {});
+    const errors = Object
+      .keys(this.profileForm.controls[controlName].errors || {})
+      .map((errorKey) => {
+        const error = this.profileForm.controls[controlName].errors[errorKey];
+
+        if (errorKey === 'maxlength') {
+          return `${controlName} cannot exceed ${error.requiredLength} characters.`;
+        } else if (errorKey === 'required') {
+          return `${controlName} cannot be blank.`;
+        } else {
+          return errorKey;
+        }
+      });
     return errors;
   }
 
   public get shouldHideUpdateButton(): boolean {
     const isRegistration = this.profile.status === ProfileStatus.Registration;
 
-    if (isRegistration) {
+    if (isRegistration && !this.profileForm.dirty) {
       // exit early the form should already be valid during registration
       return false;
     }
@@ -123,6 +135,9 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   public save(): void {
     if (this.profile.status === ProfileStatus.Registration) {
       const profile = this.profileForm.getRawValue();
+
+      profile.phone = profile.phone.replace(/\+1/g, '').replace(/[^\d]/g,'').substring(0, 10);
+
       this.dispatchAction(updateProfileInfo({ profile, profile_id: this.profile_id }));
       return;
     }
@@ -160,11 +175,11 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
 
   private buildForm(): void {
     this.profileForm = this.fb.group({
-      name: new FormControl(null, Validators.required),
-      email: new FormControl(null, Validators.required),
+      name: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+      email: new FormControl(null, [Validators.required, Validators.maxLength(150)]),
       phone: new FormControl(null),
       photo: new FormControl(null),
-      bio: new FormControl(null),
+      bio: new FormControl(null, Validators.maxLength(500)),
     });
   }
 
