@@ -42,6 +42,12 @@ import { BoatService } from './boat.service';
       checklist: { eager: true },
       instructions: { eager: true },
     },
+    sort: [
+      {
+        field: 'name',
+        order: 'ASC',
+      },
+    ],
   },
 })
 @Controller('boat')

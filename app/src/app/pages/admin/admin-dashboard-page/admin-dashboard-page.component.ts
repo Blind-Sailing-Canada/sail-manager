@@ -115,7 +115,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
   public fetchAllUsers(): void {
     this.searchedProfiles = null;
     this.profileSearchInput.nativeElement.value = '';
-    this.dispatchAction(fetchProfiles({ query: '', notify: true }));
+    this.dispatchAction(fetchProfiles({ query: 'sort=name,ASC', notify: true }));
   }
 
   public get totalProfileCount(): number {
@@ -123,7 +123,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
   }
 
   public fetchPendingProfiles(notify?: boolean): void {
-    this.dispatchAction(fetchProfiles({ notify, query: `status=${ProfileStatus.PendingApproval}` }));
+    this.dispatchAction(fetchProfiles({ notify, query: `status=${ProfileStatus.PendingApproval}&sort=name,ASC` }));
   }
 
   public editProfilePrivileges(profile: Profile): void {

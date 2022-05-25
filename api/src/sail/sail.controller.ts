@@ -214,6 +214,7 @@ export class SailController {
     const sailorNames = [].concat(query.sailorNames).filter(Boolean);
     const start = query.start;
     const end = query.end;
+    const sort = query.sort;
 
     let searchQuery = SailEntity.getRepository().createQueryBuilder('sail');
 
@@ -266,12 +267,18 @@ export class SailController {
 
     const sail_ids = foundSails.map(sail => sail.id);
 
+    let order: any = { end_at: 'DESC' };
+
+    if (sort) {
+      const sortParts = sort.split(',');
+      order = { [sortParts[0]]: sortParts[1] };
+    }
     if (sail_ids.length) {
       return SailEntity
         .find({
-          where: { id: In(sail_ids) },
-          order: { end_at: 'DESC' },
+          order: order,
           relations: ['checklists'],
+          where: { id: In(sail_ids) },
         });
     }
 

@@ -74,7 +74,7 @@ export class ProfileService {
 
   searchByNameOrEmail(name: string, limit?: number): Observable<Profile[]> {
 
-    let url = `${this.API_URL}?filter=name||$contL||${name}&or=email||$contL||${name}`;
+    let url = `${this.API_URL}?filter=name||$contL||${name}&or=email||$contL||${name}&sort=name,ASC`;
 
     if (limit) {
       url = `${url}&limit=${limit}`;
