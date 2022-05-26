@@ -1,6 +1,6 @@
 <h4 *ngIf="maintenances[boat_maintenance_id] === null">Looks like this maintenance request is
   missing.</h4>
-<mat-card>
+<mat-card *ngIf="maintenance">
   <mat-card-header>
     <div mat-card-avatar>
       <mat-icon>build</mat-icon>

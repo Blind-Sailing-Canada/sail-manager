@@ -1,6 +1,6 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
-  Body, Controller, Delete, Param, Patch, Post, UseGuards
+  Body, Controller, Delete, Param, Patch, Post, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
@@ -11,6 +11,7 @@ import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
 import { MediaEntity } from '../media/media.entity';
+import { BoatMaintenance } from '../types/boat-maintenance/boat-maintenance';
 import { Comment } from '../types/comment/comment';
 import { Media } from '../types/media/media';
 import { ProfileRole } from '../types/profile/profile-role';
@@ -19,6 +20,7 @@ import { UserAccessFields } from '../types/user-access/user-access-fields';
 import { User } from '../user/user.decorator';
 import { BoatMaintenanceEntity } from './boat-maintenance.entity';
 import { BoatMaintenanceService } from './boat-maintenance.service';
+import { MaintenanceUpdateSanitizer } from './pipes/maintenance-update.sanitizer';
 
 @Crud({
   model: { type: BoatMaintenanceEntity },
@@ -31,7 +33,6 @@ import { BoatMaintenanceService } from './boat-maintenance.service';
     'createOneBase',
     'getManyBase',
     'getOneBase',
-    'updateOneBase',
   ] },
   query: {
     alwaysPaginate: false,
@@ -78,6 +79,28 @@ export class BoatMaintenanceController {
     });
 
     await MediaEntity.save(newPictures);
+
+    return BoatMaintenanceEntity.findOne({ where: { id } });
+  }
+
+  @Patch('/:id')
+  async update(@User() user: JwtObject, @Param('id') id: string, @Body(new MaintenanceUpdateSanitizer()) updateInfo: Partial<BoatMaintenance>) {
+    let shouldUpdate = false;
+
+    if (
+      user.roles.includes(ProfileRole.Admin) ||
+      user.roles.includes(ProfileRole.FleetManager) ||
+      user.access.access[UserAccessFields.EditMaintenanceRequest] ||
+      user.access.access[UserAccessFields.ResolveMaintenanceRequest]
+    ) {
+      shouldUpdate = true;
+    }
+
+    if (!shouldUpdate) {
+      throw new UnauthorizedException();
+    }
+
+    await BoatMaintenanceEntity.update({ id }, updateInfo);
 
     return BoatMaintenanceEntity.findOne({ where: { id } });
   }

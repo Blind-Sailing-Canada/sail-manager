@@ -44,12 +44,20 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.BOAT_MAINTENANCES, () => {
+      if (!this.maintenance) {
+        return;
+      }
+
       if (!this.maintenanceResolveForm) {
         this.buildForm();
       } else {
         this.updateForm();
       }
     });
+
+    if (!this.maintenance) {
+      this.fetchBoatMaintenance(this.boat_maintenance_id);
+    }
 
   }
 
