@@ -46,6 +46,7 @@ export class GoogleCalendarService {
     await jwtClient
       .authorize()
       .catch(error => {
+        console.error('failed to authorize google calendar in connect()');
         console.error(error);
         Sentry.captureException(error);
         throw error;
