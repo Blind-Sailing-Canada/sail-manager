@@ -25,8 +25,8 @@ export class GoogleCalendarService {
   }
 
   private async connect() {
-    console.log('calendar service connect()');
-    console.dir('process.env', process.env);
+    this.logger.log('calendar service connect()');
+    this.logger.log('process.env' + JSON.stringify(process.env, null, 2));
 
     const jwtClient = new google.auth.JWT(
       {
@@ -72,7 +72,7 @@ export class GoogleCalendarService {
 
     const event = this.sailEvent(sail, message);
 
-    console.dir('event', event);
+    this.logger.log('event' + JSON.stringify(event, null, 2));
 
     if (!event.attendees?.length) {
       this.logger.log(`no sailors for sail ${sail.id}`);
