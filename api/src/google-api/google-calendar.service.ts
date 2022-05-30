@@ -68,6 +68,8 @@ export class GoogleCalendarService {
 
     const event = this.sailEvent(sail, message);
 
+    console.dir('event', event);
+
     if (!event.attendees?.length) {
       this.logger.log(`no sailors for sail ${sail.id}`);
       return Promise.resolve();
