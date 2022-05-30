@@ -2,7 +2,7 @@ import { InjectQueue } from '@nestjs/bull';
 import {
   BadRequestException,
   Body,
-  Controller, Get, Param, Patch, Post, UnauthorizedException, UseGuards
+  Controller, Get, Logger, Param, Patch, Post, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
@@ -53,6 +53,8 @@ import { v4 as uuidv4 } from 'uuid';
 @ApiTags('profile')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class ProfileController {
+  private readonly logger = new Logger(ProfileController.name)
+
   constructor(
     private service: ProfileService,
     private authService: AuthService,
@@ -158,7 +160,7 @@ export class ProfileController {
         }
       });
 
-    await this.authService.logout(profile_id).catch(error => console.error(error));
+    await this.authService.logout(profile_id).catch(error => this.logger.error(error));
 
     return {
       access: await UserAccessEntity.findOne({ profile_id: profile_id }),

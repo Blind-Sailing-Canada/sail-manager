@@ -75,11 +75,11 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       this.sail = this.getSail(this.sail_id);
 
       if (this.sail) {
-        this.passengerSpots = [].constructor((this.sail.max_occupancy || 6) - 2);
         this.sailPassengers = this.sail
           .manifest
           .filter(sailor => sailor.sailor_role !== SailorRole.Skipper && sailor.sailor_role !== SailorRole.Crew)
           .map(sailor => sailor);
+        this.passengerSpots = [].constructor(Math.max(this.sailPassengers.length, (this.sail.max_occupancy || 6) - 2));
       }
 
     });

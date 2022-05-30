@@ -6,6 +6,7 @@ import {
   forwardRef,
   Get,
   Inject,
+  Logger,
   Param,
   Post,
   Req,
@@ -29,6 +30,7 @@ import { User } from '../user/user.decorator';
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name)
 
   constructor(
     private readonly authService: AuthService,
@@ -78,7 +80,7 @@ export class AuthController {
     try {
       user = this.jwtService.verify(token, { ignoreExpiration: true });
     } catch (tokenError) {
-      console.error(tokenError);
+      this.logger.error(tokenError);
       return 'no jwt';
     }
 

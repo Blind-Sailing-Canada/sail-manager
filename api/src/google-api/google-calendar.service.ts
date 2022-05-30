@@ -46,8 +46,8 @@ export class GoogleCalendarService {
     await jwtClient
       .authorize()
       .catch(error => {
-        console.error('failed to authorize google calendar in connect()');
-        console.error(error);
+        this.logger.error('failed to authorize google calendar in connect()');
+        this.logger.error(error);
         Sentry.captureException(error);
         throw error;
       });
@@ -86,7 +86,11 @@ export class GoogleCalendarService {
         requestBody: event,
         sendNotifications: true,
       })
-      .then(response => response.data);
+      .then(response => response.data)
+      .catch((error) => {
+        Sentry.captureMessage('event' + JSON.stringify(event, null, 2));
+        throw error;
+      });
 
     return SailEntity
       .update(sail.id, {
@@ -214,25 +218,28 @@ export class GoogleCalendarService {
   }
 
   private sailEvent(sail: Sail, message: string) {
-    const attendees = sail.manifest.map(sailor => ({
-      displayName: sailor.person_name,
-      email: sailor.profile?.email,
-      resource: false,
-    }));
+    let attendees: calendar_v3.Schema$EventAttendee[] = sail.manifest
+      .map(sailor => ({
+        displayName: sailor.person_name,
+        email: sailor.profile?.email,
+        resource: false,
+      }));
 
     if (sail.boat.calendar_resource_id) {
       attendees.push({
-        resource: true,
         displayName: sail.boat.name,
         email: sail.boat.calendar_resource_id,
+        resource: true,
       });
     }
+
+    attendees = attendees.filter(attendee => !!attendee.email);
 
     const skipperName = sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.person_name || 'n/a';
     const crewNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Crew).map(sailor => sailor.person_name);
     const sailorNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Sailor).map(sailor => sailor.person_name);
 
-    const event = {
+    const event: calendar_v3.Schema$Event = {
       'summary': `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entity_number}: ${sail.name}`,
       'description': `
         <!DOCTYPE html>

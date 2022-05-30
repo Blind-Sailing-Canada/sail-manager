@@ -1,7 +1,9 @@
 import {
   gmail_v1, google
 } from 'googleapis';
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable, Logger
+} from '@nestjs/common';
 import { EmailInfo } from '../types/email/email-info';
 import * as Sentry from '@sentry/node';
 
@@ -11,6 +13,7 @@ const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID_SAILS;
 export class GoogleEmailService {
   private gmail: gmail_v1.Gmail;
   private connected = false;
+  private readonly logger = new Logger(GoogleEmailService.name);
 
   constructor() {
     this.connect();
@@ -36,8 +39,8 @@ export class GoogleEmailService {
     await jwtClient
       .authorize()
       .catch(error => {
-        console.error('failed to authorize google gmail in connect()');
-        console.error(error);
+        this.logger.error('failed to authorize google gmail in connect()');
+        this.logger.error(error);
         Sentry.captureException(error);
         throw error;
       });

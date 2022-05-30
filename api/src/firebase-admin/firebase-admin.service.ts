@@ -3,13 +3,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { GetFilesOptions } from '@google-cloud/storage';
 import {
-  Injectable, NotFoundException
+  Injectable, Logger, NotFoundException
 } from '@nestjs/common';
 import { DOMAIN } from '../auth/constants';
 
 @Injectable()
 export class FirebaseAdminService {
   private readonly firebaseAdmin;
+  private readonly logger = new Logger(FirebaseAdminService.name)
 
   constructor() {
     const adminBase64Confirg = Buffer.from(process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_BASE64, 'base64');
@@ -116,11 +117,11 @@ export class FirebaseAdminService {
           metadata: { firebaseStorageDownloadTokens: uuid },
         },
       })
-      .then(() => console.log('finished uploadFile....', destination, contentType))
+      .then(() => this.logger.log('finished uploadFile....', destination, contentType))
       .then(() => destination)
       .catch((error) => {
-        console.log('error uploading file', destination);
-        console.error(error);
+        this.logger.log('error uploading file', destination);
+        this.logger.error(error);
         throw error;
       });
   }
@@ -134,7 +135,7 @@ export class FirebaseAdminService {
     const storage: admin.storage.Storage = this.firebaseAdmin.storage();
     const bucket = storage.bucket();
 
-    console.log('Firebase trying to delete', prefix);
+    this.logger.log('Firebase trying to delete', prefix);
 
     return bucket
       .deleteFiles({
@@ -142,7 +143,7 @@ export class FirebaseAdminService {
         prefix,
       })
       .then((response) => {
-        console.log('Firebase delete response:', response);
+        this.logger.log('Firebase delete response:', response);
         return 'deleted';
       });
   }

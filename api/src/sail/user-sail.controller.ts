@@ -1,5 +1,5 @@
 import {
-  Controller,  Get, Headers, Param, Query, UseGuards
+  Controller,  Get, Headers, Logger, Param, Query, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -17,6 +17,7 @@ import { SailEntity } from './sail.entity';
 @ApiTags('sail/user')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class UserSailController {
+  private readonly logger = new Logger(UserSailController.name)
 
   @Get('/:profile_id/count')
   async count(@Param('profile_id') profile_id) {
@@ -88,7 +89,7 @@ export class UserSailController {
       new Date().toLocaleString('en-US', { timeZone: time_zone });
       timeZone = time_zone;
     } catch(error) {
-      console.error(error);
+      this.logger.error(error);
     }
 
     const localDateString = `(CURRENT_DATE AT TIME ZONE '${timeZone}')::date::text`;
