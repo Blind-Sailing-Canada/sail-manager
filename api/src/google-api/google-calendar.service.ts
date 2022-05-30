@@ -25,6 +25,9 @@ export class GoogleCalendarService {
   }
 
   private async connect() {
+    console.log('calendar service connect()');
+    console.dir('process.env', process.env);
+
     const jwtClient = new google.auth.JWT(
       {
         subject: CALENDAR_ID,
