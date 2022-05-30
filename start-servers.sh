@@ -41,7 +41,8 @@ sed -i "s|CONTACT_US_EMAIL|${CONTACT_US_EMAIL}|g" ./app/*.html
 chmod +x ./start-api-server.sh
 chmod +x ./start-app-server.sh
  
-redis-server 2>&1&
+# redis-server 2>&1&
+redis-server --daemonize yes
 
 ./start-api-server.sh 2>&1&
 
