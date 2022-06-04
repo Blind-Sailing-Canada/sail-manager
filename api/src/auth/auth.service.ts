@@ -104,7 +104,7 @@ export class AuthService {
       subject: 'COMPANY_NAME_SHORT_HEADER: reset password',
       content: `
         <h1>Hello, ${name}!</h1>
-        <p>Blind Sailing of Canada Association has create a new account for created for you which you can use to sign up for sails.</p>
+        <p>COMPANY_NAME_HEADER has created a new account for you.</p>
         <p>Please follow the following link to reset your password.</p>
         <p><a href="${resetPasswordLink}">Reset password.</a></p>
       `,
@@ -158,8 +158,8 @@ export class AuthService {
 
     if (existingUser) {
       if (!existingUser.profile) {
-        await this.createNewProfileForExistingUser(providerUser, existingUser.id);
-        await existingUser.reload();
+        const newProfile = await this.createNewProfileForExistingUser(providerUser, existingUser.id);
+        existingUser.profile = newProfile; // why .reload() doesn't reload relations?
       }
 
       return existingUser;
@@ -202,24 +202,23 @@ export class AuthService {
   }
 
   async login(user: UserEntity, provider: string): Promise<string> {
-
-    const cachedToken = this.tokens[user.profile.id];
+    const cachedToken = this.tokens[user.profile_id];
 
     if (cachedToken && cachedToken.expireAt.getTime() > Date.now()) {
       return Promise.resolve(cachedToken.token);
     }
 
     if (cachedToken) {
-      this.deleteCacheToken(user.profile.id);
+      this.deleteCacheToken(user.profile_id);
     }
 
     if (!cachedToken) {
       // this is skipped if cached token is expired
       // try db stored token
-      const dbToken:TokenEntity = await TokenEntity.findOne({ where: { profile_id: user.profile.id } });
+      const dbToken:TokenEntity = await TokenEntity.findOne({ where: { profile_id: user.profile_id } });
 
       if (dbToken && dbToken.expireAt.getTime() > Date.now()) {
-        this.cacheToken(user.profile.id, dbToken.token, dbToken.expireAt);
+        this.cacheToken(user.profile_id, dbToken.token, dbToken.expireAt);
 
         return Promise.resolve(dbToken.token);
       }

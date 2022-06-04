@@ -92,21 +92,20 @@ export class UserSailController {
       this.logger.error(error);
     }
 
-    const localDateString = `(CURRENT_DATE AT TIME ZONE '${timeZone}')::date::text`;
+    const localDateString = `(NOW() AT TIME ZONE '${timeZone}')::date::text`;
     const localStartDateString = `(start_at AT TIME ZONE '${timeZone}')::date::text`;
     const localEndDateString = `(end_at AT TIME ZONE '${timeZone}')::date::text`;
 
-    const localDate = `(CURRENT_DATE AT TIME ZONE '${timeZone}')`;
+    const localDate = `(NOW() AT TIME ZONE '${timeZone}')`;
     const localStartDate = `(start_at AT TIME ZONE '${timeZone}')`;
     const localEndDate = `(end_at AT TIME ZONE '${timeZone}')`;
+    const where = `
+    (${localStartDateString} = ${localDateString} OR ${localEndDateString} = ${localDateString})
+    OR
+    (${localStartDate} < ${localDate} AND ${localEndDate} > ${localDate})
+    `.trim().replace(/\n/g, '').replace(/\s{2,}/g, ' ');
 
-    const sails = await SailEntity
-      .find(
-        { where: `
-          (${localStartDateString} = ${localDateString} OR ${localEndDateString} = ${localDateString}) OR
-          (${localStartDate} < ${localDate} AND ${localEndDate} > ${localDate})
-          ` }
-      );
+    const sails = await SailEntity.find({ where });
 
     if (profile_id) {
       return sails.filter(sail => sail.manifest.some(manifest => manifest.profile_id === profile_id));

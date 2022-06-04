@@ -1,6 +1,5 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
-  BadRequestException,
   Body,
   Controller, Get, Logger, Param, Patch, Post, UnauthorizedException, UseGuards
 } from '@nestjs/common';
@@ -8,7 +7,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { Queue } from 'bull';
 import {
-  getManager, UpdateResult
+  getConnection,
+  getManager
 } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
@@ -82,25 +82,35 @@ export class ProfileController {
   @UserAccess(UserAccessFields.LinkAccounts)
   @UseGuards(UserAccessGuard)
   async linkAccounts(@User() user: JwtObject, @Body() linkInfo: ProfileLinkInfo) {
-    let updated:UpdateResult;
+    await getConnection().transaction(async (transactionalEntityManager) => {
+      const deleted_at = new Date();
+      let profileIdToDelete;
 
-    if (linkInfo.linkType == ProfileLink.Primary) {
-      updated = await UserEntity.update({ profile_id: linkInfo.profile_idB }, {
-        profile_id: linkInfo.profile_idA,
-        original_profile_id: linkInfo.profile_idB,
-        linked_by_profile_id: user.profile_id,
-      });
-    } else {
-      updated = await UserEntity.update({ profile_id: linkInfo.profile_idA }, {
-        profile_id: linkInfo.profile_idB,
-        original_profile_id: linkInfo.profile_idA,
-        linked_by_profile_id: user.profile_id,
-      });
-    }
+      if (linkInfo.linkType == ProfileLink.Primary) {
+        await transactionalEntityManager.update(UserEntity, { profile_id: linkInfo.profile_idB }, {
+          profile_id: linkInfo.profile_idA,
+          original_profile_id: linkInfo.profile_idB,
+          linked_by_profile_id: user.profile_id,
+        });
 
-    if (updated.affected !== 1) {
-      throw new BadRequestException(`failed to link accounts (${updated.affected})`);
-    }
+        profileIdToDelete = linkInfo.profile_idB;
+      } else {
+        await transactionalEntityManager.update(UserEntity, { profile_id: linkInfo.profile_idA }, {
+          profile_id: linkInfo.profile_idB,
+          original_profile_id: linkInfo.profile_idA,
+          linked_by_profile_id: user.profile_id,
+        });
+
+        profileIdToDelete = linkInfo.profile_idA;
+      }
+
+      const profileToDelete = await ProfileEntity.findOne(profileIdToDelete);
+
+      await transactionalEntityManager.update(ProfileEntity, { id: profileIdToDelete }, {
+        email: `${profileToDelete.email}:deleted:${deleted_at.toISOString()}`,
+        deleted_at: deleted_at,
+      });
+    });
   }
 
   @Get('/count')

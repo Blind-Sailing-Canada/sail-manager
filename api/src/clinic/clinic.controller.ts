@@ -108,7 +108,7 @@ export class ClinicController {
     if (enrollment) {
       const clinic = enrollment.clinic;
 
-      if (!user.roles.includes[ProfileRole.Admin] && clinic.instructor_id !== user.profile_id) {
+      if (!user.roles.includes(ProfileRole.Admin) && clinic.instructor_id !== user.profile_id) {
         throw new UnauthorizedException();
       }
 
@@ -130,7 +130,7 @@ export class ClinicController {
     if (enrollment) {
       const clinic = enrollment.clinic;
 
-      if (!user.roles.includes[ProfileRole.Admin] && clinic.instructor_id !== user.profile_id) {
+      if (!user.roles.includes(ProfileRole.Admin) && clinic.instructor_id !== user.profile_id) {
         throw new UnauthorizedException();
       }
 

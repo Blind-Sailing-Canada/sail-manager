@@ -83,29 +83,22 @@ export class SailManifestController {
       return red.concat(sail.manifest.map(manifest => manifest.profile_id));
     }, []).filter(Boolean);
 
-    let availableSailors;
+    const searchQuery = ProfileEntity.getRepository().createQueryBuilder('profile');
+
+    searchQuery
+      .take(limit)
+      .where({ status: ProfileStatus.Approved });
+
+    if (notAvailable.length) {
+      searchQuery
+        .andWhere({ id: Not(In(notAvailable)) });
+    }
 
     if (sailorName) {
-      availableSailors = await ProfileEntity
-        .find(
-          {
-            take: limit,
-            where: {
-              status: ProfileStatus.Approved,
-              id: Not(In(notAvailable)),
-              name: ILike(`%${sailorName}%`),
-            },
-          });
-    } else {
-      availableSailors = await ProfileEntity
-        .find({
-          take: limit,
-          where: {
-            status: ProfileStatus.Approved,
-            id: Not(In(notAvailable)),
-          },
-        });
+      searchQuery.andWhere({ name: ILike(`%${sailorName}%`) });
     }
+
+    const availableSailors =  await searchQuery.getMany();
 
     return availableSailors;
   }

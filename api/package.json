@@ -7,13 +7,18 @@
   "version": "1.0.0",
   "scripts": {
     "build": "nest build",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "db:migrate": "ts-node ./node_modules/typeorm/cli.js migration:run -f ./src/ormconfig.ts",
+    "db:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -f ./src/ormconfig.ts",
+    "lint": "eslint \"src/**/*.ts\"",
     "prebuild": "rimraf dist",
+    "prod:db:migrate": "typeorm migration:run -f ./ormconfig-prod.js",
+    "prod:db:revert": "typeorm migration:revert -f ./ormconfig-prod.js",
     "spellcheck": "cspell 'src/**/*.*'",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:dev": "nest start --watch",
-    "start:prod": "node dist/main"
+    "start:prod": "node dist/main",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "@google-cloud/storage": "5.14.4",

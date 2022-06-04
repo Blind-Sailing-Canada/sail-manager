@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   Index,
   OneToMany,
@@ -30,7 +31,7 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   photo: string;
 
   @Column({
-    length: 150,
+    length: 500,
     unique: true,
   })
   @Index('profile_email')
@@ -72,6 +73,9 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
     type: 'jsonb',
   })
   roles: ProfileRole[];
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @OneToOne(() => UserAccessEntity, (access) => access.profile, { eager: true })
   access: UserAccessEntity;

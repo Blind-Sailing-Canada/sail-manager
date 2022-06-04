@@ -19,7 +19,7 @@ export class UserEntity extends BaseModelEntity implements User {
   })
   provider_user_id: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
   profile_id: string;
 
   @Column()
@@ -32,9 +32,10 @@ export class UserEntity extends BaseModelEntity implements User {
   linked_by_profile_id: string;
 
   @OneToOne(() => ProfileEntity, undefined, {
-    eager: true,
+    eager: false,
     onDelete: 'CASCADE',
     createForeignKeyConstraints: false,
+    nullable: true,
   })
   @JoinColumn({ referencedColumnName: 'id' })
   profile: ProfileEntity
