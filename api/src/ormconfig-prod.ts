@@ -4,6 +4,8 @@ module.exports = {
   'synchronize': false,
   'logging': false,
   'migrations': ['./migration/*.js'],
+  'ssl': true,
+  'extra':  { ssl: { rejectUnauthorized: false } },
   'cli': { 'migrationsDir': './migration' },
 };
 
