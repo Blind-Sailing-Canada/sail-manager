@@ -9,12 +9,21 @@
       target="_blank"
     >
       <img
+        *ngIf="picture.url && picture.media_type === MediaTypes.Picture"
         [height]="height"
         [width]="width"
         async
         attr.aria-label="picture {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
         src="{{picture.url}}?width={{width}}&height={{height}}"
       >
+      <video
+        *ngIf="picture.url && picture.media_type === MediaTypes.Video"
+        [height]="height"
+        [width]="width"
+        async
+        attr.aria-label="video {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
+        src="{{picture.url}}"
+      ></video>
     </a>
     <div *ngIf="allowDelete && canDelete(picture)">
       <button

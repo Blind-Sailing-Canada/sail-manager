@@ -9,6 +9,7 @@ import {
   FormArray,
   FormGroup,
 } from '@angular/forms';
+import { MediaType } from '../../../../../api/src/types/media/media-type';
 
 @Component({
   selector: 'app-image-form',
@@ -23,6 +24,7 @@ export class ImageFormComponent {
   @Input() form: FormGroup | AbstractControl;
   @Input() allowDelete = false;
   @Output() deleteClick: EventEmitter<number> = new EventEmitter<number>();
+  public MediaTypes = MediaType;
 
   public deleteImage(index: number): void {
     this.deleteClick.emit(index);

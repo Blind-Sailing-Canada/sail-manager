@@ -13,18 +13,22 @@ export class SailPicturesCreateSanitizer implements PipeTransform {
 
     const result = pictures.map(picture => {
       const {
-        url, title, description,
+        url,
+        title,
+        description,
+        media_type,
       } = picture;
       const createDTO = {
         url,
         title,
         description,
+        media_type,
       };
 
       const keys = Object.keys(createDTO).filter(key => createDTO[key] !== undefined);
 
       return keys.reduce((profile, key) => {
-        profile[key] = validator.escape(createDTO[key]);
+        profile[key] = key == 'url'? createDTO[key]: validator.escape(createDTO[key] ?? '');
         return profile;
       }, {} as Partial<Media>);
     });

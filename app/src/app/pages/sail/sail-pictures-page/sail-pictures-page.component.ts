@@ -28,6 +28,7 @@ import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { Sail } from '../../../../../../api/src/types/sail/sail';
 import { Media } from '../../../../../../api/src/types/media/media';
+import { MediaType } from '../../../../../../api/src/types/media/media-type';
 
 @Component({
   selector: 'app-sail-pictures-page',
@@ -70,6 +71,14 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CDN, (cdn: ICDNState) => {
       if (this.fileToUpload) {
         const fileName = this.fileToUpload.name;
+        let mediaType: MediaType;
+
+        if (this.fileToUpload.type.startsWith('video/')) {
+          mediaType = MediaType.Video;
+        } else if (this.fileToUpload.type.startsWith('image/')) {
+          mediaType = MediaType.Picture;
+        }
+
         if (cdn[fileName].state === CDN_ACTION_STATE.ERROR) {
           this.fileToUpload = null;
 
@@ -92,9 +101,10 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
 
           picturesForm
             .push(this.fb.group({
-              url: this.fb.control(cdn[fileName].url),
               description: this.fb.control(undefined),
+              media_type: this.fb.control(mediaType),
               title: this.fb.control(undefined),
+              url: this.fb.control(cdn[fileName].url),
             }));
 
           picturesForm.updateValueAndValidity();

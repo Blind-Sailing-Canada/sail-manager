@@ -7,11 +7,18 @@
     >
       <div class="image-form-image">
         <img
-          *ngIf="imageControl.value.url"
+          *ngIf="imageControl.value.url && imageControl.value.media_type === MediaTypes.Picture"
           alt="Image {{i+1}} of {{controlsArray.length}}"
           async
           src="{{imageControl.value.url}}?width=100&height=100"
         >
+        <video
+          *ngIf="imageControl.value.url && imageControl.value.media_type === MediaTypes.Video"
+          controls="true"
+          height="100px"
+          src="{{imageControl.value.url}}"
+          width="100px"
+        ></video>
       </div>
       <div class="image-form-inputs">
         <mat-form-field>
@@ -20,7 +27,7 @@
             tabindex="-1"
           >URL</mat-label>
           <input
-            attr.aria-label="Url for image {{i+1}} of {{controlsArray.length}}"
+            attr.aria-label="Url for {{imageControl.value.media_type}} {{i+1}} of {{controlsArray.length}}"
             formControlName="url"
             matInput
             type="text"
@@ -32,7 +39,7 @@
             tabindex="-1"
           >Title</mat-label>
           <textarea
-            attr.aria-label="Title for image {{i+1}} of {{controlsArray.length}}"
+            attr.aria-label="Title for {{imageControl.value.media_type}} {{i+1}} of {{controlsArray.length}}"
             cdkAutosizeMaxRows="10"
             cdkAutosizeMinRows="1"
             cdkTextareaAutosize
@@ -47,7 +54,7 @@
             tabindex="-1"
           >Description</mat-label>
           <textarea
-            attr.aria-label="Description for image {{i+1}} of {{controlsArray.length}}"
+            attr.aria-label="Description for {{imageControl.value.media_type}} {{i+1}} of {{controlsArray.length}}"
             cdkAutosizeMaxRows="10"
             cdkAutosizeMinRows="1"
             cdkTextareaAutosize
@@ -63,7 +70,7 @@
           mat-raised-button
           color="accent"
           (click)="deleteImage(i)"
-          attr.aria-label="Delete image {{i+1}}."
+          attr.aria-label="Delete {{imageControl.value.media_type.toLowerCase()}} {{i+1}}."
         >
           <app-icon-text
             icon="delete"

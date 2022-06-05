@@ -211,17 +211,18 @@
         [id]="maintenancePictureInput"
         [multiple]="false"
         [progress]="uploadProgress"
-        actionDescription="Upload pictures of related to this boat maintenance"
+        actionDescription="Upload pictures or videos of related to this boat maintenance"
         actionName="Upload"
-        fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp"
-        title="Upload pictures of related to this boat maintenance"
+        fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp,video/*"
+        fileTypeLabel="media"
+        title="Upload pictures or videos of related to this boat maintenance"
       ></app-file-select>
       <mat-action-row>
         <button
           (click)="save()"
           *ngIf="shouldAllowSaveButton"
           mat-raised-button
-        >Post pictures</button>
+        >Save media</button>
       </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>

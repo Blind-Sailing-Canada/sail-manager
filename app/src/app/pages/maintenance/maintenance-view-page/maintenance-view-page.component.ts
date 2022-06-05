@@ -14,6 +14,7 @@ import { BoatMaintenance } from '../../../../../../api/src/types/boat-maintenanc
 import { BoatMaintenanceStatus } from '../../../../../../api/src/types/boat-maintenance/boat-maintenance-status';
 import { Comment } from '../../../../../../api/src/types/comment/comment';
 import { Media } from '../../../../../../api/src/types/media/media';
+import { MediaType } from '../../../../../../api/src/types/media/media-type';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
 import { ICDNState } from '../../../models/cdn-state.interface';
 
@@ -69,6 +70,14 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CDN, (cdn: ICDNState) => {
       if (this.fileToUpload) {
         const fileName = this.fileToUpload.name;
+        let mediaType: MediaType;
+
+        if (this.fileToUpload.type.startsWith('video/')) {
+          mediaType = MediaType.Video;
+        } else if (this.fileToUpload.type.startsWith('image/')) {
+          mediaType = MediaType.Picture;
+        }
+
         if (cdn[fileName].state === CDN_ACTION_STATE.ERROR) {
           this.fileToUpload = null;
 
@@ -93,6 +102,7 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
               url: this.fb.control(cdn[fileName].url),
               description: this.fb.control(undefined),
               title: this.fb.control(undefined),
+              media_type: this.fb.control(mediaType),
             }));
 
           picturesForm.updateValueAndValidity();

@@ -56,7 +56,17 @@ export class CDNService {
   }
 
   public uploadSailPicture(fileToUpload: File, sail_id: string): Observable<HttpEvent<string>> {
-    const endpoint = `images/sails/${sail_id}/${fileToUpload.name}`;
+    let type: string;
+
+    if (fileToUpload.type.startsWith('video/')) {
+      type = 'videos';
+    } else if (fileToUpload.type.startsWith('image/')) {
+      type = 'images';
+    } else {
+      throw new Error(`unsupported type ${fileToUpload.type}`);
+    }
+
+    const endpoint = `${type}/sails/${sail_id}/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);
   }
 
@@ -66,7 +76,17 @@ export class CDNService {
   }
 
   public uploadBoatMaintenancePicture(fileToUpload: File, boat_maintenance_id: string): Observable<HttpEvent<string>> {
-    const endpoint = `images/boat-maintenance/${boat_maintenance_id}/${fileToUpload.name}`;
+    let type: string;
+
+    if (fileToUpload.type.startsWith('video/')) {
+      type = 'videos';
+    } else if (fileToUpload.type.startsWith('image/')) {
+      type = 'images';
+    } else {
+      throw new Error(`unsupported type ${fileToUpload.type}`);
+    }
+
+    const endpoint = `${type}/boat-maintenance/${boat_maintenance_id}/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);
   }
 

@@ -73,9 +73,10 @@
     [id]="sailPictureInput"
     [multiple]="false"
     [progress]="uploadProgress"
-    actionDescription="Upload new sail picture"
+    fileTypeLabel="media"
+    actionDescription="Upload new sail picture or video"
     actionName="Upload"
-    fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp"
-    title="Upload new sail picture"
+    fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp,video/*"
+    title="Upload new sail picture or video"
   ></app-file-select>
 </ng-template>

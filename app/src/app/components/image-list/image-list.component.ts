@@ -7,6 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Media } from '../../../../../api/src/types/media/media';
+import { MediaType } from '../../../../../api/src/types/media/media-type';
 import { Profile } from '../../../../../api/src/types/profile/profile';
 import { UserAccessFields } from '../../../../../api/src/types/user-access/user-access-fields';
 import { IProfileMap } from '../../models/profile-state.interface';
@@ -29,6 +30,7 @@ export class ImageListComponent implements OnChanges {
   @Output() deleteClick: EventEmitter<Media> = new EventEmitter<Media>();
   @Output() goToProfile: EventEmitter<Profile> = new EventEmitter<Profile>();
 
+  public MediaTypes = MediaType;
   public picturesArray: Media[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {

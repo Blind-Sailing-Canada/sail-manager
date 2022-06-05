@@ -104,7 +104,7 @@ app
   .use(compression())
   .use(express.json())
   .use(fileUpload({
-    limits: { fileSize: +process.env.FILE_SIZE_UPLOAD || 10 * 1024 * 1024 },
+    limits: { fileSize: +process.env.FILE_SIZE_UPLOAD || 100 * 1024 * 1024 },
     debug: true,
   }))
   .post('/cdn/upload/*', jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }), async (req, res) => {
@@ -132,7 +132,11 @@ app
         allowed = true;
         break;
       default:
-        allowed = false;
+        if (req.files.file.mimetype.startsWith('video/')) {
+          allowed = true;
+        } else {
+          allowed = false;
+        }
     }
 
     if (!allowed) {
