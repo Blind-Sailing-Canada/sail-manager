@@ -57,9 +57,13 @@ export class SailRequestEmail {
   }
 
   async newInterestSailRequest(sail_requestInterest: SailRequestInterestEntity): Promise<EmailInfo> {
-    const sendTo: Set<string> = new Set<string>();
-
     const sailCoordinators = await ProfileEntity.coordinators();
+
+    if (!sailCoordinators?.length) {
+      return;
+    }
+
+    const sendTo: Set<string> = new Set<string>();
 
     sailCoordinators.forEach(coordinator => sendTo.add(coordinator.email));
 
