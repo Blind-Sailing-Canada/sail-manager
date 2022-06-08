@@ -12,6 +12,7 @@ import {
   FormBuilder,
   FormGroup,
 } from '@angular/forms';
+import { MediaType } from '../../../../../api/src/types/media/media-type';
 import { ICDNState } from '../../models/cdn-state.interface';
 import { CDN_ACTION_STATE } from '../../store/actions/cdn.actions';
 
@@ -155,6 +156,7 @@ export class InstructionsFormComponent implements OnChanges {
     const control = this.controls[index];
     const newPicture = this.fb.group({
       description: this.fb.control(''),
+      media_type: MediaType.Picture,
       url: this.fb.control(url),
     });
 

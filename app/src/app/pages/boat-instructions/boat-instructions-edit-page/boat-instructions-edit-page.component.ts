@@ -16,6 +16,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { BoatInstructions } from '../../../../../../api/src/types/boat-instructions/boat-instructions';
+import { MediaType } from '../../../../../../api/src/types/media/media-type';
 import {
   deleteFile,
   uploadDepartureInstructionsPicture,
@@ -159,6 +160,7 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
         .forEach((inst) => {
           const newPictures = this.fb.array((inst.media || []).map(pic => this.fb.group({
             description: pic.description,
+            media_type: pic.media_type ?? MediaType.Picture,
             url: pic.url,
           })));
 
@@ -190,6 +192,7 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
         title: this.fb.control(inst.title, Validators.required),
         media: this.fb.array((inst.media || []).map(pic => this.fb.group({
           description: pic.description,
+          media_type: pic.media_type ?? MediaType.Picture,
           url: pic.url,
         }))),
 
