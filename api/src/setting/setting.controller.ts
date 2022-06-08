@@ -24,7 +24,7 @@ export class SettingController {
       throw new UnauthorizedException();
     }
 
-    let settings =  await SettingEntity.findOne({ profile_id });
+    let settings =  await SettingEntity.findOne({ where: { profile_id } });
 
     if (!settings) {
       settings = SettingEntity.create({ profile_id });
@@ -40,6 +40,6 @@ export class SettingController {
     if (user.profile_id !== profile_id) {
       throw new UnauthorizedException();
     }
-    return SettingEntity.findOne({ profile_id });
+    return SettingEntity.findOne({ where: { profile_id } });
   }
 }

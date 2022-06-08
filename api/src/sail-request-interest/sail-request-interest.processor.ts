@@ -20,7 +20,10 @@ export class SailRequestInterestProcessor extends BaseQueueProcessor {
 
   @Process('new-sail-request-interest')
   async sendInterestRequest(job: Job) {
-    const sail_requestInterest = await SailRequestInterestEntity.findOne(job.data.sail_requestInterestId, { relations: ['sail_request'] });
+    const sail_requestInterest = await SailRequestInterestEntity.findOne({
+      where: { id: job.data.sail_requestInterestId },
+      relations: ['sail_request'],
+    });
 
     if (!sail_requestInterest) {
       return;

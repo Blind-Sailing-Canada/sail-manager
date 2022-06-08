@@ -19,7 +19,7 @@ export class ProfileProcessor extends BaseQueueProcessor {
 
   @Process('new-profile')
   async sendNewProfileEmail(job: Job) {
-    const profile = await ProfileEntity.findOneOrFail(job.data.profile_id);
+    const profile = await ProfileEntity.findOneOrFail({ where: { id: job.data.profile_id } });
     const admins =  await ProfileEntity.admins();
 
     if (!admins.length) {
@@ -34,7 +34,7 @@ export class ProfileProcessor extends BaseQueueProcessor {
 
   @Process('profile-approved')
   async sendProfileApprovedEmail(job: Job) {
-    const profile = await ProfileEntity.findOneOrFail(job.data.profile_id);
+    const profile = await ProfileEntity.findOneOrFail({ where: { id: job.data.profile_id } });
 
     const emailInfo = this.profileEmail.approvedProfileEmail(profile);
 

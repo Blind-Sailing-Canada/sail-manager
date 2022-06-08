@@ -19,7 +19,7 @@ export class SettingJob {
   async dailyFutureSails() {
     const subscribers = await SettingEntity.find({
       relations: ['profile'],
-      where: `settings->>'futureSails' = '${FutureSailsSubscription.EveryDay}'`,
+      where: { 'settings->>\'futureSails\'': `'${FutureSailsSubscription.EveryDay}'` } as any,
     });
 
     const activeSubscribers = subscribers.filter(subscriber => subscriber.profile.status === ProfileStatus.Approved);
@@ -50,7 +50,7 @@ export class SettingJob {
   async everyOtherDay() {
     const subscribers = await SettingEntity.find({
       relations: ['profile'],
-      where: `settings->>'futureSails' = '${FutureSailsSubscription.EveryOtherDay}'`,
+      where: { 'settings->>\'futureSails\'': `'${FutureSailsSubscription.EveryOtherDay}'` } as any,
     });
 
     const activeSubscribers = subscribers.filter(subscriber => subscriber.profile.status === ProfileStatus.Approved);
@@ -81,7 +81,7 @@ export class SettingJob {
   async everySunday() {
     const subscribers = await SettingEntity.find({
       relations: ['profile'],
-      where: `settings->>'futureSails' = '${FutureSailsSubscription.EveryWeek}'`,
+      where: { 'settings->>\'futureSails\'': `'${FutureSailsSubscription.EveryWeek}'` } as any,
     });
 
     const activeSubscribers = subscribers.filter(subscriber => subscriber.profile.status === ProfileStatus.Approved);

@@ -40,7 +40,7 @@ export class SailManifestController {
 
   @Post('/update-sail-manifest/:sail_id')
   async updateSailManifest(@Param('sail_id') sail_id: string, @Body() manifests: Partial<SailManifest>[]) {
-    const sail = await SailEntity.findOne(sail_id);
+    const sail = await SailEntity.findOne({ where: { id: sail_id } });
 
     const currentManifestId = sail.manifest.map(manifest => manifest.id).filter(Boolean);
     const updatedManifestId = manifests.map(manifest => manifest.id).filter(Boolean);
@@ -61,7 +61,10 @@ export class SailManifestController {
       await SailManifestEntity.getRepository().delete(manifestsToDelete);
     }
 
-    return SailEntity.findOne(sail_id, { relations: ['checklists'] });
+    return SailEntity.findOne({
+      where: { id: sail_id },
+      relations: ['checklists'],
+    });
   }
 
   @Get('/available-sailors')
@@ -70,14 +73,18 @@ export class SailManifestController {
     @Query('sailorName') sailorName,
     @Query('limit') limit = 5
   ) {
-    const sailsDuringThisTime = await SailEntity
-      .find(
-        { where: `
-        SailEntity.status NOT IN ('${SailStatus.Cancelled}', '${SailStatus.Completed}') AND
+    const sailIdsDuringThisTime = (await SailEntity.getRepository().createQueryBuilder('sail')
+      .where(
+        `
+        status NOT IN ('${SailStatus.Cancelled}', '${SailStatus.Completed}') AND
         ((start_at <= '${start}'::timestamp with time zone AND end_at >= '${start}'::timestamp with time zone) OR
         (start_at <= '${end}'::timestamp with time zone AND end_at >= '${end}'::timestamp with time zone))
-        ` }
-      );
+        `
+      )
+      .select('id')
+      .getMany()).map(sail => sail.id);
+
+    const sailsDuringThisTime = await SailEntity.find({ where: { id: In(sailIdsDuringThisTime) } });
 
     const notAvailable = sailsDuringThisTime.reduce((red, sail) => {
       return red.concat(sail.manifest.map(manifest => manifest.profile_id));

@@ -19,7 +19,7 @@ export class AchievementProcessor extends BaseQueueProcessor {
 
   @Process('new-achievement')
   async sendNewAttendee(job: Job) {
-    const achievement = await AchievementEntity.findOneOrFail(job.data.achievementId);
+    const achievement = await AchievementEntity.findOneOrFail({ where: { id: job.data.achievementId } });
     const email = this.achievementEmail.newAchievement(achievement);
 
     return this.emailService.sendToEmail(email);

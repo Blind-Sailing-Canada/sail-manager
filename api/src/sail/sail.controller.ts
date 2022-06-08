@@ -5,7 +5,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import {
-  getManager, In, MoreThanOrEqual, Not
+  In, MoreThanOrEqual, Not
 } from 'typeorm';
 import { BoatEntity } from '../boat/boat.entity';
 import { JwtGuard } from '../guards/jwt.guard';
@@ -127,7 +127,8 @@ export class SailController {
 
     const date = new Date();
 
-    response.attachment(`COMPANY_NAME_SHORT_HEADER-sails-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}-.csv`);
+    response
+      .attachment(`COMPANY_NAME_SHORT_HEADER-sails-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}-.csv`);
     return response.send(csv);
   }
 
@@ -139,13 +140,16 @@ export class SailController {
   @Get('available-boats')
   async availableBoats(@Query() times: {start: string, end: string}) {
     const sailsDuringThisTime = await SailEntity
-      .find(
-        { where: `
-          SailEntity.status NOT IN ('${SailStatus.Cancelled}', '${SailStatus.Completed}') AND
+      .getRepository()
+      .createQueryBuilder('sail')
+      .where(
+        `
+          status NOT IN ('${SailStatus.Cancelled}', '${SailStatus.Completed}') AND
           ((start_at <= '${times.start}'::timestamp with time zone AND end_at >= '${times.start}'::timestamp with time zone) OR
           (start_at <= '${times.end}'::timestamp with time zone AND end_at >= '${times.end}'::timestamp with time zone))
-          ` }
-      );
+          `
+      )
+      .getMany();
 
     const boat_idsInUse = sailsDuringThisTime.map(sail => sail.boat_id);
 
@@ -158,53 +162,54 @@ export class SailController {
 
   @Post('/sail-request')
   async createFromSailRequest(@Body() sailInfo: {sail: Partial<Sail>, sail_request_id: string}) {
-    const createdSailId = await getManager()
-      .transaction(async transactionalEntityManager => {
-        const sail_request = await SailRequestEntity
-          .findOne(
-            sailInfo.sail_request_id,
-            { relations: [
+    const createdSailId = await this.service.repository.manager.transaction(async transactionalEntityManager => {
+      const sail_request = await SailRequestEntity
+        .findOne(
+          {
+            relations: [
               'requested_by',
               'interest',
               'interest.profile',
-            ] });
+            ],
+            where: { id: sailInfo.sail_request_id },
+          });
 
-        let sail = SailEntity.create({
-          ...sailInfo.sail,
-          description: sail_request.details,
-          sail_request_id: sailInfo.sail_request_id,
-          category: sail_request.category || 'other',
-        });
+      let sail = SailEntity.create({
+        ...sailInfo.sail,
+        description: sail_request.details,
+        sail_request_id: sailInfo.sail_request_id,
+        category: sail_request.category || 'other',
+      });
 
-        sail = await transactionalEntityManager.save(sail);
+      sail = await transactionalEntityManager.save(sail);
 
-        const result = await transactionalEntityManager
-          .update(
-            SailRequestEntity,
-            { id: sailInfo.sail_request_id },{
-              sail_id: sail.id,
-              status: SailRequestStatus.Scheduled,
-            });
-
-        if (result.affected !== 1) {
-          throw new Error(`SailRequest(${sailInfo.sail_request_id}) was not updated.`);
-        }
-
-        const manifest = sail_request
-          .interest
-          .map(sailor => SailManifestEntity.create({
-            profile_id: sailor.profile_id,
-            person_name: sailor.profile.name,
+      const result = await transactionalEntityManager
+        .update(
+          SailRequestEntity,
+          { id: sailInfo.sail_request_id },{
             sail_id: sail.id,
-            sailor_role: SailorRole.Member,
-          }));
+            status: SailRequestStatus.Scheduled,
+          });
 
-        await transactionalEntityManager.save(manifest);
+      if (result.affected !== 1) {
+        throw new Error(`SailRequest(${sailInfo.sail_request_id}) was not updated.`);
+      }
 
-        return sail.id;
-      } );
+      const manifest = sail_request
+        .interest
+        .map(sailor => SailManifestEntity.create({
+          profile_id: sailor.profile_id,
+          person_name: sailor.profile.name,
+          sail_id: sail.id,
+          sailor_role: SailorRole.Member,
+        }));
 
-    return SailEntity.findOne(createdSailId);
+      await transactionalEntityManager.save(manifest);
+
+      return sail.id;
+    } );
+
+    return SailEntity.findOne({ where: { id: createdSailId } });
   }
 
   private async findSails(query) {

@@ -21,30 +21,30 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
 
   @Process('new-request')
   async sendNewMaintenanceEmail(job: Job) {
-    const request = await BoatMaintenanceEntity.findOneOrFail(job.data.maintenanceId);
-    const fleetManager =  await ProfileEntity.fleetManager();
+    const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenanceId } });
+    const fleetManagers =  await ProfileEntity.fleetManagers();
 
-    if (!fleetManager) {
+    if (!fleetManagers.length) {
       return;
     }
 
     const emailInfo = this.boatMaintenanceEmail.newMaintenanceRequestEmail(request);
-    emailInfo.to = [fleetManager.email];
+    emailInfo.to = fleetManagers.map(manager => manager.email);
 
     return this.emailService.sendToEmail(emailInfo);
   }
 
   @Process('update-request')
   async sendUpdateMaintenanceEmail(job: Job) {
-    const request = await BoatMaintenanceEntity.findOneOrFail(job.data.maintenanceId);
-    const fleetManager =  await ProfileEntity.fleetManager();
+    const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenanceId } });
+    const fleetManagers =  await ProfileEntity.fleetManagers();
 
-    if (!fleetManager) {
+    if (!fleetManagers.length) {
       return;
     }
 
     const emailInfo = this.boatMaintenanceEmail.updatedMaintenanceRequestEmail(request);
-    emailInfo.to = [fleetManager.email];
+    emailInfo.to = fleetManagers.map(manager => manager.email);
 
     return this.emailService.sendToEmail(emailInfo);
   }
@@ -52,17 +52,17 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
   @Process('new-comment')
   async sendNewCommentEmail(job: Job) {
     try {
-      const request = await BoatMaintenanceEntity.findOneOrFail(job.data.maintenanceId);
-      const comment = await CommentEntity.findOneOrFail(job.data.commentId);
-      const fleetManager =  await ProfileEntity.fleetManager();
+      const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenanceId } });
+      const comment = await CommentEntity.findOneOrFail({ where: { id: job.data.commentId } });
+      const fleetManagers =  await ProfileEntity.fleetManagers();
 
-      if (!fleetManager) {
+      if (!fleetManagers.length) {
         return;
       }
 
       const emailInfo = this.boatMaintenanceEmail.newMaintenanceRequestCommentEmail(request,comment);
 
-      emailInfo.bcc.push(fleetManager.email);
+      emailInfo.bcc.push(...fleetManagers.map(manager => manager.email));
 
       return this.emailService.sendBccEmail(emailInfo);
     } catch (error) {

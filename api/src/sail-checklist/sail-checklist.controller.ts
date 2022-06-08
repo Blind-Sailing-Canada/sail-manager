@@ -55,7 +55,7 @@ export class SailChecklistController {
   async updateSailChecklist(@User() user: JwtObject, @Param('sail_id') sail_id: string, @Body() checklistInfo) {
     const before = checklistInfo.before;
 
-    const sail = await SailEntity.findOne(sail_id);
+    const sail = await SailEntity.findOne({ where: { id: sail_id } });
 
     const allowedToUpdate = user.roles.some(role => role === ProfileRole.Coordinator || role === ProfileRole.Admin)
       || sail.manifest
@@ -109,6 +109,9 @@ export class SailChecklistController {
       }
     }
 
-    return SailEntity.findOne(sail_id, { relations: ['checklists'] });
+    return SailEntity.findOne({
+      where: { id: sail_id },
+      relations: ['checklists'],
+    });
   }
 }

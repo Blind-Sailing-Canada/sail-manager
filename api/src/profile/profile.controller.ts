@@ -6,10 +6,6 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { Queue } from 'bull';
-import {
-  getConnection,
-  getManager
-} from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
@@ -64,7 +60,7 @@ export class ProfileController {
   }
 
   private async createAdminUser() {
-    const count = await ProfileEntity.count({});
+    const count = await ProfileEntity.count({ loadEagerRelations: false });
 
     if (count === 0) {
       await this.authService.createAdminUser();
@@ -82,7 +78,7 @@ export class ProfileController {
   @UserAccess(UserAccessFields.LinkAccounts)
   @UseGuards(UserAccessGuard)
   async linkAccounts(@User() user: JwtObject, @Body() linkInfo: ProfileLinkInfo) {
-    await getConnection().transaction(async (transactionalEntityManager) => {
+    await this.service.repository.manager.transaction(async (transactionalEntityManager) => {
       const deleted_at = new Date();
       let profileIdToDelete;
 
@@ -124,63 +120,66 @@ export class ProfileController {
   @UserAccess(UserAccessFields.EditUserAccess)
   @UseGuards(UserAccessGuard)
   async reviewProfile(@Param('id') profile_id: string, @Body() review: ProfileReview) {
-    const profile = await ProfileEntity.findOneOrFail(profile_id);
+    const profile = await ProfileEntity.findOneOrFail({ where: { id: profile_id } });
 
-    await getManager()
-      .transaction(async transactionalEntityManager => {
-        if (review.roles || review.status) {
-          const newInfo: Partial<Profile> = { expires_at: null };
+    await this.service.repository.manager.transaction(async transactionalEntityManager => {
+      if (review.roles || review.status) {
+        const newInfo: Partial<Profile> = { expires_at: null };
 
-          if (review.roles) {
-            newInfo.roles = review.roles;
-          }
-
-          if (review.status) {
-            newInfo.status = review.status;
-          }
-
-          await transactionalEntityManager
-            .update(
-              ProfileEntity,
-              { id: profile_id },
-              newInfo
-            );
+        if (review.roles) {
+          newInfo.roles = review.roles;
         }
 
-        if (review.access) {
-          await transactionalEntityManager
-            .update(
-              UserAccessEntity,
-              { profile_id: profile_id },
-              { access: review.access }
-            );
+        if (review.status) {
+          newInfo.status = review.status;
         }
 
-        if (review.required_action_id) {
-          await transactionalEntityManager
-            .update(
-              RequiredActionEntity,
-              { id: review.required_action_id },
-              { status: RequiredActionStatus.Completed }
-            );
-        }
+        await transactionalEntityManager
+          .update(
+            ProfileEntity,
+            { id: profile_id },
+            newInfo
+          );
+      }
 
-        if (review.status === ProfileStatus.Approved && profile.status !== ProfileStatus.Approved) {
-          this.profileQueue.add('profile-approved', { profile_id });
-        }
-      });
+      if (review.access) {
+        await transactionalEntityManager
+          .update(
+            UserAccessEntity,
+            { profile_id: profile_id },
+            { access: review.access }
+          );
+      }
+
+      if (review.required_action_id) {
+        await transactionalEntityManager
+          .update(
+            RequiredActionEntity,
+            { id: review.required_action_id },
+            { status: RequiredActionStatus.Completed }
+          );
+      }
+
+      if (review.status === ProfileStatus.Approved && profile.status !== ProfileStatus.Approved) {
+        this.profileQueue.add('profile-approved', { profile_id });
+      }
+    });
 
     await this.authService.logout(profile_id).catch(error => this.logger.error(error));
 
     return {
-      access: await UserAccessEntity.findOne({ profile_id: profile_id }),
-      profile: await ProfileEntity.findOne(profile_id),
-      action: review.required_action_id? await RequiredActionEntity.findOne(review.required_action_id): undefined,
+      access: await UserAccessEntity.findOne({ where: { profile_id: profile_id } }),
+      profile: await ProfileEntity.findOne({ where: { id: profile_id } }),
+      action: review.required_action_id?
+        await RequiredActionEntity.findOne({ where: { id: review.required_action_id } }): undefined,
     };
   }
 
   @Patch('/:id')
-  async updateProfileInfo(@User() user: JwtObject, @Param('id') id: string, @Body(new ProfileUpdateSanitizer()) profile: Partial<Profile>) {
+  async updateProfileInfo(
+  @User() user: JwtObject, @Param('id') id: string,
+    @Body(new ProfileUpdateSanitizer()) profile: Partial<Profile>
+  ) {
     if (!user) {
       throw new UnauthorizedException('no user');
     }
@@ -200,7 +199,7 @@ export class ProfileController {
 
       await this.authService.logout(user.profile_id);
 
-      await getManager().transaction(async transactionalEntityManager => {
+      await this.service.repository.manager.transaction(async transactionalEntityManager => {
         const admins = await ProfileEntity.admins();
 
         const required_actions = admins.map(admin => RequiredActionEntity.create ({
@@ -220,7 +219,7 @@ export class ProfileController {
       await ProfileEntity.save(updatedProfile);
     }
 
-    return ProfileEntity.findOne(id);
+    return ProfileEntity.findOne({ where: { id } });
   }
 
 }

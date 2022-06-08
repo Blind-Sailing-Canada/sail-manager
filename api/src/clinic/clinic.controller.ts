@@ -6,7 +6,6 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { Queue } from 'bull';
-import { getConnection } from 'typeorm';
 import { AchievementEntity } from '../achievement/achievement.entity';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
@@ -53,7 +52,7 @@ export class ClinicController {
       throw new Error(`Failed to update Clinic (${id})`);
     }
 
-    return ClinicEntity.findOneOrFail(id);
+    return ClinicEntity.findOneOrFail({ where: { id } });
   }
 
   @Patch('/:clinic_id/enroll/:profile_id')
@@ -77,33 +76,39 @@ export class ClinicController {
         }));
     }
 
-    const clinic = await ClinicEntity.findOne({  id: clinic_id });
+    const clinic = await ClinicEntity.findOne({  where: { id: clinic_id } });
 
     return clinic;
   }
 
   @Delete('/:clinic_id/leave/:profile_id')
   async disenroll(@Param('clinic_id') clinic_id: string, @Param('profile_id') profile_id: string) {
-    const enrollment = await ClinicAttendanceEntity.findOne({
+    const enrollment = await ClinicAttendanceEntity.findOne({ where: {
       clinic_id,
       attendant_id: profile_id,
-    });
+    } });
 
     if (enrollment) {
       await enrollment.remove();
     }
 
-    const clinic = await ClinicEntity.findOne({  id: clinic_id });
+    const clinic = await ClinicEntity.findOne({  where: { id: clinic_id } });
 
     return clinic;
   }
 
   @Delete('/:clinic_id/remove-user/:profile_id')
-  async removeUser(@User() user: JwtObject, @Param('clinic_id') clinic_id: string, @Param('profile_id') profile_id: string) {
-    const enrollment = await ClinicAttendanceEntity.findOne({
-      clinic_id,
-      attendant_id: profile_id,
-    }, { relations: ['clinic'] });
+  async removeUser(
+  @User() user: JwtObject,
+    @Param('clinic_id') clinic_id: string,
+    @Param('profile_id') profile_id: string) {
+    const enrollment = await ClinicAttendanceEntity.findOne( {
+      where: {
+        clinic_id,
+        attendant_id: profile_id,
+      },
+      relations: ['clinic'],
+    });
 
     if (enrollment) {
       const clinic = enrollment.clinic;
@@ -115,17 +120,23 @@ export class ClinicController {
       await enrollment.remove();
     }
 
-    const clinic = await ClinicEntity.findOne({  id: clinic_id });
+    const clinic = await ClinicEntity.findOne({  where: { id: clinic_id } });
 
     return clinic;
   }
 
   @Patch(':clinic_id/graduate-user/:profile_id')
-  async graduateUseFromClinic(@User() user: JwtObject, @Param('clinic_id') clinic_id: string, @Param('profile_id') profile_id: string) {
-    const enrollment = await ClinicAttendanceEntity.findOne({
-      clinic_id,
-      attendant_id: profile_id,
-    }, { relations: ['clinic'] });
+  async graduateUseFromClinic(
+  @User() user: JwtObject,
+    @Param('clinic_id') clinic_id: string,
+    @Param('profile_id') profile_id: string) {
+    const enrollment = await ClinicAttendanceEntity.findOne( {
+      where: {
+        clinic_id,
+        attendant_id: profile_id,
+      },
+      relations: ['clinic'],
+    });
 
     if (enrollment) {
       const clinic = enrollment.clinic;
@@ -134,7 +145,7 @@ export class ClinicController {
         throw new UnauthorizedException();
       }
 
-      await getConnection().transaction(async transactionalEntityManager => {
+      await this.service.repository.manager.transaction(async transactionalEntityManager => {
         await transactionalEntityManager.remove(enrollment);
 
         const newAchievement = AchievementEntity.create({
@@ -150,6 +161,6 @@ export class ClinicController {
 
     }
 
-    return ClinicEntity.findOne({  id: clinic_id });
+    return ClinicEntity.findOne({  where: { id: clinic_id } });
   }
 }

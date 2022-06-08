@@ -1,16 +1,10 @@
 import { join } from 'path';
 import { ConnectionOptions } from 'typeorm';
-import {
-  HttpException, Module
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bull';
-import {
-  RavenInterceptor, RavenModule
-} from 'nest-raven';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { AchievementModule } from './achievement/achievement.module';
 import { AuthModule } from './auth/auth.module';
@@ -69,7 +63,6 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\
 
 @Module({
   imports: [
-    RavenModule,
     BullModule.forRoot({
       redis: {
         host: redisUrl.hostname,
@@ -116,18 +109,7 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\
     UserAccessModule,
     UserModule,
   ],
-  providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useValue: new RavenInterceptor({ filters: [
-      // Filter exceptions of type HttpException. Ignore those that
-      // have status code of less than 500
-        {
-          type: HttpException,
-          filter: (exception: HttpException) => 500 >= exception.getStatus(),
-        },
-      ] }),
-    },
-  ],
+  providers: [],
 })
-export class AppModule { }
+export class AppModule {
+}
