@@ -81,7 +81,6 @@ export class SailManifestController {
         (start_at <= '${end}'::timestamp with time zone AND end_at >= '${end}'::timestamp with time zone))
         `
       )
-      .select('id')
       .getMany()).map(sail => sail.id);
 
     const sailsDuringThisTime = await SailEntity.find({ where: { id: In(sailIdsDuringThisTime) } });
