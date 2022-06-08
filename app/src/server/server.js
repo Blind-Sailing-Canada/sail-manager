@@ -72,24 +72,7 @@ const app = express();
 
 app
   .use((request, _, next) => {
-    console.log('new request', request.url);
-
-    try {
-      Sentry.captureEvent({
-        level: Sentry.Severity.Info,
-        message: `[FE:SERVER] ${request.method} ${request.url}`,
-        request:{
-          url: request.url,
-          method: request.method,
-          headers: request.headers,
-        },
-        user: request.user,
-        extra: { token: request.headers['authorization']}
-      });
-    } catch (error) {
-      console.log('error sending to sentry')
-      console.error(error)
-    }
+    console.log('new request', `[FE:SERVER] ${request.method} ${request.url}: ${request.headers['authorization']}`);
 
     return next()
   })

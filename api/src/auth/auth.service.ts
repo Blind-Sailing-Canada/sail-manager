@@ -307,7 +307,7 @@ export class AuthService {
       await transactionalEntityManager.save(newUser);
     });
 
-    return UserEntity.findOne(newUser.id);
+    return UserEntity.findOne(newUser.id, { relations: ['profile'] });
   }
 
   private async createNewProfileForExistingUser(user: ProviderUser, existingUserEntityId: string, expires = true): Promise<ProfileEntity> {

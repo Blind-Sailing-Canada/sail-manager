@@ -91,7 +91,7 @@ export class SailActionsController {
         });
     });
 
-    return SailEntity.findOne(id);
+    return SailEntity.findOne(id, { relations: ['checklists'] });
   }
 
   @Put(':id/join/crew')
@@ -133,7 +133,7 @@ export class SailActionsController {
         });
     });
 
-    return SailEntity.findOne(id);
+    return SailEntity.findOne(id, { relations: ['checklists'] });
   }
 
   @Put(':id/join/sailor')
@@ -170,7 +170,7 @@ export class SailActionsController {
         });
     });
 
-    return SailEntity.findOne(id);
+    return SailEntity.findOne(id, { relations: ['checklists'] });
   }
 
   @Delete(':id/leave')
@@ -190,7 +190,7 @@ export class SailActionsController {
         sail_id: id,
       });
 
-    return SailEntity.findOne(id);
+    return SailEntity.findOne(id, { relations: ['checklists'] });
   }
 
   @Patch(':id/start')
@@ -252,7 +252,7 @@ export class SailActionsController {
 
     });
 
-    return SailEntity.findOne(id);
+    return SailEntity.findOne(id, { relations: ['checklists'] });
   }
 
   @Patch(':id/complete')
@@ -299,7 +299,7 @@ export class SailActionsController {
 
       });
 
-    return SailEntity.findOne(id);
+    return SailEntity.findOne(id, { relations: ['checklists'] });
   }
 
   @Patch(':id/cancel')
@@ -333,7 +333,7 @@ export class SailActionsController {
 
     this.sailQueue.add('cancel-sail', { sail_id: id });
 
-    return SailEntity.findOne(id);
+    return SailEntity.findOne(id, { relations: ['checklists'] });
   }
 
 }

@@ -38,7 +38,7 @@ export class SailCommentsController {
       commentId: savedComment.id,
     });
 
-    return SailEntity.findOne({ where: { id } });
+    return SailEntity.findOne(id, { relations: ['checklists'] });
   }
 
   @Delete('/:id/comments/:commentId')
@@ -57,7 +57,7 @@ export class SailCommentsController {
       });
     }
 
-    return SailEntity.findOne({ where: { id } });
+    return SailEntity.findOne(id, { relations: ['checklists'] });
 
   }
 }

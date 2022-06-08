@@ -61,7 +61,7 @@ export class SailManifestController {
       await SailManifestEntity.getRepository().delete(manifestsToDelete);
     }
 
-    return SailEntity.findOne(sail_id);
+    return SailEntity.findOne(sail_id, { relations: ['checklists'] });
   }
 
   @Get('/available-sailors')

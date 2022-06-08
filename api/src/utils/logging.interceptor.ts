@@ -11,7 +11,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
     Sentry.captureEvent({
       level: Sentry.Severity.Log,
-      message: `${request.method} ${request.url}`,
+      message: `API SERVER: ${request.method} ${request.url}`,
       request:{
         url: request.url,
         method: request.method,
