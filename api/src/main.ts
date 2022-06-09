@@ -1,8 +1,6 @@
 import dotenv = require('dotenv');
 dotenv.config();
-
 import * as morgan from 'morgan';
-import * as helmet from 'helmet';
 import * as session from 'express-session';
 import * as csurf from 'csurf';
 import * as cookieParser from 'cookie-parser';
@@ -18,7 +16,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AllExceptionFilter } from './utils/all-exception.filter';
 // import { LoggingInterceptor } from './utils/logging.interceptor';
 
-console.log('process.env', process.env);
+// console.log('process.env', process.env);
 
 async function bootstrap() {
 
@@ -35,13 +33,13 @@ async function bootstrap() {
   });
 
   Sentry.captureEvent({
-    level: Sentry.Severity.Info,
+    level: 'info',
     message: 'Sentry initialized in API main.ts',
   });
 
   process
     .on('unhandledRejection', (reason) => {
-      Sentry.captureMessage(JSON.stringify(reason, null, 2), Sentry.Severity.Error);
+      Sentry.captureMessage(JSON.stringify(reason, null, 2), 'error');
     })
     .on('uncaughtException', (error) => {
       Sentry.captureException(error);
@@ -84,7 +82,6 @@ async function bootstrap() {
 
     return csurfValidation(req,res, next);
   });
-  app.use(helmet());
   app.use((req, res, next) => {
     if (req.method === 'GET' && req.originalUrl === '/csrfToken') {
       return res.send({ csrfToken: req.csrfToken() });

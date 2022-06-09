@@ -12,7 +12,6 @@ import { UserEntity } from '../user/user.entity';
 import { jwtConstants } from './constants';
 import { GoogleUser } from '../types/auth/google.user';
 import { UserAccessEntity } from '../user-access/user-access.entity';
-import { getConnection } from 'typeorm';
 import { FirebaseUser } from '../types/auth/firebase.user';
 import { FirebaseAdminService } from '../firebase-admin/firebase-admin.service';
 import { ProfileRole } from '../types/profile/profile-role';
@@ -76,7 +75,7 @@ export class AuthService {
   }
 
   public async createEmailPasswordUser(name: string, email: string, password: string) {
-    const existingUser = await ProfileEntity.findOne({ email });
+    const existingUser = await ProfileEntity.findOne({ where: { email } });
 
     if (existingUser) {
       throw new Error(`User with email ${email} already exists`);
@@ -166,7 +165,7 @@ export class AuthService {
     }
 
     if (!existingUser) {
-      const profileExists = await ProfileEntity.count({ email: providerUser.email }) > 0;
+      const profileExists = await ProfileEntity.count({ where: { email: providerUser.email } }) > 0;
 
       if (profileExists) {
         throw new ConflictException(
@@ -301,16 +300,20 @@ export class AuthService {
         original_profile_id: newProfile.id,
       });
 
-    await getConnection().transaction(async transactionalEntityManager => {
+    await UserEntity.getRepository().manager.transaction(async transactionalEntityManager => {
       await transactionalEntityManager.save(newProfile);
       await transactionalEntityManager.save(newUserAccess);
       await transactionalEntityManager.save(newUser);
     });
 
-    return UserEntity.findOne(newUser.id, { relations: ['profile'] });
+    return UserEntity.findOne({
+      where: { id: newUser.id },
+      relations: ['profile'],
+    });
   }
 
-  private async createNewProfileForExistingUser(user: ProviderUser, existingUserEntityId: string, expires = true): Promise<ProfileEntity> {
+  private async createNewProfileForExistingUser(
+    user: ProviderUser, existingUserEntityId: string, expires = true): Promise<ProfileEntity> {
 
     this.logger.log(`CREATING NEW PROFILE FOR EXISTING USER ${JSON.stringify(user, null, 2)}`);
 
@@ -345,13 +348,13 @@ export class AuthService {
         original_profile_id: newProfile.id,
       });
 
-    await getConnection().transaction(async transactionalEntityManager => {
+    await UserEntity.getRepository().manager.transaction(async transactionalEntityManager => {
       await transactionalEntityManager.save(newProfile);
       await transactionalEntityManager.save(newUserAccess);
       await transactionalEntityManager.save(newUser);
     });
 
-    return ProfileEntity.findOne(newProfile.id);
+    return ProfileEntity.findOne({ where: { id: newProfile.id } });
   }
 
 }

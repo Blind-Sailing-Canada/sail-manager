@@ -21,8 +21,8 @@ export class ChallengeProcessor extends BaseQueueProcessor {
 
   @Process('new-attendee')
   async sendNewAttendee(job: Job) {
-    const challenge = await ChallengeEntity.findOneOrFail(job.data.challenge_id);
-    const attendee = await ProfileEntity.findOneOrFail(job.data.profile_id);
+    const challenge = await ChallengeEntity.findOneOrFail({ where: { id: job.data.challenge_id } });
+    const attendee = await ProfileEntity.findOneOrFail({ where: { id: job.data.profile_id } });
 
     const email = await this.challengeEmail.newAttendee(challenge, attendee);
 
@@ -31,8 +31,8 @@ export class ChallengeProcessor extends BaseQueueProcessor {
 
   @Process('new-comment')
   async sendNewComment(job: Job) {
-    const challenge = await ChallengeEntity.findOneOrFail(job.data.challenge_id);
-    const comment = await CommentEntity.findOneOrFail(job.data.commentId);
+    const challenge = await ChallengeEntity.findOneOrFail({ where: { id: job.data.challenge_id } });
+    const comment = await CommentEntity.findOneOrFail({ where: { id: job.data.commentId } });
 
     const email = await this.challengeEmail.newCommentEmail(challenge, comment);
 

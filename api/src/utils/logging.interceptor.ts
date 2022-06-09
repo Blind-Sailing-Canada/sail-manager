@@ -10,7 +10,7 @@ export class LoggingInterceptor implements NestInterceptor {
     const request: Request = context.getArgByIndex(0);
 
     Sentry.captureEvent({
-      level: Sentry.Severity.Log,
+      level: 'log',
       message: `API SERVER: ${request.method} ${request.url}`,
       request:{
         url: request.url,

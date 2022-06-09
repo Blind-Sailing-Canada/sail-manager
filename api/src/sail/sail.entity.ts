@@ -108,7 +108,6 @@ export class SailEntity extends BaseModelEntity implements Sail {
 
   @ManyToOne(() => ProfileEntity, undefined, {
     nullable: true,
-    primary: true,
     eager: true,
   })
   @JoinColumn()

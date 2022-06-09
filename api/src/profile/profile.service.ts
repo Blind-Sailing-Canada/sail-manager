@@ -6,7 +6,8 @@ import { BaseService } from '../base/base.service';
 
 @Injectable()
 export class ProfileService extends BaseService<ProfileEntity> {
-  constructor(@InjectRepository(ProfileEntity) repo: Repository<ProfileEntity>) {
+  constructor(
+  @InjectRepository(ProfileEntity) repo: Repository<ProfileEntity>) {
     super(repo);
   }
 }

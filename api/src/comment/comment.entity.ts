@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Column,
   Entity,
@@ -51,7 +50,6 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   @ManyToOne(() => SailEntity, () => null, {
     createForeignKeyConstraints: false ,
     eager: false,
-    primary: true,
   })
   @JoinColumn([
     {
@@ -68,7 +66,6 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   @ManyToOne(() => BoatMaintenanceEntity, () => null, {
     createForeignKeyConstraints: false ,
     eager: false,
-    primary: true,
   })
   @JoinColumn([
     {
@@ -85,7 +82,6 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   @ManyToOne(() => ChallengeEntity, () => null, {
     createForeignKeyConstraints: false ,
     eager: false,
-    primary: true,
   })
   @JoinColumn([
     {
@@ -102,7 +98,6 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   @ManyToOne(() => DocumentEntity, () => null, {
     createForeignKeyConstraints: false ,
     eager: false,
-    primary: true,
   })
   @JoinColumn([
     {

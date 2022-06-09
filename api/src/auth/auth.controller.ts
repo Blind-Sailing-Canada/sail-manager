@@ -101,10 +101,12 @@ export class AuthController {
 
   @Get('login')
   @UseGuards(AuthGuard('jwt'), LoginGuard)
-  login(@User() user: JwtObject): Promise<ProfileEntity> {
+  async login(@User() user: JwtObject): Promise<ProfileEntity> {
     const profile_id = user.profile_id;
 
-    return ProfileEntity.findOne(profile_id);
+    const profile = await ProfileEntity.findOne({ where: { id: profile_id } });
+
+    return profile;
   }
 
   @Get('login-firebase/:idToken')
@@ -119,7 +121,7 @@ export class AuthController {
   @Post('existing-user')
   checkForExistingUser(@Body('email') email: string): Promise<boolean> {
     return ProfileEntity
-      .count({ email: `${email}`.toLowerCase() })
+      .count({ where: { email: `${email}`.toLowerCase() } })
       .then(count => count > 0);
   }
 }

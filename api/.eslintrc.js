@@ -47,6 +47,7 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'array-element-newline': ['error','always'],
     'array-bracket-newline': ['error', { 'multiline': true, 'minItems': 2 }],
-    'no-trailing-spaces': ['error', { 'ignoreComments': true }]
+    'no-trailing-spaces': ['error', { 'ignoreComments': true }],
+    'max-len': ['error', 140]
   },
 };

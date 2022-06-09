@@ -84,7 +84,10 @@ export class BoatMaintenanceController {
   }
 
   @Patch('/:id')
-  async update(@User() user: JwtObject, @Param('id') id: string, @Body(new MaintenanceUpdateSanitizer()) updateInfo: Partial<BoatMaintenance>) {
+  async update(
+  @User() user: JwtObject,
+    @Param('id') id: string,
+    @Body(new MaintenanceUpdateSanitizer()) updateInfo: Partial<BoatMaintenance>) {
     let shouldUpdate = false;
 
     if (
@@ -107,7 +110,7 @@ export class BoatMaintenanceController {
 
   @Delete('/:id/pictures/:pictureId')
   async removePicture(@User() user: JwtObject, @Param('id') id: string, @Param('pictureId') pictureId: string) {
-    const picture = await MediaEntity.findOneOrFail(pictureId);
+    const picture = await MediaEntity.findOneOrFail({ where: { id: pictureId } });
 
     let shouldDelete = false;
 

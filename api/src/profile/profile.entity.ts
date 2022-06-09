@@ -1,4 +1,5 @@
 import {
+  ArrayContains,
   Column,
   DeleteDateColumn,
   Entity,
@@ -66,11 +67,9 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   })
   expires_at: Date;
 
-  @Column({
-    array: false,
-    default: [],
-    nullable: false,
-    type: 'jsonb',
+  @Column('text', {
+    array: true,
+    default: '{}',
   })
   roles: ProfileRole[];
 
@@ -99,17 +98,26 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   sail_checklists: SailChecklistEntity[]
 
   static coordinators(): Promise<ProfileEntity[]> {
-    return ProfileEntity
-      .find({ where: `status='${ProfileStatus.Approved}' AND roles ? '${ProfileRole.Coordinator}' = true` });
+    return ProfileEntity.find({ where: {
+      status: ProfileStatus.Approved,
+      roles: ArrayContains([ProfileRole.Coordinator]),
+    } });
+
   }
 
-  static admins(): Promise<ProfileEntity[]> {
-    return ProfileEntity
-      .find({ where: `status='${ProfileStatus.Approved}' AND roles ? '${ProfileRole.Admin}' = true` });
+  static async admins(): Promise<ProfileEntity[]> {
+    const foo = await ProfileEntity.find({ where: {
+      status: ProfileStatus.Approved,
+      roles: ArrayContains([ProfileRole.Admin]),
+    } });
+
+    return foo;
   }
 
-  static fleetManager(): Promise<ProfileEntity> {
-    return ProfileEntity
-      .findOne({ where: `status='${ProfileStatus.Approved}' AND roles ? '${ProfileRole.FleetManager}' = true` });
+  static fleetManagers(): Promise<ProfileEntity[]> {
+    return ProfileEntity.find({ where: {
+      status: ProfileStatus.Approved,
+      roles: ArrayContains([ProfileRole.FleetManager]),
+    } });
   }
 }

@@ -3,6 +3,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
+  FindOptionsWhere,
+  In,
   LessThan,
   MoreThan
 } from 'typeorm';
@@ -17,7 +19,7 @@ import { SailEntity } from './sail.entity';
 @ApiTags('sail/user')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class UserSailController {
-  private readonly logger = new Logger(UserSailController.name)
+  private readonly logger = new Logger(UserSailController.name);
 
   @Get('/:profile_id/count')
   async count(@Param('profile_id') profile_id) {
@@ -27,55 +29,55 @@ export class UserSailController {
 
   @Get('/in-progress')
   async inProgressSails(@Query('profile_id') profile_id, @Query('limit') take: 10) {
-    const sails = await SailEntity.find({
-      take,
-      where: { status: SailStatus.Started },
-    });
+    const where = { status: SailStatus.Started } as FindOptionsWhere<SailEntity>;
 
     if (profile_id) {
-      return sails.filter(sail => sail.manifest.some(manifest => manifest.profile_id === profile_id));
+      where.manifest = { profile_id };
     }
+
+    const sails = await SailEntity.find({
+      take,
+      where,
+    });
 
     return sails;
   }
 
   @Get('/past')
   async pastSails(@Query('profile_id') profile_id, @Query('limit') take: 5) {
-    if (profile_id) {
-      const manifests = await SailManifestEntity.find({
-        take,
-        relations: ['sail'],
-        where: { profile_id },
-      });
+    const where = { end_at: LessThan(new Date()) } as FindOptionsWhere<SailEntity>;
 
-      return manifests
-        .filter(manifest => new Date(manifest.sail.end_at).getTime() < Date.now())
-        .map(manifest => manifest.sail);
+    if (profile_id) {
+      where.manifest = { profile_id };
     }
 
-    return SailEntity.find({
+    const sails = await SailEntity.find({
       take,
-      where: { end_at: LessThan(new Date()) },
+      where,
     });
+
+    return sails;
   }
 
   @Get('/future')
   async futureSails(@Query('profile_id') profile_id: string, @Query('limit') take: 5) {
+    const where = {
+      status: SailStatus.New,
+      start_at: MoreThan(new Date()),
+    } as FindOptionsWhere<SailEntity>;
+
+    if (profile_id) {
+      where.manifest = { profile_id };
+    }
+
     const sails = await SailEntity
       .find(
         {
           take,
-          where: {
-            status: SailStatus.New,
-            start_at: MoreThan(new Date()),
-          },
+          where,
           order: { start_at: 'ASC' },
         }
       );
-
-    if (profile_id) {
-      return sails.filter(sail => sail.manifest.some(manifest => manifest.profile_id === profile_id));
-    }
 
     return sails;
   }
@@ -105,23 +107,39 @@ export class UserSailController {
     (${localStartDate} < ${localDate} AND ${localEndDate} > ${localDate})
     `.trim().replace(/\n/g, '').replace(/\s{2,}/g, ' ');
 
-    const sails = await SailEntity.find({ where });
+    const sailsQuery = SailEntity
+      .getRepository()
+      .createQueryBuilder('sail')
+      .select('sail.id')
+      .where(where);
 
     if (profile_id) {
-      return sails.filter(sail => sail.manifest.some(manifest => manifest.profile_id === profile_id));
+      sailsQuery.leftJoin(SailManifestEntity, 'manifest', 'profile_id = :profile_id', { profile_id });
     }
+
+    const sailIds = (await  sailsQuery.getMany()).map(sail => sail.id);
+
+    if (!sailIds.length) {
+      return [];
+    }
+
+    const sails = await SailEntity.find({
+      where: { id: In(sailIds) },
+      relations: ['checklists'],
+    });
 
     return sails;
   }
 
   @Get('/all')
-  async allSails(@Query('profile_id') profile_id) {
-    const manifests = await SailManifestEntity
+  async allSails(@Query('profile_id') profile_id, @Query('limit') take = 10) {
+    const sails = await SailEntity
       .find({
-        relations: ['sail'],
-        where: { profile_id },
+        take,
+        order: { start_at: 'DESC' },
+        where: { manifest: { profile_id } },
       });
 
-    return manifests.map(manifest => manifest.sail);
+    return sails;
   }
 }
