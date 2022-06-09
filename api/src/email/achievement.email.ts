@@ -7,6 +7,10 @@ import { EmailInfo } from '../types/email/email-info';
 export class AchievementEmail {
 
   newAchievement(achievement: Achievement): EmailInfo {
+    if (!achievement.profile) {
+      return;
+    }
+
     const sendTo: Set<string> = new Set<string>();
 
     sendTo.add(achievement.profile.email);

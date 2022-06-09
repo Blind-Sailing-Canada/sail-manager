@@ -85,6 +85,7 @@ export class BoatMaintenanceEmail {
     report
       .comments
       ?.filter(existingComment => existingComment.id !== comment.id)
+      .filter(existingComment => existingComment.author)
       .forEach(existingComment => sendTo.add(existingComment.author.email));
 
     const emailInfo: EmailInfo = {

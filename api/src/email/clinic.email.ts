@@ -19,6 +19,10 @@ export class ClinicEmail {
       sendTo.add(clinic.instructor.email);
     }
 
+    if (!sendTo.size) {
+      return;
+    }
+
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
       subject: `COMPANY_NAME_SHORT_HEADER:  ${attendee.name} joined "${clinic.name}" clinic`,

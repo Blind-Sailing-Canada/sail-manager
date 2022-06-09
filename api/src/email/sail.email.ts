@@ -15,6 +15,7 @@ export class SailEmail {
     sail
       .manifest
       .filter(sailor => sailor.profile_id)
+      .filter(sailor => sailor.profile)
       .forEach(sailor => sendTo.add(sailor.profile.email));
 
     coordinators.forEach(coordinator => sendTo.add(coordinator.email));
@@ -53,6 +54,7 @@ export class SailEmail {
     sail
       .manifest
       .filter(sailor => sailor.profile_id)
+      .filter(sailor => sailor.profile)
       .forEach(sailor => sendTo.add(sailor.profile.email));
 
     const emailInfo: EmailInfo = {
@@ -103,7 +105,10 @@ export class SailEmail {
 
   private sailList(sails: Sail[]): string {
     return sails.reduce((red, sail) => {
-      return `${red}<li><a href="${DOMAIN}/sails/view/${sail.id}">${toLocalDate(sail.start_at)} - ${sail.name} on ${sail.boat.name}</a></li>`;
+      return `
+      ${red}
+      <li><a href="${DOMAIN}/sails/view/${sail.id}">${toLocalDate(sail.start_at)} - ${sail.name} on ${sail.boat.name}</a></li>
+      `.trim();
     }, '');
   }
 }

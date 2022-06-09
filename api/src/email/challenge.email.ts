@@ -15,6 +15,10 @@ export class ChallengeEmail {
 
     const sailCoordinators = await ProfileEntity.coordinators();
 
+    if (!sailCoordinators.length) {
+      return;
+    }
+
     sailCoordinators.forEach(coordinator => sendTo.add(coordinator.email));
 
     const emailInfo: EmailInfo = {
@@ -41,6 +45,7 @@ export class ChallengeEmail {
 
     challenge
       .participants
+      .filter(participant => participant.participant)
       .forEach(participant => sendTo.add(participant.participant.email));
 
     const emailInfo: EmailInfo = {

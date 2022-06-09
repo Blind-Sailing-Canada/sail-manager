@@ -54,7 +54,7 @@ export class GoogleEmailService {
   }
 
   async sendBccEmail(emailInfo: EmailInfo) {
-    if (!emailInfo.bcc || !emailInfo.bcc.length) {
+    if (!emailInfo || !emailInfo.bcc || !emailInfo.bcc.length) {
       return Promise.resolve();
     }
 
@@ -86,6 +86,10 @@ export class GoogleEmailService {
   }
 
   async sendToEmail(emailInfo: EmailInfo) {
+    if (!emailInfo) {
+      return Promise.resolve();
+    }
+
     if (!this.connected) {
       await this.connect();
     }
