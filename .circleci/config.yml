@@ -12,6 +12,9 @@ orbs:
   heroku: circleci/heroku@1.2
 
 jobs:
+  filters:
+    branches:
+      only: master
   build:
     docker:
       - image: cimg/node:14.17.3
