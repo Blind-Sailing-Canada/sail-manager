@@ -114,7 +114,7 @@ export class UserSailController {
       .where(where);
 
     if (profile_id) {
-      sailsQuery.leftJoin(SailManifestEntity, 'manifest', 'profile_id = :profile_id', { profile_id });
+      sailsQuery.innerJoin(SailManifestEntity, 'manifest', 'manifest.sail_id = sail.id AND profile_id = :profile_id', { profile_id });
     }
 
     const sailIds = (await  sailsQuery.getMany()).map(sail => sail.id);
