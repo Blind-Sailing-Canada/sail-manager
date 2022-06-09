@@ -36,6 +36,7 @@ import { MaintenanceUpdateSanitizer } from './pipes/maintenance-update.sanitizer
   ] },
   query: {
     alwaysPaginate: false,
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
     join: {
       boat: { eager: true },
       requested_by: { eager: true },
