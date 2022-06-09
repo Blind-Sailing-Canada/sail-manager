@@ -25,6 +25,7 @@ import { ApprovedUserGuard } from '../guards/approved-profile.guard';
   } },
   query: {
     alwaysPaginate: false,
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
     join: {
       sail: { eager: true },
       'sail.boat': { eager: true },
