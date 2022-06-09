@@ -19,7 +19,7 @@ import { SailEntity } from './sail.entity';
 @ApiTags('sail/user')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class UserSailController {
-  private readonly logger = new Logger(UserSailController.name)
+  private readonly logger = new Logger(UserSailController.name);
 
   @Get('/:profile_id/count')
   async count(@Param('profile_id') profile_id) {
@@ -107,21 +107,26 @@ export class UserSailController {
     (${localStartDate} < ${localDate} AND ${localEndDate} > ${localDate})
     `.trim().replace(/\n/g, '').replace(/\s{2,}/g, ' ');
 
-    const sailIds = (await SailEntity
+    const sailsQuery = SailEntity
       .getRepository()
       .createQueryBuilder('sail')
       .select('sail.id')
-      .where(where)
-      .getMany())
-      .map(sail => sail.id);
-
-    const sailsWhere = { id: In(sailIds) } as FindOptionsWhere<SailEntity>;
+      .where(where);
 
     if (profile_id) {
-      sailsWhere.manifest = { profile_id };
+      sailsQuery.leftJoin(SailManifestEntity, 'manifest', 'profile_id = :profile_id', { profile_id });
     }
 
-    const sails = await SailEntity.find({ where: sailsWhere });
+    const sailIds = (await  sailsQuery.getMany()).map(sail => sail.id);
+
+    if (!sailIds.length) {
+      return [];
+    }
+
+    const sails = await SailEntity.find({
+      where: { id: In(sailIds) },
+      relations: ['checklists'],
+    });
 
     return sails;
   }

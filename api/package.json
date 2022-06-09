@@ -7,18 +7,22 @@
   "version": "1.0.0",
   "scripts": {
     "build": "nest build",
-    "db:migrate": "ts-node ./node_modules/typeorm/cli.js migration:run -f ./src/ormconfig.ts",
-    "db:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -f ./src/ormconfig.ts",
     "lint": "eslint \"src/**/*.ts\"",
     "prebuild": "rimraf dist",
-    "prod:db:migrate": "typeorm migration:run -f ./ormconfig-prod.js",
-    "prod:db:revert": "typeorm migration:revert -f ./ormconfig-prod.js",
     "spellcheck": "cspell 'src/**/*.*'",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main",
-    "typeorm": "ts-node ./node_modules/typeorm/cli.js"
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js -d ./src/db/ormconfig.ts",
+    "typeorm:prod": "ts-node ./node_modules/typeorm/cli.js -d ./db/ormconfig.js",
+    "migration:generate": "yarn typeorm migration:generate",
+    "migration:show": "yarn typeorm migration:show",
+    "migration:show:prod": "yarn typeorm:prod migration:show",
+    "migration:run": "yarn typeorm migration:run",
+    "migration:run:prod": "yarn typeorm:prod migration:run",
+    "migration:revert:prod": "yarn typeorm:prod migration:revert",
+    "migration:create": "typeorm-ts-node-commonjs migration:create"
   },
   "dependencies": {
     "@google-cloud/storage": "5.14.4",
@@ -59,6 +63,9 @@
     "rxjs": "7.5.5",
     "sharp": "0.30.6",
     "swagger-ui-express": "4.4.0",
+    "ts-loader": "9.3.0",
+    "ts-node": "10.8.1",
+    "tsconfig-paths": "3.11.0",
     "typeorm": "0.3.6",
     "typeorm-naming-strategies": "4.1.0",
     "typescript": "4.7.3",
@@ -71,10 +78,7 @@
     "@types/node": "16.11.21",
     "@typescript-eslint/eslint-plugin": "5.27.1",
     "@typescript-eslint/parser": "5.27.1",
-    "eslint": "8.17.0",
-    "tsconfig-paths": "3.11.0",
-    "ts-loader": "9.2.6",
-    "ts-node": "10.4.0"
+    "eslint": "8.17.0"
   },
   "engines": {
     "yarn": "^1.22.15",

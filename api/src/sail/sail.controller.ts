@@ -217,8 +217,8 @@ export class SailController {
     const sailName = query.sailName;
     const boatName = query.boatName;
     const sailorNames = [].concat(query.sailorNames).filter(Boolean);
-    const start = query.start;
-    const end = query.end;
+    const start = query.sailStart;
+    const end = query.sailEnd;
     const sort = query.sort;
 
     let searchQuery = SailEntity.getRepository().createQueryBuilder('sail');

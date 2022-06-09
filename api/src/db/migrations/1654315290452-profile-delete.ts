@@ -6,7 +6,7 @@ export class profileDelete1654315290452 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      'ALTER TABLE profiles ALTER COLUMN email varchar(500);'
+      'ALTER TABLE profiles ALTER COLUMN email TYPE varchar(500);'
     );
 
     await queryRunner.query(
