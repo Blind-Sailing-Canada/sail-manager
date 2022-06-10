@@ -12,6 +12,7 @@ import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
 import { MediaEntity } from '../media/media.entity';
 import { BoatMaintenance } from '../types/boat-maintenance/boat-maintenance';
+import { BoatMaintenanceNewCommentJob } from '../types/boat-maintenance/boat-maintenance-new-comment-job';
 import { Comment } from '../types/comment/comment';
 import { Media } from '../types/media/media';
 import { ProfileRole } from '../types/profile/profile-role';
@@ -149,11 +150,12 @@ export class BoatMaintenanceController {
 
     const savedComment = await comment.save();
 
-    this.boatMaintenanceQueue
-      .add('new-comment', {
-        maintenanceId: id,
-        commendId: savedComment.id,
-      });
+    const job: BoatMaintenanceNewCommentJob = {
+      comment_id: savedComment.id,
+      maintenance_id: id,
+    };
+
+    this.boatMaintenanceQueue.add('new-comment', job);
 
     return BoatMaintenanceEntity.findOne({ where: { id } });
   }

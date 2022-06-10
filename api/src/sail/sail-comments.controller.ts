@@ -10,6 +10,7 @@ import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
 import { ProfileRole } from '../types/profile/profile-role';
+import { SailNewCommentJob } from '../types/sail/sail-new-comment-job';
 import { JwtObject } from '../types/token/jwt-object';
 import { UserAccessFields } from '../types/user-access/user-access-fields';
 import { User } from '../user/user.decorator';
@@ -33,10 +34,11 @@ export class SailCommentsController {
 
     const savedComment = await comment.save();
 
-    this.sailQueue.add('new-comment', {
+    const job: SailNewCommentJob = {
       sail_id: id,
-      commentId: savedComment.id,
-    });
+      comment_id: savedComment.id,
+    };
+    this.sailQueue.add('new-comment', job);
 
     return SailEntity.findOne( {
       where: { id },

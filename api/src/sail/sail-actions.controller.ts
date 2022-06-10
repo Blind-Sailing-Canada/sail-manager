@@ -18,7 +18,12 @@ import { RequiredActionType } from '../types/required-action/required-action-typ
 import { SailChecklistType } from '../types/sail-checklist/sail-checklist-type';
 import { SailorRole } from '../types/sail-manifest/sailor-role';
 import { CancelRequest } from '../types/sail/cancel-request';
+import { SailCancelJob } from '../types/sail/sail-cancel-job';
+import { SailJoinJob } from '../types/sail/sail-join-job';
+import { SailLeaveJob } from '../types/sail/sail-leave-job';
+import { SailNewJob } from '../types/sail/sail-new-job';
 import { SailStatus } from '../types/sail/sail-status';
+import { SailUpdateJob } from '../types/sail/sail-update-job';
 import { JwtObject } from '../types/token/jwt-object';
 import { UserAccessFields } from '../types/user-access/user-access-fields';
 import { User } from '../user/user.decorator';
@@ -36,20 +41,22 @@ export class SailActionsController {
 
   @Post('/:sail_id/new-sail-notification')
   sendNewSailEmail(@Param('sail_id') sail_id: string, @Body('message') message: string) {
-    this.sailQueue
-      .add('new-sail', {
-        message,
-        sail_id,
-      });
+    const job: SailNewJob = {
+      message,
+      sail_id,
+    };
+
+    this.sailQueue.add('new-sail', job);
   }
 
   @Post('/:sail_id/update-sail-notification')
   sendUpdateSailEmail(@Param('sail_id') sail_id: string, @Body('message') message: string) {
-    this.sailQueue
-      .add('update-sail', {
-        message,
-        sail_id,
-      });
+    const job: SailUpdateJob = {
+      message,
+      sail_id,
+    };
+
+    this.sailQueue.add('update-sail',job);
   }
 
   @Put(':id/join/skipper')
@@ -84,11 +91,12 @@ export class SailActionsController {
 
       await transactionalEntityManager.save(sail);
 
-      this.sailQueue
-        .add('join-sail', {
-          profile_id: user.profile_id,
-          sail_id: sail.id,
-        });
+      const job: SailJoinJob = {
+        profile_id: user.profile_id,
+        sail_id: sail.id,
+      };
+
+      this.sailQueue.add('join-sail', job);
     });
 
     return SailEntity.findOne({
@@ -129,11 +137,12 @@ export class SailActionsController {
 
       await transactionalEntityManager.save(sail);
 
-      this.sailQueue
-        .add('join-sail', {
-          profile_id: user.profile_id,
-          sail_id: sail.id,
-        });
+      const job: SailJoinJob = {
+        profile_id: user.profile_id,
+        sail_id: sail.id,
+      };
+
+      this.sailQueue.add('join-sail', job);
     });
 
     return SailEntity.findOne({
@@ -169,11 +178,12 @@ export class SailActionsController {
 
       await transactionalEntityManager.save(sail);
 
-      this.sailQueue
-        .add('join-sail', {
-          profile_id: user.profile_id,
-          sail_id: sail.id,
-        });
+      const job: SailJoinJob = {
+        profile_id: user.profile_id,
+        sail_id: sail.id,
+      };
+
+      this.sailQueue.add('join-sail', job);
     });
 
     return SailEntity.findOne({
@@ -193,11 +203,12 @@ export class SailActionsController {
       throw new InternalServerErrorException(`Failed to leave sail ${id}`);
     }
 
-    this.sailQueue
-      .add('leave-sail', {
-        profile_id: user.profile_id,
-        sail_id: id,
-      });
+    const job: SailLeaveJob = {
+      profile_id: user.profile_id,
+      sail_id: id,
+    };
+
+    this.sailQueue.add('leave-sail', job);
 
     return SailEntity.findOne({
       where: { id },
@@ -353,7 +364,9 @@ export class SailActionsController {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
     }
 
-    this.sailQueue.add('cancel-sail', { sail_id: id });
+    const job: SailCancelJob = { sail_id: id };
+
+    this.sailQueue.add('cancel-sail', job);
 
     return SailEntity.findOne( {
       where: { id },

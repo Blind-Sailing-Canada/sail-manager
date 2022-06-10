@@ -6,6 +6,8 @@ import { CommentEntity } from '../comment/comment.entity';
 import { BoatMaintenanceEmail } from '../email/boat-maintenance.email';
 import { GoogleEmailService } from '../google-api/google-email.service';
 import { ProfileEntity } from '../profile/profile.entity';
+import { BoatMaintenanceNewCommentJob } from '../types/boat-maintenance/boat-maintenance-new-comment-job';
+import { BoatMaintenanceNewRequestJob } from '../types/boat-maintenance/boat-maintenance-new-request-job';
 import { BaseQueueProcessor } from '../utils/base-queue-processor';
 import { BoatMaintenanceEntity } from './boat-maintenance.entity';
 
@@ -20,8 +22,8 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
   }
 
   @Process('new-request')
-  async sendNewMaintenanceEmail(job: Job) {
-    const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenanceId } });
+  async sendNewMaintenanceEmail(job: Job<BoatMaintenanceNewRequestJob>) {
+    const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenance_id } });
     const fleetManagers =  await ProfileEntity.fleetManagers();
 
     if (!fleetManagers.length) {
@@ -35,8 +37,8 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
   }
 
   @Process('update-request')
-  async sendUpdateMaintenanceEmail(job: Job) {
-    const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenanceId } });
+  async sendUpdateMaintenanceEmail(job: Job<BoatMaintenanceNewRequestJob>) {
+    const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenance_id } });
     const fleetManagers =  await ProfileEntity.fleetManagers();
 
     if (!fleetManagers.length) {
@@ -50,10 +52,10 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
   }
 
   @Process('new-comment')
-  async sendNewCommentEmail(job: Job) {
+  async sendNewCommentEmail(job: Job<BoatMaintenanceNewCommentJob>) {
     try {
-      const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenanceId } });
-      const comment = await CommentEntity.findOneOrFail({ where: { id: job.data.commentId } });
+      const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenance_id } });
+      const comment = await CommentEntity.findOneOrFail({ where: { id: job.data.comment_id } });
       const fleetManagers =  await ProfileEntity.fleetManagers();
 
       if (!fleetManagers.length) {
