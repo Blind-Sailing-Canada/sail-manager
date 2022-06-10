@@ -33,6 +33,7 @@ import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-req
 export class SailRequestListPageComponent extends SailRequestBasePageComponent implements OnInit {
 
   public expandedId: string = null;
+  private profile_id: string;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -51,6 +52,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
 
     super.ngOnInit();
 
+    this.profile_id = this.route.snapshot.queryParams.profile_id;
     this.fetchNewRequests(false);
   }
 
@@ -59,10 +61,12 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
   }
 
   public fetchNewRequests(notify?: boolean): void {
-    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.New}` }));
-    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.Scheduled}&limit=20` }));
-    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.Cancelled}&limit=10` }));
-    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.Expired}&limit=10` }));
+    const profileQuery = this.profile_id ? `&filter=requested_by_id||$eq||${this.profile_id}` : '';
+
+    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.New}${profileQuery}` }));
+    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.Scheduled}${profileQuery}&limit=20` }));
+    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.Cancelled}${profileQuery}&limit=10` }));
+    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.Expired}${profileQuery}&limit=10` }));
   }
 
   public get newSailRequestsArray(): SailRequest[] {
