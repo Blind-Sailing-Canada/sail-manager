@@ -33,7 +33,7 @@ import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-req
 export class SailRequestListPageComponent extends SailRequestBasePageComponent implements OnInit {
 
   public expandedId: string = null;
-  private profile_id: string;
+  public profile_id: string;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -137,6 +137,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
     const sailRequests = this.sailRequests;
     const array = Object
       .values(sailRequests)
+      .filter(request => this.profile_id ? request.requested_by_id === this.profile_id : true)
       .filter(request => request.status === requestStatus)
       .sort((a, b) => {
 

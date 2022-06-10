@@ -8,6 +8,7 @@
       role="heading"
       tabindex="0"
     >Sail Requests</mat-card-title>
+    <mat-card-subtitle *ngIf="profile_id">Requested by {{user?.profile?.name}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
     <ng-container [ngTemplateOutlet]="CONTROLS"></ng-container>
