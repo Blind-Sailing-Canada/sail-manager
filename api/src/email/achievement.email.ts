@@ -7,7 +7,7 @@ import { EmailInfo } from '../types/email/email-info';
 export class AchievementEmail {
 
   newAchievement(achievement: Achievement): EmailInfo {
-    if (!achievement.profile) {
+    if (!achievement?.profile) {
       return;
     }
 

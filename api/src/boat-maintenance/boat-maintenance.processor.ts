@@ -7,7 +7,8 @@ import { BoatMaintenanceEmail } from '../email/boat-maintenance.email';
 import { GoogleEmailService } from '../google-api/google-email.service';
 import { ProfileEntity } from '../profile/profile.entity';
 import { BoatMaintenanceNewCommentJob } from '../types/boat-maintenance/boat-maintenance-new-comment-job';
-import { BoatMaintenanceNewRequestJob } from '../types/boat-maintenance/boat-maintenance-new-request-job';
+import { BoatMaintenanceNewJob } from '../types/boat-maintenance/boat-maintenance-new-job';
+import { BoatMaintenanceUpdateJob } from '../types/boat-maintenance/boat-maintenance-update-request-job';
 import { BaseQueueProcessor } from '../utils/base-queue-processor';
 import { BoatMaintenanceEntity } from './boat-maintenance.entity';
 
@@ -22,7 +23,7 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
   }
 
   @Process('new-request')
-  async sendNewMaintenanceEmail(job: Job<BoatMaintenanceNewRequestJob>) {
+  async sendNewMaintenanceEmail(job: Job<BoatMaintenanceNewJob>) {
     const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenance_id } });
     const fleetManagers =  await ProfileEntity.fleetManagers();
 
@@ -37,7 +38,7 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
   }
 
   @Process('update-request')
-  async sendUpdateMaintenanceEmail(job: Job<BoatMaintenanceNewRequestJob>) {
+  async sendUpdateMaintenanceEmail(job: Job<BoatMaintenanceUpdateJob>) {
     const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenance_id } });
     const fleetManagers =  await ProfileEntity.fleetManagers();
 
@@ -53,23 +54,19 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
 
   @Process('new-comment')
   async sendNewCommentEmail(job: Job<BoatMaintenanceNewCommentJob>) {
-    try {
-      const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenance_id } });
-      const comment = await CommentEntity.findOneOrFail({ where: { id: job.data.comment_id } });
-      const fleetManagers =  await ProfileEntity.fleetManagers();
+    const request = await BoatMaintenanceEntity.findOne({ where: { id: job.data.maintenance_id } });
+    const comment = await CommentEntity.findOne({ where: { id: job.data.comment_id } });
+    const fleetManagers =  await ProfileEntity.fleetManagers();
 
-      if (!fleetManagers.length) {
-        return;
-      }
-
-      const emailInfo = this.boatMaintenanceEmail.newMaintenanceRequestCommentEmail(request,comment);
-
-      emailInfo.bcc.push(...fleetManagers.map(manager => manager.email));
-
-      return this.emailService.sendBccEmail(emailInfo);
-    } catch (error) {
-      this.logger.error(error);
+    if (!fleetManagers.length) {
+      return;
     }
+
+    const emailInfo = this.boatMaintenanceEmail.newMaintenanceRequestCommentEmail(request, comment);
+
+    emailInfo.bcc.push(...fleetManagers.map(manager => manager.email));
+
+    return this.emailService.sendBccEmail(emailInfo);
 
   }
 }

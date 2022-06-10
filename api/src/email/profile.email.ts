@@ -7,6 +7,10 @@ import { Profile } from '../types/profile/profile';
 export class ProfileEmail {
 
   newProfileEmail(profile: Profile): EmailInfo {
+    if (!profile) {
+      return;
+    }
+
     const emailInfo: EmailInfo = {
       subject: `COMPANY_NAME_SHORT_HEADER: New profile (${profile.name}) is awaiting approval.`,
       content:  `
@@ -23,6 +27,10 @@ export class ProfileEmail {
   }
 
   approvedProfileEmail(profile: Profile): EmailInfo {
+    if (!profile) {
+      return;
+    }
+
     const emailInfo: EmailInfo = {
       to: [profile.email],
       subject: 'COMPANY_NAME_SHORT_HEADER: your account has been approved.',

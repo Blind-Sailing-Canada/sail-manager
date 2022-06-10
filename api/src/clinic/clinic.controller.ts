@@ -10,6 +10,7 @@ import { AchievementEntity } from '../achievement/achievement.entity';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
+import { ClinicAttendeeNewJob } from '../types/clinic/clinic-attendee-new-job';
 import { ProfileRole } from '../types/profile/profile-role';
 import { JwtObject } from '../types/token/jwt-object';
 import { User } from '../user/user.decorator';
@@ -68,12 +69,14 @@ export class ClinicController {
         attendant_id: profile_id,
       });
 
-      await newAttendant
-        .save()
-        .then(() => this.clinicQueue.add('new-attendee', {
-          clinic_id,
-          profile_id,
-        }));
+      const attendee = await newAttendant.save();
+
+      const job: ClinicAttendeeNewJob = {
+        clinic_id,
+        profile_id: attendee.attendant_id,
+      };
+
+      this.clinicQueue.add('new-attendee', job);
     }
 
     const clinic = await ClinicEntity.findOne({  where: { id: clinic_id } });

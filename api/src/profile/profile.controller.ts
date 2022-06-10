@@ -32,6 +32,8 @@ import { ProfileUpdateSanitizer } from './pipes/profile-update.sanitizer';
 import { ProfileEntity } from './profile.entity';
 import { ProfileService } from './profile.service';
 import { v4 as uuidv4 } from 'uuid';
+import { ProfileApprovedJob } from '../types/profile/profile-approved-job';
+import { ProfileNewJob } from '../types/profile/profile-new-job';
 
 @Crud({
   model: { type: ProfileEntity },
@@ -49,7 +51,7 @@ import { v4 as uuidv4 } from 'uuid';
 @ApiTags('profile')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class ProfileController {
-  private readonly logger = new Logger(ProfileController.name)
+  private readonly logger = new Logger(ProfileController.name);
 
   constructor(
     private service: ProfileService,
@@ -161,7 +163,9 @@ export class ProfileController {
       }
 
       if (review.status === ProfileStatus.Approved && profile.status !== ProfileStatus.Approved) {
-        this.profileQueue.add('profile-approved', { profile_id });
+        const job: ProfileApprovedJob = { profile_id };
+
+        this.profileQueue.add('profile-approved', job);
       }
     });
 
@@ -213,7 +217,9 @@ export class ProfileController {
         await transactionalEntityManager.save(required_actions);
         await transactionalEntityManager.save(updatedProfile);
 
-        this.profileQueue.add('new-profile', { profile_id: id });
+        const job: ProfileNewJob = { profile_id: id };
+
+        this.profileQueue.add('new-profile', job);
       });
     } else {
       await ProfileEntity.save(updatedProfile);

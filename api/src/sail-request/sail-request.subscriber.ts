@@ -5,6 +5,7 @@ import { Queue } from 'bull';
 import {
   Connection, EntitySubscriberInterface, InsertEvent
 } from 'typeorm';
+import { SailRequestNewJob } from '../types/sail-request/sail-request-new-job';
 import { SailRequestEntity } from './sail-request.entity';
 
 @Injectable()
@@ -22,7 +23,9 @@ export class SailRequestSubscriber implements EntitySubscriberInterface<SailRequ
   }
 
   afterInsert(event: InsertEvent<SailRequestEntity>) {
-    this.sail_requestQueue.add('new-sail-request', { sail_request_id: event.entity.id });
+    const job: SailRequestNewJob = { sail_request_id: event.entity.id };
+
+    this.sail_requestQueue.add('new-sail-request', job);
   }
 
 }

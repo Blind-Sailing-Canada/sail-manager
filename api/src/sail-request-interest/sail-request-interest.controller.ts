@@ -8,6 +8,7 @@ import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
 import { SailRequestEntity } from '../sail-request/sail-request.entity';
+import { SailRequestInterestNewJob } from '../types/sail-request-interest/sail-request-interest-new-job';
 import { JwtObject } from '../types/token/jwt-object';
 import { User } from '../user/user.decorator';
 import { SailRequestInterestEntity } from './sail-request-interest.entity';
@@ -17,8 +18,10 @@ import { SailRequestInterestService } from './sail-request-interest.service';
 @ApiTags('sail-request-interest')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class SailRequestInterestController {
-  constructor(public service: SailRequestInterestService,
-    @InjectQueue('sail-request-interest') private readonly sail_requestInterestQueue: Queue) { }
+  constructor(
+    public service: SailRequestInterestService,
+    @InjectQueue('sail-request-interest') private readonly sail_requestInterestQueue: Queue
+  ) { }
 
   @Post(':sail_request_id')
   async interested(@User() user: JwtObject, @Param('sail_request_id') sail_request_id: string) {
@@ -31,7 +34,9 @@ export class SailRequestInterestController {
       })
       .save();
 
-    this.sail_requestInterestQueue.add('new-sail-request-interest', { sail_requestInterestId: newInterest.id });
+    const job: SailRequestInterestNewJob = { sail_request_interest_id: newInterest.id };
+
+    this.sail_requestInterestQueue.add('new-sail-request-interest', job);
 
     return SailRequestEntity.findOne({ where: { id:sail_request_id } });
   }

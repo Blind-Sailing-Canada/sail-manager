@@ -5,6 +5,7 @@ import { Job } from 'bull';
 import { ClinicEmail } from '../email/clinic.email';
 import { GoogleEmailService } from '../google-api/google-email.service';
 import { ProfileEntity } from '../profile/profile.entity';
+import { ClinicAttendeeNewJob } from '../types/clinic/clinic-attendee-new-job';
 import { BaseQueueProcessor } from '../utils/base-queue-processor';
 import { ClinicEntity } from './clinic.entity';
 
@@ -19,9 +20,9 @@ export class ClinicProcessor extends BaseQueueProcessor {
   }
 
   @Process('new-attendee')
-  async sendNewAttendee(job: Job) {
-    const clinic = await ClinicEntity.findOneOrFail({ where: { id: job.data.clinic_id } });
-    const attendee = await ProfileEntity.findOneOrFail({ where: { id: job.data.profile_id } });
+  async sendNewAttendee(job: Job<ClinicAttendeeNewJob>) {
+    const clinic = await ClinicEntity.findOne({ where: { id: job.data.clinic_id } });
+    const attendee = await ProfileEntity.findOne({ where: { id: job.data.profile_id } });
 
     const email = await this.clinicEmail.newAttendee(clinic, attendee);
 

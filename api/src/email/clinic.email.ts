@@ -9,6 +9,10 @@ import { Profile } from '../types/profile/profile';
 export class ClinicEmail {
 
   async newAttendee(clinic: Clinic, attendee: Profile): Promise<EmailInfo> {
+    if (!clinic || !attendee) {
+      return;
+    }
+
     const sendTo: Set<string> = new Set<string>();
 
     if (!clinic.instructor) {

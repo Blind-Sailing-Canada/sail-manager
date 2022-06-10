@@ -78,6 +78,10 @@ export class BoatMaintenanceEmail {
   }
 
   newMaintenanceRequestCommentEmail(report: BoatMaintenance, comment: Comment): EmailInfo {
+    if (!report || !comment?.author) {
+      return;
+    }
+
     const sendTo: Set<string> = new Set<string>();
 
     sendTo.add(report.requested_by.email);

@@ -9,6 +9,10 @@ import { SailRequest } from '../types/sail-request/sail-request';
 export class SailRequestEmail {
 
   async newSailRequest(sail_request: SailRequest): Promise<EmailInfo> {
+    if (!sail_request) {
+      return;
+    }
+
     const sendTo: Set<string> = new Set<string>();
 
     const sailCoordinators = await ProfileEntity.coordinators();
@@ -17,7 +21,7 @@ export class SailRequestEmail {
 
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
-      subject: `COMPANY_NAME_SHORT_HEADER:  new sail request #${sail_request.entity_number}`,
+      subject: `COMPANY_NAME_SHORT_HEADER: new sail request #${sail_request.entity_number}`,
       content:  `
         <html>
           <body>
@@ -34,6 +38,10 @@ export class SailRequestEmail {
   }
 
   async cancelSailRequest(sail_request: SailRequest): Promise<EmailInfo> {
+    if (!sail_request) {
+      return;
+    }
+
     const sendTo: Set<string> = new Set<string>();
 
     const sailCoordinators = await ProfileEntity.coordinators();
@@ -57,6 +65,10 @@ export class SailRequestEmail {
   }
 
   async newInterestSailRequest(sail_requestInterest: SailRequestInterestEntity): Promise<EmailInfo> {
+    if (!sail_requestInterest?.sail_request) {
+      return;
+    }
+
     const sailCoordinators = await ProfileEntity.coordinators();
 
     if (!sailCoordinators?.length) {
