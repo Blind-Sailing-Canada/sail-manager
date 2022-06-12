@@ -50,6 +50,7 @@ export class FirebaseAdminController {
     };
 
     return sharp(image)
+      .rotate()
       .resize({
         ...options,
         background: options.background || background,

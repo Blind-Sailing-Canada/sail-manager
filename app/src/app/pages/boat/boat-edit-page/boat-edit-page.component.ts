@@ -17,6 +17,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Boat } from '../../../../../../api/src/types/boat/boat';
 import { BoatStatus } from '../../../../../../api/src/types/boat/boat-status';
+import { MediaType } from '../../../../../../api/src/types/media/media-type';
 import { ICDNFileState } from '../../../models/cdn-state.interface';
 import { editBoatInstructionsRoute } from '../../../routes/routes';
 import {
@@ -200,7 +201,7 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
   }
 
   private addNewPictureToForm(url: string): void {
-    (this.boatForm.controls.pictures as FormArray).push(this.fb.group({ url }));
+    (this.boatForm.controls.pictures as FormArray).push(this.fb.group({ url, media_type: MediaType.Picture }));
     this.boatForm.controls.pictures.updateValueAndValidity();
     this.boatForm.controls.pictures.markAsDirty();
     this.boatForm.updateValueAndValidity();
@@ -216,7 +217,7 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
       pictures.removeAt(0);
     }
 
-    boat.pictures.forEach(pic => pictures.push(this.fb.group({ url: pic })));
+    boat.pictures.forEach(pic => pictures.push(this.fb.group({ url: pic, media_type: MediaType.Picture })));
 
     this.boatForm.markAsUntouched();
     this.boatForm.markAsPristine();
