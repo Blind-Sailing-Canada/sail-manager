@@ -153,7 +153,7 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
 
   public fetchAccounts(nameOrEmail: string): void {
     this.profileService
-      .fetchProfiles(`s={"$or" : [{"name": {"$cont": "${nameOrEmail}"}}, {"email": {"$cont": "${nameOrEmail}"}}]}`)
+      .fetchProfiles(`s={"$or" : [{"name": {"$contL": "${nameOrEmail}"}}, {"email": {"$cont": "${nameOrEmail}"}}]}`)
       .pipe(takeWhile(() => this.active))
       .subscribe((accounts) => {
         if (this.linkAccountsDialogRef && this.linkAccountsDialogRef.componentInstance) {

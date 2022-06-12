@@ -82,7 +82,7 @@ export class ProfileController {
   async linkAccounts(@User() user: JwtObject, @Body() linkInfo: ProfileLinkInfo) {
     await this.service.repository.manager.transaction(async (transactionalEntityManager) => {
       const deleted_at = new Date();
-      let profileIdToDelete;
+      let profileIdToDelete: string;
 
       if (linkInfo.linkType == ProfileLink.Primary) {
         await transactionalEntityManager.update(UserEntity, { profile_id: linkInfo.profile_idB }, {
@@ -102,7 +102,7 @@ export class ProfileController {
         profileIdToDelete = linkInfo.profile_idA;
       }
 
-      const profileToDelete = await ProfileEntity.findOne(profileIdToDelete);
+      const profileToDelete = await ProfileEntity.findOne({ where: { id : profileIdToDelete } });
 
       await transactionalEntityManager.update(ProfileEntity, { id: profileIdToDelete }, {
         email: `${profileToDelete.email}:deleted:${deleted_at.toISOString()}`,
