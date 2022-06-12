@@ -72,6 +72,10 @@ async function bootstrap() {
       return next();
     }
 
+    if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/videos/')){
+      return next();
+    }
+
     if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/documents/')){
       return next();
     }
