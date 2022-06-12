@@ -18,14 +18,20 @@
         attr.aria-label="picture {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
         src="{{picture.url}}?width={{width}}&height={{height}}"
       >
-      <video
+      <div
         *ngSwitchCase="MediaTypes.Video"
-        [height]="height"
-        [width]="width"
-        async
-        attr.aria-label="video {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
-        src="{{picture.url}}"
-      ></video>
+        class="video-container"
+      >
+        <mat-icon>play_circle</mat-icon>
+        <video
+          [height]="height"
+          [width]="width"
+          async
+          attr.aria-label="video {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
+          src="{{picture.url}}"
+        ></video>
+      </div>
+
       <img
         *ngSwitchDefault
         [height]="height"
