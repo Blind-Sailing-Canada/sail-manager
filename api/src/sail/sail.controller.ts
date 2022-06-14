@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,  Get,  Post,  Query, Res, UseGuards
+  Controller,  Get,  Param,  Patch,  Post,  Query, Res, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
@@ -61,7 +61,6 @@ import { SailStatus } from '../types/sail/sail-status';
     'createOneBase',
     'getManyBase',
     'getOneBase',
-    'updateOneBase',
   ] },
 })
 @Controller('sail')
@@ -70,6 +69,30 @@ import { SailStatus } from '../types/sail/sail-status';
 export class SailController {
 
   constructor(public service: SailService) { }
+
+  @Patch('/:sail_id')
+  async updateSail(@User() user: JwtObject, @Param('sail_id') sail_id: string, @Body() sail_data: Sail) {
+    const sail_manifest = await SailManifestEntity.findOne({
+      where: {
+        sail_id: sail_id,
+        profile_id: user.profile_id,
+        sailor_role: SailorRole.Skipper,
+      },
+      loadEagerRelations: false,
+    });
+
+    let canEdit = !!sail_manifest;
+
+    canEdit = canEdit || user.access.access[UserAccessFields.EditSail] === true;
+
+    if (!canEdit) {
+      throw new UnauthorizedException('not authorized to edit sails.');
+    }
+
+    await SailEntity.update(sail_id, sail_data);
+
+    return SailEntity.findOne({ where: { id: sail_id } });
+  }
 
   @Get('/available')
   async availableSails(@User() user: JwtObject ) {

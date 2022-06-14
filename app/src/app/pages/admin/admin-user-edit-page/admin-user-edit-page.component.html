@@ -1,3 +1,17 @@
+<mat-card *ngIf="user && !profile">
+  <mat-card-content>
+    <p>Looks like this profile no longer exists.</p>
+    <div *ngIf="requiredAction">
+      <h3 tabindex="0">Pending action: {{requiredAction.title}}</h3>
+      <button
+        mat-raised-button
+        (click)="dismissRequiredAction()"
+        title="dismiss {{requiredAction.title}} action"
+      >Dismiss</button>
+    </div>
+  </mat-card-content>
+</mat-card>
+
 <mat-card *ngIf="user && profile">
   <mat-card-header>
     <div mat-card-avatar>
