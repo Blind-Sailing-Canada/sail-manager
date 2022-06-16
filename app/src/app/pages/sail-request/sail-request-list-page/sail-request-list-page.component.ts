@@ -105,7 +105,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
           link.download = fileName;
           link.click();
         },
-        error => console.log('download error', error),
+        error => console.error('download error', error),
       );
   }
 

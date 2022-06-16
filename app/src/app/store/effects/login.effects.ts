@@ -31,7 +31,6 @@ import {
   logIn,
   logOut,
   putToken,
-  resetLogin,
 } from '../actions/login.actions';
 import { putProfile } from '../actions/profile.actions';
 import { putSnack } from '../actions/snack.actions';
@@ -52,24 +51,29 @@ export class LoginEffects {
     }
   );
 
+  putToken$ = createEffect(
+    () => this.actions$
+      .pipe(
+        ofType(putToken),
+        mergeMap(
+          (action) => this.authService
+              .login(action.token)
+              .pipe(
+                mergeMap(profile => of(
+                  putProfile({ profile, profile_id: profile.id, }),
+                  loggedIn({ token: action.token, user: profile }),
+                )),
+                catchError(errorCatcher('Failed to login.'))
+              )
+        ),
+      ),
+  );
+
   login$ = createEffect(
     () => this.actions$
       .pipe(
         ofType(logIn),
-        tap(() => this.store.dispatch(startLoading())),
-        tap(action => this.store.dispatch(putToken({ token: action.token }))),
-        mergeMap(
-          action => this.authService
-            .login(action.token)
-            .pipe(
-              mergeMap(profile => of(
-                putProfile({ profile, profile_id: profile.id, }),
-                loggedIn({ token: action.token, user: profile })),
-              ),
-              catchError(errorCatcher('Failed to login.'))
-            )
-        ),
-        tap(() => this.store.dispatch(finishLoading())),
+        map(action => putToken({ token: action.token })),
       ),
   );
 
@@ -77,31 +81,15 @@ export class LoginEffects {
     () => this.actions$
       .pipe(
         ofType(logOut),
-        tap(() => this.store.dispatch(startLoading())),
-        mergeMap(
-          action => this.authService
-            .logout()
-            .pipe(
-              mergeMap(() => of(
-                loggedOut(),
-                goTo({ route: FullRoutes.LOGIN.toString() }),
-                resetLogin(),
-                putSnack({ snack: { type: SnackType.INFO, message: action.message || 'Bye. See you soon!' } }),
-              )),
-              catchError(
-                errorCatcher(
-                  'Failed to logout.',
-                  [
-                    loggedOut(),
-                    goTo({ route: FullRoutes.LOGIN.toString() }),
-                    resetLogin(),
-                    putSnack({ snack: { type: SnackType.INFO, message: 'Bye. See you soon!' } }),
-                  ]
-                )
-              )
-            )
-        ),
-        tap(() => this.store.dispatch(finishLoading())),
+        mergeMap((action) => this.authService.logout()
+          .pipe(
+            mergeMap(() => of(
+              loggedOut(),
+              goTo({ route: FullRoutes.LOGIN.toString() }),
+              putSnack({ snack: { type: SnackType.INFO, message: action.message || 'Bye. See you soon!' } }),
+            ))
+          )
+        )
       ),
   );
 

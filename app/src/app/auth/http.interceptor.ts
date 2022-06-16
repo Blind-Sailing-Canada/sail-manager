@@ -2,7 +2,6 @@ import { Observable } from 'rxjs';
 import {
   HttpEvent,
   HttpHandler,
-  HttpHeaders,
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
@@ -23,37 +22,26 @@ export class AuthInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     const token = this.tokenService.token;
     const expired = this.tokenService.isExpired;
     const path = req.url;
     const csrfToken = sessionStorage.getItem('csrfToken');
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timezone = Intl?.DateTimeFormat().resolvedOptions().timeZone;
 
-    let newRequest = req
+    const newRequest = req
       .clone({
         headers: req
           .headers
           .set('CSRF-Token', csrfToken || 'no-csrf-token-set')
           .set('x-timezone', timezone)
+          .set('authorization', `Bearer ${token}`)
       });
 
     if (path !== '/api/auth/logout' && token && expired) {
       this.store.dispatch(logOut({ message: 'Your session has expired.' }));
-      newRequest = newRequest.clone({ method: 'GET', url: '/', body: null, headers: new HttpHeaders() });
-      return next.handle(newRequest);
+      return next.handle(null);
     }
 
-    if (token && !expired) {
-      newRequest = newRequest
-        .clone({
-          headers: newRequest
-            .headers
-            .set('authorization', `Bearer ${token}`)
-        });
       return next.handle(newRequest);
-    }
-
-    return next.handle(newRequest);
   }
 }

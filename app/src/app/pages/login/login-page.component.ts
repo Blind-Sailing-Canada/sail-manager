@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import {
   Component,
   Inject,
@@ -19,6 +18,7 @@ import {
 import { TokenService } from '../../services/token.service';
 import {
   authenticateWithGoogle,
+  loggedOut,
   logIn,
 } from '../../store/actions/login.actions';
 import { STORE_SLICES } from '../../store/store';
@@ -39,21 +39,12 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
     @Inject(Router) router: Router,
     @Inject(TokenService) private tokenService: TokenService,
     @Inject(Store) store: Store<any>,
-    @Inject(HttpClient) private httpClient: HttpClient,
   ) {
     super(store, route, router);
   }
 
   async ngOnInit() {
-    const csrfToken = await this.httpClient.get<{csrfToken: string}>('/api/csrfToken').toPromise();
-    sessionStorage.setItem('csrfToken', csrfToken.csrfToken);
-
-    let token = this.route.snapshot.params.token;
-
-    if (!token && this.tokenService.savedToken) {
-      token = this.tokenService.savedToken;
-      this.tokenService.loginThroughSavedToken();
-    }
+    const token = this.route.snapshot.params.token || this.tokenService.savedToken;
 
     if (!token) {
       return;
@@ -65,7 +56,9 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
       if (tokenObject.provider === 'google') {
         this.authenticateWithGoogle();
       } else {
-        window.location.href = '/login/email-password';
+        this.goTo([loginWithEmailAndPassword]);
+        this.dispatchMessage('Session expired! Please log in again.');
+        this.dispatchAction(loggedOut());
       }
 
       return;

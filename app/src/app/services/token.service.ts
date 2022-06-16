@@ -5,7 +5,6 @@ import {
 import { Store } from '@ngrx/store';
 import { JwtObject } from '../../../../api/src/types/token/jwt-object';
 import { ILoginState } from '../models/login-state.interface';
-import { logIn } from '../store/actions/login.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +39,4 @@ export class TokenService {
     return Date.now() >= (exp * 1000);
   }
 
-  public loginThroughSavedToken(): void {
-    this.store.dispatch(logIn({ token:  this.savedToken }));
-  }
 }

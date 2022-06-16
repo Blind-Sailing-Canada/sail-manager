@@ -151,7 +151,7 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
 
     const pictures = (this.maintenanceForm.controls.pictures as FormArray);
 
-    while (pictures.length) {
+    while (pictures?.length) {
       pictures.removeAt(0);
     }
 

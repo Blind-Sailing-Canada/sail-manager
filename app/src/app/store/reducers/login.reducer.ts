@@ -21,7 +21,11 @@ const initialState: ILoginState = {
 
 const reducerHandler = createReducer(
   initialState,
-  on(resetLogin, () => initialState),
+  on(resetLogin, () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    return initialState;
+  }),
   on(putToken, (state, action) => {
     sessionStorage.setItem('token', action.token);
     const tokenData = decodeJwt(action.token);

@@ -213,7 +213,7 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
 
     const pictures = (this.boatForm.controls.pictures as FormArray);
 
-    while (pictures.length) {
+    while (pictures?.length) {
       pictures.removeAt(0);
     }
 

@@ -10,7 +10,7 @@ export enum LOGIN_ACTION_TYPES {
   LOGGED_OUT = '[Login] Logged out',
   LOG_IN = '[Login] Log in',
   LOG_OUT = '[Login] Log out',
-  PUT_TOKEN = '[Login] PUt token',
+  PUT_TOKEN = '[Login] Put token',
   RESET = 'Reset',
 }
 

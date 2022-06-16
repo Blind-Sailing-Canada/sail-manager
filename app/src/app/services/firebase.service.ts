@@ -52,10 +52,7 @@ export class FirebaseService {
   }
 
   public linkGoogleAccount() {
-    return linkWithRedirect(this.auth.currentUser, new GoogleAuthProvider())
-      .then((response) => {
-        console.log('link with redirect response', response);
-      });
+    return linkWithRedirect(this.auth.currentUser, new GoogleAuthProvider());
   }
 
   public sendPasswordResetEmail(email: string) {
