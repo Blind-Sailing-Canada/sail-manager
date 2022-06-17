@@ -21,7 +21,7 @@ export class ProfileUpdateSanitizer implements PipeTransform {
     const keys = Object.keys(createDTO).filter(key => createDTO[key] !== undefined);
 
     return keys.reduce((profile, key) => {
-      profile[key] =  validator.escape(createDTO[key] ?? '');
+      profile[key] = key === 'photo' ? createDTO[key] : validator.escape(createDTO[key] ?? '');
       return profile;
     }, {} as Profile);
   }

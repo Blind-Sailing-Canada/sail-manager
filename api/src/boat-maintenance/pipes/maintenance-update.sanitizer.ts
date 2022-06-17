@@ -23,7 +23,7 @@ export class MaintenanceUpdateSanitizer implements PipeTransform {
     const keys = Object.keys(updateDTO).filter(key => updateDTO[key] !== undefined);
 
     return keys.reduce((maintenance, key) => {
-      maintenance[key] =  validator.escape(updateDTO[key]);
+      maintenance[key] =  validator.escape(updateDTO[key] ?? '');
       return maintenance;
     }, {} as BoatMaintenance);
   }

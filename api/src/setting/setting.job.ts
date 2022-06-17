@@ -17,14 +17,19 @@ export class SettingJob {
 
   @Cron(CronExpression.EVERY_DAY_AT_NOON)
   async dailyFutureSails() {
-    const subscribers = await SettingEntity.find({
-      relations: ['profile'],
-      where: { 'settings->>\'futureSails\'': `'${FutureSailsSubscription.EveryDay}'` } as any,
-    });
+    const subscribers = (await SettingEntity
+      .getRepository()
+      .createQueryBuilder('settings')
+      .leftJoinAndSelect('settings.profile', 'profile')
+      .where('settings->>\'futureSails\'= :futureSails AND profile.status=:status',
+        {
+          futureSails: FutureSailsSubscription.EveryDay,
+          status: ProfileStatus.Approved,
+        }
+      )
+      .getMany()).map(setting => setting.profile).filter(Boolean);
 
-    const activeSubscribers = subscribers.filter(subscriber => subscriber.profile.status === ProfileStatus.Approved);
-
-    if (!activeSubscribers.length) {
+    if (!subscribers.length) {
       return;
     }
 
@@ -40,7 +45,7 @@ export class SettingJob {
 
     const emailInfo = this.sailEmail.futureSails(futureSails);
 
-    const emailTo = activeSubscribers.map(subscriber => subscriber.profile.email);
+    const emailTo = subscribers.map(subscriber => subscriber.email);
     emailInfo.bcc = emailTo;
 
     await this.emailService.sendBccEmail(emailInfo);
@@ -48,14 +53,19 @@ export class SettingJob {
 
   @Cron('0 0 1-31/2 * *')
   async everyOtherDay() {
-    const subscribers = await SettingEntity.find({
-      relations: ['profile'],
-      where: { 'settings->>\'futureSails\'': `'${FutureSailsSubscription.EveryOtherDay}'` } as any,
-    });
+    const subscribers = (await SettingEntity
+      .getRepository()
+      .createQueryBuilder('settings')
+      .leftJoinAndSelect('settings.profile', 'profile')
+      .where('settings->>\'futureSails\'= :futureSails AND profile.status=:status',
+        {
+          futureSails: FutureSailsSubscription.EveryOtherDay,
+          status: ProfileStatus.Approved,
+        }
+      )
+      .getMany()).map(setting => setting.profile).filter(Boolean);
 
-    const activeSubscribers = subscribers.filter(subscriber => subscriber.profile.status === ProfileStatus.Approved);
-
-    if (!activeSubscribers.length) {
+    if (!subscribers.length) {
       return;
     }
 
@@ -71,7 +81,7 @@ export class SettingJob {
 
     const emailInfo = this.sailEmail.futureSails(futureSails);
 
-    const emailTo = activeSubscribers.map(subscriber => subscriber.profile.email);
+    const emailTo = subscribers.map(subscriber => subscriber.email);
     emailInfo.bcc = emailTo;
 
     await this.emailService.sendBccEmail(emailInfo);
@@ -79,14 +89,19 @@ export class SettingJob {
 
   @Cron('0 8 * * SUN')
   async everySunday() {
-    const subscribers = await SettingEntity.find({
-      relations: ['profile'],
-      where: { 'settings->>\'futureSails\'': `'${FutureSailsSubscription.EveryWeek}'` } as any,
-    });
+    const subscribers = (await SettingEntity
+      .getRepository()
+      .createQueryBuilder('settings')
+      .leftJoinAndSelect('settings.profile', 'profile')
+      .where('settings->>\'futureSails\'= :futureSails AND profile.status=:status',
+        {
+          futureSails: FutureSailsSubscription.EveryWeek,
+          status: ProfileStatus.Approved,
+        }
+      )
+      .getMany()).map(setting => setting.profile).filter(Boolean);
 
-    const activeSubscribers = subscribers.filter(subscriber => subscriber.profile.status === ProfileStatus.Approved);
-
-    if (!activeSubscribers.length) {
+    if (!subscribers.length) {
       return;
     }
 
@@ -102,7 +117,7 @@ export class SettingJob {
 
     const emailInfo = this.sailEmail.futureSails(futureSails);
 
-    const emailTo = activeSubscribers.map(subscriber => subscriber.profile.email);
+    const emailTo = subscribers.map(subscriber => subscriber.email);
     emailInfo.bcc = emailTo;
 
     await this.emailService.sendBccEmail(emailInfo);

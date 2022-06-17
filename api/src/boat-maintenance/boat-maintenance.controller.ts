@@ -13,6 +13,7 @@ import { LoginGuard } from '../guards/login.guard';
 import { MediaEntity } from '../media/media.entity';
 import { BoatMaintenance } from '../types/boat-maintenance/boat-maintenance';
 import { BoatMaintenanceNewCommentJob } from '../types/boat-maintenance/boat-maintenance-new-comment-job';
+import { BoatMaintenanceUpdateJob } from '../types/boat-maintenance/boat-maintenance-update-request-job';
 import { Comment } from '../types/comment/comment';
 import { Media } from '../types/media/media';
 import { ProfileRole } from '../types/profile/profile-role';
@@ -105,7 +106,12 @@ export class BoatMaintenanceController {
       throw new UnauthorizedException();
     }
 
-    await BoatMaintenanceEntity.update({ id }, updateInfo);
+    const updated = await BoatMaintenanceEntity.update({ id }, updateInfo);
+
+    if (updated.affected) {
+      const job: BoatMaintenanceUpdateJob = { maintenance_id: id };
+      this.boatMaintenanceQueue.add('update-request', job);
+    }
 
     return BoatMaintenanceEntity.findOne({ where: { id } });
   }

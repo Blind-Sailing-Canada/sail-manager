@@ -30,7 +30,7 @@ import { User } from '../user/user.decorator';
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
-  private readonly logger = new Logger(AuthController.name)
+  private readonly logger = new Logger(AuthController.name);
 
   constructor(
     private readonly authService: AuthService,
