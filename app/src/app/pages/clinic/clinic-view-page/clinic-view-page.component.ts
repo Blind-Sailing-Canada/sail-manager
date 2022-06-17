@@ -70,7 +70,9 @@ export class ClinicViewPageComponent extends BasePageComponent implements OnInit
   }
 
   public get shouldEnableEditButton(): boolean {
-    return !!this.user.access[UserAccessFields.EditClinic] || this.user.profile.id === this.clinic.instructor_id;
+    return !!this.user.access[UserAccessFields.CreateClinic]
+      || !!this.user.access[UserAccessFields.EditClinic]
+      || this.user.profile.id === this.clinic.instructor_id;
   }
 
   public editClinic(): void {

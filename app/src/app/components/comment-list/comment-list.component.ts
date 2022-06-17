@@ -12,7 +12,7 @@ import { Profile } from '../../../../../api/src/types/profile/profile';
 import { MomentService } from '../../services/moment.service';
 import { User } from '../../models/user.interface';
 import { ProfileRole } from '../../../../../api/src/types/profile/profile-role';
-import { UserAccessFields } from '../../../../../api/src/types/user-access/user-access-fields';
+
 @Component({
   selector: 'app-comment-list',
   templateUrl: './comment-list.component.html',
@@ -37,14 +37,6 @@ export class CommentListComponent {
 
   public canDeleteComment(comment: Comment): boolean {
     if (this.user.roles.includes(ProfileRole.Admin)) {
-      return true;
-    }
-
-    if (this.user.access[UserAccessFields.CreateChallenge]) {
-      return true;
-    }
-
-    if (this.user.access[UserAccessFields.EditChallenge]) {
       return true;
     }
 

@@ -176,7 +176,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     const roles: string[] = user.roles || [];
     const isSkipper = roles.includes(ProfileRole.Skipper) && this.isUserSailSkipper;
 
-    return isSkipper || this.user.access[UserAccessFields.EditSailRequest];
+    return isSkipper || this.user.access[UserAccessFields.EditSail];
   }
 
   public get canCancelSail(): boolean {

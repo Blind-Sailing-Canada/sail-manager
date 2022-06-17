@@ -178,7 +178,11 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   }
 
   public get shouldShowSailsControls(): boolean {
-    return !!this.user.access[UserAccessFields.CreateSail] || !!this.user.access[UserAccessFields.EditSail];
+    return this.user.roles.includes(ProfileRole.Admin)
+    || this.user.roles.includes(ProfileRole.Coordinator)
+    || this.user.roles.includes(ProfileRole.FleetManager)
+    || !!this.user.access[UserAccessFields.CreateSail]
+    || !!this.user.access[UserAccessFields.EditSail];
   }
 
   public get shouldShowSailRequestsControls(): boolean {

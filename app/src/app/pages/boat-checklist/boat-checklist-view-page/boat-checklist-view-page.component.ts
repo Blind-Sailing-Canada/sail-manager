@@ -60,7 +60,7 @@ export class BoatChecklistViewPageComponent extends BasePageComponent implements
   }
 
   public get shouldShowEditBoat(): boolean {
-    return !!this.user.access[UserAccessFields.EditSailRequest];
+    return !!this.user.access[UserAccessFields.EditBoat];
   }
 
   public editBoat(id): string {
