@@ -16,16 +16,16 @@ import { MediaType } from '../types/media/media-type';
 @Entity('media')
 export class MediaEntity extends BaseModelEntity implements Media {
   @Column()
-  url: string;
+    url: string;
 
   @Column({ nullable: true })
-  description: string;
+    description: string;
 
   @Column({ nullable: true })
-  media_for_id: string;
+    media_for_id: string;
 
   @Column({ nullable: true })
-  media_for_type: string;
+    media_for_type: string;
 
   @Column({
     default: MediaType.Picture,
@@ -34,16 +34,16 @@ export class MediaEntity extends BaseModelEntity implements Media {
     nullable: false,
   })
   @Index('media_type')
-  media_type: MediaType;
+    media_type: MediaType;
 
   @Column()
-  posted_by_id: string;
+    posted_by_id: string;
 
   @Column({ nullable: true })
-  title: string;
+    title: string;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
-  posted_by: ProfileEntity;
+    posted_by: ProfileEntity;
 
   @ManyToOne(() => BoatMaintenanceEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
@@ -56,7 +56,7 @@ export class MediaEntity extends BaseModelEntity implements Media {
       referencedColumnName: 'entity_type',
     },
   ])
-  boatMaintenance: BoatMaintenanceEntity
+    boatMaintenance: BoatMaintenanceEntity;
 
   @ManyToOne(() => BoatMaintenanceEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
@@ -69,7 +69,7 @@ export class MediaEntity extends BaseModelEntity implements Media {
       referencedColumnName: 'entity_type',
     },
   ])
-  challenge: ChallengeEntity;
+    challenge: ChallengeEntity;
 
   @ManyToOne(() => SailEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
@@ -82,5 +82,5 @@ export class MediaEntity extends BaseModelEntity implements Media {
       referencedColumnName: 'entity_type',
     },
   ])
-  sail: SailEntity;
+    sail: SailEntity;
 }

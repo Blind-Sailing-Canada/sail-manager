@@ -31,26 +31,26 @@ export class SailEntity extends BaseModelEntity implements Sail {
     nullable: true,
     unique: true,
   })
-  entity_number: number;
+    entity_number: number;
 
   @Column({
     default: '',
     length: 100,
   })
   @Index()
-  name: string;
+    name: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  calendar_id: string;
+    calendar_id: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  calendar_link: string;
+    calendar_link: string;
 
   @Column({
     length: 500,
@@ -58,14 +58,14 @@ export class SailEntity extends BaseModelEntity implements Sail {
     default: 'other',
   })
   @Index('sails_category')
-  category: string;
+    category: string;
 
   @Column({
     length: 500,
     nullable: true,
   })
   @Index('sails_description')
-  description: string;
+    description: string;
 
   @Column({
     default: SailStatus.New,
@@ -74,90 +74,90 @@ export class SailEntity extends BaseModelEntity implements Sail {
     nullable: false,
   })
   @Index()
-  status: SailStatus
+    status: SailStatus;
 
   @Column({
     nullable: false,
     type: 'timestamptz',
   })
   @Index()
-  start_at: Date;
+    start_at: Date;
 
   @Column({
     nullable: false,
     type: 'timestamptz',
   })
   @Index()
-  end_at: Date;
+    end_at: Date;
 
   @Column({ default: 6 })
-  max_occupancy: number;
+    max_occupancy: number;
 
   @Column({ nullable: true })
-  cancel_reason: string;
+    cancel_reason: string;
 
   @Column({ nullable: true })
-  cancelled_by_id: string;
+    cancelled_by_id: string;
 
   @Column({
     default: SailEntity.name,
     nullable: false,
   })
   @Index()
-  entity_type: string;
+    entity_type: string;
 
   @ManyToOne(() => ProfileEntity, undefined, {
     nullable: true,
     eager: true,
   })
   @JoinColumn()
-  cancelled_by: ProfileEntity;
+    cancelled_by: ProfileEntity;
 
   @Column({
     nullable: true,
     type: 'timestamptz',
   })
-  cancelled_at: Date;
+    cancelled_at: Date;
 
   @Column()
   @Index()
-  boat_id: string;
+    boat_id: string;
 
   @ManyToOne(() => BoatEntity, boat => boat.sails, { eager: true })
-  boat: BoatEntity;
+    boat: BoatEntity;
 
   @OneToMany(() => SailManifestEntity, manifest => manifest.sail, { eager: true })
-  manifest: SailManifestEntity[]
+    manifest: SailManifestEntity[];
 
   @OneToMany(() => CommentEntity, (comment) => comment.sail, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
   })
-  comments: CommentEntity[]
+    comments: CommentEntity[];
 
   @OneToMany(() => SailFeedbackEntity, (feedback) => feedback.sail)
-  feedback: SailFeedbackEntity[];
+    feedback: SailFeedbackEntity[];
 
   @OneToMany(() => SailChecklistEntity, (checklist) => checklist.sail, { eager: false })
-  checklists: SailChecklistEntity[];
+    checklists: SailChecklistEntity[];
 
   @Column({
     nullable: true,
     default: null,
   })
   @Index()
-  sail_request_id: string;
+    sail_request_id: string;
 
   @OneToOne(() => SailRequestEntity, { nullable: true })
-  sail_request: SailRequestEntity;
+    sail_request: SailRequestEntity;
 
   @OneToMany(() => MediaEntity, (picture) => picture.sail, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
   })
-  pictures: MediaEntity[];
+    pictures: MediaEntity[];
 
   @BeforeInsert()
   async addEntityNumber() {

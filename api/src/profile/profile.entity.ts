@@ -23,33 +23,33 @@ import { UserAccessEntity } from '../user-access/user-access.entity';
 export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   @Column({ length: 100 })
   @Index('profile_name')
-  name: string;
+    name: string;
 
   @Column({
     default: '',
     nullable: true,
   })
-  photo: string;
+    photo: string;
 
   @Column({
     length: 500,
     unique: true,
   })
   @Index('profile_email')
-  email: string;
+    email: string;
 
   @Column({
     length: 10,
     default: '',
   })
   @Index('profile_phone')
-  phone: string;
+    phone: string;
 
   @Column({
     length: 500,
     default: '',
   })
-  bio: string;
+    bio: string;
 
   @Column({
     default: ProfileStatus.Registration,
@@ -58,44 +58,44 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
     nullable: false,
   })
   @Index()
-  status: ProfileStatus
+    status: ProfileStatus;
 
   @Column({
     nullable: true,
     default: null,
     type: 'timestamptz',
   })
-  expires_at: Date;
+    expires_at: Date;
 
   @Column('text', {
     array: true,
     default: '{}',
   })
-  roles: ProfileRole[];
+    roles: ProfileRole[];
 
   @DeleteDateColumn()
-  deleted_at: Date;
+    deleted_at: Date;
 
   @OneToOne(() => UserAccessEntity, (access) => access.profile, { eager: true })
-  access: UserAccessEntity;
+    access: UserAccessEntity;
 
   @OneToMany(() => AchievementEntity, (achievements) => achievements.profile, { eager: true })
-  achievements: AchievementEntity[]
+    achievements: AchievementEntity[];
 
   @OneToMany(() => SailManifestEntity, (sailManifest) => sailManifest.profile)
-  sail_manifests: SailManifestEntity[]
+    sail_manifests: SailManifestEntity[];
 
   @OneToMany(() => RequiredActionEntity, (requiredAction) => requiredAction.assigned_to)
-  required_actions: RequiredActionEntity[]
+    required_actions: RequiredActionEntity[];
 
   @OneToMany(() => ClinicAttendanceEntity, (clinicAttendance) => clinicAttendance.attendant)
-  clinics_attendances: ClinicAttendanceEntity[]
+    clinics_attendances: ClinicAttendanceEntity[];
 
   @OneToMany(() => ChallengeParticipantEntity, (challenge) => challenge.participant)
-  challenges: ChallengeParticipantEntity[]
+    challenges: ChallengeParticipantEntity[];
 
   @OneToMany(() => SailChecklistEntity, (checklist) => checklist.submitted_by)
-  sail_checklists: SailChecklistEntity[]
+    sail_checklists: SailChecklistEntity[];
 
   static coordinators(): Promise<ProfileEntity[]> {
     return ProfileEntity.find({ where: {

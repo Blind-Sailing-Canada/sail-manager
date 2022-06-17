@@ -12,35 +12,35 @@ import { RequiredActionType } from '../types/required-action/required-action-typ
 @Entity('required_actions')
 export class RequiredActionEntity extends BaseModelEntity implements RequiredAction {
   @Column()
-  title: string;
+    title: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  details: string;
+    details: string;
 
   @Column()
-  actionable_id: string;
+    actionable_id: string;
 
   @Column()
-  actionable_type: string;
+    actionable_type: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  assigned_by_id: string;
+    assigned_by_id: string;
 
   @Column()
-  assigned_to_id: string;
+    assigned_to_id: string;
 
   @Column({
     nullable: true,
     default: null,
     type: 'timestamptz',
   })
-  due_date: Date;
+    due_date: Date;
 
   @Column({
     default: RequiredActionType.ReviewNewUser,
@@ -48,7 +48,7 @@ export class RequiredActionEntity extends BaseModelEntity implements RequiredAct
     type: 'enum',
     nullable: false,
   })
-  required_action_type: RequiredActionType;
+    required_action_type: RequiredActionType;
 
   @Column({
     default: RequiredActionStatus.New,
@@ -56,11 +56,11 @@ export class RequiredActionEntity extends BaseModelEntity implements RequiredAct
     type: 'enum',
     nullable: false,
   })
-  status: RequiredActionStatus;
+    status: RequiredActionStatus;
 
   @ManyToOne(() => ProfileEntity)
-  assigned_by: ProfileEntity;
+    assigned_by: ProfileEntity;
 
   @ManyToOne(() => ProfileEntity)
-  assigned_to: ProfileEntity;
+    assigned_to: ProfileEntity;
 }

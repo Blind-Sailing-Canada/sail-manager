@@ -14,15 +14,15 @@ import { BoatEntity } from '../boat/boat.entity';
 export class BoatChecklistEntity extends BaseModelEntity implements BoatChecklist {
   @OneToOne(() => BoatEntity, boat => boat.checklist, { eager: false })
   @JoinColumn()
-  boat: BoatEntity;
+    boat: BoatEntity;
 
   @Column()
   @Index()
-  boatId: string;
+    boatId: string;
 
   @Column({
     default: [],
     type: 'json',
   })
-  items: BoatChecklistItem[];
+    items: BoatChecklistItem[];
 }

@@ -8,5 +8,5 @@ export class ExpiresBaseModelEntity extends BaseModelEntity implements ExpiresBa
     nullable: true,
     default: null,
   })
-  expires_at: Date;
+    expires_at: Date;
 }

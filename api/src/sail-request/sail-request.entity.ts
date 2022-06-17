@@ -21,17 +21,17 @@ export class SailRequestEntity extends BaseModelEntity implements SailRequest {
     nullable: true,
     unique: true,
   })
-  entity_number: number;
+    entity_number: number;
 
   @Column()
-  category: string;
+    category: string;
 
   @Column()
-  details: string;
+    details: string;
 
   @Column({ nullable: true })
   @Index()
-  sail_id: string;
+    sail_id: string;
 
   @Column({
     default: SailRequestStatus.New,
@@ -39,22 +39,22 @@ export class SailRequestEntity extends BaseModelEntity implements SailRequest {
     type: 'enum',
     nullable: false,
   })
-  status: SailRequestStatus;
+    status: SailRequestStatus;
 
   @ManyToOne(() => SailEntity, sail => sail.sail_request, { eager: true })
   @JoinColumn()
-  sail: SailEntity
+    sail: SailEntity;
 
   @Column()
   @Index()
-  requested_by_id: string;
+    requested_by_id: string;
 
   @ManyToOne(() => ProfileEntity, undefined, { eager: true })
   @JoinColumn()
-  requested_by: ProfileEntity;
+    requested_by: ProfileEntity;
 
   @OneToMany(() => SailRequestInterestEntity, (interest) => interest.sail_request, { eager: true })
-  interest: SailRequestInterestEntity[];
+    interest: SailRequestInterestEntity[];
 
   @AfterInsert()
   createInterest() {

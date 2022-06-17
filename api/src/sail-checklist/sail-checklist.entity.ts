@@ -21,19 +21,19 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
     nullable: true,
     default: false,
   })
-  signed_by_crew: boolean;
+    signed_by_crew: boolean;
 
   @Column({
     nullable: true,
     default: '',
   })
-  comments: string;
+    comments: string;
 
   @Column({
     nullable: true,
     default: false,
   })
-  signed_by_skipper: boolean;
+    signed_by_skipper: boolean;
 
   @Column({
     default: SailChecklistType.Before,
@@ -41,41 +41,41 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
     type: 'enum',
     nullable: true,
   })
-  checklist_type: SailChecklistType;
+    checklist_type: SailChecklistType;
 
   @Column({
     nullable: true,
     default: null,
   })
-  sail_destination: string;
+    sail_destination: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  weather: string;
+    weather: string;
 
   @Column({
     nullable: false,
     type: 'json',
     default: {},
   })
-  checklist: Map<string, string>
+    checklist: Map<string, string>;
 
   @Column()
   @Index()
-  sail_id: string;
+    sail_id: string;
 
   @ManyToOne(() => SailEntity, (sail) => sail.feedback)
-  sail: SailEntity;
+    sail: SailEntity;
 
   @Column({
     nullable: true,
     default: null,
   })
   @Index()
-  submitted_by_id: string;
+    submitted_by_id: string;
 
   @ManyToOne(() => ProfileEntity, (profile) => profile.sail_checklists, { eager: true })
-  submitted_by: ProfileEntity;
+    submitted_by: ProfileEntity;
 }

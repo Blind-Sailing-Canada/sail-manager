@@ -25,13 +25,13 @@ export class BoatEntity extends BaseModelEntity implements Boat {
     nullable: false,
   })
   @Index('boat_name')
-  name: string;
+    name: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  calendar_resource_id: string;
+    calendar_resource_id: string;
 
   @Column({
     default: BoatStatus.OutOfService,
@@ -40,68 +40,68 @@ export class BoatEntity extends BaseModelEntity implements Boat {
     nullable: false,
   })
   @Index('boat_status')
-  status: BoatStatus;
+    status: BoatStatus;
 
   @Column({ default: 6 })
-  max_occupancy: number;
+    max_occupancy: number;
 
   @Column({ length: 50 })
-  draft: string;
+    draft: string;
 
   @Column({ length: 50 })
-  loa: string;
+    loa: string;
 
   @Column({ length: 50 })
-  lwl: string;
+    lwl: string;
 
   @Column({ length: 50 })
-  hull_type: string;
+    hull_type: string;
 
   @Column({ length: 50 })
-  material: string;
+    material: string;
 
   @Column({ length: 50 })
-  beam: string;
+    beam: string;
 
   @Column({ length: 50 })
-  ballast: string;
+    ballast: string;
 
   @Column({ length: 50 })
-  rig: string;
+    rig: string;
 
   @Column({ length: 50 })
-  main_sail_area: string;
+    main_sail_area: string;
 
   @Column({ length: 50 })
-  jib_sail_area: string;
+    jib_sail_area: string;
 
   @Column({ length: 50 })
-  phrf: string;
+    phrf: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-  wiki: string;
+    wiki: string;
 
   @Column({
     default: BoatEntity.name,
     nullable: false,
   })
   @Index()
-  entity_type: string
+    entity_type: string;
 
   @OneToMany(() => SailEntity, sail => sail.boat, { eager: false })
-  sails: SailEntity[]
+    sails: SailEntity[];
 
   @OneToMany(() => BoatInstructionsEntity, instructions => instructions.boat, { eager: true })
-  instructions: BoatInstructions[]
+    instructions: BoatInstructions[];
 
   @OneToOne(() => BoatChecklistEntity, (checklist) => checklist.boat, {
     eager: true,
     nullable: true,
   })
-  checklist: BoatChecklist
+    checklist: BoatChecklist;
 
   @Column({
     type: 'jsonb',
@@ -109,14 +109,14 @@ export class BoatEntity extends BaseModelEntity implements Boat {
     default: [],
     nullable: false,
   })
-  pictures: string[];
+    pictures: string[];
 
   @OneToMany(() => DocumentEntity, (document) => document.boat, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: false,
   })
-  documents: DocumentEntity[]
+    documents: DocumentEntity[];
 
   @AfterInsert()
   createChecklist() {

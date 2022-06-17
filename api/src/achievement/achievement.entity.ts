@@ -12,27 +12,27 @@ import { ProfileEntity } from '../profile/profile.entity';
 @Entity('achievements')
 export class AchievementEntity extends BaseModelEntity implements Achievement {
   @Column()
-  profile_id: string;
+    profile_id: string;
 
   @ManyToOne(() => ProfileEntity)
   @JoinColumn()
-  profile: ProfileEntity;
+    profile: ProfileEntity;
 
   @Column({ nullable: true })
-  achievement_type: string;
+    achievement_type: string;
 
   @Column({ nullable: true })
-  achievement_id: string;
+    achievement_id: string;
 
   @Column()
   @Index()
-  name: string;
+    name: string;
 
   @Column()
-  description: string;
+    description: string;
 
   @Column({ nullable: true })
   @Index()
-  badge: string;
+    badge: string;
 
 }

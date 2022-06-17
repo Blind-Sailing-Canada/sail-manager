@@ -10,7 +10,7 @@ import { DOMAIN } from '../auth/constants';
 @Injectable()
 export class FirebaseAdminService {
   private readonly firebaseAdmin;
-  private readonly logger = new Logger(FirebaseAdminService.name)
+  private readonly logger = new Logger(FirebaseAdminService.name);
 
   constructor() {
     const adminBase64Confirg = Buffer.from(process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_BASE64, 'base64');

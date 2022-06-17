@@ -19,13 +19,13 @@ export class UserAccessEntity extends BaseModelEntity implements UserAccess {
     default: () => `('${JSON.stringify(DefaultUserAccess)}')`,
     nullable: false,
   })
-  access: Access;
+    access: Access;
 
   @Column()
   @Index()
-  profile_id: string;
+    profile_id: string;
 
   @OneToOne(() => ProfileEntity, (profile) => profile.access, { onDelete: 'CASCADE' })
   @JoinColumn()
-  profile: ProfileEntity;
+    profile: ProfileEntity;
 }

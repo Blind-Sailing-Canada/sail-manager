@@ -11,5 +11,5 @@ export class SailCategoryEntity extends BaseModelEntity implements SailCategory 
     nullable: false,
     unique: true,
   })
-  category: string;
+    category: string;
 }

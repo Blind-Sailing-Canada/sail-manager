@@ -57,7 +57,12 @@ export class ChallengeController {
     @InjectQueue('challenge') private readonly challengeQueue: Queue) { }
 
   @Patch('/:id/accomplished-by/:profile_id')
-  async setAccomplishedBy(@User() user: JwtObject, @Param('id') id: string, @Param('profile_id') profile_id: string, @Body() note: {note: string}) {
+  async setAccomplishedBy(
+  @User() user: JwtObject,
+    @Param('id') id: string,
+    @Param('profile_id') profile_id: string,
+    @Body() note: { note: string }
+  ) {
     if (user.profile_id !== profile_id && !user.access.access[UserAccessFields.JudgeChallenge]) {
       throw new UnauthorizedException();
     }

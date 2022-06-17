@@ -22,42 +22,42 @@ import { ClinicEntity } from '../clinic/clinic.entity';
 ])
 export class DocumentEntity extends BaseModelEntity implements Document  {
   @Column({ length: 1000 })
-  description: string;
+    description: string;
 
   @Column({
     length: 1000,
     nullable: true,
   })
-  fileLocation: string;
+    fileLocation: string;
 
   @Column({ length: 1000 })
-  title: string;
+    title: string;
 
   @Column({
     default: DocumentEntity.name,
     nullable: false,
   })
-  entity_type: string
+    entity_type: string;
 
   @Column()
   @Index()
-  author_id: string;
+    author_id: string;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
-  author: ProfileEntity
+    author: ProfileEntity;
 
   @Column({ nullable: true })
-  documentable_id: string;
+    documentable_id: string;
 
   @Column({ nullable: true })
-  documentable_type: string;
+    documentable_type: string;
 
   @OneToMany(() => CommentEntity, (comment) => comment.document, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
   })
-  comments: CommentEntity[]
+    comments: CommentEntity[];
 
   @ManyToOne(() => BoatEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
@@ -70,7 +70,7 @@ export class DocumentEntity extends BaseModelEntity implements Document  {
       referencedColumnName: 'entity_type',
     },
   ])
-  boat: BoatEntity
+    boat: BoatEntity;
 
   @ManyToOne(() => ClinicEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
@@ -83,7 +83,7 @@ export class DocumentEntity extends BaseModelEntity implements Document  {
       referencedColumnName: 'entity_type',
     },
   ])
-  clinic: ClinicEntity
+    clinic: ClinicEntity;
 
   @ManyToOne(() => ChallengeEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([
@@ -96,5 +96,5 @@ export class DocumentEntity extends BaseModelEntity implements Document  {
       referencedColumnName: 'entity_type',
     },
   ])
-  challenge: ChallengeEntity
+    challenge: ChallengeEntity;
 }

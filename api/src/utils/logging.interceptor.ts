@@ -15,7 +15,7 @@ export class LoggingInterceptor implements NestInterceptor {
       request:{
         url: request.url,
         method: request.method,
-        headers: request.headers as {[propName: string]: string},
+        headers: request.headers as { [propName: string]: string },
       },
       user: (request as any).user,
     });

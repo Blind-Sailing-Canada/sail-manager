@@ -20,19 +20,19 @@ export class ChallengeEntity extends BaseModelEntity implements Challenge {
     nullable: false,
   })
   @Index('challenges_name')
-  name: string;
+    name: string;
 
   @Column({
     default: ChallengeEntity.name,
     nullable: false,
   })
-  entity_type: string;
+    entity_type: string;
 
   @Column()
-  description: string;
+    description: string;
 
   @Column({ nullable: true })
-  badge: string;
+    badge: string;
 
   @Column({
     default: ChallengeStatus.New,
@@ -41,44 +41,44 @@ export class ChallengeEntity extends BaseModelEntity implements Challenge {
     nullable: false,
   })
   @Index('challenges_status')
-  status: ChallengeStatus;
+    status: ChallengeStatus;
 
   @Column({ default: 0 })
-  max_occupancy: number;
+    max_occupancy: number;
 
   @Column({
     nullable: true,
     type: 'timestamptz',
   })
-  start_date: Date;
+    start_date: Date;
 
   @Column({
     nullable: true,
     type: 'timestamptz',
   })
-  end_date: Date;
+    end_date: Date;
 
   @OneToMany(() => ChallengeParticipantEntity, (participant) => participant.challenge, { eager: true })
-  participants: ChallengeParticipantEntity[];
+    participants: ChallengeParticipantEntity[];
 
   @OneToMany(() => CommentEntity, (comment) => comment.challenge, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
   })
-  comments: CommentEntity[];
+    comments: CommentEntity[];
 
   @OneToMany(() => MediaEntity, (picture) => picture.challenge, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
   })
-  pictures: MediaEntity[];
+    pictures: MediaEntity[];
 
   @OneToMany(() => DocumentEntity, (document) => document.challenge, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
   })
-  documents: DocumentEntity[]
+    documents: DocumentEntity[];
 }

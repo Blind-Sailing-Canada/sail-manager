@@ -15,16 +15,16 @@ export class BoatInstructionsEntity extends BaseModelEntity implements BoatInstr
 
   @Column()
   @Index()
-  boat_id: string;
+    boat_id: string;
 
   @ManyToOne(() => BoatEntity, (boat) => boat.instructions)
-  boat: BoatEntity;
+    boat: BoatEntity;
 
   @Column()
-  description: string;
+    description: string;
 
   @Column()
-  instruction_type: BoatInstructionType;
+    instruction_type: BoatInstructionType;
 
   @Column({
     type: 'jsonb',
@@ -32,8 +32,8 @@ export class BoatInstructionsEntity extends BaseModelEntity implements BoatInstr
     default: [],
     nullable: false,
   })
-  instructions: BoatInstruction[];
+    instructions: BoatInstruction[];
 
   @Column()
-  title: string;
+    title: string;
 }

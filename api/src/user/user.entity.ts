@@ -11,25 +11,25 @@ import { User } from '../types/user/user';
 @Entity('users')
 export class UserEntity extends BaseModelEntity implements User {
   @Column({ length: 50 })
-  provider: string;
+    provider: string;
 
   @Column({
     length: 150,
     unique: true,
   })
-  provider_user_id: string;
+    provider_user_id: string;
 
   @Column({ type: 'uuid' })
-  profile_id: string;
+    profile_id: string;
 
   @Column()
-  original_profile_id: string;
+    original_profile_id: string;
 
   @Column({
     default: null,
     nullable: true,
   })
-  linked_by_profile_id: string;
+    linked_by_profile_id: string;
 
   @OneToOne(() => ProfileEntity, undefined, {
     eager: false,
@@ -38,5 +38,5 @@ export class UserEntity extends BaseModelEntity implements User {
     nullable: true,
   })
   @JoinColumn({ referencedColumnName: 'id' })
-  profile: ProfileEntity
+    profile: ProfileEntity;
 }

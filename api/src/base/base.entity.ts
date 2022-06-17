@@ -8,11 +8,11 @@ import { Base } from '../types/base/base';
 
 export class BaseModelEntity extends BaseEntity implements Base {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+    id: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
-  created_at: Date;
+    created_at: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  updated_at: Date;
+    updated_at: Date;
 }

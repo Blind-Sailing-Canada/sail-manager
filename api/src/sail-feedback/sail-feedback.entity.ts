@@ -16,15 +16,15 @@ export class SailFeedbackEntity extends BaseModelEntity implements SailFeedback 
     nullable: true,
     default: null,
   })
-  feedback: string;
+    feedback: string;
 
   @Column()
-  rating: number;
+    rating: number;
 
   @Column()
   @Index()
-  sail_id: string;
+    sail_id: string;
 
   @ManyToOne(() => SailEntity, (sail) => sail.feedback)
-  sail: Sail;
+    sail: Sail;
 }

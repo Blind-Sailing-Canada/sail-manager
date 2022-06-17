@@ -24,28 +24,28 @@ import { SailEntity } from '../sail/sail.entity';
 @Tree('materialized-path')
 export class CommentEntity extends BaseModelEntity implements Comment  {
   @Column({ length: 1000 })
-  comment: string;
+    comment: string;
 
   @Column()
   @Index()
-  author_id: string;
+    author_id: string;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
-  author: ProfileEntity
+    author: ProfileEntity;
 
   @Column({ nullable: true })
   @Index()
-  commentable_id: string;
+    commentable_id: string;
 
   @Column({ nullable: true })
   @Index()
-  commentable_type: string;
+    commentable_type: string;
 
   @TreeChildren()
-  replies: CommentEntity[];
+    replies: CommentEntity[];
 
   @TreeParent()
-  parent: CommentEntity;
+    parent: CommentEntity;
 
   @ManyToOne(() => SailEntity, () => null, {
     createForeignKeyConstraints: false ,
@@ -61,7 +61,7 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
       referencedColumnName: 'entity_type',
     },
   ])
-  sail: SailEntity
+    sail: SailEntity;
 
   @ManyToOne(() => BoatMaintenanceEntity, () => null, {
     createForeignKeyConstraints: false ,
@@ -77,7 +77,7 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
       referencedColumnName: 'entity_type',
     },
   ])
-  boat_maintenance: BoatMaintenanceEntity
+    boat_maintenance: BoatMaintenanceEntity;
 
   @ManyToOne(() => ChallengeEntity, () => null, {
     createForeignKeyConstraints: false ,
@@ -93,7 +93,7 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
       referencedColumnName: 'entity_type',
     },
   ])
-  challenge: ChallengeEntity
+    challenge: ChallengeEntity;
 
   @ManyToOne(() => DocumentEntity, () => null, {
     createForeignKeyConstraints: false ,
@@ -109,5 +109,5 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
       referencedColumnName: 'entity_type',
     },
   ])
-  document: DocumentEntity
+    document: DocumentEntity;
 }

@@ -161,7 +161,7 @@ export class SailController {
   }
 
   @Get('available-boats')
-  async availableBoats(@Query() times: {start: string, end: string}) {
+  async availableBoats(@Query() times: { start: string, end: string }) {
     const sailsDuringThisTime = await SailEntity
       .getRepository()
       .createQueryBuilder('sail')
@@ -184,7 +184,7 @@ export class SailController {
   }
 
   @Post('/sail-request')
-  async createFromSailRequest(@Body() sailInfo: {sail: Partial<Sail>, sail_request_id: string}) {
+  async createFromSailRequest(@Body() sailInfo: { sail: Partial<Sail>, sail_request_id: string }) {
     const createdSailId = await this.service.repository.manager.transaction(async transactionalEntityManager => {
       const sail_request = await SailRequestEntity
         .findOne(

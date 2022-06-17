@@ -16,27 +16,27 @@ import { ChallengeParticipant } from '../types/challenge/challenge-participant';
 ], { unique: true })
 export class ChallengeParticipantEntity extends BaseModelEntity implements ChallengeParticipant {
   @Column()
-  participant_id: string;
+    participant_id: string;
 
   @Column()
-  challenge_id: string;
+    challenge_id: string;
 
   @Column({
     nullable: true,
     default: null,
     type: 'timestamptz',
   })
-  finished_at: Date;
+    finished_at: Date;
 
   @Column({
     nullable: true,
     default: null,
   })
-  note: string;
+    note: string;
 
   @ManyToOne(() => ChallengeEntity, (challenge) => challenge.participants)
-  challenge: ChallengeEntity;
+    challenge: ChallengeEntity;
 
   @ManyToOne(() => ProfileEntity, (profile) => profile.challenges, { eager: true })
-  participant: ProfileEntity;
+    participant: ProfileEntity;
 }

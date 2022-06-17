@@ -21,19 +21,19 @@ export class ClinicEntity extends BaseModelEntity implements Clinic {
     nullable: false,
   })
   @Index('clinics_name')
-  name: string;
+    name: string;
 
   @Column({
     default: ClinicEntity.name,
     nullable: false,
   })
-  entity_type: string
+    entity_type: string;
 
   @Column()
-  description: string;
+    description: string;
 
   @Column()
-  badge: string;
+    badge: string;
 
   @Column({
     default: ClinicStatus.New,
@@ -42,43 +42,43 @@ export class ClinicEntity extends BaseModelEntity implements Clinic {
     nullable: false,
   })
   @Index('clinic_status')
-  status: ClinicStatus;
+    status: ClinicStatus;
 
   @Column({ default: 0 })
-  max_occupancy: number;
+    max_occupancy: number;
 
   @Column({
     nullable: true,
     type: 'timestamptz',
   })
-  start_date: Date;
+    start_date: Date;
 
   @Column({
     nullable: true,
     type: 'timestamptz',
   })
-  end_date: Date;
+    end_date: Date;
 
   @Column({
     nullable: true,
     default: null,
   })
-  instructor_id: string;
+    instructor_id: string;
 
   @OneToOne(() => ProfileEntity, {
     eager: true,
     nullable: true,
   })
   @JoinColumn()
-  instructor: ProfileEntity;
+    instructor: ProfileEntity;
 
   @OneToMany(() => ClinicAttendanceEntity, attendance => attendance.clinic, { eager: true })
-  attendance: ClinicAttendanceEntity[];
+    attendance: ClinicAttendanceEntity[];
 
   @OneToMany(() => DocumentEntity, (document) => document.clinic, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
   })
-  documents: DocumentEntity[]
+    documents: DocumentEntity[];
 }

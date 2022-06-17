@@ -20,17 +20,17 @@ export class SailRequestInterestEntity extends BaseModelEntity implements SailRe
 
   @Column()
   @Index()
-  profile_id: string;
+    profile_id: string;
 
   @Column()
   @Index()
-  sail_request_id: string;
+    sail_request_id: string;
 
   @ManyToOne(() => ProfileEntity, undefined, { eager: true })
   @JoinColumn()
-  profile: Profile;
+    profile: Profile;
 
   @ManyToOne(() => SailRequestEntity, (sail_request) => sail_request.interest, { eager: false })
   @JoinColumn()
-  sail_request: SailRequestEntity;
+    sail_request: SailRequestEntity;
 }

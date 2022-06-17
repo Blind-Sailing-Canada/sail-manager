@@ -12,31 +12,31 @@ import { ClinicAttendance } from '../types/clinic/clinic-attendance';
 @Entity('clinic_attendances')
 export class ClinicAttendanceEntity extends BaseModelEntity implements ClinicAttendance {
   @Column()
-  clinic_id: string;
+    clinic_id: string;
 
   @Column()
-  attendant_id: string;
+    attendant_id: string;
 
   @Column({
     nullable: true,
     default: null,
     type: 'timestamptz',
   })
-  finished_at: Date;
+    finished_at: Date;
 
   @Column({
     nullable: true,
     default: null,
   })
-  note: string;
+    note: string;
 
   @ManyToOne(() => ClinicEntity)
-  clinic: ClinicEntity;
+    clinic: ClinicEntity;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
   @JoinColumn({
     name: 'attendant_id',
     referencedColumnName: 'id',
   })
-  attendant: ProfileEntity;
+    attendant: ProfileEntity;
 }

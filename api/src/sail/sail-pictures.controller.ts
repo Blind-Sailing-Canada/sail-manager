@@ -25,7 +25,11 @@ export class SailPicturesController {
   }
 
   @Put('/:sail_id/pictures')
-  async addSailPictures(@User() user: JwtObject, @Param('sail_id') sail_id, @Body(new SailPicturesCreateSanitizer()) pictures: Partial<Media[]>) {
+  async addSailPictures(
+  @User() user: JwtObject,
+    @Param('sail_id') sail_id,
+    @Body(new SailPicturesCreateSanitizer()) pictures: Partial<Media[]>
+  ) {
 
     pictures.forEach(picture =>{
       picture.media_for_id = sail_id;

@@ -14,7 +14,7 @@ import { Setting } from '../types/settings/setting';
 export class SettingEntity extends BaseModelEntity implements Settings {
   @Column()
   @Index({ unique: true })
-  profile_id: string;
+    profile_id: string;
 
   @Column({
     type: 'jsonb',
@@ -22,10 +22,10 @@ export class SettingEntity extends BaseModelEntity implements Settings {
     default: {},
     nullable: false,
   })
-  settings: Setting;
+    settings: Setting;
 
   @OneToOne(() => ProfileEntity)
   @JoinColumn()
-  profile: ProfileEntity
+    profile: ProfileEntity;
 
 }
