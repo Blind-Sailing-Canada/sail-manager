@@ -16,11 +16,11 @@ export class MediaService {
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
   public get(query?: MediaQuery): Observable<Media[]> {
-    return this.http.get<Media[]>(`${this.API_URL}/?q=${JSON.stringify(query || '')}`);
+    return this.http.get<Media[]>(`${this.API_URL}?q=${JSON.stringify(query || '')}`);
   }
 
   public delete(media_id: string): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${media_id}`);
+    return this.http.delete<void>(`${this.API_URL}${media_id}`);
   }
 
 }
