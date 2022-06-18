@@ -76,6 +76,7 @@ export class MaintenanceResolvePageComponent extends BasePageComponent implement
   public submitMaintenanceResolveForm(): void {
     const maintenance: Partial<BoatMaintenance> = {
       service_details: this.maintenanceResolveForm.controls.service_details.value.trim(),
+      resolution_details: this.maintenanceResolveForm.controls.service_details.value.trim(),
       serviced_at: new Date(),
       resolved_by_id: this.user.profile.id,
       status: BoatMaintenanceStatus.Resolved,

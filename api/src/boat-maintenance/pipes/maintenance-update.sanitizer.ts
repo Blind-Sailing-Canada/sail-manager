@@ -7,24 +7,20 @@ import { BoatMaintenance } from '../../types/boat-maintenance/boat-maintenance';
 @Injectable()
 export class MaintenanceUpdateSanitizer implements PipeTransform {
   transform(value: BoatMaintenance) {
-    const {
-      boat_id, request_details, resolution_details, status, requested_by_id, service_details,
-    } = value;
+    return Object
+      .keys(value)
+      .reduce((maintenance, key: keyof BoatMaintenance) => {
+        switch(key) {
+          case 'service_details':
+          case 'request_details':
+          case 'resolution_details':
+            maintenance[key] = validator.escape(value[key] ?? '');
+            break;
+          default:
+            maintenance[key] = value[key] as any;
+        }
 
-    const updateDTO = {
-      boat_id,
-      request_details,
-      requested_by_id,
-      resolution_details,
-      service_details,
-      status,
-    };
-
-    const keys = Object.keys(updateDTO).filter(key => updateDTO[key] !== undefined);
-
-    return keys.reduce((maintenance, key) => {
-      maintenance[key] =  validator.escape(updateDTO[key] ?? '');
-      return maintenance;
-    }, {} as BoatMaintenance);
+        return maintenance;
+      }, {} as BoatMaintenance);
   }
 }

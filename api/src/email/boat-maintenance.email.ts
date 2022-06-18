@@ -6,6 +6,7 @@ import { BoatMaintenance } from '../types/boat-maintenance/boat-maintenance';
 import { Comment } from '../types/comment/comment';
 import { EmailInfo } from '../types/email/email-info';
 import { Media } from '../types/media/media';
+import { MediaType } from '../types/media/media-type';
 import { toLocalDate } from '../utils/date.util';
 
 @Injectable({ scope: Scope.DEFAULT })
@@ -130,7 +131,10 @@ export class BoatMaintenanceEmail {
   }
 
   private picturesHTML(pictures: Media[]): string {
-    return pictures.map(picture => `<img width="150px" height="200px" src="${DOMAIN}/${picture.url}" alt="${picture.title}">`).join('');
+    return pictures
+      .filter(picture => picture.media_type === MediaType.Picture)
+      .map(picture => `<img width="150px" height="200px" src="${DOMAIN}/${picture.url}" alt="${picture.title??''}">`)
+      .join('');
   }
 
 }
