@@ -47,7 +47,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
 
   ngOnInit() {
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS);
-    this.dispatchAction(searchSails({ notify: true, query: { limit:10, sort: 'entity_number,DESC' }}));
+    this.dispatchAction(searchSails({ notify: true, query: { limit:10, sort: 'entity_number,DESC' } }));
   }
 
   public resetFilter() {

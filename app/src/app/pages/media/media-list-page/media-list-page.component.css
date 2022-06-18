@@ -1,0 +1,18 @@
+.mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sail-filter-container div {
+  display: flex;
+  flex-direction: column;
+}
+
+.sail-filter-container mat-form-field {
+  width: 100%;
+}
+
+section {
+  margin-bottom: 10px !important;
+  padding-bottom: 10px;
+}

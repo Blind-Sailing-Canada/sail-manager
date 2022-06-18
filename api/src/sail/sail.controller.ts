@@ -5,6 +5,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import {
+  FindOptionsOrder,
   In, MoreThanOrEqual, Not
 } from 'typeorm';
 import { BoatEntity } from '../boat/boat.entity';
@@ -59,7 +60,6 @@ import { SailStatus } from '../types/sail/sail-status';
   },
   routes: { only: [
     'createOneBase',
-    'getManyBase',
     'getOneBase',
   ] },
 })
@@ -295,12 +295,16 @@ export class SailController {
 
     const sail_ids = foundSails.map(sail => sail.id);
 
-    let order: any = { end_at: 'DESC' };
+    let order: FindOptionsOrder<SailEntity> = {
+      start_at: 'DESC',
+      end_at: 'DESC'
+    };
 
     if (sort) {
       const sortParts = sort.split(',');
       order = { [sortParts[0]]: sortParts[1] };
     }
+
     if (sail_ids.length) {
       return SailEntity
         .find({

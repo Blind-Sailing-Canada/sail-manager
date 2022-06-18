@@ -26,7 +26,7 @@ const reducerHandler = createReducer(
     return Object.assign({}, state, map);
   }),
   on(removeDocument, (state, action) => {
-    const newState = {...state};
+    const newState = { ...state };
 
     delete newState[action.document_id];
 

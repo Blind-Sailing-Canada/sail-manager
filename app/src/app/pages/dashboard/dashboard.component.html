@@ -230,6 +230,12 @@
     title="Go to sails dashboard"
   >Sails</a>
   <a
+    mat-raised-button
+    [routerLink]="MEDIA_ROUTE"
+    [queryParams]="{entity: 'SailEntity'}"
+    title="View pictures for all sails"
+  >Sail Pictures</a>
+  <a
     [routerLink]="viewUserSailsRouteLink(user?.profile?.id)"
     mat-raised-button
     title="view all my sails"

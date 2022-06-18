@@ -16,8 +16,8 @@ export enum APP_ACTION_TYPES {
 
 export const finishChangingAppFont = createAction(APP_ACTION_TYPES.FINISH_CHANGING_FONT);
 export const finishLoading = createAction(APP_ACTION_TYPES.FINISH_LOADING);
-export const goTo = createAction(APP_ACTION_TYPES.GO_TO, props<{route: string; data?: any; actionToPerformAfter?: TypedAction<any>}>());
+export const goTo = createAction(APP_ACTION_TYPES.GO_TO, props<{ route: string; data?: any; actionToPerformAfter?: TypedAction<any> }>());
 export const resetApp = createAction(APP_ACTION_TYPES.RESET);
-export const setAppFontSize = createAction(APP_ACTION_TYPES.SET_FONT_SIZE, props<{fontSize: string}>());
+export const setAppFontSize = createAction(APP_ACTION_TYPES.SET_FONT_SIZE, props<{ fontSize: string }>());
 export const startChangingAppFont = createAction(APP_ACTION_TYPES.START_CHANGING_FONT);
 export const startLoading = createAction(APP_ACTION_TYPES.START_LOADING);

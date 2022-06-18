@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller, Delete, Get, Param,  Put, UseGuards
 } from '@nestjs/common';
@@ -44,14 +45,18 @@ export class SailPicturesController {
   }
 
   @Delete('/:sail_id/pictures/:pictureId')
-  async deleteSailPictures(@Param('sail_id') sail_id, @Param('pictureId') pictureId) {
-    const picture = await MediaEntity.findOne(pictureId);
-
-    if (picture.url.startsWith('cdn/')) {
-      await this.firebaseAdminService.deleteFile(picture.url);
+  async deleteSailPictures(@Param('sail_id') sail_id, @Param('pictureId') media_id) {
+    if (!media_id) {
+      throw new BadRequestException('must provide media id');
     }
 
-    await picture.remove();
+    const media = await MediaEntity.findOne({ where: { id:  media_id } });
+
+    if (media.url.startsWith('cdn/')) {
+      await this.firebaseAdminService.deleteFile(media.url);
+    }
+
+    await media.remove();
 
     return MediaEntity.find({ where : { media_for_id: sail_id } });
   }

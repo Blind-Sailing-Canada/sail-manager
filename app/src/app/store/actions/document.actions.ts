@@ -22,7 +22,7 @@ export const fetchDocument = createAction(DOCUMENT_ACTION_TYPES.FETCH_ONE, props
 export const deleteDocument = createAction(DOCUMENT_ACTION_TYPES.DELETE_ONE, props<{ document_id: string }>());
 export const removeDocument = createAction(DOCUMENT_ACTION_TYPES.REMOVE_ONE, props<{ document_id: string }>());
 export const fetchDocuments = createAction(
-  DOCUMENT_ACTION_TYPES.FETCH_MANY, props<{entity_type?: EntityType; entity_id?: string; notify?: boolean }>());
+  DOCUMENT_ACTION_TYPES.FETCH_MANY, props<{ entity_type?: EntityType; entity_id?: string; notify?: boolean }>());
 export const putDocument = createAction(DOCUMENT_ACTION_TYPES.PUT_ONE, props<{ document_id: string; document: Document }>());
 export const putDocuments = createAction(DOCUMENT_ACTION_TYPES.PUT_MANY, props<{ documents: Document[] }>());
 export const resetDocuments = createAction(DOCUMENT_ACTION_TYPES.RESET);

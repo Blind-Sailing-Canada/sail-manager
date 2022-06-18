@@ -102,6 +102,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/help/help.module').then(mod => mod.HelpModule)
   },
   {
+    path: RootRoutes.MEDIA,
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/media/media.module').then(mod => mod.MediaModule)
+  },
+  {
     path: '',
     redirectTo: RootRoutes.DASHBOARD,
     pathMatch: 'full'

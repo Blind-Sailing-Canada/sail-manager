@@ -21,6 +21,7 @@ import {
   listChallengesRoute,
   listClinicsRoute,
   listDocumentsRoute,
+  listMediaRoute,
   sailRequestsRoute,
   sailsRoute,
   viewRequiredActionRoute,
@@ -60,6 +61,7 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   public ADMIN_ROUTE = adminRoute.toString();
   public BOATS_ROUTE = boatsRoute.toString();
   public SAILS_ROUTE = sailsRoute.toString();
+  public MEDIA_ROUTE = listMediaRoute.toString();
 
   public SAIL_REQUESTS_ROUTE = sailRequestsRoute.toString();
   public createSailRequestRoute = createSailRequestRoute.toString();

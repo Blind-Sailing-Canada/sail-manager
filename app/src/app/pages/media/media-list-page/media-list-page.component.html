@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>mms</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+    >Media</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container
+      *ngIf="shouldShowControls"
+      [ngTemplateOutlet]="controls"
+    ></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <app-image-list
+      (goToProfile)="showProfileDialog($event)"
+      [pictures]="media"
+      [profiles]="profiles"
+      [showAuthor]="true"
+      [user]="user"
+      [allowDelete]="allowDelete"
+      [showSail]="true"
+      (goToSail)="viewSail($event)"
+      (deleteClick)="deleteMedia($event)"
+    ></app-image-list>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #controls>
+</ng-template>

@@ -54,7 +54,7 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
     this.boatName = this.route.snapshot.queryParams.boatName;
     this.excludeSailId = this.route.snapshot.queryParams.excludeSailId;
 
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.CHECKLISTS, ({all: sailChecklists}) => {
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.CHECKLISTS, ({ all: sailChecklists }) => {
       const ids = Object.keys(sailChecklists || {});
       const checklistsMap = ids
       .map(id => this.sailChecklists[id])

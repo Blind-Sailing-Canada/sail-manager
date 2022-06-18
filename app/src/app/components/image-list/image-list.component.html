@@ -26,6 +26,7 @@
         <video
           [height]="height"
           [width]="width"
+          preload="metadata"
           async
           attr.aria-label="video {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
           src="{{picture.url}}"
@@ -54,6 +55,13 @@
       class="clickable"
     >
       <label>by: </label> {{picture.posted_by.name}}
+    </div>
+    <div
+      *ngIf="showSail && picture.media_for_type === 'SailEntity'"
+      (click)="goToSail.emit(picture.media_for_id)"
+      class="clickable"
+    >
+      <label class="clickable">View Sail</label>
     </div>
     <pre
       *ngIf="picture.description"

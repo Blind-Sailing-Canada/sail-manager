@@ -12,8 +12,8 @@ export enum RootRoutes {
   FEEDBACK = 'feedback',
   HELP = 'help',
   LOGIN = 'login',
-  LOGS = 'logs',
   MAINTENANCE = 'maintenance',
+  MEDIA = 'media',
   PROFILES = 'profiles',
   PROFILE_SETTINGS = 'profile-settings',
   REQUIRED_ACTIONS = 'required-actions',
@@ -57,7 +57,7 @@ export enum SubRoutes {
   LIST_CLINICS = 'list',
   LIST_DOCUMENTS = 'list',
   LIST_FEEDBACK = 'list',
-  LIST_LOGS = 'list',
+  LIST_MEDIA = 'list',
   LIST_SAIL_CATEGORIES = 'list',
   LIST_SAIL_PATHS = 'list',
   PROFILE_SETTINGS = 'settings',
@@ -100,6 +100,7 @@ export enum FullRoutes {
   HELP = ROOT + RootRoutes.HELP,
   LOGIN = ROOT + RootRoutes.LOGIN,
   MAINTENANCE = ROOT + RootRoutes.MAINTENANCE,
+  MEDIA = ROOT + RootRoutes.MEDIA,
   PROFILE = ROOT + RootRoutes.PROFILES,
   REQUIRED_ACTIONS = ROOT + RootRoutes.REQUIRED_ACTIONS,
   SAILS = ROOT + RootRoutes.SAILS,
@@ -137,6 +138,7 @@ export enum FullRoutes {
   LIST_CLINICS = CLINICS + SEPARATOR + SubRoutes.LIST_CLINICS,
   LIST_DOCUMENTS = DOCUMENTS + SEPARATOR + SubRoutes.LIST_DOCUMENTS,
   LIST_FEEDBACK = FEEDBACK + SEPARATOR + SubRoutes.LIST_FEEDBACK,
+  LIST_MEDIA = MEDIA + SEPARATOR + SubRoutes.LIST_MEDIA,
   LIST_SAIL_CATEGORIES = ADMIN + SEPARATOR + SubRoutes.LIST_SAIL_CATEGORIES,
   LIST_SAIL_PATHS = SAIL_PATHS + SEPARATOR + SubRoutes.LIST_SAIL_PATHS,
   PROFILE_SETTINGS = PROFILE + SEPARATOR + SubRoutes.PROFILE_SETTINGS,
@@ -196,6 +198,7 @@ export const listChallengesRoute = `${FullRoutes.LIST_CHALLENGES}`;
 export const listClinicsRoute = () => `${FullRoutes.LIST_CLINICS}`;
 export const listDocumentsRoute = () => `${FullRoutes.LIST_DOCUMENTS}`;
 export const listFeedbackRoute = (sail_id: string) => `${FullRoutes.LIST_FEEDBACK}/${sail_id}`;
+export const listMediaRoute = FullRoutes.LIST_MEDIA;
 export const listSailCategoriesRoute = FullRoutes.LIST_SAIL_CATEGORIES;
 export const listSailPathsRoute = (sail_id: string) => `${FullRoutes.LIST_SAIL_PATHS}/${sail_id}`;
 export const loginWithEmailAndPassword = FullRoutes.EMAIL_AND_PASSWORD;

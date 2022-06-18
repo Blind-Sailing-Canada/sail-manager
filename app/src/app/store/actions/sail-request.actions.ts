@@ -26,4 +26,4 @@ export const putSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.PUT_ONE, pr
 export const putSailRequests = createAction(SAIL_REQUEST_ACTION_TYPES.PUT_MANY, props<{ sailRequests: SailRequest[] }>());
 export const resetSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.RESET);
 export const scheduleSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.SCHEDULE, props<{ id: string }>());
-export const updateSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.UPDATE, props<{ id: string; sailRequest: SailRequest}>());
+export const updateSailRequest = createAction(SAIL_REQUEST_ACTION_TYPES.UPDATE, props<{ id: string; sailRequest: SailRequest }>());
