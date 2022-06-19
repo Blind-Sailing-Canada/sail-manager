@@ -7,6 +7,14 @@ import {
 import { Media } from '../../../../api/src/types/media/media';
 import { MediaQuery } from '../../../../api/src/types/media/media-query';
 
+export interface PaginatedMedia {
+  count: number;
+  data: Media[];
+  page: number;
+  pageCount: number;
+  total: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,8 +23,8 @@ export class MediaService {
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  public get(query?: MediaQuery): Observable<Media[]> {
-    return this.http.get<Media[]>(`${this.API_URL}?q=${JSON.stringify(query || '')}`);
+  public getPaginatedMedia(query?: MediaQuery, page: number = 0, per_page: number = 20): Observable<PaginatedMedia> {
+    return this.http.get<PaginatedMedia>(`${this.API_URL}?s=${JSON.stringify(query || '')}&page=${page}&per_page=${per_page}`);
   }
 
   public delete(media_id: string): Observable<void> {

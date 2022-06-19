@@ -1,8 +1,9 @@
 import {
   BadRequestException,
-  Controller, Delete, Get, Param, Query, UseGuards
+  Controller, Delete, Param, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Crud } from '@nestjsx/crud';
 import { FirebaseAdminService } from '../firebase-admin/firebase-admin.service';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
@@ -10,19 +11,31 @@ import { LoginGuard } from '../guards/login.guard';
 import { MediaEntity } from './media.entity';
 import { MediaService } from './media.service';
 
+@Crud({
+  model: { type: MediaEntity },
+  routes: { only: ['getManyBase',], },
+  params: { id: {
+    field: 'id',
+    type: 'uuid',
+    primary: true,
+  } },
+  query: {
+    alwaysPaginate: true,
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
+    join: { posted_by: { eager: true }, },
+    sort: [
+      {
+        field: 'created_at',
+        order: 'DESC',
+      },
+    ],
+  },
+})
 @Controller('media')
 @ApiTags('media')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class MediaController {
   constructor(public service: MediaService, private firebaseAdminService: FirebaseAdminService) { }
-
-  @Get('/')
-  async get(@Query() query) {
-    return MediaEntity.find({
-      where : JSON.parse(query?.q ?? '{}'),
-      order: { created_at: 'DESC' }
-    });
-  }
 
   @Delete('/:media_id')
   async delete(@Param('media_id') media_id) {

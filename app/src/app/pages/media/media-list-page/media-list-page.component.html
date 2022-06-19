@@ -26,6 +26,15 @@
       (goToSail)="viewSail($event)"
       (deleteClick)="deleteMedia($event)"
     ></app-image-list>
+    <mat-paginator
+      (page)="paginationHandler($event)"
+      [length]="paginatedData?.total || 0"
+      [pageSizeOptions]="[10, 20, 50]"
+      [pageSize]="20"
+      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
+      aria-label="Select page of pictures"
+    >
+    </mat-paginator>
   </mat-card-content>
 </mat-card>
 

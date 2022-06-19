@@ -10,12 +10,13 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 import { Access } from '../../../../../../api/src/types/user-access/access';
 import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
-import { MediaService } from '../../../services/media.service';
+import { MediaService, PaginatedMedia } from '../../../services/media.service';
 import { MediaQuery } from '../../../../../../api/src/types/media/media-query';
 import { Media } from '../../../../../../api/src/types/media/media';
 import { firstValueFrom, take } from 'rxjs';
 import { STORE_SLICES } from '../../../store/store';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-media-list-page',
@@ -27,6 +28,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit 
   public allowDelete = false;
   public entity: string;
   public media: Media[] = [];
+  public paginatedData: PaginatedMedia;
 
   constructor(
     @Inject(Router) router: Router,
@@ -48,13 +50,20 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit 
     this.viewSail(id);
   }
 
-  public async fetchMedia(): Promise<void> {
+  public async fetchMedia(pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 }): Promise<void> {
     const query: MediaQuery = { media_for_type: this.entity };
 
-    const mediaFetch =  this.mediaService.get(query);
-    this.media = await firstValueFrom(mediaFetch);
+    const mediaFetch =  this.mediaService.getPaginatedMedia(query, pagination.pageIndex + 1, pagination.pageSize);
+    this.paginatedData = await firstValueFrom(mediaFetch);
+    this.media = this.paginatedData.data;
 
-    this.dispatchMessage(`Found ${this.media.length} posts.`);
+    const page = this.paginatedData;
+
+    this.dispatchMessage(`Displaying ${page.count} of ${page.total} pictures on page #${page.page}.`);
+  }
+
+  public paginationHandler(event: PageEvent) {
+    this.fetchMedia(event);
   }
 
   public deleteMedia(media: Media): void {
