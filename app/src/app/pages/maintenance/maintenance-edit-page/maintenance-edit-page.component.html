@@ -12,16 +12,27 @@
     >
       {{title}}
     </mat-card-title>
+    <mat-card-subtitle>
+      <p>After creating the request, click add pictures to add pictures of the problem.</p>
+      <p>Include pictures of the broken part, all identifiable markers such as model/part number, brand name, etc..</p>
+      <p>You can also include a short video which demonstrates the problem.</p>
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
     <ng-container [ngTemplateOutlet]="controls"></ng-container>
   </mat-card-actions>
   <mat-card-content>
-    <form [formGroup]="maintenanceForm">
+    <form
+      [formGroup]="maintenanceForm"
+      class="maintenance-edit-form"
+    >
       <ng-container [ngTemplateOutlet]="TemplateRequestStatus"></ng-container>
       <ng-container [ngTemplateOutlet]="TemplateRequestBoat"></ng-container>
       <ng-container [ngTemplateOutlet]="TemplateRequestDetails"></ng-container>
-      <ng-container [ngTemplateOutlet]="TemplateRequestServiceDetails"></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="TemplateRequestServiceDetails"
+        *ngIf="!creatingNewMaintenance"
+      ></ng-container>
     </form>
   </mat-card-content>
   <mat-card-footer>
@@ -47,16 +58,17 @@
 <ng-template #TemplateRequestStatus>
   <h4
     aria-hidden="true"
+    class='form-section-header'
+    id="step0"
     tabindex="-1"
-    id="stepStatus"
-  >Step 1 of 5: Request Status</h4>
+  >{{totalFormSteps}}: Request Status</h4>
   <mat-form-field [formGroup]="maintenanceForm">
     <mat-label
       aria-hidden="true"
       tabindex="-1"
     >Status</mat-label>
     <select
-      aria-labelledby="stepStatus"
+      aria-labelledby="step0"
       aria-required="true"
       formControlName="status"
       matNativeControl
@@ -74,7 +86,8 @@
     aria-hidden="true"
     tabindex="-1"
     id="step1"
-  >Step 2 of 5: Boat</h4>
+    class='form-section-header'
+  >{{totalFormSteps}}: Boat</h4>
   <mat-form-field [formGroup]="maintenanceForm">
     <mat-label
       aria-hidden="true"
@@ -102,14 +115,15 @@
 <ng-template #TemplateRequestDetails>
   <h4
     aria-hidden="true"
-    tabindex="-1"
+    class='form-section-header'
     id="step2"
-  >Step 3 of 5: Maintenance Details</h4>
+    tabindex="-1"
+  >{{totalFormSteps}}: Maintenance Details</h4>
   <mat-form-field [formGroup]="maintenanceForm">
     <mat-label
       aria-hidden="true"
       tabindex="-1"
-    >Request details</mat-label>
+    >Request details: include model/part number, brand name, or any other identifiable markers.</mat-label>
     <textarea
       aria-labelledby="step2"
       cdkAutosizeMaxRows="10"
@@ -129,9 +143,10 @@
 <ng-template #TemplateRequestServiceDetails>
   <h4
     aria-hidden="true"
-    tabindex="-1"
+    class='form-section-header'
     id="step2"
-  >Step 4 of 5: Maintenance Service Details</h4>
+    tabindex="-1"
+  >{{totalFormSteps}}: Maintenance Service Details</h4>
   <mat-form-field [formGroup]="maintenanceForm">
     <mat-label
       aria-hidden="true"

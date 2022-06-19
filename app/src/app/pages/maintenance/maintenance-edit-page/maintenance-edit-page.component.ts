@@ -33,11 +33,12 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class MaintenanceEditPageComponent extends BasePageComponent implements OnInit {
 
+  public boat_maintenance_id: string;
   public creatingNewMaintenance: boolean;
   public maintenanceForm: FormGroup;
-  public boat_maintenance_id: string;
   public maintenanceStatus = BoatMaintenanceStatus;
   public readonly maintenancePictureInputId = 'maintenancePictureInput';
+  public totalFormSteps = 4;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -53,6 +54,7 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
 
     this.boat_maintenance_id = this.route.snapshot.params.id;
     this.creatingNewMaintenance = !this.boat_maintenance_id;
+    this.totalFormSteps = this.creatingNewMaintenance ? 3 : 4;
 
     this.buildForm(boat_id);
 
