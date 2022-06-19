@@ -30,5 +30,5 @@ export const updateSailChecklist = createAction(
   );
 export const updateSailChecklists = createAction(
     SAIL_CHECKLIST_ACTION_TYPES.UPDATE_SAIL_CHECKLISTS,
-    props<{ sail_id: string; checklistsData }>(),
+    props<{ sail_id: string; checklistsData; notify?: boolean }>(),
   );

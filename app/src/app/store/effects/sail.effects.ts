@@ -65,7 +65,7 @@ export class SailEffects {
         action => this.sailService
           .sendNotification(action.sail_id, action.notificationType, action.notificationMessage)
           .pipe(
-            mergeMap(sail => of(
+            mergeMap(() => of(
               action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Notification sent!' } }),
             )),
             catchError(errorCatcher('Failed to send sail notification.'))

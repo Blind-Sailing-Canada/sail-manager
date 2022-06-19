@@ -34,6 +34,7 @@
         [disabled]="shouldDisableUpdateButton"
         (click)="save()"
       >Update</button>
+      <label *ngIf="shouldDisableUpdateButton">Already saved.</label>
     </mat-card-actions>
   </mat-card-footer>
 </mat-card>

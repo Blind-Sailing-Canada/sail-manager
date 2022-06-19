@@ -15,6 +15,7 @@ import {
   Router,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { debounceTime, takeWhile } from 'rxjs';
 import { BoatInstruction } from '../../../../../../api/src/types/boat-instructions/boat-instruction';
 import { BoatInstructionType } from '../../../../../../api/src/types/boat-instructions/boat-instruction-type';
 import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
@@ -112,7 +113,7 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
     return !!should;
   }
 
-  public save(): void {
+  public save(notify: boolean = true): void {
     const formControls = this.checklistForm.controls;
     const formKeys = Object.keys(formControls);
     const changedValue = formKeys
@@ -132,7 +133,7 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
         {}
       ) as any;
 
-    this.dispatchAction(updateSailChecklists({ sail_id: this.sail_id, checklistsData: changedValue }));
+    this.dispatchAction(updateSailChecklists({ sail_id: this.sail_id, checklistsData: changedValue, notify }));
   }
 
   protected buildForm(): void {
@@ -176,6 +177,16 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
       ...beforeForm,
       ...afterForm,
     });
+
+    this.checklistForm
+      .valueChanges
+      .pipe(takeWhile(() => this.active))
+      .pipe(debounceTime(2000))
+      .subscribe(() => {
+        if (this.checklistForm.dirty) {
+          this.save(false);
+        }
+      });
 
   }
 

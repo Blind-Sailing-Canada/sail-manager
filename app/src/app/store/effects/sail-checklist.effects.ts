@@ -2,6 +2,7 @@ import { of } from 'rxjs';
 import {
   catchError,
   mergeMap,
+  filter,
   tap,
 } from 'rxjs/operators';
 import {
@@ -76,14 +77,17 @@ export class SailChecklistEffects {
       ofType(updateSailChecklists),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailChecklistService.updateSailChecklists(action.sail_id, action.checklistsData)
+        action => this.sailChecklistService
+          .updateSailChecklists(action.sail_id, action.checklistsData)
           .pipe(
-            mergeMap(sail => of(
+            mergeMap((sail) => of(
               putSail({ sail, id: action.sail_id }),
-              putSnack({ snack: { type: SnackType.INFO, message: 'Saved' } }),
+              action.notify && putSnack({ snack: { type: SnackType.INFO, message: 'Saved' } }),
             )),
-            catchError(errorCatcher(`Failed to update sail checklist for sail: ${action.sail_id}`)),
-          )),
+            catchError(errorCatcher(`Failed to update sail checklist for sail: ${action.sail_id}`, null, null, action.notify)),
+          )
+      ),
+      filter(action => action && action.type),
       tap(() => this.store.dispatch(finishLoading())),
     ),
   );
