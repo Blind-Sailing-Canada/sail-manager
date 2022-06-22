@@ -26,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const expired = this.tokenService.isExpired;
     const path = req.url;
     const csrfToken = sessionStorage.getItem('csrfToken');
-    const timezone = Intl?.DateTimeFormat().resolvedOptions().timeZone;
+    const timezone = typeof Intl === 'undefined'? '' : Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     const newRequest = req
       .clone({

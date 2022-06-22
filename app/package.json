@@ -28,7 +28,7 @@
     "@angular/platform-browser": "12.2.8",
     "@angular/platform-browser-dynamic": "12.2.8",
     "@angular/router": "12.2.8",
-    "@formatjs/intl-relativetimeformat": "9.3.1",
+    "@formatjs/intl-relativetimeformat": "11.0.2",
     "@ngrx/effects": "12.4.0",
     "@ngrx/store": "12.4.0",
     "@ngrx/store-devtools": "12.4.0",
