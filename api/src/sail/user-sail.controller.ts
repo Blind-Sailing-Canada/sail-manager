@@ -23,8 +23,7 @@ export class UserSailController {
 
   @Get('/:profile_id/count')
   async count(@Param('profile_id') profile_id) {
-    return SailManifestEntity
-      .count({ where: { profile_id } });
+    return SailManifestEntity.count({ where: { profile_id } });
   }
 
   @Get('/in-progress')
@@ -38,6 +37,7 @@ export class UserSailController {
     const sails = await SailEntity.find({
       take,
       where,
+      order: { start_at: 'DESC' }
     });
 
     return sails;
@@ -54,6 +54,7 @@ export class UserSailController {
     const sails = await SailEntity.find({
       take,
       where,
+      order: { start_at: 'DESC' }
     });
 
     return sails;
