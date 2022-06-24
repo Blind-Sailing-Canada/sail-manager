@@ -47,7 +47,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
 
   ngOnInit() {
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS);
-    this.dispatchAction(searchSails({ notify: true, query: { limit:10, sort: 'entity_number,DESC' } }));
+    this.dispatchAction(searchSails({ notify: true, query: { limit:10, sort: 'start_at,DESC' } }));
   }
 
   public resetFilter() {
@@ -121,6 +121,8 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
     if (this.sailStatus && this.sailStatus !== 'ANY') {
       query.sailStatus = this.sailStatus;
     }
+
+    query.sort = 'start_at,DESC';
 
     return query;
   }
