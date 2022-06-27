@@ -17,6 +17,7 @@ import {
 import { Store } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
+import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 import { SailManifest } from '../../../../../../api/src/types/sail-manifest/sail-manifest';
 import { SailorRole } from '../../../../../../api/src/types/sail-manifest/sailor-role';
 import { Sail } from '../../../../../../api/src/types/sail/sail';
@@ -174,7 +175,9 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   }
 
   public get shouldEnableSubmitButton(): boolean {
-    return this.manifestForm.dirty && !this.occupancyExceeded;
+    const isUserSpecial = this.user.roles.some(role => [ProfileRole.Admin, ProfileRole.Coordinator].includes(role));
+
+    return this.manifestForm.dirty && (!this.occupancyExceeded || isUserSpecial);
   }
 
   public get occupancyExceeded(): boolean {

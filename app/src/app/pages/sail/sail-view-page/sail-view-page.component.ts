@@ -85,6 +85,10 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     });
   }
 
+  public get exceedingMaxOccupancy(): boolean {
+    return this.sail.manifest?.length > this.sail.max_occupancy;
+  }
+
   public showSailNotificationDialog(): void {
     const dialogData: SailNotificationDialogData = {
       sendSailNotification: (notificationMessage, notificationType) => this.sendNotification(notificationMessage, notificationType),

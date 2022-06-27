@@ -104,7 +104,7 @@
     <mat-list-item *ngIf="!manifestControls.length">No sailors on this sail.</mat-list-item>
   </div>
   <div *ngIf="occupancyExceeded">
-    <span>Sail max occupancy exceeded!</span>
+    <mat-error><b>Warning: Sail max occupancy of {{sail.max_occupancy}} sailors has been exceeded!</b></mat-error>
   </div>
 </ng-template>
 

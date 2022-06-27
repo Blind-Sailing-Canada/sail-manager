@@ -485,6 +485,16 @@
         </td>
       </tr>
     </tbody>
+    <tfoot>
+      <tr *ngIf="exceedingMaxOccupancy">
+        <td
+          class="warning"
+          colspan="2"
+        >
+          <mat-error><b>Warning: Sail max occupancy of {{sail.max_occupancy}} sailors has been exceeded!</b></mat-error>
+        </td>
+      </tr>
+    </tfoot>
   </app-table>
 </ng-template>
 <ng-template #COMMENTS_TEMPLATE>
