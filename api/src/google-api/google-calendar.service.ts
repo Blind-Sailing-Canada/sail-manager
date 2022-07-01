@@ -235,7 +235,7 @@ export class GoogleCalendarService {
 
     attendees = attendees.filter(attendee => !!attendee.email);
 
-    const skipperName = sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.person_name || 'n/a';
+    const skipperNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Skipper).map(sailor => sailor.person_name);
     const crewNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Crew).map(sailor => sailor.person_name);
     const sailorNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Sailor).map(sailor => sailor.person_name);
 
@@ -254,7 +254,7 @@ export class GoogleCalendarService {
             <div><label>Start: </label>${toLocalDate(sail.start_at)}</div>
             <div><label>End: </label>${toLocalDate(sail.end_at)}</div>
             <div><label>Boat: ${sail.boat.name} </label></div>
-            <div><label>Skipper: </label>${skipperName}</div>
+            <div><label>Skipper: </label>${skipperNames.join(', ')}</div>
             <div><label>Crew: </label>${crewNames.join(', ') || '-'}</div>
             <p><label>Sailors: </label> ${sailorNames.join(', ') || '-'}</p>
             <div><a href="${DOMAIN}/sails/view/${sail.id}">View sail</a></div>

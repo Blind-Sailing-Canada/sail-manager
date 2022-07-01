@@ -330,14 +330,14 @@
         >{{sail.boat?.name}}</td>
       </tr>
       <tr
-        (click)="showProfileDialog(sailSkipper, 'skipper')"
-        (keyup.enter)="showProfileDialog(sailSkipper, 'skipper')"
-        *ngIf="sailSkipper"
-        aria-label="Sail's skipper"
+        (click)="showProfileDialog(skipper.profile, 'skipper')"
+        (keyup.enter)="showProfileDialog(skipper.profile, 'skipper')"
+        *ngFor="let skipper of sailSkippers; let i = index;"
+        attr.aria-label="Sail's skipper {{i + 1}} of {{sailSkippers.length}}"
         class="clickable"
-        title="Sail's skipper is {{sailSkipper?.name}}. Click to open profile dialog."
-        tabindex="0"
         role="listitem"
+        tabindex="0"
+        title="Sail's skipper is {{skipper.profile?.name}}. Click to open profile dialog."
       >
         <th
           aria-hidden="true"
@@ -347,11 +347,11 @@
           aria-hidden="true"
           tabindex="-1"
         >
-          <app-profile-bullet [profile]="sailSkipper"></app-profile-bullet>
+          <app-profile-bullet [profile]="skipper.profile"></app-profile-bullet>
         </td>
       </tr>
       <tr
-        *ngIf="!sailSkipper"
+        *ngIf="!sailSkippers.length"
         aria-label="Sail's skipper"
         title="Sail's skipper is not assigned."
         tabindex="0"
@@ -367,15 +367,14 @@
         >-empty-</td>
       </tr>
       <tr
-        (click)="showProfileDialog(sailCrew, 'crew')"
-        (keyup.enter)="showProfileDialog(sailCrew, 'crew')"
-        *ngIf="sailCrew"
+        (click)="showProfileDialog(crew.profile, 'crew')"
+        (keyup.enter)="showProfileDialog(crew.profile, 'crew')"
+        *ngFor="let crew of sailCrew; let i = index;"
+        attr.aria-label="Sail's crew {{i + 1}} of {{sailCrew.length}}"
         class="clickable"
-        aria-label="Sail's crew"
-        class="clickable"
-        title="Sail's crew is {{sailCrew?.name}}. Click to open profile dialog."
-        tabindex="0"
         role="listitem"
+        tabindex="0"
+        title="Sail's crew is {{crew.profile?.name}}. Click to open profile dialog."
       >
         <th
           aria-hidden="true"
@@ -385,11 +384,11 @@
           aria-hidden="true"
           tabindex="-1"
         >
-          <app-profile-bullet [profile]="sailCrew"></app-profile-bullet>
+          <app-profile-bullet [profile]="crew.profile"></app-profile-bullet>
         </td>
       </tr>
       <tr
-        *ngIf="!sailCrew"
+        *ngIf="!sailCrew.length"
         aria-label="Sail's crew"
         title="Sail's crew is not assigned."
         tabindex="0"
@@ -428,6 +427,7 @@
         *ngFor="let unusedVariable of passengerSpots; let i = index;"
         [title]="getPassengerLabel(i)"
         attr.aria-label="Sail sailor {{i + 1}} of {{passengerSpots.length}}"
+        class="clickable"
         role="listitem"
         tabindex="0"
       >

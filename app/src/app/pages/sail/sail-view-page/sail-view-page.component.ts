@@ -50,9 +50,11 @@ import { SailNotificationDialogData } from '../../../models/sail-notification-di
 export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
   public passengerSpots: number[] = [];
-  public sailPassengers: SailManifest[] = [];
   public sail: Sail;
+  public sailCrew: SailManifest[] = [];
   public sailNotificationDialogRef: MatDialogRef<SailNotificationDialogComponent>;
+  public sailPassengers: SailManifest[] = [];
+  public sailSkippers: SailManifest[] = [];
 
   private sail_id: string;
 
@@ -75,11 +77,26 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       this.sail = this.getSail(this.sail_id);
 
       if (this.sail) {
-        this.sailPassengers = this.sail
-          .manifest
-          .filter(sailor => sailor.sailor_role !== SailorRole.Skipper && sailor.sailor_role !== SailorRole.Crew)
-          .map(sailor => sailor);
-        this.passengerSpots = [].constructor(Math.max(this.sailPassengers.length, (this.sail.max_occupancy || 6) - 2));
+        this.sailSkippers = [];
+        this.sailCrew = [];
+        this.sailPassengers = [];
+
+        this.sail.manifest.forEach((sailor) => {
+          switch(sailor.sailor_role) {
+            case SailorRole.Skipper:
+              this.sailSkippers.push(sailor);
+              break;
+            case SailorRole.Crew:
+              this.sailCrew.push(sailor);
+              break;
+            default:
+              this.sailPassengers.push(sailor);
+          }
+        });
+
+        const skipperCrewSpots = (this.sailSkippers.length || 1) + (this.sailCrew.length || 1);
+
+        this.passengerSpots = [].constructor(Math.max(this.sailPassengers.length, (this.sail.max_occupancy || 6) - skipperCrewSpots));
       }
 
     });
@@ -200,14 +217,6 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     const past = start.getTime() < now.getTime();
 
     return !!past;
-  }
-
-  public get sailSkipper(): Profile {
-    return this.sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.profile;
-  }
-
-  public get sailCrew(): Profile {
-    return this.sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Crew)?.profile;
   }
 
   public get canJoinSail(): boolean {

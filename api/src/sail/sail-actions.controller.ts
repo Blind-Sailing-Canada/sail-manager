@@ -159,8 +159,14 @@ export class SailActionsController {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
     }
 
-    // 2 spots reserved for 1 skipper + 1 crew
-    if (sail.max_occupancy - 2 <= (sail.manifest.length - 2)) {
+    const skipperAndCrewCount = sail.manifest?.filter(sailor => [
+      SailorRole.Skipper,
+      SailorRole.Crew
+    ].includes(sailor.sailor_role)).length || 0;
+    const reservedSpots = skipperAndCrewCount > 2 ? skipperAndCrewCount : 2;
+
+    // at least 2 spots reserved for 1 skipper + 1 crew
+    if (sail.max_occupancy - reservedSpots <= sail.manifest.length) {
       throw new BadRequestException('Sail is full.');
     }
 

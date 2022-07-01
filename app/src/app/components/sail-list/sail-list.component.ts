@@ -50,20 +50,20 @@ export class SailListComponent {
     this.clicked.emit(sail);
   }
 
-  public skipper(sail: Sail): string {
-    return sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.profile?.name;
+  public skipperCount(sail: Sail): number {
+    return sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Skipper).length;
   }
 
-  public crew(sail: Sail): string {
-    return sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Crew)?.profile?.name;
+  public crewCount(sail: Sail): number {
+    return sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Crew)?.length;
   }
 
-  public passengers(sail: Sail): string[] {
+  public passengersCount(sail: Sail): number {
     return sail
       .manifest
       .filter(sailor => sailor.sailor_role !== SailorRole.Skipper)
       .filter(sailor => sailor.sailor_role !== SailorRole.Crew)
-      .map(sailor => sailor.person_name);
+      .length;
   }
 
 }

@@ -49,7 +49,6 @@
       >Found {{sailsSearchResults?.length}} sails.</h4>
       <app-sail-list
         (clicked)="goToViewSail($event.id)"
-        (refreshRequest)="fetchSails(true)"
         [sails]="sailsSearchResults"
         emptyMessage="No sails."
         title="Sails"

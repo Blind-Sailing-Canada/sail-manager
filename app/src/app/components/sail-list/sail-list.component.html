@@ -55,12 +55,12 @@
           class="sail-occupancy"
           aria-hidden="true"
         >
-          <span class="sail-skipper long">{{skipper(sail) ? "1" : "0"}} Skipper </span>
-          <span class="sail-skipper short">{{skipper(sail) ? "1" : "0"}} ☸ </span>
-          <span class="sail-crew long">{{crew(sail) ? "1" : "0"}} Crew </span>
-          <span class="sail-crew short">{{crew(sail) ? "1" : "0"}} ⚒ </span>
-          <span class="sail-passengers long">{{passengers(sail).length}} Passengers</span>
-          <span class="sail-passengers short">{{passengers(sail).length}} ☺</span>
+          <span class="sail-skipper long">{{skipperCount(sail)}} Skipper </span>
+          <span class="sail-skipper short">{{skipperCount(sail)}} ☸ </span>
+          <span class="sail-crew long">{{crewCount(sail)}} Crew </span>
+          <span class="sail-crew short">{{crewCount(sail)}} ⚒ </span>
+          <span class="sail-passengers long">{{passengersCount(sail)}} Sailors</span>
+          <span class="sail-passengers short">{{passengersCount(sail)}} ☺</span>
         </div>
       </td>
     </tr>

@@ -187,12 +187,6 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     return max;
   }
 
-  public get maxPassengers(): number {
-    const max_occupancy = +this.sailForm.getRawValue().max_occupancy;
-    const maxPassengers = max_occupancy - 2;
-    return maxPassengers;
-  }
-
   public get boatName(): string {
     const boat_id = this.sailForm.controls.boat_id.value;
     const boat = this.getBoat(boat_id);
@@ -211,7 +205,11 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     }
 
     const sail = this.getSail(this.sail_id);
-    return sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Skipper)?.profile.name;
+
+    return sail?.manifest
+      .filter(sailor => sailor.sailor_role === SailorRole.Skipper)
+      .map((sailor) => sailor.profile?.name || sailor.person_name)
+      .join(', ');
   }
 
   public get crewName(): string {
@@ -220,7 +218,10 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     }
 
     const sail = this.getSail(this.sail_id);
-    return sail.manifest.find(sailor => sailor.sailor_role === SailorRole.Crew)?.profile.name;
+    return sail?.manifest
+      .filter(sailor => sailor.sailor_role === SailorRole.Crew)
+      .map(sailor => sailor.profile?.name || sailor.person_name)
+      .join(', ');
 
   }
 
