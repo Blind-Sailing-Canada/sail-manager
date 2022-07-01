@@ -383,7 +383,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     }
 
     if (passenger && passenger.guest_of) {
-      return `${passenger.person_name} (Guest of ${passenger.guest_of.name}).`;
+      return `${passenger.person_name} (Guest of ${passenger.guest_of?.name || 'unknown'}).`;
     }
 
     if (passenger) {

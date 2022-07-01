@@ -60,7 +60,11 @@ export class SailChecklistController {
 
     const checklists = await SailChecklistEntity.find({
       order: { created_at: 'DESC' },
-      relations: ['sail'],
+      relations: [
+        'sail',
+        'sail.manifest',
+        'sail.manifest.guest_of'
+      ],
       where,
     });
 
@@ -71,7 +75,11 @@ export class SailChecklistController {
   async fetchChecklist(@Param('checklist_id') checklist_id: string) {
     return SailChecklistEntity.findOne({
       where: { id: checklist_id } ,
-      relations: ['sail'],
+      relations: [
+        'sail',
+        'sail.manifest',
+        'sail.manifest.guest_of'
+      ],
     });
   }
 

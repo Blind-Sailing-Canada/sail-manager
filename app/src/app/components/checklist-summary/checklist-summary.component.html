@@ -160,7 +160,7 @@
       >{{sailor.person_name}}</td>
       <td *ngIf="sailor.sailor_role !== SAILOR_ROLE.Guest">{{sailor.sailor_role}}</td>
       <td *ngIf="sailor.sailor_role === SAILOR_ROLE.Guest">
-        guest of {{sailor.guest_of.name}}
+        guest of {{sailor.guest_of?.name || 'unknown'}}
       </td>
       <td>{{sailor.attended? "Yes" : "No"}}</td>
     </tr>
