@@ -166,7 +166,7 @@ export class SailActionsController {
     const reservedSpots = skipperAndCrewCount > 2 ? skipperAndCrewCount : 2;
 
     // at least 2 spots reserved for 1 skipper + 1 crew
-    if (sail.max_occupancy - reservedSpots <= sail.manifest.length) {
+    if (sail.max_occupancy - reservedSpots <= sail.manifest.length - skipperAndCrewCount) {
       throw new BadRequestException('Sail is full.');
     }
 
