@@ -3,6 +3,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import {
   ActivatedRoute,
   Router,
@@ -41,11 +42,12 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
 
   constructor(
     @Inject(Store) store: Store<any>,
+    @Inject(MatDialog) dialog: MatDialog,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
     @Inject(MomentService) private momentService: MomentService,
   ) {
-    super(store, route, router);
+    super(store, route, router, dialog);
   }
 
   ngOnInit() {
