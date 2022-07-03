@@ -27,7 +27,7 @@
     <ng-container *ngTemplateOutlet="sailMaxOccupancy"></ng-container>
     <ng-container *ngTemplateOutlet="sailSkipper"></ng-container>
     <ng-container *ngTemplateOutlet="sailCrew"></ng-container>
-    <ng-container *ngTemplateOutlet="sailPassengers"></ng-container>
+    <ng-container *ngTemplateOutlet="sailSailors"></ng-container>
   </mat-card-content>
   <mat-card-footer>
     <mat-card-actions>
@@ -241,16 +241,16 @@
     mat-raised-button
   >Edit Manifest</a>
 </ng-template>
-<ng-template #sailPassengers>
-  <h4>Step 10 of 10: Sail's Passengers</h4>
+<ng-template #sailSailors>
+  <h4>Step 10 of 10: Sail's Sailors</h4>
   <p
     tabindex="0"
     *ngIf="creatingNewSail"
-  >Passengers can be assigned after sail creation.</p>
+  >Sailors can be assigned after sail creation.</p>
   <p
     tabindex="0"
     *ngIf="!creatingNewSail"
-  >Current passengers: {{passengerNames || 'not assigned'}}</p>
+  >Current sailors: {{sailorNames || 'not assigned'}}</p>
   <a
     (click)="editManifest()"
     *ngIf="!creatingNewSail && !sailForm.dirty"

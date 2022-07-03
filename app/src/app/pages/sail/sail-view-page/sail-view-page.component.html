@@ -21,10 +21,10 @@
   <mat-card-footer>
     <mat-card-actions *ngIf="canJoinSail">
       <button
-        (click)="joinSailAsPassenger()"
-        *ngIf="canJoinPassenger"
+        (click)="joinSailAsSailor()"
+        *ngIf="canJoinSailor"
         mat-raised-button
-      >Join As Passenger</button>
+      >Join As Sailor</button>
       <button
         (click)="joinSailAsCrew()"
         *ngIf="canJoinCrew"
@@ -416,37 +416,37 @@
       </tr>
       <tr role="list">
         <th
-          [attr.rowspan]="passengerSpots.length + 1"
+          [attr.rowspan]="sailorSpots.length + 1"
           aria-hidden="true"
           tabindex="-1"
         >Sailors</th>
       </tr>
       <tr
-        (click)="!!sailPassengers[i] && !!sailPassengers[i].profile && showProfileDialog(sailPassengers[i].profile, 'passenger')"
-        (keyup.enter)="!!sailPassengers[i] && !!sailPassengers[i].profile && showProfileDialog(sailPassengers[i].profile, 'passenger')"
-        *ngFor="let unusedVariable of passengerSpots; let i = index;"
-        [title]="getPassengerLabel(i)"
-        attr.aria-label="Sail sailor {{i + 1}} of {{passengerSpots.length}}"
+        (click)="!!sailSailors[i] && !!sailSailors[i].profile && showProfileDialog(sailSailors[i].profile, 'sailor')"
+        (keyup.enter)="!!sailSailors[i] && !!sailSailors[i].profile && showProfileDialog(sailSailors[i].profile, 'sailor')"
+        *ngFor="let unusedVariable of sailorSpots; let i = index;"
+        [title]="getSailorLabel(i)"
+        attr.aria-label="Sail sailor {{i + 1}} of {{sailorSpots.length}}"
         class="clickable"
         role="listitem"
         tabindex="0"
       >
         <td
-          *ngIf="!!sailPassengers[i]"
+          *ngIf="!!sailSailors[i]"
           class="clickable"
           colspan="2"
           aria-hidden="true"
           tabindex="-1"
         >
           <app-profile-bullet
-            [profile]="sailPassengers[i].profile"
-            *ngIf="!!sailPassengers[i].profile"
+            [profile]="sailSailors[i].profile"
+            *ngIf="!!sailSailors[i].profile"
           ></app-profile-bullet>
-          <span *ngIf="!sailPassengers[i].profile">{{getPassengerLabel(i)}}</span>
+          <span *ngIf="!sailSailors[i].profile">{{getSailorLabel(i)}}</span>
         </td>
         <td
           colspan="2"
-          *ngIf="!sailPassengers[i]"
+          *ngIf="!sailSailors[i]"
           aria-hidden="true"
           tabindex="-1"
         >-empty-</td>

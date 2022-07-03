@@ -58,7 +58,7 @@ export class SailListComponent {
     return sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Crew)?.length;
   }
 
-  public passengersCount(sail: Sail): number {
+  public sailorsCount(sail: Sail): number {
     return sail
       .manifest
       .filter(sailor => sailor.sailor_role !== SailorRole.Skipper)

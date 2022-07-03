@@ -49,7 +49,7 @@ export enum SubRoutes {
   EDIT_PROFILE_PRIVILEGES = 'edit-privileges',
   EDIT_SAIL = 'edit',
   EDIT_SAIL_CHECKLIST = 'edit',
-  EDIT_SAIL_MANIFEST = 'edit-passengers',
+  EDIT_SAIL_MANIFEST = 'edit-sailors',
   EDIT_SAIL_PATH = 'edit',
   EDIT_SAIL_REQUEST = 'edit',
   EMAIL_AND_PASSWORD = 'email-password',

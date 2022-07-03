@@ -14,7 +14,7 @@ export enum SAIL_ACTION_TYPES {
   FETCH_MANY = '[Sail] Fetch Many',
   FETCH_ONE = '[Sail] Fetch One',
   JOIN_CREW = '[Sail] Join As Crew',
-  JOIN_PASSENGER = '[Sail] Join As Passenger',
+  JOIN_SAILOR = '[Sail] Join As Sailor',
   JOIN_SKIPPER = '[Sail] Join As Skipper',
   LEAVE_SAIL = '[Sail] Leave',
   POST_COMMENT = '[Sail] Post Comment',
@@ -46,8 +46,8 @@ export const startSail = createAction(SAIL_ACTION_TYPES.START, props<{ sail: Sai
 export const fetchSail = createAction(SAIL_ACTION_TYPES.FETCH_ONE, props<{ sail_id: string; notify?: boolean }>());
 export const fetchSails = createAction(SAIL_ACTION_TYPES.FETCH_MANY, props<{ notify?: boolean; query?: string }>());
 export const joinSailAsCrew = createAction(SAIL_ACTION_TYPES.JOIN_CREW, props<{ sail_id: string; notify?: boolean }>());
-export const joinSailAsPassenger = createAction(
-  SAIL_ACTION_TYPES.JOIN_PASSENGER, props<{ sail_id: string; notify?: boolean }>());
+export const joinSailAsSailor = createAction(
+  SAIL_ACTION_TYPES.JOIN_SAILOR, props<{ sail_id: string; notify?: boolean }>());
 export const joinSailAsSkipper = createAction(
   SAIL_ACTION_TYPES.JOIN_SKIPPER, props<{ sail_id: string; notify?: boolean }>());
 export const leaveSail = createAction(SAIL_ACTION_TYPES.LEAVE_SAIL, props<{ sail_id: string; notify?: boolean }>());

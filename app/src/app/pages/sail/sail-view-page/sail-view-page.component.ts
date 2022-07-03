@@ -23,7 +23,7 @@ import {
   completeSail,
   deleteSailComment,
   joinSailAsCrew,
-  joinSailAsPassenger,
+  joinSailAsSailor,
   joinSailAsSkipper,
   leaveSail,
   postSailComment,
@@ -49,11 +49,11 @@ import { SailNotificationDialogData } from '../../../models/sail-notification-di
 })
 export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
-  public passengerSpots: number[] = [];
+  public sailorSpots: number[] = [];
   public sail: Sail;
   public sailCrew: SailManifest[] = [];
   public sailNotificationDialogRef: MatDialogRef<SailNotificationDialogComponent>;
-  public sailPassengers: SailManifest[] = [];
+  public sailSailors: SailManifest[] = [];
   public sailSkippers: SailManifest[] = [];
 
   private sail_id: string;
@@ -79,7 +79,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       if (this.sail) {
         this.sailSkippers = [];
         this.sailCrew = [];
-        this.sailPassengers = [];
+        this.sailSailors = [];
 
         this.sail.manifest.forEach((sailor) => {
           switch(sailor.sailor_role) {
@@ -90,13 +90,13 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
               this.sailCrew.push(sailor);
               break;
             default:
-              this.sailPassengers.push(sailor);
+              this.sailSailors.push(sailor);
           }
         });
 
         const skipperCrewSpots = (this.sailSkippers.length || 1) + (this.sailCrew.length || 1);
 
-        this.passengerSpots = [].constructor(Math.max(this.sailPassengers.length, (this.sail.max_occupancy || 6) - skipperCrewSpots));
+        this.sailorSpots = [].constructor(Math.max(this.sailSailors.length, (this.sail.max_occupancy || 6) - skipperCrewSpots));
       }
 
     });
@@ -306,7 +306,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     return can;
   }
 
-  public get canJoinPassenger(): boolean {
+  public get canJoinSailor(): boolean {
     if (this.isInPast) {
       return false;
     }
@@ -350,10 +350,10 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     this.dispatchAction(joinSailAsCrew({ sail_id: sail.id, notify: true }));
   }
 
-  public joinSailAsPassenger(): void {
+  public joinSailAsSailor(): void {
     const sail = this.sail;
 
-    this.dispatchAction(joinSailAsPassenger({ sail_id: sail.id, notify: true }));
+    this.dispatchAction(joinSailAsSailor({ sail_id: sail.id, notify: true }));
   }
 
   public joinSailAsSkipper(): void {
@@ -368,35 +368,35 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     this.dispatchAction(leaveSail({ sail_id: sail.id, notify: true }));
   }
 
-  public getPassengers(sail: Sail): Profile[] {
-    const passengers = sail
+  public getSailors(sail: Sail): Profile[] {
+    const sailors = sail
       .manifest
       .filter(sailor => sailor.sailor_role !== SailorRole.Crew && sailor.sailor_role !== SailorRole.Skipper)
       .map(sailor => sailor.profile);
 
-    return passengers;
+    return sailors;
   }
 
-  public getPassengerNames(sail: Sail): string[] {
-    const passengers = this.getPassengers(sail) || [];
-    const names = passengers.map(passenger => passenger.name);
+  public getSailorNames(sail: Sail): string[] {
+    const sailors = this.getSailors(sail) || [];
+    const names = sailors.map(sailor => sailor.name);
 
     return names;
   }
 
-  public getPassengerLabel(spot: number): string {
-    const passenger = this.sailPassengers[spot];
+  public getSailorLabel(spot: number): string {
+    const sailor = this.sailSailors[spot];
 
-    if (passenger && passenger.profile) {
-      return `${passenger.profile.name}. Click to open profile dialog.`;
+    if (sailor && sailor.profile) {
+      return `${sailor.profile.name}. Click to open profile dialog.`;
     }
 
-    if (passenger && passenger.guest_of) {
-      return `${passenger.person_name} (Guest of ${passenger.guest_of?.name || 'unknown'}).`;
+    if (sailor && sailor.guest_of) {
+      return `${sailor.person_name} (Guest of ${sailor.guest_of?.name || 'unknown'}).`;
     }
 
-    if (passenger) {
-      return passenger.person_name;
+    if (sailor) {
+      return sailor.person_name;
     }
 
     return '-empty-';

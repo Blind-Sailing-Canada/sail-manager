@@ -180,7 +180,7 @@ export class SailService {
     return this.joinSail('crew', sail_id);
   }
 
-  public joinAsPassenger(sail_id: string): Observable<Sail> {
+  public joinAsSailor(sail_id: string): Observable<Sail> {
     return this.joinSail('sailor', sail_id);
   }
 

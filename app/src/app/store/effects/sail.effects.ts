@@ -40,7 +40,7 @@ import {
   fetchSail,
   fetchSails,
   joinSailAsCrew,
-  joinSailAsPassenger,
+  joinSailAsSailor,
   joinSailAsSkipper,
   leaveSail,
   postSailComment,
@@ -159,19 +159,19 @@ export class SailEffects {
     ),
   );
 
-  joinSailAsPassenger$ = createEffect(
+  joinSailAsSailor$ = createEffect(
     () => this.actions$.pipe(
-      ofType(joinSailAsPassenger),
+      ofType(joinSailAsSailor),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
         action => this.sailService
-          .joinAsPassenger(action.sail_id)
+          .joinAsSailor(action.sail_id)
           .pipe(
             mergeMap(sail => of(
-              putSnack({ snack: { type: SnackType.INFO, message: 'You joined the sail as a passenger!' } }),
+              putSnack({ snack: { type: SnackType.INFO, message: 'You joined the sail as a sailor!' } }),
               putSail({ sail, id: action.sail_id })
             )),
-            catchError(errorCatcher('Failed to join sail as passenger'))
+            catchError(errorCatcher('Failed to join sail as sailor'))
           ),
       ),
       tap(() => this.store.dispatch(finishLoading())),

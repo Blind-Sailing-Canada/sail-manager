@@ -225,19 +225,19 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
   }
 
-  public get passengerNames(): string {
+  public get sailorNames(): string {
     if (this.creatingNewSail) {
       return '';
     }
 
     const sail = this.getSail(this.sail_id);
-    const passengers = sail
+    const sailors = sail
       .manifest
       .filter(sailor => sailor.sailor_role !== SailorRole.Skipper)
       .filter(sailor => sailor.sailor_role !== SailorRole.Crew)
       .map(sailor => sailor.person_name);
 
-    const names = passengers.join(', ');
+    const names = sailors.join(', ');
 
     return names;
   }
