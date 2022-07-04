@@ -30,6 +30,11 @@
     mat-raised-button
     title="Delete this document"
   >Delete</button>
+  <a
+    [href]="document.fileLocation"
+    mat-raised-button
+    title="Download document"
+  >Download</a>
 </ng-template>
 
 <ng-template #CONTENT_TEMPLATE>
