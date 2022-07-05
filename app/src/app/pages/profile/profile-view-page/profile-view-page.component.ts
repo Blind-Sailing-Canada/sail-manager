@@ -4,7 +4,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
+import { MatDialogRef } from '@angular/material/dialog';
 import {
   ActivatedRoute,
   Router,
