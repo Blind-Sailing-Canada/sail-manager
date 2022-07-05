@@ -3,8 +3,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {
   ActivatedRoute,
   Router,
@@ -128,11 +127,11 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
       profile_idA: profileA.id,
       profile_idB: profileB.id,
     }).toPromise()
-    .then(() => this.dispatchMessage('Linked'))
-    .catch((error) => {
-      console.error(error);
-      this.dispatchError('Failed to link accounts.');
-    });
+      .then(() => this.dispatchMessage('Linked'))
+      .catch((error) => {
+        console.error(error);
+        this.dispatchError('Failed to link accounts.');
+      });
   }
 
   public openLinkAccountsDialog(): void {

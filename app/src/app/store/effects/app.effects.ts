@@ -34,9 +34,9 @@ export class AppEffects {
           this.router.navigate([action.route], action.data)
             .then(() => action.actionToPerformAfter && this.store.dispatch(action.actionToPerformAfter))
         )
-        .pipe(
-          catchError(errorCatcher(`Failed to navigate to ${action.route}.`))
-        )
+          .pipe(
+            catchError(errorCatcher(`Failed to navigate to ${action.route}.`))
+          )
       ),
       tap(() => this.store.dispatch(finishLoading())),
     ),

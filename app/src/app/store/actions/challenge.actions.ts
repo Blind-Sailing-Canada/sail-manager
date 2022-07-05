@@ -46,4 +46,4 @@ export const deleteChallengePicture = createAction(
 export const postChallengeComment = createAction(
   CHALLENGE_ACTION_TYPES.POST_COMMENT, props<{ challenge_id: string; comment: Partial<Comment>; notify?: boolean }>());
 export const deleteChallengeComment = createAction(
-    CHALLENGE_ACTION_TYPES.DELETE_COMMENT, props<{ challenge_id: string; comment_id: string; notify?: boolean }>());
+  CHALLENGE_ACTION_TYPES.DELETE_COMMENT, props<{ challenge_id: string; comment_id: string; notify?: boolean }>());

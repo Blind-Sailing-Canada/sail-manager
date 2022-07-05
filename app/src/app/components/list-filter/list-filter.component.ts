@@ -44,7 +44,7 @@ export class ListFilterComponent implements AfterViewInit, OnDestroy {
         map(text => text ? text.trim() : ''),
       );
 
-      typeAhead
+    typeAhead
       .subscribe((filterText: string) => {
         this.filter.emit(filterText);
       });

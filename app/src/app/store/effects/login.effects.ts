@@ -57,14 +57,14 @@ export class LoginEffects {
         ofType(putToken),
         mergeMap(
           (action) => this.authService
-              .login(action.token)
-              .pipe(
-                mergeMap(profile => of(
-                  putProfile({ profile, profile_id: profile.id, }),
-                  loggedIn({ token: action.token, user: profile }),
-                )),
-                catchError(errorCatcher('Failed to login.'))
-              )
+            .login(action.token)
+            .pipe(
+              mergeMap(profile => of(
+                putProfile({ profile, profile_id: profile.id, }),
+                loggedIn({ token: action.token, user: profile }),
+              )),
+              catchError(errorCatcher('Failed to login.'))
+            )
         ),
       ),
   );

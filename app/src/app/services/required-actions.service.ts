@@ -14,8 +14,8 @@ export class RequiredActionsService {
 
   public fetchNewRequiredActionsForUser(user_id: string): Observable<RequiredAction[]> {
     return this.http
-    .get<RequiredAction[]>(
-      `${this.API_URL}/my-required-actions`);
+      .get<RequiredAction[]>(
+        `${this.API_URL}/my-required-actions`);
   }
 
   public completeRequiredAction(action_id: string): Observable<RequiredAction> {

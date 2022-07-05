@@ -59,26 +59,26 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CHECKLISTS, ({ all: sailChecklists }) => {
       const ids = Object.keys(sailChecklists || {});
       const checklistsMap = ids
-      .map(id => this.sailChecklists[id])
-      .filter(checklist => checklist.sail_id !== this.excludeSailId)
-      .filter(checklist => this.boat_id ? checklist.sail.boat_id === this.boat_id : true)
-      .reduce((red, checklist) => {
-        if (!red[checklist.sail_id]) {
-          red[checklist.sail_id] = {
-            sail: checklist.sail,
-            afterChecklist: null,
-            beforeChecklist: null
-          };
-        }
+        .map(id => this.sailChecklists[id])
+        .filter(checklist => checklist.sail_id !== this.excludeSailId)
+        .filter(checklist => this.boat_id ? checklist.sail.boat_id === this.boat_id : true)
+        .reduce((red, checklist) => {
+          if (!red[checklist.sail_id]) {
+            red[checklist.sail_id] = {
+              sail: checklist.sail,
+              afterChecklist: null,
+              beforeChecklist: null
+            };
+          }
 
-        if (checklist.checklist_type === SailChecklistType.Before) {
-          red[checklist.sail_id].beforeChecklist = checklist;
-        } else if (checklist.checklist_type === SailChecklistType.After) {
-          red[checklist.sail_id].afterChecklist = checklist;
-        }
+          if (checklist.checklist_type === SailChecklistType.Before) {
+            red[checklist.sail_id].beforeChecklist = checklist;
+          } else if (checklist.checklist_type === SailChecklistType.After) {
+            red[checklist.sail_id].afterChecklist = checklist;
+          }
 
-        return red;
-      }, {} as SailChecklistsMap);
+          return red;
+        }, {} as SailChecklistsMap);
 
       this.checklists = Object.values(checklistsMap);
     });

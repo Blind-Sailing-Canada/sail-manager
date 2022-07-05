@@ -40,7 +40,7 @@ export const uploadMaintenancePicture = createAction(
 export const uploadProfilePicture = createAction(
   CDN_ACTION_TYPES.UPLOAD_PROFILE_PICTURE, props<{ file: File; profile_id: string; notify?: boolean }>());
 export const uploadDocument = createAction(
-    CDN_ACTION_TYPES.UPLOAD_DOCUMENT, props<{ file: File; document_id: string; notify?: boolean }>());
+  CDN_ACTION_TYPES.UPLOAD_DOCUMENT, props<{ file: File; document_id: string; notify?: boolean }>());
 export const uploadProgress = createAction(CDN_ACTION_TYPES.UPLOAD_PROGRESS, props<{ fileName: string; progress: number }>());
 export const uploadError = createAction(CDN_ACTION_TYPES.UPLOAD_ERROR, props<{ fileName: string; message: string; error?: Error }>());
 export const deleteError = createAction(CDN_ACTION_TYPES.DELETE_ERROR, props<{ filePath: string; message: string; error?: Error }>());

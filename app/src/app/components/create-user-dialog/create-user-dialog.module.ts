@@ -6,14 +6,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CreateUserDialogComponent } from './create-user-dialog.component';
 
 @NgModule({
-    declarations: [
-        CreateUserDialogComponent,
-    ],
-    imports: [
-        AngularMaterialModule,
-        CommonModule,
-        ListFilterModule,
-        ReactiveFormsModule,
-    ]
+  declarations: [
+    CreateUserDialogComponent,
+  ],
+  imports: [
+    AngularMaterialModule,
+    CommonModule,
+    ListFilterModule,
+    ReactiveFormsModule,
+  ]
 })
 export class CreateUserDialogModule { }

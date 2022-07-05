@@ -77,7 +77,7 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
   public fetchRecentInProgressRequests(boat_id: string, notify: boolean = false): void {
     if (boat_id) {
       this
-      .fetchBoatMaintenances(`filter=boat_id||$eq||${boat_id}&filter=status||$eq||${BoatMaintenanceStatus.InProgress}&limit=10`, notify);
+        .fetchBoatMaintenances(`filter=boat_id||$eq||${boat_id}&filter=status||$eq||${BoatMaintenanceStatus.InProgress}&limit=10`, notify);
     } else {
       this.fetchBoatMaintenances(`filter=status||$eq||${BoatMaintenanceStatus.InProgress}&limit=10`, notify);
     }

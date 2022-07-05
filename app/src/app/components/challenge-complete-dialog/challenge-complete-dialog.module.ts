@@ -5,13 +5,13 @@ import { ChallengeCompleteDialogComponent } from './challenge-complete-dialog.co
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [
-        ChallengeCompleteDialogComponent,
-    ],
-    imports: [
-        AngularMaterialModule,
-        CommonModule,
-        FormsModule
-    ]
+  declarations: [
+    ChallengeCompleteDialogComponent,
+  ],
+  imports: [
+    AngularMaterialModule,
+    CommonModule,
+    FormsModule
+  ]
 })
 export class ChallengeCompleteDialogModule { }

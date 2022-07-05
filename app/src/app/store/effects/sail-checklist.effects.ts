@@ -112,7 +112,7 @@ export class SailChecklistEffects {
               errorCatcher(
                 `Failed to fetch sail checklist: ${action.sail_checklist_id}`,
                 [putSailChecklist({ checklist: null, sail_checklist_id: action.sail_checklist_id })],
-                )),
+              )),
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

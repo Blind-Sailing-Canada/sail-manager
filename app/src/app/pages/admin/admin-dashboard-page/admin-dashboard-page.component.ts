@@ -35,8 +35,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
 import { ProfileStatus } from '../../../../../../api/src/types/profile/profile-status';
 import { CreateUserDialogComponent } from '../../../components/create-user-dialog/create-user-dialog.component';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CreateUserDialogData } from '../../../models/create-user-dialog-data.interface';
 
 @Component({

@@ -37,6 +37,6 @@ export const resetBoatMaintenances = createAction(BOAT_MAINTENANCE_ACTION_TYPES.
 export const deleteBoatMaintenanceComment = createAction(
   BOAT_MAINTENANCE_ACTION_TYPES.DELETE_COMMENT, props<{ boat_maintenance_id: string; comment_id: string; notify?: boolean }>());
 export const deleteBoatMaintenancePicture = createAction(
-    BOAT_MAINTENANCE_ACTION_TYPES.DELETE_PICTURE, props<{ boat_maintenance_id: string; picture_id: string; notify?: boolean }>());
+  BOAT_MAINTENANCE_ACTION_TYPES.DELETE_PICTURE, props<{ boat_maintenance_id: string; picture_id: string; notify?: boolean }>());
 export const postBoatMaintenancePictures = createAction(
   BOAT_MAINTENANCE_ACTION_TYPES.POST_PICTURES, props<{ boat_maintenance_id: string; pictures: Partial<Media>[]; notify?: boolean }>());

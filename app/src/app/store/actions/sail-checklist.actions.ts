@@ -27,8 +27,8 @@ export const resetSailChecklists = createAction(SAIL_CHECKLIST_ACTION_TYPES.RESE
 export const updateSailChecklist = createAction(
   SAIL_CHECKLIST_ACTION_TYPES.UPDATE_ONE,
   props<{ sail_checklist_id: string; checklist: Partial<SailChecklist>; updateActions?: TypedAction<any>[] }>(),
-  );
+);
 export const updateSailChecklists = createAction(
-    SAIL_CHECKLIST_ACTION_TYPES.UPDATE_SAIL_CHECKLISTS,
-    props<{ sail_id: string; checklistsData; notify?: boolean }>(),
-  );
+  SAIL_CHECKLIST_ACTION_TYPES.UPDATE_SAIL_CHECKLISTS,
+  props<{ sail_id: string; checklistsData; notify?: boolean }>(),
+);

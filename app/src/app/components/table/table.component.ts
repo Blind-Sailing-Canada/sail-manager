@@ -3,7 +3,7 @@ import {
   EventEmitter,
   Input,
   Output
-  } from '@angular/core';
+} from '@angular/core';
 
 @Component({
   selector: 'app-table',
