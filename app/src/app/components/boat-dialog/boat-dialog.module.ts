@@ -6,17 +6,14 @@ import { TableModule } from '../table/table.module';
 import { BoatTableModule } from '../boat-table/boat-table.module';
 
 @NgModule({
-  declarations: [
-    BoatDialogComponent,
-  ],
-  entryComponents: [
-    BoatDialogComponent,
-  ],
-  imports: [
-    AngularMaterialModule,
-    BoatTableModule,
-    CommonModule,
-    TableModule,
-  ]
+    declarations: [
+        BoatDialogComponent,
+    ],
+    imports: [
+        AngularMaterialModule,
+        BoatTableModule,
+        CommonModule,
+        TableModule,
+    ]
 })
 export class BoatDialogModule { }

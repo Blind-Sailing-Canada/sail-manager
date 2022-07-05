@@ -5,16 +5,13 @@ import { AddGuestDialogComponent } from './add-guest-dialog.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    AddGuestDialogComponent,
-  ],
-  entryComponents: [
-    AddGuestDialogComponent,
-  ],
-  imports: [
-    AngularMaterialModule,
-    CommonModule,
-    FormsModule,
-  ]
+    declarations: [
+        AddGuestDialogComponent,
+    ],
+    imports: [
+        AngularMaterialModule,
+        CommonModule,
+        FormsModule,
+    ]
 })
 export class AddGuestDialogModule { }

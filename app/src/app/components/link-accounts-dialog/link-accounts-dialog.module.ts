@@ -6,17 +6,14 @@ import { LinkAccountsDialogComponent } from './link-accounts-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    LinkAccountsDialogComponent,
-  ],
-  entryComponents: [
-    LinkAccountsDialogComponent,
-  ],
-  imports: [
-    AngularMaterialModule,
-    CommonModule,
-    ListFilterModule,
-    ReactiveFormsModule,
-  ]
+    declarations: [
+        LinkAccountsDialogComponent,
+    ],
+    imports: [
+        AngularMaterialModule,
+        CommonModule,
+        ListFilterModule,
+        ReactiveFormsModule,
+    ]
 })
 export class LinkAccountsDialogModule { }

@@ -5,16 +5,13 @@ import { SailNotificationDialogComponent } from './sail-notification-dialog.comp
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    SailNotificationDialogComponent,
-  ],
-  entryComponents: [
-    SailNotificationDialogComponent,
-  ],
-  imports: [
-    AngularMaterialModule,
-    CommonModule,
-    ReactiveFormsModule,
-  ]
+    declarations: [
+        SailNotificationDialogComponent,
+    ],
+    imports: [
+        AngularMaterialModule,
+        CommonModule,
+        ReactiveFormsModule,
+    ]
 })
 export class SailNotificationDialogModule { }

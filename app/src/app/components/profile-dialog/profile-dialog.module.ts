@@ -4,11 +4,10 @@ import { ProfileDialogComponent } from './profile-dialog.component';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 
 @NgModule({
-  declarations: [ProfileDialogComponent],
-  entryComponents: [ProfileDialogComponent],
-  imports: [
-    AngularMaterialModule,
-    CommonModule,
-  ]
+    declarations: [ProfileDialogComponent],
+    imports: [
+        AngularMaterialModule,
+        CommonModule,
+    ]
 })
 export class ProfileDialogModule { }

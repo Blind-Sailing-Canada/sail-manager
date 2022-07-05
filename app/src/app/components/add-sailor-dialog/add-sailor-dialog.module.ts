@@ -5,16 +5,13 @@ import { AddSailorDialogComponent } from './add-sailor-dialog.component';
 import { ListFilterModule } from '../../components/list-filter/list-filter.module';
 
 @NgModule({
-  declarations: [
-    AddSailorDialogComponent,
-  ],
-  entryComponents: [
-    AddSailorDialogComponent,
-  ],
-  imports: [
-    AngularMaterialModule,
-    CommonModule,
-    ListFilterModule,
-  ]
+    declarations: [
+        AddSailorDialogComponent,
+    ],
+    imports: [
+        AngularMaterialModule,
+        CommonModule,
+        ListFilterModule,
+    ]
 })
 export class AddSailorDialogModule { }
