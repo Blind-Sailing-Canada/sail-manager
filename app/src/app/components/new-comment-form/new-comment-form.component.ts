@@ -8,8 +8,8 @@ import {
   Output,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
 } from '@angular/forms';
 import {
   Comment
@@ -25,11 +25,11 @@ export class NewCommentFormComponent implements OnDestroy {
 
   @Input() currentUser: User;
   @Output() postNewComment: EventEmitter<Comment> = new EventEmitter<Comment>();
-  public form: FormGroup;
+  public form: UntypedFormGroup;
 
   private active = true;
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+  constructor(@Inject(UntypedFormBuilder) private fb: UntypedFormBuilder) {
     this.buildForm();
   }
 

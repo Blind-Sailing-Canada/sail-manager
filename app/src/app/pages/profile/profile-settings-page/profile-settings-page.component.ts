@@ -5,8 +5,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -24,11 +24,11 @@ import { Setting } from '../../../../../../api/src/types/settings/setting';
 })
 export class ProfileSettingsPageComponent extends BasePageComponent implements OnInit {
 
-  public form: FormGroup;
+  public form: UntypedFormGroup;
 
   constructor(
     @Inject(Store) store: Store<any>,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(SettingService) private settingsService: SettingService,
   ) {
     super(store);

@@ -4,8 +4,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -34,7 +34,7 @@ import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-req
 })
 export class SailRequestEditPageComponent extends SailRequestBasePageComponent implements OnInit {
 
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public requestStatusValues = Object.values(SailRequestStatus);
   public sailCategories: SailCategory[] = [];
 
@@ -42,7 +42,7 @@ export class SailRequestEditPageComponent extends SailRequestBasePageComponent i
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route, router);
   }

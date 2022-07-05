@@ -15,9 +15,9 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -59,18 +59,18 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   public availableMembers: Profile[] = [];
   public availableSkippers: Profile[] = [];
   public creatingNewSail = false;
-  public sailEndDateTimeForm: FormGroup;
-  public sailForm: FormGroup;
+  public sailEndDateTimeForm: UntypedFormGroup;
+  public sailForm: UntypedFormGroup;
   public sail_id: string;
   public sail_request_id: string;
-  public sailStartDateTimeForm: FormGroup;
+  public sailStartDateTimeForm: UntypedFormGroup;
   public sailCategories: SailCategory[] = [];
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(MomentService) private momentService: MomentService,
     @Inject(SailService) private sailsService: SailService,
   ) {
@@ -386,11 +386,11 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     const currentDate = new Date();
 
     this.sailStartDateTimeForm = this.fb.group({
-      date: new FormControl(currentDate.getDate(), Validators.required),
-      month: new FormControl(currentDate.getMonth(), Validators.required),
-      year: new FormControl(currentDate.getFullYear(), Validators.required),
-      hour: new FormControl(currentDate.getHours(), Validators.required),
-      minute: new FormControl(currentDate.getMinutes(), Validators.required),
+      date: new UntypedFormControl(currentDate.getDate(), Validators.required),
+      month: new UntypedFormControl(currentDate.getMonth(), Validators.required),
+      year: new UntypedFormControl(currentDate.getFullYear(), Validators.required),
+      hour: new UntypedFormControl(currentDate.getHours(), Validators.required),
+      minute: new UntypedFormControl(currentDate.getMinutes(), Validators.required),
     });
 
     this.sailStartDateTimeForm.valueChanges.subscribe((value) => {
@@ -416,11 +416,11 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     });
 
     this.sailEndDateTimeForm = this.fb.group({
-      date: new FormControl(currentDate.getDate(), Validators.required),
-      month: new FormControl(currentDate.getMonth(), Validators.required),
-      year: new FormControl(currentDate.getFullYear(), Validators.required),
-      hour: new FormControl(currentDate.getHours(), Validators.required),
-      minute: new FormControl(currentDate.getMinutes(), Validators.required),
+      date: new UntypedFormControl(currentDate.getDate(), Validators.required),
+      month: new UntypedFormControl(currentDate.getMonth(), Validators.required),
+      year: new UntypedFormControl(currentDate.getFullYear(), Validators.required),
+      hour: new UntypedFormControl(currentDate.getHours(), Validators.required),
+      minute: new UntypedFormControl(currentDate.getMinutes(), Validators.required),
     });
 
     this.sailEndDateTimeForm.valueChanges.subscribe((value) => {
@@ -432,7 +432,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     this.sailForm = this.fb.group({
       category: this.fb.control(''),
-      name: new FormControl('', [
+      name: new UntypedFormControl('', [
         (control) => {
           const name = control.value.trim();
           const valid = control.pristine || !!name;
@@ -440,8 +440,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
         },
         this.sail_id ? Validators.required : null,
       ].filter(Boolean)),
-      description: new FormControl({ disabled: !!this.sail_request_id, value: undefined }),
-      start_at: new FormControl(undefined, [
+      description: new UntypedFormControl({ disabled: !!this.sail_request_id, value: undefined }),
+      start_at: new UntypedFormControl(undefined, [
         Validators.required,
         (control) => {
           if (!this.sailForm) {
@@ -464,7 +464,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
           return valid ? null : { 'Start date cannot be in the past!': control.value };
         },
       ]),
-      end_at: new FormControl(undefined, [
+      end_at: new UntypedFormControl(undefined, [
         Validators.required,
         ((control) => {
           if (!this.sailForm) {
@@ -482,8 +482,8 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
           return valid ? null : { 'End date must be greater than start date!': control.value };
         }).bind(this),
       ]),
-      boat_id: new FormControl(undefined, Validators.required),
-      max_occupancy: new FormControl(undefined, Validators.required),
+      boat_id: new UntypedFormControl(undefined, Validators.required),
+      max_occupancy: new UntypedFormControl(undefined, Validators.required),
     });
 
     this.sailForm

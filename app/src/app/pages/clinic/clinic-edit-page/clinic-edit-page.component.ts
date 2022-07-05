@@ -6,8 +6,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -37,7 +37,7 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
   public clinic: Clinic;
   public clinic_id: string;
   public filteredInstructors: Profile[] = [];
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public instructors: Profile[] = [];
   public icons: string[] = [];
   private instructorFilterText = '';
@@ -46,7 +46,7 @@ export class ClinicEditPageComponent extends BasePageComponent implements OnInit
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(HttpClient) private http: HttpClient,
   ) {
     super(store, route, router);

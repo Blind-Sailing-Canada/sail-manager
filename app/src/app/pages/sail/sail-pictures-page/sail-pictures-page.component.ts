@@ -8,9 +8,9 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -40,7 +40,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
   public allowDelete = false;
   public fileToDelete: string;
   public fileToUpload: File;
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public pictures: Media[];
   public sail: Sail;
   public sail_id: string;
@@ -51,7 +51,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(SailPicturesService) private picturesService: SailPicturesService,
     @Inject(MatDialog) dialog: MatDialog,
   ) {
@@ -96,7 +96,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
         }
 
         if (cdn[fileName].state === CDN_ACTION_STATE.UPLOADED) {
-          const picturesForm = this.form.get('pictures') as FormArray;
+          const picturesForm = this.form.get('pictures') as UntypedFormArray;
           this.uploadProgress = 0;
 
           picturesForm
@@ -123,7 +123,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
 
       if (this.fileToDelete) {
         if (cdn[this.fileToDelete].state === CDN_ACTION_STATE.DELETED) {
-          const picturesForm = this.form.get('pictures') as FormArray;
+          const picturesForm = this.form.get('pictures') as UntypedFormArray;
 
           const index = picturesForm.controls.findIndex(control => control.get('url').value === this.fileToDelete);
 
@@ -186,7 +186,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
         .pipe(take(1))
         .subscribe((sailPictures) => {
           this.pictures = sailPictures;
-          (this.form.get('pictures') as FormArray).clear();
+          (this.form.get('pictures') as UntypedFormArray).clear();
           this.form.updateValueAndValidity();
           this.form.markAsPristine();
         });

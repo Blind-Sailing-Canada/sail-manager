@@ -5,9 +5,9 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -32,15 +32,15 @@ import { BoatInstructionsBasePageComponent } from '../boat-instructions-base-pag
 })
 export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageComponent implements OnInit {
 
-  public departureInstructionsForm: FormGroup;
-  public arrivalInstructionsForm: FormGroup;
+  public departureInstructionsForm: UntypedFormGroup;
+  public arrivalInstructionsForm: UntypedFormGroup;
   public savingForm = false;
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route, router);
     this.buildForm();
@@ -73,36 +73,36 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
 
   public addDepartureInstruction(): void {
     const newInstruction = this.createNewInstruction();
-    (this.departureInstructionsForm.controls.instructions as FormArray).push(newInstruction);
+    (this.departureInstructionsForm.controls.instructions as UntypedFormArray).push(newInstruction);
     this.departureInstructionsForm.markAsDirty();
     this.departureInstructionsForm.updateValueAndValidity();
   }
 
   public removeDepartureInstruction(index: number): void {
-    (this.departureInstructionsForm.controls.instructions as FormArray).removeAt(index);
+    (this.departureInstructionsForm.controls.instructions as UntypedFormArray).removeAt(index);
     this.departureInstructionsForm.markAsDirty();
     this.departureInstructionsForm.updateValueAndValidity();
   }
 
   public removeArrivalInstruction(index: number): void {
-    (this.arrivalInstructionsForm.controls.instructions as FormArray).removeAt(index);
+    (this.arrivalInstructionsForm.controls.instructions as UntypedFormArray).removeAt(index);
     this.arrivalInstructionsForm.markAsDirty();
     this.arrivalInstructionsForm.updateValueAndValidity();
   }
 
   public addArrivalInstruction(): void {
     const newInstruction = this.createNewInstruction();
-    (this.arrivalInstructionsForm.controls.instructions as FormArray).push(newInstruction);
+    (this.arrivalInstructionsForm.controls.instructions as UntypedFormArray).push(newInstruction);
     this.arrivalInstructionsForm.markAsDirty();
     this.arrivalInstructionsForm.updateValueAndValidity();
   }
 
   public get departureInstructionsControls(): AbstractControl[] {
-    return (this.departureInstructionsForm.controls.instructions as FormArray).controls;
+    return (this.departureInstructionsForm.controls.instructions as UntypedFormArray).controls;
   }
 
   public get arrivalInstructionsControls(): AbstractControl[] {
-    return (this.arrivalInstructionsForm.controls.instructions as FormArray).controls;
+    return (this.arrivalInstructionsForm.controls.instructions as UntypedFormArray).controls;
   }
 
   public deleteFile(filePath: string): void {
@@ -148,7 +148,7 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
 
   private updateForm(departure: BoatInstructions, arrival: BoatInstructions): void {
     if (departure) {
-      const departures = this.departureInstructionsForm.controls.instructions as FormArray;
+      const departures = this.departureInstructionsForm.controls.instructions as UntypedFormArray;
 
       while (departures.length) {
         departures.removeAt(0);
@@ -181,7 +181,7 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
     }
 
     if (arrival) {
-      const arrivals = this.arrivalInstructionsForm.controls.instructions as FormArray;
+      const arrivals = this.arrivalInstructionsForm.controls.instructions as UntypedFormArray;
 
       while (arrivals.length) {
         arrivals.removeAt(0);
@@ -213,7 +213,7 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
     });
   }
 
-  private createNewInstruction(): FormGroup {
+  private createNewInstruction(): UntypedFormGroup {
     return this.fb.group({
       title: this.fb.control(undefined, Validators.required),
       description: this.fb.control(undefined, Validators.required),

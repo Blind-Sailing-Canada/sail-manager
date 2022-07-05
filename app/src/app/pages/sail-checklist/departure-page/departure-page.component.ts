@@ -3,7 +3,7 @@ import {
   Inject,
 } from '@angular/core';
 import {
-  FormBuilder,
+  UntypedFormBuilder,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -31,7 +31,7 @@ export class DeparturePageComponent extends SailChecklistBasePageComponent {
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) fb: FormBuilder,
+    @Inject(UntypedFormBuilder) fb: UntypedFormBuilder,
     @Inject(MatDialog) dialog: MatDialog,
   ) {
     super(store, route, router, fb, dialog);

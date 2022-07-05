@@ -4,9 +4,9 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -37,7 +37,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class SailManifestEditPageComponent extends BasePageComponent implements OnInit {
 
-  public manifestForm: FormGroup;
+  public manifestForm: UntypedFormGroup;
   public availableSailors: Profile[] = [];
   public usersOnSail: Profile[] = [];
   public SAILOR_ROLES = Object.entries(SailorRole);
@@ -48,7 +48,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(SailManifestService) private sailManifestService: SailManifestService,
     public dialog: MatDialog,
   ) {
@@ -100,7 +100,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
 
 
   public get manifestControls() {
-    return (this.manifestForm.controls.manifest as FormArray).controls as FormGroup[];
+    return (this.manifestForm.controls.manifest as UntypedFormArray).controls as UntypedFormGroup[];
   }
 
   public addGuest(name: string, guest_of_id: string): void {
@@ -112,7 +112,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   }
 
   public addSailor(sailor: Partial<Profile>, role: SailorRole = SailorRole.Sailor, guest_of_id?: string): void {
-    (this.manifestForm.controls.manifest as FormArray).push(this.fb.group({
+    (this.manifestForm.controls.manifest as UntypedFormArray).push(this.fb.group({
       guest_of_id: this.fb.control(guest_of_id),
       id: this.fb.control(undefined),
       person_name: this.fb.control(sailor.name, Validators.required),
@@ -134,7 +134,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   }
 
   public removeSailor(index: number): void {
-    (this.manifestForm.controls.manifest as FormArray).removeAt(index);
+    (this.manifestForm.controls.manifest as UntypedFormArray).removeAt(index);
     this.manifestForm.updateValueAndValidity();
     this.manifestForm.markAsDirty();
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { BoatChecklist } from '../../../../../api/src/types/boat-checklist/boat-checklist';
 import { BoatChecklistItemType } from '../../../../../api/src/types/boat-checklist/boat-checklist-item-type';
 import { SelectOption } from '../../models/select-option';
@@ -11,7 +11,7 @@ import { SelectOption } from '../../models/select-option';
 })
 export class ChecklistFormComponent implements OnChanges{
 
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() when: string;
   @Input() boatChecklist: BoatChecklist;
 
@@ -29,8 +29,8 @@ export class ChecklistFormComponent implements OnChanges{
     }, {}) as Map<string, SelectOption[]>;
   }
 
-  public get checklistForm(): FormGroup {
-    return this.form.controls.checklist as FormGroup;
+  public get checklistForm(): UntypedFormGroup {
+    return this.form.controls.checklist as UntypedFormGroup;
   }
 
   private asSelectOptions(options: string): SelectOption[] {

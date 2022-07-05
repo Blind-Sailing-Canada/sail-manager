@@ -2,7 +2,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { SelectOption } from '../../../models/select-option';
 
 @Component({
@@ -13,7 +13,7 @@ import { SelectOption } from '../../../models/select-option';
 export class FormSelectInputComponent {
   @Input() public ariaLabel?: string;
   @Input() public controlName: string;
-  @Input() public form: FormGroup;
+  @Input() public form: UntypedFormGroup;
   @Input() public label: string;
   @Input() public options: SelectOption[];
 }

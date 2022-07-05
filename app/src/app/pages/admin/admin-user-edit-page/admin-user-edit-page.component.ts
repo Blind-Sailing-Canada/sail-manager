@@ -4,8 +4,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -41,7 +41,7 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
 
   public UserAccessFields = UserAccessFields;
   public profileAccess: UserAccess = {} as UserAccess;
-  public profileForm: FormGroup;
+  public profileForm: UntypedFormGroup;
   public profileRoles = ProfileRole;
   public profileStatus = ProfileStatus;
   public requiredAction: RequiredAction = null;
@@ -51,7 +51,7 @@ export class AdminUserEditPageComponent extends BasePageComponent implements OnI
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route);
   }

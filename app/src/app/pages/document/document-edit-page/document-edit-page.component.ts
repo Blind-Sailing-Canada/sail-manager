@@ -4,8 +4,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -30,7 +30,7 @@ export class DocumentEditPageComponent extends DocumentBasePageComponent impleme
 
   public document: Document;
   public document_id: string;
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public documentInputId = 'documentFileInput';
 
   private fileToUpload: File;
@@ -39,7 +39,7 @@ export class DocumentEditPageComponent extends DocumentBasePageComponent impleme
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route, router);
     this.buildForm();

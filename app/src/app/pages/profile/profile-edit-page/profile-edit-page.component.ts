@@ -4,9 +4,9 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -35,7 +35,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 export class ProfileEditPageComponent extends BasePageComponent implements OnInit {
 
   public ProfileStatus = ProfileStatus;
-  public profileForm: FormGroup;
+  public profileForm: UntypedFormGroup;
   public profilePictureInputId = 'profilePictureInput';
   public totalFormSteps = 5;
 
@@ -47,7 +47,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder) {
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder) {
     super(store, route, router);
   }
 
@@ -175,11 +175,11 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
 
   private buildForm(): void {
     this.profileForm = this.fb.group({
-      name: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-      email: new FormControl(null, [Validators.required, Validators.maxLength(150)]),
-      phone: new FormControl(null),
-      photo: new FormControl(null),
-      bio: new FormControl(null, Validators.maxLength(500)),
+      name: new UntypedFormControl(null, [Validators.required, Validators.maxLength(100)]),
+      email: new UntypedFormControl(null, [Validators.required, Validators.maxLength(150)]),
+      phone: new UntypedFormControl(null),
+      photo: new UntypedFormControl(null),
+      bio: new UntypedFormControl(null, Validators.maxLength(500)),
     });
   }
 

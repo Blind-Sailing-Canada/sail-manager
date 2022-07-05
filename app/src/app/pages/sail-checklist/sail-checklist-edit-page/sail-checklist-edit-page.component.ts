@@ -2,7 +2,7 @@ import {
   Component,
   Inject,
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import {
   ActivatedRoute,
   Router,
@@ -22,7 +22,7 @@ export class SailChecklistEditPageComponent extends SailChecklistBasePageCompone
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) fb: FormBuilder,
+    @Inject(UntypedFormBuilder) fb: UntypedFormBuilder,
   ) {
     super(store, route, router, fb);
 

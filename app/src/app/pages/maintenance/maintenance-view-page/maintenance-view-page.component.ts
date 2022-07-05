@@ -3,7 +3,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
   ActivatedRoute,
@@ -46,14 +46,14 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
   public allowDelete = false;
   public maintenancePictureInput = 'maintenance_picture_input';
   public uploadProgress = 0;
-  public picturesForm: FormGroup;
+  public picturesForm: UntypedFormGroup;
 
   constructor(
     @Inject(MatDialog) dialog: MatDialog,
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route, router, dialog);
     this.buildForm();
@@ -63,7 +63,7 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
     this.boat_maintenance_id = this.route.snapshot.params.id;
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.BOAT_MAINTENANCES, () => {
-      (this.picturesForm.get('pictures') as FormArray).clear();
+      (this.picturesForm.get('pictures') as UntypedFormArray).clear();
       this.picturesForm.reset();
     });
 
@@ -95,7 +95,7 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
         }
 
         if (cdn[fileName].state === CDN_ACTION_STATE.UPLOADED) {
-          const picturesForm = this.picturesForm.get('pictures') as FormArray;
+          const picturesForm = this.picturesForm.get('pictures') as UntypedFormArray;
 
           picturesForm
             .push(this.fb.group({
@@ -122,7 +122,7 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
 
       if (this.fileToDelete) {
         if (cdn[this.fileToDelete].state === CDN_ACTION_STATE.DELETED) {
-          const picturesForm = this.picturesForm.get('pictures') as FormArray;
+          const picturesForm = this.picturesForm.get('pictures') as UntypedFormArray;
 
           const index = picturesForm.controls.findIndex(control => control.get('url').value === this.fileToDelete);
 

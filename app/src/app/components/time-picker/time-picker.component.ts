@@ -2,7 +2,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-time-picker',
@@ -13,7 +13,7 @@ export class TimePickerComponent {
 
   @Input() ariaLabel: string;
   @Input() controlName: string;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() id: string;
   @Input() placeholder = '';
   @Input() required: boolean;

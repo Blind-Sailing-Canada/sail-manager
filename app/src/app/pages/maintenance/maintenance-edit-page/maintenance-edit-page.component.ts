@@ -5,9 +5,9 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -35,7 +35,7 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
 
   public boat_maintenance_id: string;
   public creatingNewMaintenance: boolean;
-  public maintenanceForm: FormGroup;
+  public maintenanceForm: UntypedFormGroup;
   public maintenanceStatus = BoatMaintenanceStatus;
   public readonly maintenancePictureInputId = 'maintenancePictureInput';
   public totalFormSteps = 4;
@@ -44,7 +44,7 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route, router);
   }
@@ -93,7 +93,7 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
       return [];
     }
 
-    return (this.maintenanceForm.controls.pictures as FormArray).controls;
+    return (this.maintenanceForm.controls.pictures as UntypedFormArray).controls;
   }
 
   protected get maintenance(): BoatMaintenance {
@@ -151,7 +151,7 @@ export class MaintenanceEditPageComponent extends BasePageComponent implements O
     const request = this.maintenance;
     this.maintenanceForm.patchValue(request);
 
-    const pictures = (this.maintenanceForm.controls.pictures as FormArray);
+    const pictures = (this.maintenanceForm.controls.pictures as UntypedFormArray);
 
     while (pictures?.length) {
       pictures.removeAt(0);

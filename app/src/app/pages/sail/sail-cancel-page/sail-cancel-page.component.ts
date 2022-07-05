@@ -5,9 +5,9 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -24,13 +24,13 @@ import { BasePageComponent } from '../../base-page/base-page.component';
   styleUrls: ['./sail-cancel-page.component.css']
 })
 export class SailCancelPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
-  public sailCancelForm: FormGroup;
+  public sailCancelForm: UntypedFormGroup;
   public sail_id: string;
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route);
   }
@@ -76,7 +76,7 @@ export class SailCancelPageComponent extends BasePageComponent implements OnInit
 
   private buildForm(): void {
     this.sailCancelForm = this.fb.group({
-      cancel_reason: new FormControl(undefined, Validators.required),
+      cancel_reason: new UntypedFormControl(undefined, Validators.required),
     });
 
   }

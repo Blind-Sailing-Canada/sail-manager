@@ -4,8 +4,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
 } from '@angular/forms';
 import {
   ActivatedRoute,
@@ -27,7 +27,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class FeedbackSubmitPageComponent extends BasePageComponent implements OnInit {
 
-  public submitFeedbackForm: FormGroup;
+  public submitFeedbackForm: UntypedFormGroup;
   public feedbackRatingKeys = Object.keys(SailFeedbackRating).filter(key => isNaN(Number(key)));
   public feedbackRatingValues = Object.values(SailFeedbackRating).filter(key => !isNaN(Number(key)));
   public FEEDBACK_RATING = SailFeedbackRating;
@@ -36,7 +36,7 @@ export class FeedbackSubmitPageComponent extends BasePageComponent implements On
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route, router);
     this.buildForm();

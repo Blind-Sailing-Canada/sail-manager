@@ -4,9 +4,9 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -54,8 +54,8 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
   public challenge: Challenge;
   public challengeActiveParticipants: ChallengeParticipant[];
   public challengeFinishedParticipants: ChallengeParticipant[];
-  public picturesForm: FormGroup;
-  public notesForm: FormGroup;
+  public picturesForm: UntypedFormGroup;
+  public notesForm: UntypedFormGroup;
   public fileToDelete: string;
   public fileToUpload: File;
   public pictures: Media[];
@@ -68,7 +68,7 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
     @Inject(MatDialog) dialog: MatDialog,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route, router, dialog);
     this.buildForm();
@@ -98,7 +98,7 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
 
       this.notesForm = this.fb.group(notesControls);
 
-      (this.picturesForm.get('pictures') as FormArray).clear();
+      (this.picturesForm.get('pictures') as UntypedFormArray).clear();
       this.picturesForm.reset();
     });
 
@@ -122,7 +122,7 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
         }
 
         if (cdn[fileName].state === CDN_ACTION_STATE.UPLOADED) {
-          const picturesForm = this.picturesForm.get('pictures') as FormArray;
+          const picturesForm = this.picturesForm.get('pictures') as UntypedFormArray;
 
           picturesForm
             .push(this.fb.group({
@@ -148,7 +148,7 @@ export class ChallengeViewPageComponent extends BasePageComponent implements OnI
 
       if (this.fileToDelete) {
         if (cdn[this.fileToDelete].state === CDN_ACTION_STATE.DELETED) {
-          const picturesForm = this.picturesForm.get('pictures') as FormArray;
+          const picturesForm = this.picturesForm.get('pictures') as UntypedFormArray;
 
           const index = picturesForm.controls.findIndex(control => control.get('url').value === this.fileToDelete);
 

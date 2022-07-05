@@ -3,7 +3,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -17,10 +17,10 @@ import { SailNotificationDialogData } from '../../models/sail-notification-dialo
 })
 export class SailNotificationDialogComponent implements OnInit {
 
-  public form: FormGroup;
+  public form: UntypedFormGroup;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     @Inject(MatDialogRef) public dialogRef: MatDialogRef<SailNotificationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SailNotificationDialogData,
   ) { }

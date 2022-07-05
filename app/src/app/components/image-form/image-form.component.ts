@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { MediaType } from '../../../../../api/src/types/media/media-type';
 
@@ -21,7 +21,7 @@ export class ImageFormComponent {
   @Input() allowDescription = false;
   @Input() allowTitle = false;
   @Input() controlArrayName: string;
-  @Input() form: FormGroup | AbstractControl;
+  @Input() form: UntypedFormGroup | AbstractControl;
   @Input() allowDelete = false;
   @Output() deleteClick: EventEmitter<number> = new EventEmitter<number>();
   public MediaTypes = MediaType;
@@ -31,11 +31,11 @@ export class ImageFormComponent {
   }
 
   public get controlsArray(): AbstractControl[] {
-    return (this.form.get(this.controlArrayName) as FormArray).controls;
+    return (this.form.get(this.controlArrayName) as UntypedFormArray).controls;
   }
 
   public get formGroup() {
-    return this.form as FormGroup;
+    return this.form as UntypedFormGroup;
   }
 
 }

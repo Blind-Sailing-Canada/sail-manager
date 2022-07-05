@@ -3,7 +3,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -17,10 +17,10 @@ import { CreateUserDialogData } from '../../models/create-user-dialog-data.inter
 })
 export class CreateUserDialogComponent implements OnInit {
 
-  public form: FormGroup;
+  public form: UntypedFormGroup;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     @Inject(MatDialogRef) public dialogRef: MatDialogRef<CreateUserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CreateUserDialogData,
   ) { }

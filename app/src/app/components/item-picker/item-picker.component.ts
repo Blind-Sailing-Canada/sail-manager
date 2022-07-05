@@ -17,7 +17,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MatSelectionList } from '@angular/material/list';
 
 @Component({
@@ -30,7 +30,7 @@ export class ItemPickerComponent implements OnChanges, AfterViewInit, OnDestroy 
   @Input() public controlName: string;
   @Input() public displayLimit = 4;
   @Input() public displayProperty = 'name';
-  @Input() public form: FormGroup;
+  @Input() public form: UntypedFormGroup;
   @Input() public itemType: string;
   @Input() public items = {};
   @Input() public max = 1;

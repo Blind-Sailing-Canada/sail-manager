@@ -8,9 +8,9 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { MediaType } from '../../../../../api/src/types/media/media-type';
 import { ICDNState } from '../../models/cdn-state.interface';
@@ -26,7 +26,7 @@ export class InstructionsFormComponent implements OnChanges {
   @Input() public arrayName: string;
   @Input() public cdn: ICDNState = {};
   @Input() public controls: AbstractControl[];
-  @Input() public form: FormGroup;
+  @Input() public form: UntypedFormGroup;
   @Input() public instruction_type: string;
   @Input() public subtitle: string;
   @Output() public addMore: EventEmitter<void> = new EventEmitter<void>();
@@ -48,7 +48,7 @@ export class InstructionsFormComponent implements OnChanges {
     };
   } = {};
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) { }
+  constructor(@Inject(UntypedFormBuilder) private fb: UntypedFormBuilder) { }
 
 
   ngOnChanges(): void {
@@ -112,7 +112,7 @@ export class InstructionsFormComponent implements OnChanges {
   }
 
   public pictureControls(instruction: AbstractControl): AbstractControl[] {
-    const existingPictures = (instruction.get('media') as FormArray).controls;
+    const existingPictures = (instruction.get('media') as UntypedFormArray).controls;
     return existingPictures;
   }
 
@@ -136,7 +136,7 @@ export class InstructionsFormComponent implements OnChanges {
 
   private removePicture(url: string, index: number): void {
     this.controls.forEach((control) => {
-      const pictures = (control.get('media') as FormArray);
+      const pictures = (control.get('media') as UntypedFormArray);
       let found = true;
       while (found) {
         const picIndex = pictures.controls.findIndex(pic => pic.get('url').value === url);
@@ -160,7 +160,7 @@ export class InstructionsFormComponent implements OnChanges {
       url: this.fb.control(url),
     });
 
-    (control.get('media') as FormArray).push(newPicture);
+    (control.get('media') as UntypedFormArray).push(newPicture);
 
     control.get('media').markAsDirty();
     control.markAsDirty();

@@ -4,8 +4,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -24,13 +24,13 @@ import { STORE_SLICES } from '../../../store/store';
 })
 export class AdminSailCategoryPageComponent extends BasePageComponent implements OnInit {
 
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public sailCategories: SailCategory[] = [];
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route);
   }

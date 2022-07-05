@@ -4,8 +4,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -26,14 +26,14 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 })
 export class MaintenanceResolvePageComponent extends BasePageComponent implements OnInit {
 
-  public maintenanceResolveForm: FormGroup;
+  public maintenanceResolveForm: UntypedFormGroup;
   public boat_maintenance_id: string;
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
   ) {
     super(store, route, router);
   }

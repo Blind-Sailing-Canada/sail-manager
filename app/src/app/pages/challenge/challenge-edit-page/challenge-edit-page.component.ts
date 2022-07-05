@@ -4,8 +4,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -32,14 +32,14 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 export class ChallengeEditPageComponent extends BasePageComponent implements OnInit {
 
   public challenge_id: string;
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public ChallengeStatus = ChallengeStatus;
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(MomentService) private momentService: MomentService,
   ) {
     super(store, route, router);

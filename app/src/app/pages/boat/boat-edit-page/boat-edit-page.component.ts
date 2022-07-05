@@ -5,9 +5,9 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -40,7 +40,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 export class BoatEditPageComponent extends BasePageComponent implements OnInit {
 
   public formCurrentStep = 0;
-  public boatForm: FormGroup;
+  public boatForm: UntypedFormGroup;
   public boatStatusValues = Object.values(BoatStatus);
   public boatPictureInputId = 'boatPictureInputId';
   public fileToUpload: File;
@@ -49,7 +49,7 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(Router) router: Router,
   ) {
     super(store, route, router);
@@ -153,7 +153,7 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
       return [];
     }
 
-    return (this.boatForm.controls.pictures as FormArray).controls;
+    return (this.boatForm.controls.pictures as UntypedFormArray).controls;
   }
 
   public deletePicture(index: number): void {
@@ -201,7 +201,7 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
   }
 
   private addNewPictureToForm(url: string): void {
-    (this.boatForm.controls.pictures as FormArray).push(this.fb.group({ url, media_type: MediaType.Picture }));
+    (this.boatForm.controls.pictures as UntypedFormArray).push(this.fb.group({ url, media_type: MediaType.Picture }));
     this.boatForm.controls.pictures.updateValueAndValidity();
     this.boatForm.controls.pictures.markAsDirty();
     this.boatForm.updateValueAndValidity();
@@ -211,7 +211,7 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
     const boat = this.boat;
     this.boatForm.patchValue(boat);
 
-    const pictures = (this.boatForm.controls.pictures as FormArray);
+    const pictures = (this.boatForm.controls.pictures as UntypedFormArray);
 
     while (pictures?.length) {
       pictures.removeAt(0);
@@ -224,9 +224,9 @@ export class BoatEditPageComponent extends BasePageComponent implements OnInit {
   }
 
   private removePictureFromForm(url: string): void {
-    const existingPictures = (this.boatForm.controls.pictures as FormArray).controls;
+    const existingPictures = (this.boatForm.controls.pictures as UntypedFormArray).controls;
     const newPictures = existingPictures.filter(picture => picture.value.url !== url);
-    (this.boatForm.controls.pictures as FormArray).controls = newPictures;
+    (this.boatForm.controls.pictures as UntypedFormArray).controls = newPictures;
     this.boatForm.controls.pictures.markAsDirty();
     this.boatForm.controls.pictures.updateValueAndValidity();
     this.boatForm.markAsDirty();

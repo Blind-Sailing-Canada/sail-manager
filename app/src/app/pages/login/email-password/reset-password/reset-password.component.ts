@@ -5,8 +5,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -21,11 +21,11 @@ import { BasePageComponent } from '../../../base-page/base-page.component';
 export class ResetPasswordComponent extends BasePageComponent implements OnInit {
 
   public hide = true;
-  public form: FormGroup;
+  public form: UntypedFormGroup;
 
   constructor(
     @Inject(Store) store: Store<any>,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(FirebaseService) private firebaseService: FirebaseService,
   ) {
     super(store);

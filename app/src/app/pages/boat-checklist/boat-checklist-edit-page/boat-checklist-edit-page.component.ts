@@ -5,9 +5,9 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -31,13 +31,13 @@ import { finishLoading, startLoading } from '../../../store/actions/app.actions'
 })
 export class BoatChecklistEditPageComponent extends BasePageComponent implements OnInit {
 
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public BoatChecklistItemType = BoatChecklistItemType;
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
-    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(Router) router: Router,
     @Inject(BoatChecklistService) private boatChecklistService: BoatChecklistService,
   ) {
@@ -99,12 +99,12 @@ export class BoatChecklistEditPageComponent extends BasePageComponent implements
     return boat;
   }
 
-  public get formItems(): FormArray {
-    return this.form.controls.items as FormArray;
+  public get formItems(): UntypedFormArray {
+    return this.form.controls.items as UntypedFormArray;
   }
 
-  public asFormGroup(item: AbstractControl): FormGroup {
-    return item as FormGroup;
+  public asFormGroup(item: AbstractControl): UntypedFormGroup {
+    return item as UntypedFormGroup;
   }
 
   public deleteItem(index: number): void {

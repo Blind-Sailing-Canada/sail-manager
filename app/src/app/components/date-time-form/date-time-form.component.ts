@@ -2,7 +2,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-date-time-form',
@@ -11,7 +11,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class DateTimeFormComponent {
 
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() formType: string;
   @Input() id: string;
 

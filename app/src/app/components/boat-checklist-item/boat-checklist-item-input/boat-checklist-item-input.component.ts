@@ -2,7 +2,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-boat-checklist-item-input',
@@ -11,7 +11,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 })
 export class BoatChecklistItemInputComponent {
   @Input() public index: number;
-  @Input() public inputItemFormGroup: FormGroup;
+  @Input() public inputItemFormGroup: UntypedFormGroup;
 
 
   public isRequired(control: string): boolean {

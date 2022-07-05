@@ -2,7 +2,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-form-text-input',
@@ -12,7 +12,7 @@ import { FormGroup } from '@angular/forms';
 export class FormTextInputComponent {
   @Input() public ariaLabel?: string;
   @Input() public controlName: string;
-  @Input() public form: FormGroup;
+  @Input() public form: UntypedFormGroup;
   @Input() public inputType?: string;
   @Input() public label: string;
   @Input() public required: boolean;
