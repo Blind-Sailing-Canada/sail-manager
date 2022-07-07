@@ -46,6 +46,7 @@ import {
   uploadProfilePicture,
   uploadProgress,
   uploadSailPicture,
+  uploadSocialPicture,
 } from '../actions/cdn.actions';
 import { putSnack } from '../actions/snack.actions';
 
@@ -138,6 +139,36 @@ export class CDNEffects {
       tap(() => this.store.dispatch(finishLoading())),
     )
   );
+
+  uploadSocialPicture$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(uploadSocialPicture),
+      tap(() => this.store.dispatch(startLoading())),
+      exhaustMap(
+        action => this.service
+          .uploadSocialPicture(action.file, action.social_id)
+          .pipe(
+            concatMap((event: HttpEvent<string>) => {
+              const processResult = this.processHttpEvent(event, action.file, action.notify);
+
+              if (processResult) {
+                return processResult;
+              }
+
+              console.error(`unhandled http event: ${event.type}`);
+              return of(putSnack({ snack: { message: 'something went wrong...', type: SnackType.ERROR } }));
+            }),
+            catchError(
+              errorCatcher(
+                `Failed to upload social picture: ${action.file.name}`,
+                null,
+                error => [uploadError({ error, fileName: action.file.name, message: 'Failed to upload pictures' })]))
+          )
+      ),
+      tap(() => this.store.dispatch(finishLoading())),
+    )
+  );
+
 
   uploadMaintenancePicture$ = createEffect(
     () => this.actions$.pipe(
@@ -355,8 +386,7 @@ export class CDNEffects {
       case HttpEventType.DownloadProgress:
         return EMPTY;
       case HttpEventType.UploadProgress:
-        // eslint-disable-next-line @typescript-eslint/dot-notation
-        const percentage = ((event['loaded'] || file.size) / file.size) * 100;
+        const percentage = ((event.loaded || file.size) / file.size) * 100;
         const progress = Math.min(100, Math.round(percentage));
 
         return of(

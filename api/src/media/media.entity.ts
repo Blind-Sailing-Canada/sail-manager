@@ -10,6 +10,7 @@ import { BoatMaintenanceEntity } from '../boat-maintenance/boat-maintenance.enti
 import { ChallengeEntity } from '../challenge/challenge.entity';
 import { ProfileEntity } from '../profile/profile.entity';
 import { SailEntity } from '../sail/sail.entity';
+import { SocialEntity } from '../social/social.entity';
 import { Media } from '../types/media/media';
 import { MediaType } from '../types/media/media-type';
 
@@ -21,7 +22,10 @@ export class MediaEntity extends BaseModelEntity implements Media {
   @Column({ nullable: true })
     description: string;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    type: 'uuid'
+  })
     media_for_id: string;
 
   @Column({ nullable: true })
@@ -36,7 +40,7 @@ export class MediaEntity extends BaseModelEntity implements Media {
   @Index('media_type')
     media_type: MediaType;
 
-  @Column()
+  @Column({ type: 'uuid' })
     posted_by_id: string;
 
   @Column({ nullable: true })
@@ -83,4 +87,17 @@ export class MediaEntity extends BaseModelEntity implements Media {
     },
   ])
     sail: SailEntity;
+
+  @ManyToOne(() => SocialEntity, () => null, { createForeignKeyConstraints: false })
+  @JoinColumn([
+    {
+      name: 'media_for_id',
+      referencedColumnName: 'id',
+    },
+    {
+      name: 'media_for_type',
+      referencedColumnName: 'entity_type',
+    },
+  ])
+    social: SocialEntity;
 }

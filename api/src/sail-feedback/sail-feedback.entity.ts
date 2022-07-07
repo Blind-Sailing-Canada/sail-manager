@@ -21,7 +21,7 @@ export class SailFeedbackEntity extends BaseModelEntity implements SailFeedback 
   @Column()
     rating: number;
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     sail_id: string;
 

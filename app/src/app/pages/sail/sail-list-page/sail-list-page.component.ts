@@ -36,6 +36,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
   public sailStatus: SailStatus | 'ANY' = 'ANY';
   public sailStatusValues = { ...SailStatus, ANY: 'ANY' };
   public sailorName: string;
+  public sailLimit = 10;
 
   constructor(
     @Inject(Router) router: Router,
@@ -47,7 +48,17 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
 
   ngOnInit() {
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS);
-    this.dispatchAction(searchSails({ notify: true, query: { limit:10, sort: 'start_at,DESC' } }));
+
+    const sailSearchData = JSON.parse(sessionStorage.getItem('sailSearchData') || '{}');
+    this.boatName = sailSearchData.boatName;
+    this.sailEnd = sailSearchData.sailEnd;
+    this.sailName = sailSearchData.sailName;
+    this.sailStart = sailSearchData.sailStart;
+    this.sailStatus = sailSearchData.sailStatus || 'ANY';
+    this.sailorName = sailSearchData.sailorName;
+    this.sailLimit = sailSearchData.sailLimit || 10;
+
+    this.fetchSails();
   }
 
   public resetFilter() {
@@ -57,6 +68,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
     this.sailStart = null;
     this.sailStatus = 'ANY';
     this.sailorName = null;
+    this.sailLimit = 10;
   }
 
   public goToViewSail(id: string): void {
@@ -96,6 +108,16 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
   }
 
   private buildQuery() {
+    sessionStorage.setItem('sailSearchData', JSON.stringify({
+      boatName: this.boatName,
+      sailEnd: this.sailEnd,
+      sailLimit: this.sailLimit,
+      sailName: this.sailName,
+      sailStart: this.sailStart,
+      sailStatus: this.sailStatus,
+      sailorName: this.sailorName,
+    }));
+
     const query = {} as any;
 
     if (this.sailName) {
@@ -123,6 +145,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
     }
 
     query.sort = 'start_at,DESC';
+    query.limit = this.sailLimit;
 
     return query;
   }

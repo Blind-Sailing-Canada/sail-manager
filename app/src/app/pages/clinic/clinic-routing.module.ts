@@ -14,6 +14,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: SubRoutes.LIST_CLINICS,
+    pathMatch: 'full'
   },
   {
     path: `${SubRoutes.VIEW_CLINIC}/:clinic_id`,

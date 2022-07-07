@@ -52,7 +52,7 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
 
     const tokenObject: JwtObject = decodeJwt(token);
 
-    if (tokenObject.expireAt < Date.now()) {
+    if (tokenObject.expire_at < Date.now()) {
       if (tokenObject.provider === 'google') {
         this.authenticateWithGoogle();
       } else {

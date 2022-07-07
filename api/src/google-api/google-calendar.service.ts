@@ -11,6 +11,8 @@ import { toLocalDate } from '../utils/date.util';
 import { SailorRole } from '../types/sail-manifest/sailor-role';
 import { Profile } from '../types/profile/profile';
 import * as Sentry from '@sentry/node';
+import { Social } from '../types/social/social';
+import { SocialEntity } from '../social/social.entity';
 
 const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID_SAILS;
 
@@ -58,6 +60,44 @@ export class GoogleCalendarService {
 
     this.connected = true;
 
+  }
+
+  async createSocialEvent(social: Social, message: string) {
+    if (social.calendar_id) {
+      return this.updateSocialEvent(social, message);
+    }
+
+    if (!this.connected) {
+      await this.connect();
+    }
+
+    const event = this.socialEvent(social, message);
+
+    this.logger.log('event' + JSON.stringify(event, null, 2));
+
+    if (!event.attendees?.length) {
+      this.logger.log(`no attendants for social ${social.id}`);
+      return Promise.resolve();
+    }
+
+    const createdEvent = await this.calendar
+      .events
+      .insert({
+        calendarId: CALENDAR_ID,
+        requestBody: event,
+        sendNotifications: true,
+      })
+      .then(response => response.data)
+      .catch((error) => {
+        Sentry.captureMessage('event' + JSON.stringify(event, null, 2));
+        throw error;
+      });
+
+    return SocialEntity
+      .update(social.id, {
+        calendar_id: createdEvent.id,
+        calendar_link: createdEvent.htmlLink,
+      });
   }
 
   async createSailEvent(sail: Sail, message: string) {
@@ -120,7 +160,50 @@ export class GoogleCalendarService {
         sendNotifications: true,
         eventId: sail.calendar_id,
       });
+  }
 
+  async cancelSocialEvent(social: Social) {
+    if (!this.connected) {
+      await this.connect();
+    }
+
+    if (!social.calendar_id) {
+      this.logger.log(`cancelSailEvent: no calendar event for social ${social.id}`);
+      return;
+    }
+
+    await SocialEntity.update({ id: social.id }, {
+      calendar_id: null,
+      calendar_link: null,
+    });
+
+    return this.calendar
+      .events
+      .delete({
+        calendarId: CALENDAR_ID,
+        sendNotifications: true,
+        eventId: social.calendar_id,
+      });
+  }
+
+  async updateSocialEvent(social: Social, message: string) {
+    if (!this.connected) {
+      await this.connect();
+    }
+
+    if (!social.calendar_id) {
+      this.logger.log(`updateSailEvent: no calendar event for social ${social.id}`);
+      return;
+    }
+
+    const event = this.socialEvent(social, message);
+
+    return this.calendar.events.patch({
+      calendarId: CALENDAR_ID,
+      eventId: social.calendar_id,
+      requestBody: event,
+      sendUpdates: 'all',
+    });
   }
 
   async updateSailEvent(sail: Sail, message: string) {
@@ -184,6 +267,47 @@ export class GoogleCalendarService {
       });
   }
 
+  async joinSocialEvent(social: Social, profile: Profile) {
+    if (!this.connected) {
+      await this.connect();
+    }
+
+    if (!social.calendar_id) {
+      this.logger.log(`joinSailEvent: no calendar event for social ${social.id}`);
+      return Promise.resolve();
+    }
+
+    const existingEvent = await this.calendar
+      .events
+      .get({
+        calendarId: CALENDAR_ID,
+        eventId: social.calendar_id,
+      })
+      .then(response => response.data);
+
+    const currentAttendees = existingEvent.attendees;
+
+    if (currentAttendees.some(attendee => attendee.email === profile.email)) {
+      return Promise.resolve();
+    }
+
+    currentAttendees
+      .push({
+        email: profile.email,
+        resource: false,
+        displayName: profile.name,
+      });
+
+    return this.calendar
+      .events
+      .patch({
+        calendarId: CALENDAR_ID,
+        eventId: social.calendar_id,
+        requestBody: { attendees: currentAttendees },
+        sendUpdates: 'all',
+      });
+  }
+
   async leaveSailEvent(sail: Sail, profile: Profile) {
     if (!this.connected) {
       await this.connect();
@@ -211,6 +335,38 @@ export class GoogleCalendarService {
       .patch({
         calendarId: CALENDAR_ID,
         eventId: sail.calendar_id,
+        requestBody: { attendees: newAttendees },
+        sendUpdates: 'all',
+      });
+  }
+
+  async leaveSocialEvent(social: Social, profile: Profile) {
+    if (!this.connected) {
+      await this.connect();
+    }
+
+    if (!social.calendar_id) {
+      this.logger.log(`leaveSailEvent: no calendar event for social ${social.id}`);
+      return Promise.resolve();
+    }
+
+    const existingEvent = await this.calendar
+      .events
+      .get({
+        calendarId: CALENDAR_ID,
+        eventId: social.calendar_id,
+      })
+      .then(response => response.data);
+
+    const currentAttendees = existingEvent.attendees;
+
+    const newAttendees = currentAttendees.filter(attendee => attendee.email !== profile.email);
+
+    return this.calendar
+      .events
+      .patch({
+        calendarId: CALENDAR_ID,
+        eventId: social.calendar_id,
         requestBody: { attendees: newAttendees },
         sendUpdates: 'all',
       });
@@ -244,7 +400,7 @@ export class GoogleCalendarService {
         <!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
           <body>
-            <h2>You are scheduled on a sail #8.</h2>
+            <h2>You are scheduled on a sail #${sail.entity_number}.</h2>
             <p><label>Message from organizer: </label></p>
             <pre>${message || 'Enjoy your sail.'}</pre>
             <h2>Sail details</h2>
@@ -262,6 +418,47 @@ export class GoogleCalendarService {
       `.trim().replace(/\n/g,''),
       'start': { 'dateTime': sail.start_at.toISOString() },
       'end': { 'dateTime':sail.end_at.toISOString() },
+      'attendees': attendees,
+      'reminders': { 'useDefault': true },
+    };
+
+    return event;
+  }
+
+  private socialEvent(social: Social, message: string) {
+    let attendees: calendar_v3.Schema$EventAttendee[] = social.manifest
+      .map(attendant => ({
+        displayName: attendant.person_name,
+        email: attendant.profile?.email,
+        resource: false,
+      }));
+
+    attendees = attendees.filter(attendee => !!attendee.email);
+
+    const attendantNames = social.manifest.map(sailor => sailor.person_name);
+
+    const event: calendar_v3.Schema$Event = {
+      'summary': `COMPANY_NAME_SHORT_HEADER: Social #${social.entity_number}: ${social.name}`,
+      'description': `
+        <!DOCTYPE html>
+        <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+          <body>
+            <h2>You are attending social #${social.entity_number}.</h2>
+            <p><label>Message from organizer: </label></p>
+            <pre>${message || 'Enjoy your sail.'}</pre>
+            <h2>Social details</h2>
+            <div><label>Name: </label>${social.name}</div>
+            <div><label>Description: </label>${social.description || 'n/a'}</div>
+            <div><label>Start: </label>${toLocalDate(social.start_at)}</div>
+            <div><label>End: </label>${toLocalDate(social.end_at)}</div>
+            <div><label>Address: ${social.address || 'n/a'} </label></div>
+            <p><label>Attendants: </label> ${attendantNames.join(', ') || '-'}</p>
+            <div><a href="${DOMAIN}/socials/view/${social.id}">View social</a></div>
+          </body>
+        </html>
+      `.trim().replace(/\n/g,''),
+      'start': { 'dateTime': social.start_at.toISOString() },
+      'end': { 'dateTime': social.end_at.toISOString() },
       'attendees': attendees,
       'reminders': { 'useDefault': true },
     };

@@ -62,7 +62,7 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
   })
     checklist: Map<string, string>;
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     sail_id: string;
 
@@ -72,6 +72,7 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
   @Column({
     nullable: true,
     default: null,
+    type: 'uuid'
   })
   @Index()
     submitted_by_id: string;

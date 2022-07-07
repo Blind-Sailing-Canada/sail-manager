@@ -12,7 +12,7 @@ import { Setting } from '../types/settings/setting';
 
 @Entity('settings')
 export class SettingEntity extends BaseModelEntity implements Settings {
-  @Column()
+  @Column({ type: 'uuid' })
   @Index({ unique: true })
     profile_id: string;
 
@@ -25,7 +25,10 @@ export class SettingEntity extends BaseModelEntity implements Settings {
     settings: Setting;
 
   @OneToOne(() => ProfileEntity)
-  @JoinColumn()
+  @JoinColumn({
+    name: 'profile_id',
+    referencedColumnName: 'id',
+  })
     profile: ProfileEntity;
 
 }

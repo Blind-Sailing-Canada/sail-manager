@@ -13,7 +13,7 @@ import { BoatInstructionType } from '../types/boat-instructions/boat-instruction
 @Entity('boat_instructions')
 export class BoatInstructionsEntity extends BaseModelEntity implements BoatInstructions {
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     boat_id: string;
 

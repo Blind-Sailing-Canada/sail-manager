@@ -107,6 +107,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/media/media.module').then(mod => mod.MediaModule)
   },
   {
+    path: RootRoutes.SOCIALS,
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/social/social.module').then(mod => mod.SocialModule)
+  },
+  {
     path: '',
     redirectTo: RootRoutes.DASHBOARD,
     pathMatch: 'full'

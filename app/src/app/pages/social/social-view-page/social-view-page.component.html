@@ -1,0 +1,394 @@
+<h3 *ngIf="social === null">Looks like this social does not exist.</h3>
+<mat-card *ngIf="social && user">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>local_bar</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    > Socials: {{social?.name}} </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="socialContent"></ng-container>
+    <ng-container [ngTemplateOutlet]="COMMENTS_TEMPLATE"></ng-container>
+    <ng-container [ngTemplateOutlet]="NEW_COMMENTS_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        (click)="joinSocial()"
+        *ngIf="canJoin"
+        mat-raised-button
+      >Join Social</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+<ng-template #controls>
+  <a
+    *ngIf="canEditSocial"
+    [routerLink]="editSocialLink(social.id)"
+    mat-raised-button
+    title="Go to social edit page"
+  >Edit</a>
+  <button
+    (click)="endSocial()"
+    *ngIf="canEndSocial"
+    mat-raised-button
+    title="End this social"
+  >End</button>
+  <button
+    (click)="leaveSocial()"
+    *ngIf="canLeaveSocial"
+    mat-raised-button
+    title="Leave this social"
+  >Leave</button>
+  <a
+    (click)="cancelSocial()"
+    *ngIf="canCancelSocial"
+    mat-raised-button
+    title="Cancel this social"
+  >Cancel</a>
+  <a
+    (click)="goToSocialPicturesPage()"
+    mat-raised-button
+    title="Go to social's pictures page"
+  >Pictures</a>
+  <button
+    *ngIf="canSendNotification"
+    mat-raised-button
+    title="Send social notification to attendants on this social."
+    (click)="showSocialNotificationDialog()"
+  >Notify</button>
+</ng-template>
+<ng-template #socialContent>
+  <app-table>
+    <tbody role="list">
+      <tr
+        aria-label="Social number"
+        title="Social #{{social.entity_number}}"
+        tabindex="0"
+        role="listitem"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Social #</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        >{{social.entity_number}}</td>
+      </tr>
+      <tr
+        aria-label="Social start"
+        title="This social starts {{social.start_at | humanDateWithTime}}"
+        tabindex="0"
+        role="listitem"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Start</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        >{{social.start_at | humanDateWithTime:true}}</td>
+      </tr>
+      <tr
+        aria-label="Social end"
+        title="This social ends {{social.end_at | humanDateWithTime}}"
+        tabindex="0"
+        role="listitem"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >End</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        >{{social.end_at | humanDateWithTime:true}}</td>
+      </tr>
+      <tr
+        aria-label="Social duration"
+        title="This social's duration is {{social.start_at | duration: social.end_at}}"
+        tabindex="0"
+        role="listitem"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Duration</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        > {{social.start_at | duration: social.end_at}} </td>
+      </tr>
+      <tr
+        aria-label="Social status"
+        title="This social's status is {{social.status}}"
+        tabindex="0"
+        role="listitem"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Status</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        >{{social.status}}</td>
+      </tr>
+      <tr
+        aria-label="Calendar Link"
+        title="Calendar event link for this social"
+        tabindex="0"
+        role="listitem"
+        *ngIf="social.calendar_link"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Calendar Link</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        ><a
+            [href]="social.calendar_link"
+            target="_blank"
+          >View calendar event</a></td>
+      </tr>
+      <ng-container *ngIf="isSocialCancelled">
+        <tr
+          class="table-spacer"
+          aria-hidden="true"
+          tabindex="-1"
+        >
+          <td
+            colspan="2"
+            aria-hidden="true"
+            tabindex="-1"
+          ></td>
+        </tr>
+        <tr
+          aria-hidden="true"
+          tabindex="-1"
+        >
+          <th
+            colspan="2"
+            aria-hidden="true"
+            tabindex="-1"
+          >Cancellation Details</th>
+        </tr>
+        <tr
+          aria-label="Cancel date"
+          title="This social was cancelled {{(social.cancelled_at | humanDateWithTime)}}"
+          tabindex="0"
+          role="listitem"
+        >
+          <th
+            aria-hidden="true"
+            tabindex="-1"
+          >Cancelled On</th>
+          <td
+            aria-hidden="true"
+            tabindex="-1"
+          >{{social.cancelled_at | humanDateWithTime:true}}</td>
+        </tr>
+        <tr
+          (click)="showProfileDialog(social.cancelled_by, 'social cancelled by')"
+          (keyup.enter)="showProfileDialog(social.cancelled_by, 'social cancelled by')"
+          aria-label="Cancelled by"
+          class="clickable"
+          title="This social was cancelled by {{social.cancelled_by?.name}}. Click to open profile dialog."
+          tabindex="0"
+          role="listitem"
+        >
+          <th
+            aria-hidden="true"
+            tabindex="-1"
+          >Cancelled By</th>
+          <td
+            aria-hidden="true"
+            tabindex="-1"
+          >
+            <app-profile-bullet [profile]="social.cancelled_by"></app-profile-bullet>
+          </td>
+        </tr>
+        <tr>
+          <th
+            colspan="2"
+            aria-hidden="true"
+            tabindex="-1"
+          >Cancellation Reason</th>
+        </tr>
+        <tr
+          aria-label="Cancellation reason"
+          title="This social was cancelled because {{social.cancel_reason || 'no one knows.'}}"
+          tabindex="0"
+          role="listitem"
+        >
+          <td
+            class="table-description"
+            colspan="2"
+            aria-hidden="true"
+            tabindex="-1"
+          >{{social.cancel_reason}}</td>
+        </tr>
+      </ng-container>
+      <tr
+        class="table-spacer"
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        <td
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        ></td>
+      </tr>
+      <tr>
+        <th
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        >Address</th>
+      </tr>
+      <tr
+        aria-label="Address"
+        title="Social's address is {{social.address || 'unknown'}}"
+        tabindex="0"
+        role="listitem"
+      >
+        <td
+          class="table-description"
+          colspan="2"
+          aria-hidden="false"
+          tabindex="0"
+        >
+          <b *ngIf="!social.address">'unknown'</b>
+          <address *ngIf="social.address && !social.address.startsWith('http')"><a
+              href="https://www.google.com/maps/place/{{social.address}}"
+              target="_blank"
+            >{{social.address}}</a></address>
+          <address *ngIf="social.address && social.address.startsWith('http')"><a
+              href="{{social.address}}"
+              target="_blank"
+            >{{social.address}}</a></address>
+        </td>
+      </tr>
+      <tr
+        class="table-spacer"
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        <td
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        ></td>
+      </tr>
+      <tr>
+        <th
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        >About This Social</th>
+      </tr>
+      <tr
+        aria-label="Additional information"
+        title="Social's additional info {{social.description || 'none'}}"
+        tabindex="0"
+        role="listitem"
+      >
+        <td
+          class="table-description"
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        >
+          <pre>{{social.description}}</pre>
+        </td>
+      </tr>
+      <tr
+        class="table-spacer"
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        <td
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        ></td>
+      </tr>
+      <tr>
+        <th
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        >Attendants</th>
+      </tr>
+      <tr *ngIf="!social.manifest?.length">
+        <td colspan="2">No attendants</td>
+      </tr>
+      <tr
+        aria-label="Additional information"
+        title="Attendant {{i+1}} of {{social.manifest.length}}: {{attendant.person_name}}"
+        tabindex="0"
+        role="listitem"
+        *ngFor="let attendant of social.manifest; let i = index;"
+      >
+        <td
+          *ngIf="!attendant.guest_of_id"
+          class="clickable"
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        >
+          <app-profile-bullet
+            [profile]="attendant.profile"
+            *ngIf="!!attendant.profile"
+            (click)="showProfileDialog(attendant.profile)"
+          ></app-profile-bullet>
+          <span *ngIf="!attendant.profile">{{attendant.person_name}}</span>
+        </td>
+        <td
+          *ngIf="!!attendant.guest_of_id"
+          colspan="2"
+          aria-hidden="true"
+          tabindex="-1"
+        >
+          <span>{{attendant.person_name}} (guest of {{attendant.guest_of?.name}})</span>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr *ngIf="exceedingMaxOccupancy">
+        <td
+          class="warning"
+          colspan="2"
+        >
+          <mat-error><b>Warning: Social max occupancy of {{social.max_attendants}} has been exceeded!</b></mat-error>
+        </td>
+      </tr>
+    </tfoot>
+  </app-table>
+</ng-template>
+<ng-template #COMMENTS_TEMPLATE>
+  <app-comment-list
+    [user]="user"
+    (commentDelete)="deleteComment($event)"
+    (profileClick)="showProfileDialog($event, ($event)?.roles)"
+    [comments]="social.comments"
+  ></app-comment-list>
+</ng-template>
+<ng-template #NEW_COMMENTS_TEMPLATE>
+  <app-new-comment-form
+    [currentUser]="user"
+    (postNewComment)="postNewComment($event)"
+  ></app-new-comment-form>
+</ng-template>

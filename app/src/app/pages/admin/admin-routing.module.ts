@@ -15,6 +15,7 @@ const routes: Routes = [
     path: '',
     canActivate: [AdminGuard],
     component: AdminDashboardPageComponent,
+    pathMatch: 'full'
   },
   {
     path: `${SubRoutes.EDIT_PROFILE_PRIVILEGES}/:id`,

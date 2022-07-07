@@ -12,6 +12,7 @@ const routes: Routes = [
   {
     path: '',
     component: FeedbackListPageComponent,
+    pathMatch: 'full'
   },
   {
     path: `${SubRoutes.LIST_FEEDBACK}`,

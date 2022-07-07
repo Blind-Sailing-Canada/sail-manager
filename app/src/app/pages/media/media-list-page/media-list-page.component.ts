@@ -11,7 +11,6 @@ import { Access } from '../../../../../../api/src/types/user-access/access';
 import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
 import { MediaService, PaginatedMedia } from '../../../services/media.service';
-import { MediaQuery } from '../../../../../../api/src/types/media/media-query';
 import { Media } from '../../../../../../api/src/types/media/media';
 import { firstValueFrom, take } from 'rxjs';
 import { STORE_SLICES } from '../../../store/store';
@@ -26,7 +25,7 @@ import { PageEvent } from '@angular/material/paginator';
 export class MediaListPageComponent extends BasePageComponent implements OnInit {
 
   public allowDelete = false;
-  public entity: string;
+  public entities: string[] = [];
   public media: Media[] = [];
   public paginatedData: PaginatedMedia;
 
@@ -41,17 +40,17 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit 
   }
 
   ngOnInit() {
-    this.entity = this.route.snapshot.queryParams.entity;
+    this.entities = (this.route.snapshot.queryParams.entity || '').split(',').filter(Boolean);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
     this.fetchMedia();
   }
 
-  public goToViewSail(id: string): void {
-    this.viewSail(id);
-  }
-
   public async fetchMedia(pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 }): Promise<void> {
-    const query: MediaQuery = { media_for_type: this.entity };
+    const query = { } as any;
+
+    if (this.entities.length) {
+      query.media_for_type = { $in:  this.entities };
+    }
 
     const mediaFetch =  this.mediaService.getPaginatedMedia(query, pagination.pageIndex + 1, pagination.pageSize);
     this.paginatedData = await firstValueFrom(mediaFetch);
@@ -64,6 +63,16 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit 
 
   public paginationHandler(event: PageEvent) {
     this.fetchMedia(event);
+  }
+
+  public goToEntity(event: { id: string; type: string }): void {
+    switch(event.type) {
+      case 'SailEntity':
+        this.viewSail(event.id);
+        break;
+      case 'SocialEntity':
+        this.viewSocial(event.id);
+    }
   }
 
   public deleteMedia(media: Media): void {

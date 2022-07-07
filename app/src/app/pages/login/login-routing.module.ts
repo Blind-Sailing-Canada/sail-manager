@@ -12,6 +12,7 @@ const routes: Routes = [
   {
     path: '',
     component: LoginPageComponent,
+    pathMatch: 'full'
   },
   {
     path: SubRoutes.EMAIL_AND_PASSWORD,

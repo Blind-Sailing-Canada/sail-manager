@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   OneToOne
 } from 'typeorm';
@@ -9,14 +10,15 @@ import { ProfileEntity } from '../profile/profile.entity';
 import { User } from '../types/user/user';
 
 @Entity('users')
+@Index([
+  'provider',
+  'provider_user_id',
+], { unique: true })
 export class UserEntity extends BaseModelEntity implements User {
   @Column({ length: 50 })
     provider: string;
 
-  @Column({
-    length: 150,
-    unique: true,
-  })
+  @Column({ length: 150, })
     provider_user_id: string;
 
   @Column({ type: 'uuid' })
@@ -33,10 +35,12 @@ export class UserEntity extends BaseModelEntity implements User {
 
   @OneToOne(() => ProfileEntity, undefined, {
     eager: false,
-    onDelete: 'CASCADE',
     createForeignKeyConstraints: false,
     nullable: true,
   })
-  @JoinColumn({ referencedColumnName: 'id' })
+  @JoinColumn({
+    name: 'profile_id',
+    referencedColumnName: 'id'
+  })
     profile: ProfileEntity;
 }

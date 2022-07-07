@@ -85,7 +85,7 @@ export class SailEmail {
 
   futureSails(sails: Sail[]): EmailInfo {
     const emailInfo: EmailInfo = {
-      subject: `COMPANY_NAME_SHORT_HEADER: Upcoming sailing as of ${toLocalDate(new Date())}`,
+      subject: `COMPANY_NAME_SHORT_HEADER: Upcoming sails as of ${toLocalDate(new Date())}`,
       content: `
         <html>
           <body>

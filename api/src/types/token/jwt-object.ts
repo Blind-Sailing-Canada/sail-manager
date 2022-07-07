@@ -6,14 +6,14 @@ export interface JwtObject {
   email: string;
   exp?: number;
   access?: UserAccess;
-  expireAt: number;
+  expire_at: number;
   iat?: number;
   profile_id: string;
   provider: string;
   roles: ProfileRole[];
   status: ProfileStatus;
   sub: string;
-  userId?: string;
+  user_id?: string;
   username: string;
   uid?: string;
   id?: string;

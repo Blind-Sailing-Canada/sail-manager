@@ -11,10 +11,10 @@ import { ClinicAttendance } from '../types/clinic/clinic-attendance';
 
 @Entity('clinic_attendances')
 export class ClinicAttendanceEntity extends BaseModelEntity implements ClinicAttendance {
-  @Column()
+  @Column({ type: 'uuid' })
     clinic_id: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
     attendant_id: string;
 
   @Column({

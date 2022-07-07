@@ -24,6 +24,7 @@ import {
   listMediaRoute,
   sailRequestsRoute,
   sailsRoute,
+  socialsRoute,
   viewRequiredActionRoute,
   viewSailRoute,
   viewUserSailsRoute,
@@ -61,6 +62,7 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   public ADMIN_ROUTE = adminRoute.toString();
   public BOATS_ROUTE = boatsRoute.toString();
   public SAILS_ROUTE = sailsRoute.toString();
+  public SOCIALS_ROUTE = socialsRoute.toString();
   public MEDIA_ROUTE = listMediaRoute.toString();
 
   public SAIL_REQUESTS_ROUTE = sailRequestsRoute.toString();
@@ -69,7 +71,7 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   public allInProgressSails: Sail[] = [];
   public allPastSails: Sail[] = [];
   public clinicsLink = listClinicsRoute;
-  public documentsLink = listDocumentsRoute;
+  public documentsLink = listDocumentsRoute();
   public listChallengesLink = listChallengesRoute;
   public myInProgressSails: Sail[] = [];
   public myRequiredActions: RequiredAction[] = [];

@@ -16,15 +16,15 @@
   </mat-card-actions>
   <mat-card-content>
     <app-image-list
+      (deleteClick)="deleteMedia($event)"
       (goToProfile)="showProfileDialog($event)"
+      (gotToEntity)="goToEntity($event)"
+      [allowDelete]="allowDelete"
       [pictures]="media"
       [profiles]="profiles"
       [showAuthor]="true"
+      [showEntity]="true"
       [user]="user"
-      [allowDelete]="allowDelete"
-      [showSail]="true"
-      (goToSail)="viewSail($event)"
-      (deleteClick)="deleteMedia($event)"
     ></app-image-list>
     <mat-paginator
       (page)="paginationHandler($event)"

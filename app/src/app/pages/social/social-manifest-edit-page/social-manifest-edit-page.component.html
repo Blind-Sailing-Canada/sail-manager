@@ -1,0 +1,117 @@
+<h4 *ngIf="!social === null">Looks like this social is missing.</h4>
+<mat-card *ngIf="social">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>emoji_people</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      aria-level="1"
+      tabindex="0"
+    >{{title}}</mat-card-title>
+    <mat-card-subtitle
+      role="heading"
+      aria-level="1"
+      tabindex="0"
+    >{{subtitle}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls">
+    </ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="MANIFEST_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <ng-template *ngTemplateOutlet="CARD_FOOTER"></ng-template>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #MANIFEST_TEMPLATE>
+  <div
+    role='list'
+    id="social_manifest_list"
+  >
+    <h3 tabindex="0">Attendants on this social</h3>
+    <fieldset
+      class="manifest-list"
+      *ngFor="let attendant of manifestControls; let i = index"
+      tabindex="0"
+      attr.aria-label="Attendant {{i + 1}} of {{manifestControls.length}} {{attendant.controls.person_name.value}}."
+    >
+      <legend>Attendant {{i + 1}} of {{manifestControls.length}} {{attendant.controls.person_name.value}}.</legend>
+      <mat-form-field [formGroup]="attendant">
+        <mat-label
+          id="labelName"
+          aria-hidden="true"
+          tabindex="-1"
+        >Attendant's Name</mat-label>
+        <input
+          aria-labelledby="labelName"
+          aria-required="true"
+          formControlName="person_name"
+          matInput
+          required
+          type="text"
+        >
+      </mat-form-field>
+      <mat-form-field
+        [formGroup]="attendant"
+        *ngIf="attendant.controls.is_guest?.value"
+      >
+        <mat-label
+          id="labelRole"
+          aria-hidden="true"
+          tabindex="-1"
+        >Guest of</mat-label>
+        <select
+          matNativeControl
+          required
+          formControlName="guest_of_id"
+        >
+          <option
+            *ngFor="let user of usersOnSocial"
+            [value]="user.id"
+          >{{user.name}}</option>
+        </select>
+      </mat-form-field>
+
+      <div class="manifest-controls">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="removeAttendant(i)"
+        >remove</button>
+      </div>
+    </fieldset>
+    <mat-list-item *ngIf="!manifestControls.length">No attendants on this social.</mat-list-item>
+  </div>
+  <div *ngIf="occupancyExceeded">
+    <mat-error><b>Warning: Social max occupancy of {{social.max_attendants}} attendants has been exceeded!</b>
+    </mat-error>
+  </div>
+</ng-template>
+
+<ng-template #CARD_FOOTER>
+  <mat-card-actions>
+    <button
+      *ngIf="shouldEnableSubmitButton"
+      mat-raised-button
+      (click)="submitForm()"
+    >Submit</button>
+  </mat-card-actions>
+</ng-template>
+
+<ng-template #controls>
+  <button
+    mat-raised-button
+    title="Click to add a user to this social."
+    (click)="showAddSocialAttendantDialog()"
+  >Add user</button>
+  <button
+    mat-raised-button
+    title="Click to a guest to this social."
+    (click)="showAddGuestDialog()"
+  >Add guest</button>
+</ng-template>

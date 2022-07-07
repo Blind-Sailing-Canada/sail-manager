@@ -8,25 +8,25 @@ table {
   width: 100%;
 }
 
-::ng-deep td, ::ng-deep th, ::ng-deep tr {
+:host ::ng-deep td, :host ::ng-deep th, :host ::ng-deep tr {
   border: 1px solid #dddddd;
   font-family: arial, sans-serif;
   padding: 8px;
 }
 
-::ng-deep th {
+:host ::ng-deep th {
   background-color: #c1d3e2;
 }
 
-::ng-deep .table-spacer, ::ng-deep .table-spacer td {
+:host ::ng-deep .table-spacer, :host ::ng-deep .table-spacer td {
   border: none;
 }
 
-::ng-deep .table-description {
+:host ::ng-deep .table-description {
   text-align: left;
 }
 
- table caption {
+table caption {
   position: relative;
 }
 

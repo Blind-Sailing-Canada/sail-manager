@@ -17,14 +17,24 @@ import { SailorRole } from '../types/sail-manifest/sailor-role';
   'profile_id',
 ], { unique: true })
 export class SailManifestEntity extends BaseModelEntity implements SailManifest {
-  @Column({ nullable: false })
+  @Column({
+    nullable: false,
+    type: 'uuid'
+  })
   @Index()
     sail_id: string;
 
   @ManyToOne(() => SailEntity, sail => sail.manifest)
+  @JoinColumn({
+    name: 'sail_id',
+    referencedColumnName: 'id',
+  })
     sail: SailEntity;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    type: 'uuid'
+  })
   @Index()
     profile_id: string;
 

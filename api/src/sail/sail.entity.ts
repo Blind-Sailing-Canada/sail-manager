@@ -110,7 +110,10 @@ export class SailEntity extends BaseModelEntity implements Sail {
     nullable: true,
     eager: true,
   })
-  @JoinColumn()
+  @JoinColumn({
+    name: 'cancelled_by_id',
+    referencedColumnName: 'id',
+  })
     cancelled_by: ProfileEntity;
 
   @Column({
@@ -119,7 +122,7 @@ export class SailEntity extends BaseModelEntity implements Sail {
   })
     cancelled_at: Date;
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     boat_id: string;
 
@@ -145,6 +148,7 @@ export class SailEntity extends BaseModelEntity implements Sail {
   @Column({
     nullable: true,
     default: null,
+    type: 'uuid'
   })
   @Index()
     sail_request_id: string;

@@ -1,14 +1,16 @@
 import { DataSource } from 'typeorm';
 import dotenv = require('dotenv');
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 dotenv.config();
 
 const devConfig: PostgresConnectionOptions = {
+  entities: ['src/**/*.entity.ts'],
   migrations: ['src/db/migrations/*.ts'],
   migrationsTableName: 'migrations',
+  namingStrategy: new SnakeNamingStrategy(),
   type: 'postgres',
-  entities: ['src/**/*.entity.ts'],
   url: process.env.DB_CONNECTION_STRING,
 };
 
@@ -16,6 +18,7 @@ const prodConfig: PostgresConnectionOptions = {
   extra:  { ssl: { rejectUnauthorized: false } },
   migrations: ['./db/migrations/*.js'],
   migrationsTableName: 'migrations',
+  namingStrategy: new SnakeNamingStrategy(),
   ssl: true,
   type: 'postgres',
   url: process.env.DB_CONNECTION_STRING,

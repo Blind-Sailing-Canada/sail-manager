@@ -20,7 +20,7 @@ export class RequiredActionEntity extends BaseModelEntity implements RequiredAct
   })
     details: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
     actionable_id: string;
 
   @Column()
@@ -29,10 +29,11 @@ export class RequiredActionEntity extends BaseModelEntity implements RequiredAct
   @Column({
     nullable: true,
     default: null,
+    type: 'uuid'
   })
     assigned_by_id: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
     assigned_to_id: string;
 
   @Column({

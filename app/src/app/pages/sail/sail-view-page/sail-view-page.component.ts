@@ -437,10 +437,6 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return false;
     }
 
-    if (!sail.manifest.some(sailor => sailor.sailor_role === SailorRole.Crew)) {
-      return false;
-    }
-
     if (!sail.boat) {
       return false;
     }

@@ -70,6 +70,21 @@ export class CDNService {
     return this.uploadFile(endpoint, fileToUpload);
   }
 
+  public uploadSocialPicture(fileToUpload: File, social_id: string): Observable<HttpEvent<string>> {
+    let type: string;
+
+    if (fileToUpload.type.startsWith('video/')) {
+      type = 'videos';
+    } else if (fileToUpload.type.startsWith('image/')) {
+      type = 'images';
+    } else {
+      throw new Error(`unsupported type ${fileToUpload.type}`);
+    }
+
+    const endpoint = `${type}/socials/${social_id}/${fileToUpload.name}`;
+    return this.uploadFile(endpoint, fileToUpload);
+  }
+
   public uploadChallengePicture(fileToUpload: File, challenge_id: string): Observable<HttpEvent<string>> {
     const endpoint = `images/challenges/${challenge_id}/${fileToUpload.name}`;
     return this.uploadFile(endpoint, fileToUpload);

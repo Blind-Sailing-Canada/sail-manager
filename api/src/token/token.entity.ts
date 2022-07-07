@@ -7,7 +7,7 @@ import { Token } from '../types/token/token';
 
 @Entity('tokens')
 export class TokenEntity extends BaseModelEntity implements Token {
-  @Column()
+  @Column({ type: 'uuid' })
     profile_id: string;
 
   @Column()
@@ -17,7 +17,7 @@ export class TokenEntity extends BaseModelEntity implements Token {
     type: 'timestamptz',
     nullable: false,
   })
-    expireAt: Date;
+    expire_at: Date;
 
   @Column({ type: 'text' })
     token: string;

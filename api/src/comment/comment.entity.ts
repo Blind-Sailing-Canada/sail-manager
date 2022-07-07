@@ -15,6 +15,7 @@ import { Comment } from '../types/comment/comment';
 import { DocumentEntity } from '../document/document.entity';
 import { ProfileEntity } from '../profile/profile.entity';
 import { SailEntity } from '../sail/sail.entity';
+import { SocialEntity } from '../social/social.entity';
 
 @Entity('comments')
 @Index([
@@ -26,14 +27,17 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
   @Column({ length: 1000 })
     comment: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     author_id: string;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
     author: ProfileEntity;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    type: 'uuid'
+  })
   @Index()
     commentable_id: string;
 
@@ -62,6 +66,22 @@ export class CommentEntity extends BaseModelEntity implements Comment  {
     },
   ])
     sail: SailEntity;
+
+  @ManyToOne(() => SocialEntity, () => null, {
+    createForeignKeyConstraints: false ,
+    eager: false,
+  })
+  @JoinColumn([
+    {
+      name: 'commentable_id',
+      referencedColumnName: 'id',
+    },
+    {
+      name: 'commentable_type',
+      referencedColumnName: 'entity_type',
+    },
+  ])
+    social: SocialEntity;
 
   @ManyToOne(() => BoatMaintenanceEntity, () => null, {
     createForeignKeyConstraints: false ,

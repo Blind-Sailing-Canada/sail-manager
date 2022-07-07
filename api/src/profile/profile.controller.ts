@@ -188,7 +188,7 @@ export class ProfileController {
       throw new UnauthorizedException('no user');
     }
 
-    if (user.userId !== id && !user.access.access[UserAccessFields.EditUserProfile]) {
+    if (user.user_id !== id && !user.access.access[UserAccessFields.EditUserProfile]) {
       throw new UnauthorizedException('wrong user');
     }
 

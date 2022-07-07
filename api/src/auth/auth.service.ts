@@ -23,7 +23,7 @@ import { GoogleEmailService } from '../google-api/google-email.service';
 
 export interface CachedToken {
   token: string;
-  expireAt: Date;
+  expire_at: Date;
 }
 
 export interface TokenCache {
@@ -188,9 +188,9 @@ export class AuthService {
       });
   }
 
-  public cacheToken(profile_id: string, token: string, expireAt: Date): void {
+  public cacheToken(profile_id: string, token: string, expire_at: Date): void {
     this.tokens[profile_id] = {
-      expireAt,
+      expire_at,
       token,
     };
   }
@@ -203,7 +203,7 @@ export class AuthService {
   async login(user: UserEntity, provider: string): Promise<string> {
     const cachedToken = this.tokens[user.profile_id];
 
-    if (cachedToken && cachedToken.expireAt.getTime() > Date.now()) {
+    if (cachedToken && cachedToken.expire_at.getTime() > Date.now()) {
       return Promise.resolve(cachedToken.token);
     }
 
@@ -216,8 +216,8 @@ export class AuthService {
       // try db stored token
       const dbToken:TokenEntity = await TokenEntity.findOne({ where: { profile_id: user.profile_id } });
 
-      if (dbToken && dbToken.expireAt.getTime() > Date.now()) {
-        this.cacheToken(user.profile_id, dbToken.token, dbToken.expireAt);
+      if (dbToken && dbToken.expire_at.getTime() > Date.now()) {
+        this.cacheToken(user.profile_id, dbToken.token, dbToken.expire_at);
 
         return Promise.resolve(dbToken.token);
       }
@@ -241,7 +241,7 @@ export class AuthService {
       provider,
       access,
       email: profile.email,
-      expireAt: expireAtDate.getTime(),
+      expire_at: expireAtDate.getTime(),
       profile_id: profile.id,
       roles: profile.roles,
       status: profile.status,
@@ -255,7 +255,7 @@ export class AuthService {
       token,
       provider,
       profile_id: profile.id,
-      expireAt: expireAtDate,
+      expire_at: expireAtDate,
     });
 
     await dbToken.save();

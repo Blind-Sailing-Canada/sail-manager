@@ -20,6 +20,7 @@ import { SailRequestEffects } from './sail-request.effects';
 import { SailRequestInterestEffects } from './sail-request-interest.effects';
 import { TodaySailsEffects } from './today-sails.effects';
 import { UserAccessEffects } from './user-access.effects';
+import { SocialEffects } from './social.effects';
 
 export const effects = [
   AppEffects,
@@ -42,6 +43,7 @@ export const effects = [
   SailEffects,
   SailRequestEffects,
   SailRequestInterestEffects,
+  SocialEffects,
   TodaySailsEffects,
   UserAccessEffects,
 ];

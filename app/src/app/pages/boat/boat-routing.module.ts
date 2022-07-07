@@ -14,6 +14,7 @@ const routes: Routes = [
   {
     path: '',
     component: BoatListPageComponent,
+    pathMatch: 'full'
   },
   {
     path: SubRoutes.CREATE_BOAT,

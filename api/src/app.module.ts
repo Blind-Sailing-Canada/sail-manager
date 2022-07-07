@@ -31,6 +31,8 @@ import { SettingModule } from './setting/setting.module';
 import { TokenModule } from './token/token.module';
 import { UserAccessModule } from './user-access/user-access.module';
 import { UserModule } from './user/user.module';
+import { SocialModule } from './social/social.module';
+import { SocialManifestModule } from './social-manifest/social-manifest.module';
 
 const DB_LOGGING = [];
 
@@ -91,8 +93,8 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\
     BoatModule,
     ChallengeModule,
     ClinicModule,
-    DocumentModule,
     CommentModule,
+    DocumentModule,
     EmailModule,
     FirebaseAdminModule,
     MediaModule,
@@ -105,6 +107,8 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\
     SailRequestInterestModule,
     SailRequestModule,
     SettingModule,
+    SocialManifestModule,
+    SocialModule,
     TokenModule,
     UserAccessModule,
     UserModule,

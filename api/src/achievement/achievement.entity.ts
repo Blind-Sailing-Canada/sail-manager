@@ -11,17 +11,23 @@ import { ProfileEntity } from '../profile/profile.entity';
 
 @Entity('achievements')
 export class AchievementEntity extends BaseModelEntity implements Achievement {
-  @Column()
+  @Column({ type: 'uuid' })
     profile_id: string;
 
   @ManyToOne(() => ProfileEntity)
-  @JoinColumn()
+  @JoinColumn({
+    name: 'profile_id',
+    referencedColumnName: 'id'
+  })
     profile: ProfileEntity;
 
   @Column({ nullable: true })
     achievement_type: string;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    type: 'uuid'
+  })
     achievement_id: string;
 
   @Column()

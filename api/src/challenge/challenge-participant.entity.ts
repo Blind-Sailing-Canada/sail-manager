@@ -15,10 +15,10 @@ import { ChallengeParticipant } from '../types/challenge/challenge-participant';
   'challenge_id',
 ], { unique: true })
 export class ChallengeParticipantEntity extends BaseModelEntity implements ChallengeParticipant {
-  @Column()
+  @Column({ type: 'uuid' })
     participant_id: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
     challenge_id: string;
 
   @Column({

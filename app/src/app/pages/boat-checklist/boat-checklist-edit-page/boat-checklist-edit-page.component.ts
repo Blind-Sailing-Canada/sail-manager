@@ -74,7 +74,7 @@ export class BoatChecklistEditPageComponent extends BasePageComponent implements
       });
     } else {
       this.boatChecklistService.create({
-        boatId: this.boat_id,
+        boat_id: this.boat_id,
         items: formData,
       }).pipe(take(1)).subscribe((checklist) => {
         this.dispatchAction(finishLoading());

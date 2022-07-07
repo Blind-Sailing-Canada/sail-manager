@@ -14,6 +14,7 @@ const routes: Routes = [
   {
     path: '',
     component: BoatChecklistListPageComponent,
+    pathMatch: 'full'
   },
   {
     path: SubRoutes.CREATE_BOAT_CHECKLIST,

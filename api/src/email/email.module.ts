@@ -7,6 +7,7 @@ import { ProfileEmail } from './profile.email';
 import { SailChecklistEmail } from './sail-checklist.email';
 import { SailRequestEmail } from './sail-request.email';
 import { SailEmail } from './sail.email';
+import { SocialEmail } from './social.email';
 
 @Module({
   exports: [
@@ -18,6 +19,7 @@ import { SailEmail } from './sail.email';
     SailChecklistEmail,
     SailEmail,
     SailRequestEmail,
+    SocialEmail,
   ],
   providers: [
     AchievementEmail,
@@ -28,6 +30,7 @@ import { SailEmail } from './sail.email';
     SailChecklistEmail,
     SailEmail,
     SailRequestEmail,
+    SocialEmail,
   ],
 })
 export class EmailModule { }

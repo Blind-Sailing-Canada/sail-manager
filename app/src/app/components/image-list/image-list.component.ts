@@ -25,15 +25,19 @@ export class ImageListComponent implements OnChanges {
   @Input() pictures: string[] | Media[] = [];
   @Input() profiles: IProfileMap;
   @Input() showAuthor = false;
-  @Input() showSail = false;
+  @Input() showEntity = false;
   @Input() user: User;
   @Input() width = 100;
   @Output() deleteClick: EventEmitter<Media> = new EventEmitter<Media>();
   @Output() goToProfile: EventEmitter<Profile> = new EventEmitter<Profile>();
-  @Output() goToSail: EventEmitter<string> = new EventEmitter<string>();
+  @Output() gotToEntity: EventEmitter<{ id: string; type: string }> = new EventEmitter();
 
   public MediaTypes = MediaType;
   public picturesArray: Media[] = [];
+  public EntityLabels = {
+    SailEntity: 'sail',
+    SocialEntity: 'social',
+  };
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.pictures && changes.pictures.previousValue !== changes.pictures.currentValue) {

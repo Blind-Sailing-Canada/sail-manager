@@ -20,6 +20,7 @@ import { sailRequestReducer } from './reducers/sail-request.reducer';
 import { snackReducer } from './reducers/snack.reducer';
 import { todaySailsReducer } from './reducers/today-sails.reducer';
 import { userAccessReducer } from './reducers/user-access.reducer';
+import { socialReducer } from './reducers/social.reducer';
 
 export enum STORE_SLICES {
   APP = 'app',
@@ -39,6 +40,7 @@ export enum STORE_SLICES {
   PROFILES = 'profiles',
   REQUIRED_ACTIONS = 'requiredActions',
   SAILS = 'sails',
+  SOCIALS = 'socials',
   SAIL_CATEGORIES = 'sailCategories',
   SAIL_PATHS = 'sailPaths',
   SAIL_REQUESTS = 'sailRequests',
@@ -50,12 +52,12 @@ export enum STORE_SLICES {
 export const store = {
   [STORE_SLICES.APP]: appReducer,
   [STORE_SLICES.BOATS]: boatReducer,
-  [STORE_SLICES.DOCUMENTS]: documentReducer,
   [STORE_SLICES.BOAT_MAINTENANCES]: boatMaintenanceReducer,
   [STORE_SLICES.CDN]: cdnReducer,
   [STORE_SLICES.CHALLENGES]: challengeReducer,
   [STORE_SLICES.CHECKLISTS]: sailChecklistReducer,
   [STORE_SLICES.CLINICS]: clinicsReducer,
+  [STORE_SLICES.DOCUMENTS]: documentReducer,
   [STORE_SLICES.FEEDBACKS]: feedbackReducer,
   [STORE_SLICES.FUTURE_SAILS]: futureSailsReducer,
   [STORE_SLICES.INSTRUCTIONS]: instructionsReducer,
@@ -68,6 +70,7 @@ export const store = {
   [STORE_SLICES.SAIL_CATEGORIES]: sailCategoryReducer,
   [STORE_SLICES.SAIL_REQUESTS]: sailRequestReducer,
   [STORE_SLICES.SNACKS]: snackReducer,
+  [STORE_SLICES.SOCIALS]: socialReducer,
   [STORE_SLICES.TODAY_SAILS]: todaySailsReducer,
   [STORE_SLICES.USER_ACCESS]: userAccessReducer,
 };

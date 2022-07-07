@@ -10,6 +10,6 @@ export class TokenJob {
 
   @Cron(CronExpression.EVERY_30_MINUTES)
   deleteExpiredTokens() {
-    TokenEntity.delete({ expireAt: LessThanOrEqual(new Date()) } );
+    TokenEntity.delete({ expire_at: LessThanOrEqual(new Date()) } );
   }
 }

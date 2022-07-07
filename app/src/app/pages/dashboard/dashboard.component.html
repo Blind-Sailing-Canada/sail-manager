@@ -231,10 +231,15 @@
   >Sails</a>
   <a
     mat-raised-button
+    [routerLink]="SOCIALS_ROUTE"
+    title="Go to socials dashboard"
+  >Socials</a>
+  <a
+    mat-raised-button
     [routerLink]="MEDIA_ROUTE"
-    [queryParams]="{entity: 'SailEntity'}"
+    [queryParams]="{entity: 'SailEntity,SocialEntity'}"
     title="View pictures for all sails"
-  >Sail Pictures</a>
+  >Pictures</a>
   <a
     [routerLink]="viewUserSailsRouteLink(user?.profile?.id)"
     mat-raised-button
@@ -257,7 +262,7 @@
     Clinics
   </a>
   <a
-    [routerLink]="documentsLink()"
+    [routerLink]="documentsLink"
     mat-raised-button
     title="view documents"
   >

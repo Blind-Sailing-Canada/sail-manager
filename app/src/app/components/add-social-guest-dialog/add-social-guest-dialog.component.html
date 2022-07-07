@@ -1,0 +1,57 @@
+<h1
+  attr.aria-label="Add Guest to {{data.social.name}} social"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Add Guest Dialog</h1>
+<mat-dialog-content>
+  <mat-form-field
+    [(ngModel)]="data.guestName"
+    ngDefaultControl
+  >
+    <mat-label
+      id="labelName"
+      aria-hidden="true"
+      tabindex="-1"
+    >Guest Name</mat-label>
+    <input
+      aria-labelledby="labelName"
+      aria-required="true"
+      matInput
+      required
+      type="text"
+    >
+  </mat-form-field>
+  <mat-form-field
+    [(ngModel)]="data.guest_of_id"
+    ngDefaultControl
+  >
+    <mat-label
+      id="labelRole"
+      aria-hidden="true"
+      tabindex="-1"
+    >Guest of</mat-label>
+    <select
+      matNativeControl
+      required
+    >
+      <option
+        *ngFor="let user of data.usersOnSocial"
+        [value]="user.id"
+      >{{user.name}}</option>
+    </select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    (click)="addAndClose()"
+    mat-raised-button
+    title="Add guest"
+  >ADD</button>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close dialog"
+  >CLOSE</button>
+</div>

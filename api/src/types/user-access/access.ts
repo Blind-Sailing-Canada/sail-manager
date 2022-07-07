@@ -1,3 +1,3 @@
-export interface Access {
-  [propsName: string]: boolean
-}
+import { UserAccessFields } from './user-access-fields';
+
+export type Access = Partial<Record<UserAccessFields, boolean>>;

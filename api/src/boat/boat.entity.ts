@@ -121,7 +121,7 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   @AfterInsert()
   createChecklist() {
     const checklist = BoatChecklistEntity.create({
-      boatId: this.id,
+      boat_id: this.id,
       items: [],
     });
 

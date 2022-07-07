@@ -32,6 +32,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: SubRoutes.LIST_CHALLENGES,
+    pathMatch: 'full'
   }
 ];
 

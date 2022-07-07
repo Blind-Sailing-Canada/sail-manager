@@ -44,10 +44,13 @@ import {
   viewBoatRoute,
   viewProfileRoute,
   viewSailRoute,
+  viewSocialRoute,
 } from '../../routes/routes';
 import {
   finishChangingAppFont,
+  finishLoading,
   startChangingAppFont,
+  startLoading,
 } from '../../store/actions/app.actions';
 import {
   fetchBoatMaintenance,
@@ -77,6 +80,9 @@ import { putSnack } from '../../store/actions/snack.actions';
 import { ChallengeState } from '../../models/challenge-state';
 import { fetchChallenge } from '../../store/actions/challenge.actions';
 import { Challenge } from '../../../../../api/src/types/challenge/challenge';
+import { SocialState } from '../../models/social-state';
+import { Social } from '../../../../../api/src/types/social/social';
+import { fetchSocial } from '../../store/actions/social.actions';
 
 @Component({
   template: ''
@@ -149,6 +155,13 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return !!this.store[STORE_SLICES.APP].loading;
   }
 
+  public startLoading(): void {
+    this.dispatchAction(startLoading());
+  }
+
+  public finishLoading(): void {
+    this.dispatchAction(finishLoading());
+  }
   public get user(): User {
     const user = (this.store[STORE_SLICES.LOGIN] || {}).user;
 
@@ -234,6 +247,10 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return (this.store[STORE_SLICES.SAILS] || {}).all || {} as ISailMap;
   }
 
+  public get socials(): SocialState {
+    return this.store[STORE_SLICES.SOCIALS];
+  }
+
   public get sailsSearchResults(): Sail[] {
     return (this.store[STORE_SLICES.SAILS] || {}).search || [] as Sail[];
   }
@@ -249,6 +266,19 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
     return sail;
   }
+
+  public getSocial(id: string): Social {
+    const social = this.socials[id];
+
+    if (social) {
+      delete this.fetching[id];
+    } else if (social === undefined && !this.fetching[id]) {
+      this.fetchSocial(id);
+    }
+
+    return social;
+  }
+
 
   public getChallenge(id: string): Challenge {
     const challenge = this.challenges[id];
@@ -387,6 +417,10 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     this.goTo([viewSailRoute(id)]);
   }
 
+  public viewSocial(id: string): void {
+    this.goTo([viewSocialRoute(id)]);
+  }
+
   protected setFontSize(fontSize: string): void {
     if (!fontSize || fontSize === FONT_SIZE[FONT_SIZE.default]) {
       return;
@@ -452,6 +486,13 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     if (!this.fetching[sail_id]) {
       this.fetching[sail_id] = true;
       this.dispatchAction(fetchSail({ sail_id, ...options }));
+    }
+  }
+
+  protected fetchSocial(id: string, options = {} as any): void {
+    if (!this.fetching[id]) {
+      this.fetching[id] = true;
+      this.dispatchAction(fetchSocial({ social_id: id, ...options }));
     }
   }
 

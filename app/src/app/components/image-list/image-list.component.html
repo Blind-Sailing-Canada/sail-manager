@@ -3,7 +3,7 @@
     *ngFor="let picture of picturesArray; let i = index;"
     class="image-list-item"
   >
-    <h5>{{picture.title}}</h5>
+    <h5>{{picture.title || '&nbsp;'}}</h5>
     <a
       *ngIf="picture.url"
       [href]="picture.url"
@@ -57,15 +57,15 @@
       <label>by: </label> {{picture.posted_by.name}}
     </div>
     <div
-      *ngIf="showSail && picture.media_for_type === 'SailEntity'"
-      (click)="goToSail.emit(picture.media_for_id)"
+      *ngIf="showEntity"
+      (click)="gotToEntity.emit({id: picture.media_for_id, type: picture.media_for_type})"
       class="clickable"
     >
-      <label class="clickable">View Sail</label>
+      <label class="clickable">View {{EntityLabels[picture.media_for_type]}}</label>
     </div>
     <pre
       *ngIf="picture.description"
       tabindex="0"
-    >{{picture.description}}</pre>
+    >{{picture.description || '&nbsp;'}}</pre>
   </div>
 </div>

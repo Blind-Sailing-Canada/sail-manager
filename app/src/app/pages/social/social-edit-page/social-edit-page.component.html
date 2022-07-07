@@ -1,0 +1,167 @@
+<h4 *ngIf="!creatingNewSocial && socials[social_id] === null">Looks like this social is missing.</h4>
+<mat-card *ngIf="creatingNewSocial || socials[social_id]">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>local_bar</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >{{title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <form
+      class="social-edit-form"
+      [formGroup]="socialForm"
+    >
+      <ng-container *ngTemplateOutlet="socialName"></ng-container>
+      <ng-container *ngTemplateOutlet="socialDescription"></ng-container>
+      <ng-container *ngTemplateOutlet="socialAddress"></ng-container>
+      <ng-container *ngTemplateOutlet="socialStart"></ng-container>
+      <ng-container *ngTemplateOutlet="socialEnd"></ng-container>
+      <ng-container *ngTemplateOutlet="socialMaxOccupancy"></ng-container>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        (click)="updateSocial()"
+        *ngIf="shouldEnableUpdateButton"
+        id="updateButton"
+        mat-raised-button
+        mtTooltip="Save social changes"
+      >Update</button>
+      <button
+        (click)="createSocial()"
+        *ngIf="shouldEnableCreateButton"
+        id="createButton"
+        mat-raised-button
+        mtTooltip="Create new social"
+      >Create</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+<ng-template #controls>
+  <a
+    (click)="editManifest()"
+    *ngIf="!creatingNewSocial && !socialForm.dirty"
+    mat-raised-button
+  >Edit Manifest</a>
+</ng-template>
+<ng-template #socialName>
+  <h4
+    aria-hidden="true"
+    class='form-section-header'
+    id="formStepName"
+    tabindex="-1"
+  >{{totalFormSteps}}: Social's Name (required)</h4>
+  <mat-form-field [formGroup]="socialForm">
+    <input
+      aria-labelledby="formStepName"
+      formControlName="name"
+      matInput
+      title="Social Name"
+    >
+  </mat-form-field>
+  <mat-error
+    *ngFor="let error of (socialForm.pristine ? []: nameErrors)"
+    tabindex="0"
+  >{{error}}</mat-error>
+</ng-template>
+<ng-template #socialDescription>
+  <h4
+    aria-hidden="true"
+    class='form-section-header'
+    id="formStepDescription"
+    tabindex="-1"
+  >{{totalFormSteps}}: Social's Description (required)</h4>
+  <mat-form-field [formGroup]="socialForm">
+    <textarea
+      aria-labelledby="formStepDescription"
+      cdkAutosizeMaxRows="10"
+      cdkAutosizeMinRows="1"
+      cdkTextareaAutosize
+      formControlName="description"
+      matInput
+      title="Social Description"
+    ></textarea>
+  </mat-form-field>
+</ng-template>
+<ng-template #socialAddress>
+  <h4
+    aria-hidden="true"
+    class='form-section-header'
+    id="formStepAddress"
+    tabindex="-1"
+  >{{totalFormSteps}}: Social's Address (required)</h4>
+  <mat-form-field [formGroup]="socialForm">
+    <textarea
+      aria-labelledby="formStepAddress"
+      cdkAutosizeMaxRows="10"
+      cdkAutosizeMinRows="1"
+      cdkTextareaAutosize
+      formControlName="address"
+      matInput
+      title="Social Address"
+    ></textarea>
+  </mat-form-field>
+</ng-template>
+<ng-template #socialStart>
+  <h4
+    class='form-section-header'
+    tabindex="0"
+  >{{totalFormSteps}}: Social's Start</h4>
+  <app-date-time-form
+    [form]="socialStartDateTimeForm"
+    formType="Start"
+    id="social-start-date-time"
+  ></app-date-time-form>
+  <mat-error
+    *ngFor="let error of start_dateErrors"
+    tabindex="0"
+  >{{error}}</mat-error>
+  <p tabindex="0">Start date preview: {{getTime("start_at")}}</p>
+</ng-template>
+<ng-template #socialEnd>
+  <h4
+    class='form-section-header'
+    tabindex="0"
+  >{{totalFormSteps}}: Social's End</h4>
+  <app-date-time-form
+    [form]="socialEndDateTimeForm"
+    formType="End"
+    id="social-end-date-time"
+  ></app-date-time-form>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of end_dateErrors"
+  >{{error}}</mat-error>
+  <p tabindex="0">End date preview: {{getTime("end_at")}}</p>
+</ng-template>
+<ng-template #socialMaxOccupancy>
+  <h4
+    aria-hidden="true"
+    class='form-section-header'
+    id="formStepMaxAttendants"
+    tabindex="-1"
+  >{{totalFormSteps}}: Social's Maximum Occupancy (required)</h4>
+  <mat-form-field [formGroup]="socialForm">
+    <input
+      aria-labelledby="formStepMaxAttendants"
+      formControlName="max_attendants"
+      matInput
+      title="Social's maximum number of people (-1 for unlimited)"
+      min="-1"
+      required
+      type="number"
+    >
+  </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of max_occupancyErrors"
+  >{{error}}</mat-error>
+</ng-template>

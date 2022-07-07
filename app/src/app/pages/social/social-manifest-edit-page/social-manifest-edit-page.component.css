@@ -1,0 +1,15 @@
+.manifest-list {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 20px;
+  min-width: 100%;
+  margin-bottom: 20px;
+}
+
+.manifest-list button {
+  max-width: max-content;
+}
+
+mat-list-item {
+  margin-bottom: 20px;
+}

@@ -18,19 +18,25 @@ import { SailRequestInterest } from '../types/sail-request-interest/sail-request
 ], { unique: true })
 export class SailRequestInterestEntity extends BaseModelEntity implements SailRequestInterest {
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     profile_id: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     sail_request_id: string;
 
   @ManyToOne(() => ProfileEntity, undefined, { eager: true })
-  @JoinColumn()
+  @JoinColumn({
+    name: 'profile_id',
+    referencedColumnName: 'id',
+  })
     profile: Profile;
 
   @ManyToOne(() => SailRequestEntity, (sail_request) => sail_request.interest, { eager: false })
-  @JoinColumn()
+  @JoinColumn({
+    name: 'sail_request_id',
+    referencedColumnName: 'id'
+  })
     sail_request: SailRequestEntity;
 }

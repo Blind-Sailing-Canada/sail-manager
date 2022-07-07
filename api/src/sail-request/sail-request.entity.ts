@@ -29,7 +29,10 @@ export class SailRequestEntity extends BaseModelEntity implements SailRequest {
   @Column()
     details: string;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    type: 'uuid'
+  })
   @Index()
     sail_id: string;
 
@@ -42,15 +45,21 @@ export class SailRequestEntity extends BaseModelEntity implements SailRequest {
     status: SailRequestStatus;
 
   @ManyToOne(() => SailEntity, sail => sail.sail_request, { eager: true })
-  @JoinColumn()
+  @JoinColumn({
+    name: 'sail_id',
+    referencedColumnName: 'id',
+  })
     sail: SailEntity;
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     requested_by_id: string;
 
   @ManyToOne(() => ProfileEntity, undefined, { eager: true })
-  @JoinColumn()
+  @JoinColumn({
+    name: 'requested_by_id',
+    referencedColumnName: 'id',
+  })
     requested_by: ProfileEntity;
 
   @OneToMany(() => SailRequestInterestEntity, (interest) => interest.sail_request, { eager: true })

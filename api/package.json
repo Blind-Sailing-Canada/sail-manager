@@ -22,6 +22,7 @@
     "migration:run": "yarn typeorm migration:run",
     "migration:run:prod": "yarn typeorm:prod migration:run",
     "migration:revert:prod": "yarn typeorm:prod migration:revert",
+    "migration:revert": "yarn typeorm migration:revert",
     "migration:create": "typeorm-ts-node-commonjs migration:create"
   },
   "dependencies": {

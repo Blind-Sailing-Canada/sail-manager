@@ -42,6 +42,8 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   public usersOnSail: Profile[] = [];
   public SAILOR_ROLES = Object.entries(SailorRole);
   public sailor_roles: any = [];
+  public sail: Sail;
+  public sail_id: string;
   private addSailorDialogRef: MatDialogRef<AddSailorDialogComponent>;
 
   constructor(
@@ -57,12 +59,16 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   }
 
   ngOnInit(): void {
-    this.getSail(this.sail_id);
+    this.sail_id = this.route.snapshot.params.id;
+
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
+      this.sail = this.getSail(this.sail_id);
+
       if (this.sail) {
         this.updateForm(this.sail);
       }
     });
+    this.getSail(this.sail_id);
   }
 
   public showAddSailorDialog(): void {
@@ -142,20 +148,12 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     this.sailor_roles.splice(index, 1);
   }
 
-  public get sail_id(): string {
-    return this.route.snapshot.params.id;
-  }
-
   public get title(): string {
     return 'Edit Sail Manifest Form';
   }
 
   public get subtitle(): string {
     return `For sail: ${(this.sail || {}).name}`;
-  }
-
-  public get sail(): Sail {
-    return this.sails[this.sail_id];
   }
 
   public fetchAvailableSailor(sailorName: string): void {

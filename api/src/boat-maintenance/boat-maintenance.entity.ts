@@ -47,7 +47,7 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
   })
     serviced_at: Date;
 
-  @Column()
+  @Column({ type: 'uuid' })
     requested_by_id: string;
 
   @Column(
@@ -62,6 +62,7 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
     {
       nullable: true,
       default: null,
+      type: 'uuid'
     }
   )
     resolved_by_id: string;
@@ -75,13 +76,14 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
   @Index('boat_maintenance_status')
     status: BoatMaintenanceStatus;
 
-  @Column()
+  @Column({ type: 'uuid' })
     boat_id: string;
 
   @Column(
     {
       nullable: true,
       default: null,
+      type: 'uuid'
     }
   )
     sail_id: string;

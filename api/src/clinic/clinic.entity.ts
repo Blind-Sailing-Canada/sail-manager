@@ -62,6 +62,7 @@ export class ClinicEntity extends BaseModelEntity implements Clinic {
   @Column({
     nullable: true,
     default: null,
+    type: 'uuid'
   })
     instructor_id: string;
 
@@ -69,7 +70,10 @@ export class ClinicEntity extends BaseModelEntity implements Clinic {
     eager: true,
     nullable: true,
   })
-  @JoinColumn()
+  @JoinColumn({
+    name: 'instructor_id',
+    referencedColumnName: 'id'
+  })
     instructor: ProfileEntity;
 
   @OneToMany(() => ClinicAttendanceEntity, attendance => attendance.clinic, { eager: true })

@@ -39,14 +39,17 @@ export class DocumentEntity extends BaseModelEntity implements Document  {
   })
     entity_type: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     author_id: string;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
     author: ProfileEntity;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    type: 'uuid'
+  })
     documentable_id: string;
 
   @Column({ nullable: true })

@@ -1,0 +1,82 @@
+<h3 *ngIf="social === null">Looks like this social does not exist.</h3>
+<mat-card *ngIf="social">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>photo</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      tabindex="0"
+      role="heading"
+    >
+      Pictures From Social: {{social?.name}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="CONTROLS_TEMPLATE"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="PICTURES_TEMPLATE"></ng-container>
+    <ng-container [ngTemplateOutlet]="UPLOAD_PICTURE_TEMPLATE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <ng-container [ngTemplateOutlet]="FOOTER_CONTROLS_TEMPLATE"></ng-container>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #CONTROLS_TEMPLATE>
+  <button
+    mat-raised-button
+    (click)="getSocialPictures()"
+  >Refresh</button>
+  <div>
+    <mat-slide-toggle
+      color="warn"
+      [(ngModel)]="allowDelete"
+    >Delete Mode</mat-slide-toggle>
+  </div>
+</ng-template>
+
+<ng-template #FOOTER_CONTROLS_TEMPLATE>
+  <button
+    mat-raised-button
+    *ngIf="shouldEnableSubmitButton"
+    (click)="submitPictures()"
+  >Submit</button>
+</ng-template>
+
+<ng-template #PICTURES_TEMPLATE>
+  <app-image-list
+    (goToProfile)="showProfileDialog($event)"
+    [pictures]="pictures"
+    [profiles]="profiles"
+    [showAuthor]="true"
+    [user]="user"
+    [allowDelete]="allowDelete"
+    (deleteClick)="deletePicture($event)"
+  ></app-image-list>
+</ng-template>
+
+<ng-template #UPLOAD_PICTURE_TEMPLATE>
+  <app-image-form
+    [allowDescription]="true"
+    [allowTitle]="true"
+    [allowDelete]="true"
+    [form]="form"
+    controlArrayName="pictures"
+    (deleteClick)="deleteCDNFile($event)"
+  ></app-image-form>
+  <app-file-select
+    (action)="uploadNewPicture($event)"
+    [id]="socialPictureInput"
+    [multiple]="false"
+    [progress]="uploadProgress"
+    fileTypeLabel="media"
+    actionDescription="Upload new social picture or video"
+    actionName="Upload"
+    fileFilter="image/jpeg,image/x-png,image/svg,image/gif,img/bmp,video/*"
+    title="Upload new social picture or video"
+  ></app-file-select>
+</ng-template>

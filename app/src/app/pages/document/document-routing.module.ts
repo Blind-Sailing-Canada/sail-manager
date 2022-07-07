@@ -12,10 +12,6 @@ import { DocumentViewPageComponent } from './document-view-page/document-view-pa
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: SubRoutes.LIST_DOCUMENTS,
-  },
-  {
     path: `${SubRoutes.VIEW_DOCUMENT}/:document_id`,
     component: DocumentViewPageComponent,
   },
@@ -28,11 +24,18 @@ const routes: Routes = [
     path: `${SubRoutes.CREATE_DOCUMENT}`,
     canActivate: [CreateDocumentGuard],
     component: DocumentEditPageComponent,
+    pathMatch: 'full'
   },
   {
     path: `${SubRoutes.LIST_DOCUMENTS}`,
     component: DocumentListPageComponent,
-  }
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    redirectTo: SubRoutes.LIST_DOCUMENTS,
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({

@@ -21,11 +21,14 @@ export class UserAccessEntity extends BaseModelEntity implements UserAccess {
   })
     access: Access;
 
-  @Column()
+  @Column({ type: 'uuid' })
   @Index()
     profile_id: string;
 
-  @OneToOne(() => ProfileEntity, (profile) => profile.access, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @OneToOne(() => ProfileEntity, (profile) => profile.access)
+  @JoinColumn({
+    name: 'profile_id',
+    referencedColumnName: 'id',
+  })
     profile: ProfileEntity;
 }

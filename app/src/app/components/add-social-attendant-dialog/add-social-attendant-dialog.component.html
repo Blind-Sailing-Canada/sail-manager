@@ -1,0 +1,42 @@
+<h1
+  attr.aria-label="Add user to {{data.social.name}} social"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Add Social User Dialog</h1>
+<mat-dialog-content>
+  <mat-action-list
+    role='list'
+    id="available_user_list"
+  >
+    <div class="form">
+      <app-list-filter
+        label="Search user by name or email"
+        ariaLabel="Search user by name email"
+        tooltip="Search user by name or email"
+        (filter)="data.fetchProfile($event)"
+      ></app-list-filter>
+    </div>
+    <mat-list-item
+      (click)="addAndClose(profile)"
+      *ngFor="let profile of data.profiles; let i = index"
+      attr.aria-label="User {{i + 1}} of {{data.profiles.length}} {{profile.name}}. Click to add to social."
+      role="listitem"
+      tabindex="0"
+    >
+      <mat-icon matListIcon>add</mat-icon>{{i + 1 }}. {{profile.name}}
+    </mat-list-item>
+    <mat-list-item
+      *ngIf="!data.profiles || data.profiles.length === 0"
+      tabindex="0"
+    >No users are available during this time.</mat-list-item>
+  </mat-action-list>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close dialog"
+  >CLOSE</button>
+</div>

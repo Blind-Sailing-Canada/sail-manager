@@ -163,6 +163,25 @@
         </mat-form-field>
       </form>
     </div>
+    <div>
+      <form>
+        <mat-form-field>
+          <mat-label
+            aria-hidden="true"
+            id="filterLabelSailLimit"
+            tabindex="-1"
+          >Max number of sails to return</mat-label>
+          <input
+            [(ngModel)]="sailLimit"
+            [ngModelOptions]="{standalone: true}"
+            aria-labelledby="filterLabelSailLimit"
+            title="Max number of sails to return"
+            matInput
+            type="number"
+          >
+        </mat-form-field>
+      </form>
+    </div>
   </div>
 </ng-template>
 <ng-template #controls>

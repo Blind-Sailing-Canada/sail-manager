@@ -12,6 +12,7 @@ const routes: Routes = [
   {
     path: '',
     component: MaintenanceListPageComponent,
+    pathMatch: 'full'
   },
   {
     path: SubRoutes.CREATE_MAINTENANCE,

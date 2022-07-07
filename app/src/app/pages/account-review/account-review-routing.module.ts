@@ -9,6 +9,7 @@ const routes: Routes = [
   {
     path: '',
     component: AccountReviewComponent,
+    pathMatch: 'full'
   },
 ];
 
