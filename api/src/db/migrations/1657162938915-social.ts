@@ -25,11 +25,9 @@ export class social1657162938915 implements MigrationInterface {
     await queryRunner.query('ALTER TABLE "social_manifests" ADD CONSTRAINT "FK_1b563279aeb34260eb3e1b2864b" FOREIGN KEY ("guest_of_id") REFERENCES "profiles"("id") ON DELETE NO ACTION ON UPDATE NO ACTION');
     await queryRunner.query('ALTER TABLE "social_manifests" ADD CONSTRAINT "FK_a87752644fc9e27fe4320df00ab" FOREIGN KEY ("profile_id") REFERENCES "profiles"("id") ON DELETE NO ACTION ON UPDATE NO ACTION');
     await queryRunner.query('ALTER TABLE "socials" ADD CONSTRAINT "FK_9bed224bac3ea7ba76d02490544" FOREIGN KEY ("cancelled_by_id") REFERENCES "profiles"("id") ON DELETE NO ACTION ON UPDATE NO ACTION');
-    await queryRunner.query('ALTER TABLE "media" ADD CONSTRAINT "FK_35b167a659eab9729ba721f0b15" FOREIGN KEY ("posted_by_id") REFERENCES "profiles"("id") ON DELETE NO ACTION ON UPDATE NO ACTION');
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('ALTER TABLE "media" DROP CONSTRAINT "FK_35b167a659eab9729ba721f0b15"');
     await queryRunner.query('ALTER TABLE "socials" DROP CONSTRAINT "FK_9bed224bac3ea7ba76d02490544"');
     await queryRunner.query('ALTER TABLE "social_manifests" DROP CONSTRAINT "FK_a87752644fc9e27fe4320df00ab"');
     await queryRunner.query('ALTER TABLE "social_manifests" DROP CONSTRAINT "FK_1b563279aeb34260eb3e1b2864b"');
