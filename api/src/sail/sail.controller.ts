@@ -243,6 +243,7 @@ export class SailController {
     const start = query.sailStart;
     const end = query.sailEnd;
     const sort = query.sort;
+    const limit = query.limit;
 
     let searchQuery = SailEntity.getRepository().createQueryBuilder('sail');
 
@@ -291,19 +292,24 @@ export class SailController {
       searchQuery = searchQuery.andWhere(`(${sailorSearchQuery})`, sailNameData);
     }
 
-    const foundSails = await searchQuery.select('sail.id').getMany();
-
-    const sail_ids = foundSails.map(sail => sail.id);
-
-    let order: FindOptionsOrder<SailEntity> = {
-      start_at: 'DESC',
-      end_at: 'DESC'
-    };
+    let order: FindOptionsOrder<SailEntity> = { start_at: 'DESC' };
 
     if (sort) {
       const sortParts = sort.split(',');
       order = { [sortParts[0]]: sortParts[1] };
     }
+
+    Object.keys(order).forEach((key) => {
+      searchQuery = searchQuery.addOrderBy(key, order[key]);
+    });
+
+    if (limit) {
+      searchQuery = searchQuery.limit(limit);
+    }
+
+    const foundSails = await searchQuery.select('sail.id').getMany();
+
+    const sail_ids = foundSails.map(sail => sail.id);
 
     if (sail_ids.length) {
       return SailEntity
