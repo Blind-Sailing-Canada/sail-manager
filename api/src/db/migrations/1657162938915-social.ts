@@ -12,6 +12,7 @@ export class social1657162938915 implements MigrationInterface {
     await queryRunner.query('CREATE INDEX "IDX_a87752644fc9e27fe4320df00a" ON "social_manifests" ("profile_id") ');
     await queryRunner.query('CREATE INDEX "IDX_a68cf7f7f580920af668ecc73d" ON "social_manifests" ("person_name") ');
     await queryRunner.query('CREATE UNIQUE INDEX "social-profile-index" ON "social_manifests" ("social_id", "profile_id") ');
+    await queryRunner.query('CREATE TYPE "public"."socials_status_enum" AS ENUM(\'cancelled\', \'completed\', \'new\')');
     await queryRunner.query('CREATE TABLE "socials" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "entity_number" integer, "name" character varying(100) NOT NULL DEFAULT \'\', "address" character varying(500) DEFAULT \'\', "calendar_id" character varying, "calendar_link" character varying, "description" character varying(500), "status" "public"."socials_status_enum" NOT NULL DEFAULT \'new\', "start_at" TIMESTAMP WITH TIME ZONE NOT NULL, "end_at" TIMESTAMP WITH TIME ZONE NOT NULL, "max_attendants" integer NOT NULL DEFAULT \'-1\', "cancel_reason" character varying, "cancelled_by_id" uuid, "entity_type" character varying NOT NULL DEFAULT \'SocialEntity\', "cancelled_at" TIMESTAMP WITH TIME ZONE, CONSTRAINT "UQ_220e8da5befcd36cfacbbdf12eb" UNIQUE ("entity_number"), CONSTRAINT "PK_5e3ee018e1b66c619ae3d3b3309" PRIMARY KEY ("id"))');
     await queryRunner.query('CREATE INDEX "IDX_8c1347766cbb0fe419f404c0d6" ON "socials" ("name") ');
     await queryRunner.query('CREATE INDEX "IDX_b03d4fc665ce2e9366da85ccc9" ON "socials" ("address") ');
@@ -41,6 +42,7 @@ export class social1657162938915 implements MigrationInterface {
     await queryRunner.query('DROP INDEX "public"."IDX_b03d4fc665ce2e9366da85ccc9"');
     await queryRunner.query('DROP INDEX "public"."IDX_8c1347766cbb0fe419f404c0d6"');
     await queryRunner.query('DROP TABLE "socials"');
+    await queryRunner.query('DROP TYPE "public"."socials_status_enum"');
     await queryRunner.query('DROP INDEX "public"."social-profile-index"');
     await queryRunner.query('DROP INDEX "public"."IDX_a68cf7f7f580920af668ecc73d"');
     await queryRunner.query('DROP INDEX "public"."IDX_a87752644fc9e27fe4320df00a"');
