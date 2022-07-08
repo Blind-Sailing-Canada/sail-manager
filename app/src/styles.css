@@ -307,6 +307,9 @@ mat-card-footer mat-card-actions {
   .full-screen {
     display: none;
   }
+  main {
+    width: 100vw;
+  }
 }
 
 @media screen and (max-width: 670px) {

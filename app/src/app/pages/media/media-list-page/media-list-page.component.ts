@@ -19,6 +19,7 @@ import { Sort } from '@angular/material/sort';
 import { MediaType } from '../../../../../../api/src/types/media/media-type';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatedMedia } from '../../../../../../api/src/types/media/paginated-media';
+import { WindowService } from '../../../services/window.service';
 
 @Component({
   selector: 'app-media-list-page',
@@ -29,6 +30,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
 
   public dataSource = new MatTableDataSource<Media>([]);
   public displayedColumns: string[] = ['url', 'title', 'posted_by', 'media_type', 'created_at', 'action'];
+  public displayedColumnsSmall: string[] = ['url', 'posted_by', 'action'];
   public entities: string[] = [];
   public filter: string;
   public mediaType: MediaType | 'ANY' = 'ANY';
@@ -52,6 +54,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     @Inject(Store) store: Store<any>,
     @Inject(MediaService) private mediaService: MediaService,
     @Inject(MatDialog) dialog: MatDialog,
+    @Inject(WindowService) public windowServer: WindowService,
   ) {
     super(store, route, router, dialog);
   }

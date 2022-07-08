@@ -28,6 +28,12 @@ table {
   font-weight: bold;
 }
 
+.mat-column-url {
+  width: min-content;
+  text-align: center;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 670px) {
   .table-filters {
     display: flex;
