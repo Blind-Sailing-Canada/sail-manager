@@ -105,6 +105,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     if (this.filter) {
       query.$and.push({ $or: [
         { title: { $contL: this.filter } },
+        { description: { $contL: this.filter } },
         { 'posted_by.name': { $contL: this.filter } },
       ] });
     }
