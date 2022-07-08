@@ -44,6 +44,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
   public requestCategoryValues: string[] = ['ANY'];
   public requestStatusValues = { ...SailRequestStatus, ANY: 'ANY' };
   public sort: string;
+  public pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 };
 
   @ViewChild('filterInput', { static: false }) private filterInput;
 
@@ -98,7 +99,8 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
     return createSailRequestRoute.toString();
   }
 
-  public async filterSailRequests(pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 }): Promise<void> {
+  public async filterSailRequests(): Promise<void> {
+    const pagination = this.pagination;
     const query = { $and: [] };
 
     if (this.filter) {
@@ -121,15 +123,15 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
 
     const page = this.paginatedData;
 
-    this.dispatchMessage(`Displaying ${page.count} of ${page.total} socials on page #${page.page}.`);
+    this.dispatchMessage(`Displaying ${page.count} of ${page.total} requests on page #${page.page}.`);
   }
 
   public paginationHandler(event: PageEvent) {
-    this.filterSailRequests(event);
+    this.pagination = event;
+    this.filterSailRequests();
   }
 
   public sortHandler(event: Sort) {
-    console.log(event);
     if (event.direction) {
       this.sort = `${event.active},${event.direction.toUpperCase()}`;
     } else {

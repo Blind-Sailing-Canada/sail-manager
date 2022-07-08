@@ -1,33 +1,50 @@
 import {
+  AfterViewInit,
   Component,
   Inject,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { BasePageComponent } from '../../base-page/base-page.component';
-import { Access } from '../../../../../../api/src/types/user-access/access';
-import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
-import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
-import { MediaService, PaginatedMedia } from '../../../services/media.service';
+import { MediaService } from '../../../services/media.service';
 import { Media } from '../../../../../../api/src/types/media/media';
-import { firstValueFrom, take } from 'rxjs';
+import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWhile } from 'rxjs';
 import { STORE_SLICES } from '../../../store/store';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
+import { MediaType } from '../../../../../../api/src/types/media/media-type';
+import { MatTableDataSource } from '@angular/material/table';
+import { PaginatedMedia } from '../../../../../../api/src/types/media/paginated-media';
 
 @Component({
   selector: 'app-media-list-page',
   styleUrls: ['./media-list-page.component.css'],
   templateUrl: './media-list-page.component.html',
 })
-export class MediaListPageComponent extends BasePageComponent implements OnInit {
+export class MediaListPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
 
-  public allowDelete = false;
+  public dataSource = new MatTableDataSource<Media>([]);
+  public displayedColumns: string[] = ['url', 'title', 'posted_by', 'media_type', 'created_at', 'action'];
   public entities: string[] = [];
-  public media: Media[] = [];
+  public filter: string;
+  public mediaType: MediaType | 'ANY' = 'ANY';
+  public mediaTypeValues = { ...MediaType, ANY: 'ANY' };
   public paginatedData: PaginatedMedia;
+  public pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 };
+  public sort: string;
+  public MediaTypes = MediaType;
+  public width = 100;
+  public height = 100;
+  public EntityLabels = {
+    SailEntity: 'sail',
+    SocialEntity: 'social',
+  };
+
+  @ViewChild('filterInput', { static: false }) private filterInput;
 
   constructor(
     @Inject(Router) router: Router,
@@ -42,60 +59,81 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit 
   ngOnInit() {
     this.entities = (this.route.snapshot.queryParams.entity || '').split(',').filter(Boolean);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
-    this.fetchMedia();
+    this.filterMedia();
   }
 
-  public async fetchMedia(pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 }): Promise<void> {
-    const query = { } as any;
+  ngAfterViewInit(): void {
+    const typeAhead = fromEvent(this.filterInput.nativeElement, 'input')
+      .pipe(
+        takeWhile(() => this.active),
+        map((e: any) => (e.target.value || '') as string),
+        debounceTime(1000),
+        map(text => text ? text.trim() : ''),
+        filter(text => text.length === 0 || text.length > 2),
+        switchMap((text) => {
+          this.filter = text;
+          return this.filterMedia();
+        }),
+      );
+
+    typeAhead.subscribe();
+
+    super.ngAfterViewInit();
+  }
+
+  public goToEntity(media: Media): void {
+    switch(media.media_for_type) {
+      case 'SailEntity':
+        this.viewSail(media.media_for_id);
+        break;
+      case 'SocialEntity':
+        this.viewSocial(media.media_for_id);
+    }
+  }
+
+  public async filterMedia(): Promise<void> {
+    const pagination = this.pagination;
+    const query = { $and: [] };
 
     if (this.entities.length) {
-      query.media_for_type = { $in:  this.entities };
+      query.$and.push({ media_for_type: { $in:  this.entities } });
     }
 
-    const mediaFetch =  this.mediaService.getPaginatedMedia(query, pagination.pageIndex + 1, pagination.pageSize);
-    this.paginatedData = await firstValueFrom(mediaFetch);
-    this.media = this.paginatedData.data;
+    if (this.filter) {
+      query.$and.push({ $or: [
+        { title: { $contL: this.filter } },
+        { 'posted_by.name': { $contL: this.filter } },
+      ] });
+    }
+
+    if (this.mediaType !== 'ANY') {
+      query.$and.push({ media_type: this.mediaType });
+    }
+
+    this.startLoading();
+
+    const mediaFetch =  this.mediaService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
+    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    this.dataSource.data = this.paginatedData.data;
 
     const page = this.paginatedData;
 
-    this.dispatchMessage(`Displaying ${page.count} of ${page.total} pictures on page #${page.page}.`);
+    this.dispatchMessage(`Displaying ${page.count} of ${page.total} media on page #${page.page}.`);
   }
 
   public paginationHandler(event: PageEvent) {
-    this.fetchMedia(event);
+    this.pagination = event;
+    this.filterMedia();
   }
 
-  public goToEntity(event: { id: string; type: string }): void {
-    switch(event.type) {
-      case 'SailEntity':
-        this.viewSail(event.id);
-        break;
-      case 'SocialEntity':
-        this.viewSocial(event.id);
-    }
-  }
-
-  public deleteMedia(media: Media): void {
-    this.mediaService
-      .delete(media.id)
-      .pipe(take(1))
-      .subscribe(() => this.fetchMedia());
-  }
-
-  public get shouldShowControls(): boolean {
-    const user = this.user;
-
-    if (!user) {
-      return false;
+  public sortHandler(event: Sort) {
+    if (event.direction) {
+      this.sort = `${event.active},${event.direction.toUpperCase()}`;
+    } else {
+      this.sort = '';
     }
 
-    const roles: string[] = user.roles || [];
-    const access: Access = user.access || {};
-
-    const should = access[UserAccessFields.CreateSail] ||
-      roles.some(role => role === ProfileRole.Admin || role === ProfileRole.Coordinator);
-
-    return should;
+    this.filterMedia();
   }
 
 }

@@ -26,7 +26,7 @@
         <video
           [height]="height"
           [width]="width"
-          preload="metadata"
+          preload="none"
           async
           attr.aria-label="video {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
           src="{{picture.url}}"
@@ -58,7 +58,7 @@
     </div>
     <div
       *ngIf="showEntity"
-      (click)="gotToEntity.emit({id: picture.media_for_id, type: picture.media_for_type})"
+      (click)="goToEntity.emit({id: picture.media_for_id, type: picture.media_for_type})"
       class="clickable"
     >
       <label class="clickable">View {{EntityLabels[picture.media_for_type]}}</label>

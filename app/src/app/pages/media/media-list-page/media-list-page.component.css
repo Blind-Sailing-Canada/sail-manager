@@ -1,18 +1,38 @@
-.mat-expansion-panel-header-description {
-  justify-content: space-between;
-  align-items: center;
-}
-
-.sail-filter-container div {
-  display: flex;
-  flex-direction: column;
-}
-
-.sail-filter-container mat-form-field {
+table {
   width: 100%;
 }
 
-section {
-  margin-bottom: 10px !important;
-  padding-bottom: 10px;
+.table-filters {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: flex-end;
+  padding: 20px 20px 0 20px;
+}
+
+.video-container {
+  position: relative;
+}
+
+.video-container .mat-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: red;
+}
+
+.mat-column-action {
+  width: min-content;
+  text-align: center;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 670px) {
+  .table-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 20px 0 20px;
+  }
 }

@@ -37,6 +37,7 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
   public sort: string;
   public socialStatus: SocialStatus | 'ANY' = SocialStatus.New;
   public socialStatusValues = { ...SocialStatus, ANY: 'ANY' };
+  public pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 };
 
   @ViewChild('filterInput', { static: false }) private filterInput;
 
@@ -95,7 +96,8 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
   }
 
 
-  public async filterSocials(pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 }): Promise<void> {
+  public async filterSocials(): Promise<void> {
+    const pagination = this.pagination;
     const query = { $and: [] };
 
     if (this.filter) {
@@ -118,11 +120,11 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
   }
 
   public paginationHandler(event: PageEvent) {
-    this.filterSocials(event);
+    this.pagination = event;
+    this.filterSocials();
   }
 
   public sortHandler(event: Sort) {
-    console.log(event);
     if (event.direction) {
       this.sort = `${event.active},${event.direction.toUpperCase()}`;
     } else {

@@ -9,34 +9,203 @@
     >Media</mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <ng-container
-      *ngIf="shouldShowControls"
-      [ngTemplateOutlet]="controls"
-    ></ng-container>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
   </mat-card-actions>
   <mat-card-content>
-    <app-image-list
-      (deleteClick)="deleteMedia($event)"
-      (goToProfile)="showProfileDialog($event)"
-      (gotToEntity)="goToEntity($event)"
-      [allowDelete]="allowDelete"
-      [pictures]="media"
-      [profiles]="profiles"
-      [showAuthor]="true"
-      [showEntity]="true"
-      [user]="user"
-    ></app-image-list>
-    <mat-paginator
-      (page)="paginationHandler($event)"
-      [length]="paginatedData?.total || 0"
-      [pageSizeOptions]="[10, 20, 50]"
-      [pageSize]="20"
-      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
-      aria-label="Select page of pictures"
-    >
-    </mat-paginator>
+    <ng-container [ngTemplateOutlet]="MEDIA_TABLE"></ng-container>
   </mat-card-content>
 </mat-card>
 
 <ng-template #controls>
+</ng-template>
+
+<ng-template #MEDIA_TABLE>
+  <div class="mat-elevation-z2">
+    <div class="table-filters">
+      <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input
+          matInput
+          #filterInput
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <select
+          [(ngModel)]="mediaType"
+          [ngModelOptions]="{standalone: true}"
+          matNativeControl
+          (ngModelChange)="filterMedia()"
+        >
+          <option
+            *ngFor="let type of mediaTypeValues | keyvalue"
+            [value]="type.value"
+          >{{type.key}}</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      (matSortChange)="sortHandler($event)"
+      matSortActive="created_at"
+      matSortDirection="desc"
+    >
+      <ng-container matColumnDef="url">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Image </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          <ng-container *ngTemplateOutlet="MEDIA_PICTURE; context:{picture: element}"></ng-container>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="title">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Title </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          <div>{{element.title}}</div>
+          <div>{{element.description}}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="posted_by">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Posted by </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <button
+            (click)="showProfileDialog(element.posted_by)"
+            mat-flat-button
+            title="Click show open profile dialog"
+          >{{element.posted_by?.name}}</button> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="media_type">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-sort-header
+        > Type </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.media_type}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Posted at </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.created_at | humanDate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th
+          *matHeaderCellDef
+          mat-header-cell
+        > </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <button
+            mat-flat-button
+            (click)="goToEntity(element)"
+          >
+            View {{EntityLabels[element.media_for_type]}}
+          </button> </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns"
+      ></tr>
+      <tr
+        *matRowDef="let row; columns: displayedColumns;"
+        mat-row
+      ></tr>
+    </table>
+
+    <mat-paginator
+      (page)="paginationHandler($event)"
+      [disabled]="loading"
+      [length]="paginatedData?.total || 0"
+      [pageSizeOptions]="[1, 10, 20, 50]"
+      [pageSize]="20"
+      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
+      aria-label="Select page of media"
+    >
+    </mat-paginator>
+  </div>
+</ng-template>
+
+<ng-template
+  #MEDIA_PICTURE
+  let-picture="picture"
+>
+  <a
+    *ngIf="picture.url"
+    [href]="picture.url"
+    [ngSwitch]="picture.media_type"
+    target="_blank"
+    style="margin: 10px; display: inline-block;"
+  >
+    <img
+      *ngSwitchCase="MediaTypes.Picture"
+      [height]="height"
+      [width]="width"
+      async
+      attr.aria-label="picture. description: {{picture.title || ''}} {{picture.description || ''}}"
+      src="{{picture.url}}?width={{width}}&height={{height}}"
+    >
+    <div
+      *ngSwitchCase="MediaTypes.Video"
+      class="video-container"
+      style="width: min-content; display: inline-block;"
+    >
+      <mat-icon>play_circle</mat-icon>
+      <video
+        [height]="height"
+        [width]="width"
+        preload="none"
+        async
+        attr.aria-label="video. description: {{picture.title || ''}} {{picture.description || ''}}"
+        src="{{picture.url}}"
+      ></video>
+    </div>
+
+    <img
+      *ngSwitchDefault
+      [height]="height"
+      [width]="width"
+      async
+      attr.aria-label="picture. comment: {{picture.title || ''}} {{picture.description || ''}}"
+      src="{{picture.url}}?width={{width}}&height={{height}}"
+    >
+  </a>
 </ng-template>

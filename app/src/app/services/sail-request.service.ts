@@ -38,10 +38,12 @@ export class SailRequestService {
     return this.http.get<SailRequest[]>(`${this.API_URL}`);
   }
 
-  public fetchAllPaginated( query?: any,
+  public fetchAllPaginated(
+    query?: any,
     page: number = 1,
     per_page: number = 10,
-    sort: string = 'created_at,ASC'): Observable<PaginatedSailRequest> {
+    sort: string = 'created_at,ASC',
+  ): Observable<PaginatedSailRequest> {
 
     return this.http
       .get<PaginatedSailRequest>(`${this.API_URL}?s=${JSON.stringify(query || {})}&page=${page}&per_page=${per_page}&sort=${sort}`);
