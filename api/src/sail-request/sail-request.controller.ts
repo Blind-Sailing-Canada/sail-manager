@@ -24,7 +24,7 @@ import { ApprovedUserGuard } from '../guards/approved-profile.guard';
     primary: true,
   } },
   query: {
-    alwaysPaginate: false,
+    alwaysPaginate: true,
     exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
     join: {
       sail: { eager: true },
@@ -44,10 +44,7 @@ export class SailRequestController {
 
   @Get('/download')
   async download(@Res() response) {
-    const requests = await SailRequestEntity.find({
-      order: { created_at: 'DESC' },
-      take: 20,
-    });
+    const requests = await SailRequestEntity.find({ order: { created_at: 'ASC' }, });
 
     const fields = [
       '#',

@@ -1,28 +1,30 @@
 import {
+  AfterViewInit,
   Component,
   Inject,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import {
   ActivatedRoute,
   Router,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWhile } from 'rxjs';
+import { PaginatedSailRequest } from '../../../../../../api/src/types/sail-request/paginated-sail-request';
 import { SailRequest } from '../../../../../../api/src/types/sail-request/sail-request';
 import { SailRequestStatus } from '../../../../../../api/src/types/sail-request/sail-request-status';
-import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
+import { SailCategoryState } from '../../../models/sail-category-state.interface';
 import {
-  createSailFromRequestRoute,
   createSailRequestRoute,
-  editSailRequestRoute,
 } from '../../../routes/routes';
 import { SailRequestService } from '../../../services/sail-request.service';
-import { interestedSailRequest, uninterestedSailRequest } from '../../../store/actions/sail-request-interest.actions';
-import {
-  cancelSailRequest,
-  fetchSailRequests,
-} from '../../../store/actions/sail-request.actions';
+import { fetchSailCategories } from '../../../store/actions/sail-category.actions';
+import { STORE_SLICES } from '../../../store/store';
 import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-request-base-page.component';
 
 @Component({
@@ -30,10 +32,20 @@ import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-req
   templateUrl: './sail-request-list-page.component.html',
   styleUrls: ['./sail-request-list-page.component.css']
 })
-export class SailRequestListPageComponent extends SailRequestBasePageComponent implements OnInit {
+export class SailRequestListPageComponent extends SailRequestBasePageComponent implements OnInit, AfterViewInit {
 
-  public expandedId: string = null;
+  public dataSource = new MatTableDataSource<SailRequest>([]);
+  public displayedColumns: string[] = ['entity_number', 'created_at', 'requested_by', 'category', 'status'];
+  public filter: string;
+  public paginatedData: PaginatedSailRequest;
   public profile_id: string;
+  public requestStatus: SailRequestStatus | 'ANY' = SailRequestStatus.New;
+  public requestCategory: string | 'ANY' = 'ANY';
+  public requestCategoryValues: string[] = ['ANY'];
+  public requestStatusValues = { ...SailRequestStatus, ANY: 'ANY' };
+  public sort: string;
+
+  @ViewChild('filterInput', { static: false }) private filterInput;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -52,116 +64,78 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
 
     super.ngOnInit();
 
+    this.dispatchAction(fetchSailCategories({ notify: false }));
+
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.SAIL_CATEGORIES, (categories: SailCategoryState) => {
+      this.requestCategoryValues = Object.values(categories || {}).map(category => category.category);
+      this.requestCategoryValues.unshift('ANY');
+    });
+
     this.profile_id = this.route.snapshot.queryParams.profile_id;
-    this.fetchNewRequests(false);
+    this.filterSailRequests();
   }
 
-  public setExpandedId(id: string): void {
-    this.expandedId = id;
-  }
-
-  public fetchNewRequests(notify?: boolean): void {
-    const profileQuery = this.profile_id ? `&filter=requested_by_id||$eq||${this.profile_id}` : '';
-
-    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.New}${profileQuery}` }));
-    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.Scheduled}${profileQuery}&limit=20` }));
-    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.Cancelled}${profileQuery}&limit=10` }));
-    this.dispatchAction(fetchSailRequests({ notify, query: `filter=status||$eq||${SailRequestStatus.Expired}${profileQuery}&limit=10` }));
-  }
-
-  public get newSailRequestsArray(): SailRequest[] {
-    return this.getSailRequestArray(SailRequestStatus.New);
-  }
-
-  public get scheduledSailRequestsArray(): SailRequest[] {
-    return this.getSailRequestArray(SailRequestStatus.Scheduled);
-  }
-
-  public get expiredSailRequestsArray(): SailRequest[] {
-    return this.getSailRequestArray(SailRequestStatus.Expired);
-  }
-
-  public get cancelledSailRequestsArray(): SailRequest[] {
-    return this.getSailRequestArray(SailRequestStatus.Cancelled);
-  }
-
-  public get canDownload(): boolean {
-    return this.user?.access[UserAccessFields.DownloadSailRequests];
-  }
-
-  public download(): void {
-    this.sailRequestService
-      .download()
-      .subscribe(
-        (data: any) => {
-          const blob = new Blob([data], { type: 'text/csv' });
-          const date = new Date();
-
-          const fileName = `sail-requests-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.csv`;
-
-          const link = document.createElement('a');
-
-          link.href = window.URL.createObjectURL(blob);
-          link.download = fileName;
-          link.click();
-        },
-        error => console.error('download error', error),
+  ngAfterViewInit(): void {
+    const typeAhead = fromEvent(this.filterInput.nativeElement, 'input')
+      .pipe(
+        takeWhile(() => this.active),
+        map((e: any) => (e.target.value || '') as string),
+        debounceTime(1000),
+        map(text => text ? text.trim() : ''),
+        filter(text => text.length === 0 || text.length > 2),
+        switchMap((text) => {
+          this.filter = text;
+          return this.filterSailRequests();
+        }),
       );
+
+    typeAhead.subscribe();
+
+    super.ngAfterViewInit();
   }
 
   public get createSailRequestRouteLink(): string {
     return createSailRequestRoute.toString();
   }
 
-  public createSail(id: string): void {
-    this.goTo([createSailFromRequestRoute(id)]);
+  public async filterSailRequests(pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 }): Promise<void> {
+    const query = { $and: [] };
+
+    if (this.filter) {
+      query.$and.push({ $or: [{ details: { $contL: this.filter } }, { 'requested_by.name': { $contL: this.filter } }] });
+    }
+
+    if (this.requestStatus !== 'ANY') {
+      query.$and.push({ status: this.requestStatus });
+    }
+
+    if (this.requestCategory !== 'ANY') {
+      query.$and.push({ category: this.requestCategory });
+    }
+
+    this.startLoading();
+
+    const mediaFetch =  this.sailRequestService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
+    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    this.dataSource.data = this.paginatedData.data;
+
+    const page = this.paginatedData;
+
+    this.dispatchMessage(`Displaying ${page.count} of ${page.total} socials on page #${page.page}.`);
   }
 
-  public editSailRequest(id: string): void {
-    this.goTo([editSailRequestRoute(id)]);
+  public paginationHandler(event: PageEvent) {
+    this.filterSailRequests(event);
   }
 
-  public joinSailRequest(id: string): void {
-    this.dispatchAction(interestedSailRequest({ sail_request_id: id }));
-  }
+  public sortHandler(event: Sort) {
+    console.log(event);
+    if (event.direction) {
+      this.sort = `${event.active},${event.direction.toUpperCase()}`;
+    } else {
+      this.sort = '';
+    }
 
-  public leaveSailRequest(id: string): void {
-    this.dispatchAction(uninterestedSailRequest({ sail_request_id: id }));
-  }
-
-  public cancelRequest(id: string): void {
-    this.dispatchAction(cancelSailRequest({ id }));
-  }
-
-  private getSailRequestArray(requestStatus: SailRequestStatus): SailRequest[] {
-    const sailRequests = this.sailRequests;
-    const array = Object
-      .values(sailRequests)
-      .filter(request => this.profile_id ? request.requested_by_id === this.profile_id : true)
-      .filter(request => request.status === requestStatus)
-      .sort((a, b) => {
-
-        // NEW status should be top of the list
-        if (a.status === SailRequestStatus.New && b.status !== SailRequestStatus.New) {
-          return -1;
-        }
-
-        // NEW status should be top of the list
-        if (b.status === SailRequestStatus.New && a.status !== SailRequestStatus.New) {
-          return 1;
-        }
-
-        if (a.status < b.status) {
-          return -1;
-        }
-
-        if (a.status > b.status) {
-          return 1;
-        }
-
-        return 0;
-      });
-
-    return array;
+    this.filterSailRequests();
   }
 }

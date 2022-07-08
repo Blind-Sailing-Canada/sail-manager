@@ -15,13 +15,13 @@ import { Access } from '../../../../../../api/src/types/user-access/access';
 import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 import { STORE_SLICES } from '../../../store/store';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SocialService } from '../../../services/social.service';
 import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWhile } from 'rxjs';
 import { Social } from '../../../../../../api/src/types/social/social';
 import { PaginatedSocial } from '../../../../../../api/src/types/social/paginated-social';
 import { SocialStatus } from '../../../../../../api/src/types/social/social-status';
 import { Sort } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-social-list-page',
@@ -38,7 +38,6 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
   public socialStatus: SocialStatus | 'ANY' = SocialStatus.New;
   public socialStatusValues = { ...SocialStatus, ANY: 'ANY' };
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filterInput', { static: false }) private filterInput;
 
   constructor(
@@ -106,6 +105,7 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
     if (this.socialStatus !== 'ANY') {
       query.$and.push({ status: this.socialStatus });
     }
+
     this.startLoading();
 
     const mediaFetch =  this.socialService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);

@@ -43,6 +43,34 @@
         >{{sailRequest.status}}</td>
       </tr>
       <tr
+        tabindex="0"
+        role="listitem"
+        attr.aria-label="Request status {{sailRequest.status}}"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Sail category</th>
+        <td
+          tabindex="-1"
+          aria-hidden="true"
+        >{{sailRequest.category}}</td>
+      </tr>
+      <tr
+        tabindex="0"
+        role="listitem"
+        attr.aria-label="Request status {{sailRequest.status}}"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Created at</th>
+        <td
+          tabindex="-1"
+          aria-hidden="true"
+        >{{sailRequest.created_at | humanDateWithTime}}</td>
+      </tr>
+      <tr
         (click)="showProfileDialog(sailRequest.requested_by)"
         attr.aria-label="Requested by {{sailRequest.requested_by.name}}"
         class="clickable"
@@ -133,16 +161,38 @@
       </tr>
     </app-table>
   </mat-card-content>
+  <mat-card-footer>
+    <mat-action-row>
+      <button
+        *ngIf="canJoinRequest"
+        (click)="joinSailRequest()"
+        mat-raised-button
+        title="I would like to go on this sail #{{sailRequest.entity_number}}"
+      >Interested</button>
+      <button
+        *ngIf="canLeaveRequest"
+        (click)="leaveSailRequest()"
+        mat-raised-button
+        title="I'm not longer interested in sail request #{{sailRequest.entity_number}}"
+      >Uninterested</button>
+    </mat-action-row>
+  </mat-card-footer>
 </mat-card>
 <ng-template #controls>
+  <a
+    (click)="createSail()"
+    *ngIf="canCreateSail"
+    mat-raised-button
+    title="Create sail for this request #{{sailRequest.entity_number}}"
+  >Create sail</a>
   <a
     *ngIf="canEditRequest"
     [routerLink]="editSailRequestRoute"
     mat-raised-button
   >Edit</a>
   <button
-    *ngIf="canCancelRequest"
     (click)="cancelRequest()"
+    *ngIf="canCancelRequest"
     mat-raised-button
     title="Mark this request as cancelled"
   >Cancel</button>

@@ -62,12 +62,8 @@ export class SocialService {
     per_page: number = 10,
     sort: string = 'entity_number,ASC'
   ): Observable<PaginatedSocial> {
-    if (query) {
-      return this.http
-        .get<PaginatedSocial>(`${this.API_URL}?s=${JSON.stringify(query || '')}&page=${page}&per_page=${per_page}&sort=${sort}`);
-    }
-
-    return this.http.get<PaginatedSocial>(`${this.API_URL}?age=${page}&per_page=${per_page}&sort=${sort}`);
+    return this.http
+      .get<PaginatedSocial>(`${this.API_URL}?s=${JSON.stringify(query || {})}&page=${page}&per_page=${per_page}&sort=${sort}`);
   }
 
   public update(social_id: string, social: Social): Observable<Social> {

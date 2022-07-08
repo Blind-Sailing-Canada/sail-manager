@@ -9,6 +9,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SailRequest } from '../../../../../../api/src/types/sail-request/sail-request';
+import { viewSailRequestRoute } from '../../../routes/routes';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 
@@ -43,6 +44,10 @@ export class SailRequestBasePageComponent extends BasePageComponent implements O
     }
 
     return this.getSailRequest(id);
+  }
+
+  public viewSailRequest(id: string): void {
+    this.goTo([viewSailRequestRoute(id)]);
   }
 
 }

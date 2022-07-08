@@ -246,6 +246,7 @@ export class AuthService {
       roles: profile.roles,
       status: profile.status,
       sub: profile.id,
+      user_id: profile.id,
       username: profile.name,
     };
 

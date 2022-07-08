@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SailRequestStatus } from '../../../../../../api/src/types/sail-request/sail-request-status';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
-import { editSailRequestRoute, viewSailRoute } from '../../../routes/routes';
+import { createSailFromRequestRoute, editSailRequestRoute, viewSailRoute } from '../../../routes/routes';
+import { interestedSailRequest, uninterestedSailRequest } from '../../../store/actions/sail-request-interest.actions';
 import { cancelSailRequest } from '../../../store/actions/sail-request.actions';
 import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-request-base-page.component';
 
@@ -34,11 +35,6 @@ export class SailRequestViewPageComponent extends SailRequestBasePageComponent {
   }
 
   public get canEditRequest(): boolean {
-
-    if (this.sailRequest.status === SailRequestStatus.Scheduled) {
-      return false;
-    }
-
     if (this.user.profile.id === this.sailRequest.requested_by_id) {
       return true;
     }
@@ -52,5 +48,43 @@ export class SailRequestViewPageComponent extends SailRequestBasePageComponent {
 
   public cancelRequest(): void {
     this.dispatchAction(cancelSailRequest({ id: this.sail_request_id }));
+  }
+
+  public get canCreateSail(): boolean {
+    return this.sailRequest.status === SailRequestStatus.New && this.user.access[UserAccessFields.CreateSail];
+  }
+
+  public get canJoinRequest(): boolean {
+    const request = this.sailRequest;
+
+    if (request.status !== SailRequestStatus.New) {
+      return false;
+    }
+
+    if (request.interest.some(interest => interest.profile_id === this.user.profile.id)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  public get canLeaveRequest(): boolean {
+    if (this.sailRequest.status !== SailRequestStatus.New) {
+      return false;
+    }
+
+    return this.sailRequest.interest.some(interest => interest.profile_id === this.user.profile.id);
+  }
+
+  public joinSailRequest(): void {
+    this.dispatchAction(interestedSailRequest({ sail_request_id: this.sail_request_id }));
+  }
+
+  public leaveSailRequest(): void {
+    this.dispatchAction(uninterestedSailRequest({ sail_request_id: this.sail_request_id }));
+  }
+
+  public createSail(): void {
+    this.goTo([createSailFromRequestRoute(this.sail_request_id)]);
   }
 }
