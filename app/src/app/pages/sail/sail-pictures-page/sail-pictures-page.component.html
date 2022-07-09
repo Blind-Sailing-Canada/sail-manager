@@ -49,13 +49,14 @@
 
 <ng-template #PICTURES_TEMPLATE>
   <app-image-list
+    (deleteClick)="deletePicture($event)"
     (goToProfile)="showProfileDialog($event)"
+    (showMediaDialog)="showMediaDialog($event)"
+    [allowDelete]="allowDelete"
     [pictures]="pictures"
     [profiles]="profiles"
     [showAuthor]="true"
     [user]="user"
-    [allowDelete]="allowDelete"
-    (deleteClick)="deletePicture($event)"
   ></app-image-list>
 </ng-template>
 

@@ -30,6 +30,7 @@ export class ImageListComponent implements OnChanges {
   @Input() width = 100;
   @Output() deleteClick: EventEmitter<Media> = new EventEmitter<Media>();
   @Output() goToProfile: EventEmitter<Profile> = new EventEmitter<Profile>();
+  @Output() showMediaDialog: EventEmitter<Media> = new EventEmitter<Media>();
   @Output() goToEntity: EventEmitter<{ id: string; type: string }> = new EventEmitter();
 
   public MediaTypes = MediaType;

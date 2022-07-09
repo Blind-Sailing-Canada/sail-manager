@@ -5,10 +5,10 @@
   >
     <h5>{{picture.title || '&nbsp;'}}</h5>
     <a
-      *ngIf="picture.url"
-      [href]="picture.url"
+      (click)="showMediaDialog.emit(picture)"
       [ngSwitch]="picture.media_type"
       target="_blank"
+      class="clickable"
     >
       <img
         *ngSwitchCase="MediaTypes.Picture"
