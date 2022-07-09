@@ -83,6 +83,9 @@ import { Challenge } from '../../../../../api/src/types/challenge/challenge';
 import { SocialState } from '../../models/social-state';
 import { Social } from '../../../../../api/src/types/social/social';
 import { fetchSocial } from '../../store/actions/social.actions';
+import { Media } from '../../../../../api/src/types/media/media';
+import { MediaDialogData } from '../../models/media-dialog-data.interface';
+import { MediaDialogComponent } from '../../components/media-dialog/media-dialog.component';
 
 @Component({
   template: ''
@@ -388,6 +391,24 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
     this.dialog
       .open(BoatDialogComponent, {
+        width: '90%',
+        maxWidth: 500,
+        data: dialogData,
+      });
+  }
+
+  public showMediaDialog(media: Media, type?: string) {
+    if (!media) {
+      return;
+    }
+
+    const dialogData: MediaDialogData = {
+      media,
+      type,
+    };
+
+    this.dialog
+      .open(MediaDialogComponent, {
         width: '90%',
         maxWidth: 500,
         data: dialogData,

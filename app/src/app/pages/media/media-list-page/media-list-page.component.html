@@ -281,7 +281,7 @@
 >
   <a
     *ngIf="picture.url"
-    [href]="picture.url"
+    (click)="showMediaDialog(picture)"
     [ngSwitch]="picture.media_type"
     target="_blank"
     style="margin: 10px; display: inline-block;"

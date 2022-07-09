@@ -104,7 +104,11 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
     const query = { $and: [] };
 
     if (this.filter) {
-      query.$and.push({ $or: [{ details: { $contL: this.filter } }, { 'requested_by.name': { $contL: this.filter } }] });
+      query.$and.push({ $or: [
+        { details: { $contL: this.filter } },
+        { 'requested_by.name': { $contL: this.filter } },
+        { 'interest.profile.name': { $contL: this.filter } },
+      ] });
     }
 
     if (this.requestStatus !== 'ANY') {

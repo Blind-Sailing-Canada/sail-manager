@@ -101,7 +101,11 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
     const query = { $and: [] };
 
     if (this.filter) {
-      query.$and.push({ name: { $contL: this.filter } });
+      query.$and.push({ $or: [
+        { name: { $contL: this.filter } },
+        { description: { $contL: this.filter } },
+        { 'manifest.profile.name': { $contL: this.filter } },
+      ] });
     }
 
     if (this.socialStatus !== 'ANY') {

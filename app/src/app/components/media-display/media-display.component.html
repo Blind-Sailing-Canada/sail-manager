@@ -1,0 +1,25 @@
+<ng-component [ngSwitch]="media.media_type">
+  <img
+    *ngSwitchCase="MediaTypes.Picture"
+    async
+    src="{{media.url}}"
+    title="picture: {{media.title || ''}} {{media.description || ''}}"
+    width="100%"
+  >
+  <video
+    *ngSwitchCase="MediaTypes.Video"
+    async
+    controls
+    preload="metadata"
+    src="{{media.url}}"
+    title="video: {{description}}"
+    width="100%"
+  ></video>
+
+  <img
+    *ngSwitchDefault
+    async
+    src="{{media.url}}"
+    title="picture: {{description}}"
+  >
+</ng-component>

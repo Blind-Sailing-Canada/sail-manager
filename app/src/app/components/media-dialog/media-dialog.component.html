@@ -1,0 +1,33 @@
+<h1
+  attr.aria-label="Media Dialog for {{data.media.title}}"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Media Dialog</h1>
+<mat-dialog-content>
+  <h1 tabIndex="0">{{data.media.title}}</h1>
+  <mat-card>
+    <app-media-display [media]="data.media">
+    </app-media-display>
+    <mat-card-footer>
+      <p>{{data.media.description}}</p>
+      <p>Posted by {{data.media.posted_by?.name || 'unknown'}}</p>
+      <p>Posted on {{data.media.created_at | humanDateWithTime}}</p>
+    </mat-card-footer>
+  </mat-card>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <a
+    [href]="data.media.url"
+    [mat-dialog-close]="data"
+    mat-raised-button
+    target="_blank"
+    title="Open in new window"
+  >FULL VIEW</a>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close media dialog"
+  >CLOSE</button>
+</div>
