@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { MediaService } from '../../../services/media.service';
 import { Media } from '../../../../../../api/src/types/media/media';
@@ -20,6 +19,7 @@ import { MediaType } from '../../../../../../api/src/types/media/media-type';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatedMedia } from '../../../../../../api/src/types/media/paginated-media';
 import { WindowService } from '../../../services/window.service';
+import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 
 @Component({
   selector: 'app-media-list-page',
@@ -36,7 +36,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
   public mediaType: MediaType | 'ANY' = 'ANY';
   public mediaTypeValues = { ...MediaType, ANY: 'ANY' };
   public paginatedData: PaginatedMedia;
-  public pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 };
+  public pagination = DEFAULT_PAGINATION;
   public sort: string;
   public MediaTypes = MediaType;
   public width = 100;
@@ -82,16 +82,6 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     typeAhead.subscribe();
 
     super.ngAfterViewInit();
-  }
-
-  public goToEntity(media: Media): void {
-    switch(media.media_for_type) {
-      case 'SailEntity':
-        this.viewSail(media.media_for_id);
-        break;
-      case 'SocialEntity':
-        this.viewSocial(media.media_for_id);
-    }
   }
 
   public async filterMedia(): Promise<void> {

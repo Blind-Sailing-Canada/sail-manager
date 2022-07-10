@@ -1,7 +1,9 @@
 import {
+  AfterViewInit,
   Component,
   Inject,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,25 +16,38 @@ import {
   createDocumentRoute,
   viewDocumentRoute,
 } from '../../../routes/routes';
-import { fetchDocuments } from '../../../store/actions/document.actions';
-import { STORE_SLICES } from '../../../store/store';
 import { EntityType } from '../../../models/entity-type';
 import { DocumentBasePageComponent } from '../document-base-page/document-base-page';
+import { PaginatedDocument } from '../../../../../../api/src/types/document/paginated-document';
+import { MatTableDataSource } from '@angular/material/table';
+import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
+import { DocumentService } from '../../../services/document.service';
+import { Sort } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
+import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-document-list-page',
   templateUrl: './document-list-page.component.html',
   styleUrls: ['./document-list-page.component.css']
 })
-export class DocumentListPageComponent extends DocumentBasePageComponent implements OnInit {
+export class DocumentListPageComponent extends DocumentBasePageComponent implements OnInit, AfterViewInit {
 
-  public documentsArray: Document[] = [];
+  public dataSource = new MatTableDataSource<Document>([]);
+  public displayedColumns: string[] = ['title', 'documentable_type', 'created_at', 'download'];
+  public filter: string;
+  public paginatedData: PaginatedDocument;
+  public pagination = DEFAULT_PAGINATION;
+  public sort: string;
+
+  @ViewChild('filterInput', { static: false }) private filterInput;
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(Router) router: Router,
     @Inject(MatDialog) dialog: MatDialog,
     @Inject(ActivatedRoute) route: ActivatedRoute,
+    private documentSErvice: DocumentService,
   ) {
     super(store, route, router, dialog);
   }
@@ -44,15 +59,26 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
       return;
     }
 
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.DOCUMENTS, () => {
-      const documents = (this.store[STORE_SLICES.DOCUMENTS] || {});
-      this.documentsArray = Object
-        .values<Document>(documents)
-        .filter(document => !!document)
-        .filter(document => this.entity_id ? document.documentable_id === this.entity_id : document);
-    });
+    this.filterDocuments();
+  }
 
-    this.fetchDocuments(true);
+  ngAfterViewInit(): void {
+    const typeAhead = fromEvent(this.filterInput.nativeElement, 'input')
+      .pipe(
+        takeWhile(() => this.active),
+        map((e: any) => (e.target.value || '') as string),
+        debounceTime(1000),
+        map(text => text ? text.trim() : ''),
+        filter(text => text.length === 0 || text.length > 2),
+        switchMap((text) => {
+          this.filter = text;
+          return this.filterDocuments();
+        }),
+      );
+
+    typeAhead.subscribe();
+
+    super.ngAfterViewInit();
   }
 
   public get entity_type(): EntityType {
@@ -92,7 +118,50 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
     this.goTo([viewDocumentRoute(documentId)]);
   }
 
-  private fetchDocuments(notify?: boolean): void {
-    this.dispatchAction(fetchDocuments({ entity_type: this.entity_type, entity_id: this.entity_id, notify }));
+  public async filterDocuments(): Promise<void> {
+    const pagination = this.pagination;
+    const query = { $and: [] };
+
+    if (this.filter) {
+      query.$and.push({ $or: [
+        { title: { $contL: this.filter } },
+        { description: { $contL: this.filter } },
+        { 'author.name': { $contL: this.filter } },
+      ] });
+    }
+
+    if (this.entity_type && this.entity_id) {
+      query.$and.push({ documentable_id: this.entity_id });
+      query.$and.push({ documentable_type: this.entity_type });
+    }
+
+    this.startLoading();
+
+    const mediaFetch =  this.documentSErvice.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
+    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    this.dataSource.data = this.paginatedData.data;
+
+    const page = this.paginatedData;
+
+    this.dispatchMessage(`Displaying ${page.count} of ${page.total} documents on page #${page.page}.`);
+  }
+
+  public getEntityLabel(entityName: string): string {
+    return entityName ? entityName.replace('Entity', ''): '';
+  }
+
+  public paginationHandler(event: PageEvent) {
+    this.pagination = event;
+    this.filterDocuments();
+  }
+
+  public sortHandler(event: Sort) {
+    if (event.direction) {
+      this.sort = `${event.active},${event.direction.toUpperCase()}`;
+    } else {
+      this.sort = '';
+    }
+
+    this.filterDocuments();
   }
 }

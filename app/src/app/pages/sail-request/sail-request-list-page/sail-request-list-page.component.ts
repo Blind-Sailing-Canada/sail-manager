@@ -18,6 +18,7 @@ import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWh
 import { PaginatedSailRequest } from '../../../../../../api/src/types/sail-request/paginated-sail-request';
 import { SailRequest } from '../../../../../../api/src/types/sail-request/sail-request';
 import { SailRequestStatus } from '../../../../../../api/src/types/sail-request/sail-request-status';
+import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { SailCategoryState } from '../../../models/sail-category-state.interface';
 import {
   createSailRequestRoute,
@@ -44,7 +45,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
   public requestCategoryValues: string[] = ['ANY'];
   public requestStatusValues = { ...SailRequestStatus, ANY: 'ANY' };
   public sort: string;
-  public pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 };
+  public pagination = DEFAULT_PAGINATION;
 
   @ViewChild('filterInput', { static: false }) private filterInput;
 

@@ -23,20 +23,18 @@ import { DocumentService } from './document.service';
     primary: true,
   } },
   query: {
-    alwaysPaginate: false,
+    alwaysPaginate: true,
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
     sort: [
       {
         field: 'title',
         order: 'ASC',
       },
     ],
-    join: { author: {
-      eager: true,
-      alias: 'document_author',
-    } },
+    join: { author: { eager: true } },
   },
   routes: {
-    createOneBase: { interceptors: [new DocumentCreateInterceptor() ] },
+    createOneBase: { interceptors: [new DocumentCreateInterceptor()] },
     updateOneBase: { interceptors: [new DocumentUpdateInterceptor()] },
   },
 })

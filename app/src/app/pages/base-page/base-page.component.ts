@@ -26,10 +26,6 @@ import { IBoatMap } from '../../models/boat-state.interface';
 import { ICDNState } from '../../models/cdn-state.interface';
 import { ClinicsState } from '../../models/clinics.state';
 import { FONT_SIZE } from '../../models/font-size';
-// import {
-//   InstructionsMap,
-//   InstructionsState,
-// } from '../../models/instructions-state.interface';
 import { ProfileDialogData } from '../../models/profile-dialog-data.interface';
 import { IProfileMap } from '../../models/profile-state.interface';
 import {
@@ -42,6 +38,9 @@ import { SnackType } from '../../models/snack-state.interface';
 import { User } from '../../models/user.interface';
 import {
   viewBoatRoute,
+  viewChallengeRoute,
+  viewClinicRoute,
+  viewDocumentRoute,
   viewProfileRoute,
   viewSailRoute,
   viewSocialRoute,
@@ -139,6 +138,30 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
   public dispatchError(message: string): void {
     this.dispatchAction(putSnack({ snack: { message, type: SnackType.ERROR } }));
+  }
+
+  public goToEntity(entityType: string, entityId: string): void {
+    console.log(entityType, entityId);
+    switch(entityType) {
+      case 'SailEntity':
+        this.viewSail(entityId);
+        break;
+      case 'SocialEntity':
+        this.viewSocial(entityId);
+        break;
+      case 'DocumentEntity':
+        this.viewDocument(entityId);
+        break;
+      case 'BoatEntity':
+        this.viewBoat(entityId);
+        break;
+      case 'ChallengeEntity':
+        this.viewChallenge(entityId);
+        break;
+      case 'ClinicEntity':
+        this.viewClinic(entityId);
+        break;
+    }
   }
 
   public picturesArray(picture: string): string[] {
@@ -442,6 +465,10 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     this.goTo([viewSocialRoute(id)]);
   }
 
+  public viewDocument(id: string): void {
+    this.goTo([viewDocumentRoute(id)]);
+  }
+
   protected setFontSize(fontSize: string): void {
     if (!fontSize || fontSize === FONT_SIZE[FONT_SIZE.default]) {
       return;
@@ -579,6 +606,14 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
   protected viewBoat(id: string): void {
     this.goTo([viewBoatRoute(id)]);
+  }
+
+  protected viewChallenge(id: string): void {
+    this.goTo([viewChallengeRoute(id)]);
+  }
+
+  protected viewClinic(id: string): void {
+    this.goTo([viewClinicRoute(id)]);
   }
 
   protected viewProfile(id: string): void {

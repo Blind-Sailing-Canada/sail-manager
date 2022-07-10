@@ -93,7 +93,7 @@
       role="listitem"
       tabindex="0"
       class="clickable"
-      (click)="goToEntity()"
+      (click)="goToEntity(document.documentable_type, document.documentable_id)"
     >
       <th aria-hidden="true">Assigned to</th>
       <td aria-hidden="true">{{assignedTo}}</td>

@@ -22,6 +22,7 @@ import { PaginatedSocial } from '../../../../../../api/src/types/social/paginate
 import { SocialStatus } from '../../../../../../api/src/types/social/social-status';
 import { Sort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
+import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 
 @Component({
   selector: 'app-social-list-page',
@@ -37,7 +38,7 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
   public sort: string;
   public socialStatus: SocialStatus | 'ANY' = SocialStatus.New;
   public socialStatusValues = { ...SocialStatus, ANY: 'ANY' };
-  public pagination: PageEvent = { pageIndex: 0, length: 0, pageSize: 20, previousPageIndex: 0 };
+  public pagination = DEFAULT_PAGINATION;
 
   @ViewChild('filterInput', { static: false }) private filterInput;
 

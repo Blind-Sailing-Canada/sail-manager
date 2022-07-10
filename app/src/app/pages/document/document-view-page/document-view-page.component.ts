@@ -15,9 +15,7 @@ import { Document } from '../../../../../../api/src/types/document/document';
 import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
 import { EntityType } from '../../../models/entity-type';
-import {
-  editDocumentRoute, viewBoatRoute, viewChallengeRoute,
-} from '../../../routes/routes';
+import { editDocumentRoute } from '../../../routes/routes';
 import { deleteDocument } from '../../../store/actions/document.actions';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
@@ -89,19 +87,6 @@ export class DocumentViewPageComponent extends BasePageComponent implements OnIn
         return `Challenge: ${this.entity?.name}`;
       default:
         return '';
-    }
-  }
-
-  public goToEntity(): void {
-    switch (this.document?.documentable_type) {
-      case EntityType.Boat:
-        this.goTo([viewBoatRoute(this.document.documentable_id)]);
-        break;
-      case EntityType.Challenge:
-        this.goTo([viewChallengeRoute(this.document.documentable_id)]);
-        break;
-      default:
-        break;
     }
   }
 

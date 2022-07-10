@@ -2,7 +2,7 @@ table {
   width: 100%;
 }
 
-.social-table-filters {
+.table-filters {
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -11,7 +11,7 @@ table {
 }
 
 @media screen and (max-width: 670px) {
-  .social-table-filters {
+  .table-filters {
     display: flex;
     flex-direction: column;
     gap: 20px;

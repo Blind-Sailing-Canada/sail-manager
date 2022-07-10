@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { Document } from '../../../../api/src/types/document/document';
 import { EntityType } from '../models/entity-type';
+import { PaginatedDocument } from '../../../../api/src/types/document/paginated-document';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,16 @@ export class DocumentService {
     }
 
     return this.http.get<Document[]>(this.API_URL);
+  }
+
+  public fetchAllPaginated(
+    query?: any,
+    page: number = 1,
+    per_page: number = 10,
+    sort: string = 'created_at,DESC'
+  ): Observable<PaginatedDocument> {
+    return this.http
+      .get<PaginatedDocument>(`${this.API_URL}?s=${JSON.stringify(query || {})}&page=${page}&per_page=${per_page}&sort=${sort}`);
   }
 
   findByName(name: string): Observable<Document[]> {

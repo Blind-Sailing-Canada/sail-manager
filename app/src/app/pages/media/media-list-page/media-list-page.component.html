@@ -142,7 +142,7 @@
           *matCellDef="let element"
         > <button
             mat-flat-button
-            (click)="goToEntity(element)"
+            (click)="goToEntity(element.media_for_type, element.media_for_id)"
           >
             View {{EntityLabels[element.media_for_type]}}
           </button> </td>
@@ -246,7 +246,7 @@
           *matCellDef="let element"
         > <button
             mat-flat-button
-            (click)="goToEntity(element)"
+            (click)="goToEntity(element.media_for_type, element.media_for_id)"
           >
             View {{EntityLabels[element.media_for_type]}}
           </button> </td>
