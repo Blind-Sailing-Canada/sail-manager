@@ -56,8 +56,10 @@
         <td
           mat-cell
           *matCellDef="let element"
+          class="clickable"
+          (click)="viewDocument(element.id)"
         > <a
-            mat-button
+            class="clickable"
             (click)="viewDocument(element.id)"
             aria-details="Click to go to document details page."
           >{{element.title}}</a> </td>
@@ -117,7 +119,10 @@
             [href]="element.fileLocation"
             target="_blank"
             mat-button
-          >Download</a></td>
+            title="click to download file: {{element.title}}"
+          >
+            <mat-icon>file_download</mat-icon>
+          </a></td>
       </ng-container>
 
       <tr
