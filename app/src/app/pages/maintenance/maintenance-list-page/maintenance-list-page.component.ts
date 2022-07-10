@@ -1,9 +1,12 @@
 import {
+  AfterViewInit,
   Component,
   Inject,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import {
   ActivatedRoute,
   Router,
@@ -17,20 +20,37 @@ import {
 } from '../../../routes/routes';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
+import { PaginatedMaintenance } from '../../../../../../api/src/types/boat-maintenance/paginated-maintenance';
+import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
+import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWhile } from 'rxjs';
+import { Sort } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
+import { BoatMaintenanceService } from '../../../services/boat-maintenance.service';
 
 @Component({
   selector: 'app-maintenance-list-page',
   templateUrl: './maintenance-list-page.component.html',
   styleUrls: ['./maintenance-list-page.component.css']
 })
-export class MaintenanceListPageComponent extends BasePageComponent implements OnInit {
+export class MaintenanceListPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
   public boat_id: string;
+  public dataSource = new MatTableDataSource<BoatMaintenance>([]);
+  public displayedColumns: string[] = ['request_details', 'boat', 'created_at', 'status', 'action'];
+  public filter: string;
+  public maintenanceStatus: BoatMaintenanceStatus | 'ANY' = BoatMaintenanceStatus.New;
+  public maintenanceStatusValues = { ...BoatMaintenanceStatus, ANY: 'ANY' };
+  public paginatedData: PaginatedMaintenance;
+  public pagination = DEFAULT_PAGINATION;
+  public sort: string;
+
+  @ViewChild('filterInput', { static: false }) private filterInput;
 
   constructor(
     @Inject(MatDialog) dialog: MatDialog,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(Store) store: Store<any>
+    @Inject(Store) store: Store<any>,
+    @Inject(BoatMaintenanceService) private maintenanceService: BoatMaintenanceService,
   ) {
     super(store, route, router, dialog);
   }
@@ -40,13 +60,28 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
     this.subscribeToStoreSliceWithUser(STORE_SLICES.BOAT_MAINTENANCES);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.BOATS);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.LOGIN, () => {
-      if (this.user) {
-        this.fetchRecentNewRequests(this.boat_id);
-        this.fetchRecentResolvedRequests(this.boat_id);
-        this.fetchRecentInProgressRequests(this.boat_id);
-      }
-    });
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.LOGIN);
+
+    this.filterMaintenances();
+  }
+
+  ngAfterViewInit(): void {
+    const typeAhead = fromEvent(this.filterInput.nativeElement, 'input')
+      .pipe(
+        takeWhile(() => this.active),
+        map((e: any) => (e.target.value || '') as string),
+        debounceTime(1000),
+        map(text => text ? text.trim() : ''),
+        filter(text => text.length === 0 || text.length > 2),
+        switchMap((text) => {
+          this.filter = text;
+          return this.filterMaintenances();
+        }),
+      );
+
+    typeAhead.subscribe();
+
+    super.ngAfterViewInit();
   }
 
   public get boatName(): string {
@@ -55,44 +90,6 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
     }
 
     return this.getBoat(this.boat_id)?.name;
-  }
-  public fetchRecentNewRequests(boat_id: string, notify: boolean = false): void {
-    if (boat_id) {
-      this.fetchBoatMaintenances(`filter=boat_id||$eq||${boat_id}&filter=status||$eq||${BoatMaintenanceStatus.New}&limit=10`, notify);
-    } else {
-      this.fetchBoatMaintenances(`filter=status||$eq||${BoatMaintenanceStatus.New}&limit=10`, notify);
-    }
-  }
-
-  public fetchRecentResolvedRequests(boat_id: string, notify: boolean = false): void {
-    if (boat_id) {
-      this.fetchBoatMaintenances(
-        `filter=boat_id||$eq||${boat_id}&filter=status||$eq||${BoatMaintenanceStatus.Resolved}&limit=10&sort=serviced_at,DESC`, notify);
-    } else {
-      this.fetchBoatMaintenances(
-        `filter=status||$eq||${BoatMaintenanceStatus.Resolved}&limit=10&sort=serviced_at,DESC`, notify);
-    }
-  }
-
-  public fetchRecentInProgressRequests(boat_id: string, notify: boolean = false): void {
-    if (boat_id) {
-      this
-        .fetchBoatMaintenances(`filter=boat_id||$eq||${boat_id}&filter=status||$eq||${BoatMaintenanceStatus.InProgress}&limit=10`, notify);
-    } else {
-      this.fetchBoatMaintenances(`filter=status||$eq||${BoatMaintenanceStatus.InProgress}&limit=10`, notify);
-    }
-  }
-
-  public get newRequests(): BoatMaintenance[] {
-    return this.filterAndSort(this.maintenancesArray, BoatMaintenanceStatus.New, this.boat_id);
-  }
-
-  public get resolvedRequests(): BoatMaintenance[] {
-    return this.filterAndSort(this.maintenancesArray, BoatMaintenanceStatus.Resolved, this.boat_id);
-  }
-
-  public get inProgressRequests(): BoatMaintenance[] {
-    return this.filterAndSort(this.maintenancesArray, BoatMaintenanceStatus.InProgress, this.boat_id);
   }
 
   public goToViewMaintenance(request: BoatMaintenance): void {
@@ -107,10 +104,54 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
     }
   }
 
-  private filterAndSort(requests: BoatMaintenance[], status: BoatMaintenanceStatus, boat_id?: string): BoatMaintenance[] {
-    return requests
-      .filter(request => request.status === status)
-      .filter(request => boat_id ? request.boat_id === boat_id : true)
-      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  public async filterMaintenances(): Promise<void> {
+    const pagination = this.pagination;
+    const query = { $and: [] };
+
+    if (this.filter) {
+      query.$and.push({ $or: [
+        { 'boat.name': { $contL: this.filter } },
+        { 'comments.comment': { $contL: this.filter } },
+        { 'requested_by.name': { $contL: this.filter } },
+        { 'requested_by.name': { $contL: this.filter } },
+        { request_details: { $contL: this.filter } },
+        { resolution_details: { $contL: this.filter } },
+        { service_details: { $contL: this.filter } },
+      ] });
+    }
+
+    if (this.maintenanceStatus !== 'ANY') {
+      query.$and.push({ status: this.maintenanceStatus });
+    }
+
+    if(this.boat_id) {
+      query.$and.push({ boat_id: this.boat_id });
+    }
+
+    this.startLoading();
+
+    const mediaFetch =  this.maintenanceService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
+    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    this.dataSource.data = this.paginatedData.data;
+
+    const page = this.paginatedData;
+
+    this.dispatchMessage(`Displaying ${page.count} of ${page.total} requests on page #${page.page}.`);
   }
+
+  public paginationHandler(event: PageEvent) {
+    this.pagination = event;
+    this.filterMaintenances();
+  }
+
+  public sortHandler(event: Sort) {
+    if (event.direction) {
+      this.sort = `${event.active},${event.direction.toUpperCase()}`;
+    } else {
+      this.sort = '';
+    }
+
+    this.filterMaintenances();
+  }
+
 }

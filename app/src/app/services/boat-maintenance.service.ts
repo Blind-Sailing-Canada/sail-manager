@@ -7,6 +7,7 @@ import {
 import { Comment } from '../../../../api/src/types/comment/comment';
 import { BoatMaintenance } from '../../../../api/src/types/boat-maintenance/boat-maintenance';
 import { Media } from '../../../../api/src/types/media/media';
+import { PaginatedMaintenance } from '../../../../api/src/types/boat-maintenance/paginated-maintenance';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,18 @@ export class BoatMaintenanceService {
   private readonly API_URL = '/api/boat-maintenance';
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
+
+  public fetchAllPaginated(
+    query?: any,
+    page: number = 1,
+    per_page: number = 10,
+    sort: string = 'created_at,DESC',
+  ): Observable<PaginatedMaintenance> {
+
+    return this.http
+      .get<PaginatedMaintenance>(`${this.API_URL}?s=${JSON.stringify(query || {})}&page=${page}&per_page=${per_page}&sort=${sort}`);
+
+  }
 
   postMaintenanceComment(id: string, comment: Comment): Observable<BoatMaintenance> {
     return this.http.post<BoatMaintenance>(`${this.API_URL}/${id}/comments`, comment);

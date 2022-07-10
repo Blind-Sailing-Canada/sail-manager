@@ -16,7 +16,7 @@ table {
   width: 100%;
 }
 
-.sail-requests-table-filters {
+.table-filters {
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -25,7 +25,7 @@ table {
 }
 
 @media screen and (max-width: 670px) {
-  .sail-requests-table-filters {
+  .table-filters {
     display: flex;
     flex-direction: column;
     gap: 20px;

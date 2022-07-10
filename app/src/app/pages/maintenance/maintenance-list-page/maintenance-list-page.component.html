@@ -24,56 +24,7 @@
     <ng-container [ngTemplateOutlet]="controls"></ng-container>
   </mat-card-actions>
   <mat-card-content>
-    <mat-accordion>
-      <mat-expansion-panel
-        [expanded]="true"
-        #myUpcomingSailPanel
-      >
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            New Maintenance Requests
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <ng-container *ngTemplateOutlet="TemplateNewRequests"></ng-container>
-        <mat-action-row>
-          <button
-            (click)="fetchRecentNewRequests(boat_id, true)"
-            mat-raised-button
-            title="Refresh new maintenance requests list"
-          >Refresh</button>
-        </mat-action-row>
-      </mat-expansion-panel>
-      <mat-expansion-panel #availableSailsPanel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            In Progress Maintenance Requests
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <ng-container *ngTemplateOutlet="TemplateInprogressRequests"></ng-container>
-        <mat-action-row>
-          <button
-            (click)="fetchRecentInProgressRequests(boat_id, true)"
-            mat-raised-button
-            title="Refresh in progress maintenance requests list"
-          >Refresh</button>
-        </mat-action-row>
-      </mat-expansion-panel>
-      <mat-expansion-panel #myPastSailsPanel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Resolved Maintenance Requests
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <ng-container *ngTemplateOutlet="TemplateResolvedRequests"></ng-container>
-        <mat-action-row>
-          <button
-            (click)="fetchRecentResolvedRequests(boat_id, true)"
-            mat-raised-button
-            title="Refresh resolved maintenance requests list"
-          >Refresh</button>
-        </mat-action-row>
-      </mat-expansion-panel>
-    </mat-accordion>
+    <ng-container [ngTemplateOutlet]="MAINTENANCE_TABLE"></ng-container>
   </mat-card-content>
 </mat-card>
 
@@ -83,27 +34,135 @@
     mat-raised-button
     title="Go to create new maintenance request"
   >New</a>
-</ng-template>
-<ng-template #TemplateNewRequests>
-  <app-maintenance-list
-    (clicked)="goToViewMaintenance($event)"
-    [requests]="newRequests"
-    emptyMessage="There are no new requests"
-  ></app-maintenance-list>
+  <button
+    (click)="filterMaintenances()"
+    mat-raised-button
+    title="Refresh new maintenance requests list"
+  >Refresh</button>
 </ng-template>
 
-<ng-template #TemplateInprogressRequests>
-  <app-maintenance-list
-    (clicked)="goToViewMaintenance($event)"
-    [requests]="inProgressRequests"
-    emptyMessage="There are no requests in progress"
-  ></app-maintenance-list>
-</ng-template>
+<ng-template #MAINTENANCE_TABLE>
+  <div class="mat-elevation-z2">
+    <div class="table-filters">
+      <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input
+          matInput
+          #filterInput
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <select
+          [(ngModel)]="maintenanceStatus"
+          [ngModelOptions]="{standalone: true}"
+          matNativeControl
+          (ngModelChange)="filterMaintenances()"
+        >
+          <option
+            *ngFor="let status of maintenanceStatusValues | keyvalue"
+            [value]="status.value"
+          >{{status.key}}</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      (matSortChange)="sortHandler($event)"
+      matSortActive="created_at"
+      matSortDirection="desc"
+    >
+      <ng-container matColumnDef="request_details">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Request </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.request_details}} </td>
+      </ng-container>
+      <ng-container matColumnDef="boat">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Boat </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <button
+            mat-button
+            (click)="showBoatDialog(element.boat)"
+          >{{element.boat?.name}}</button> </td>
+      </ng-container>
+      <ng-container matColumnDef="created_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Created at </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.created_at | humanDate}} </td>
+      </ng-container>
 
-<ng-template #TemplateResolvedRequests>
-  <app-maintenance-list
-    (clicked)="goToViewMaintenance($event)"
-    [requests]="resolvedRequests"
-    emptyMessage="There are no resolved requests"
-  ></app-maintenance-list>
+      <ng-container matColumnDef="status">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Status </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <a
+            mat-button
+            (click)="goToViewMaintenance(element)"
+            title="Click to view this request"
+          >View</a> </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns"
+      ></tr>
+      <tr
+        *matRowDef="let row; columns: displayedColumns;"
+        mat-row
+      ></tr>
+    </table>
+
+    <mat-paginator
+      (page)="paginationHandler($event)"
+      [disabled]="loading"
+      [length]="paginatedData?.total || 0"
+      [pageSizeOptions]="[1, 10, 20, 50]"
+      [pageSize]="20"
+      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
+      aria-label="Select page of requests"
+    >
+    </mat-paginator>
+  </div>
 </ng-template>
