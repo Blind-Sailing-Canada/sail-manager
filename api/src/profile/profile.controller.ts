@@ -42,7 +42,7 @@ import { ProfileNewJob } from '../types/profile/profile-new-job';
     type: 'uuid',
     primary: true,
   } },
-  query: { alwaysPaginate: true, },
+  query: { alwaysPaginate: true },
   routes: { only: [
     'getOneBase',
     'getManyBase',

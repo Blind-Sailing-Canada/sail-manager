@@ -42,7 +42,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
   public pendingApproval: Profile[];
 
   public dataSource = new MatTableDataSource<Profile>([]);
-  public displayedColumns: string[] = ['photo', 'name', 'email', 'roles', 'created_at', 'status', 'action'];
+  public displayedColumns: string[] = ['photo', 'name', 'email', 'roles', 'created_at', 'last_login', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['name'];
   public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'name,ASC' };
   public paginatedData: PaginatedProfile;

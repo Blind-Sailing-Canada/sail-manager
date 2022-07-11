@@ -197,10 +197,20 @@ export class AuthService {
 
   public deleteCacheToken(profile_id: string): void {
     delete this.tokens[profile_id];
-
   }
 
   async login(user: UserEntity, provider: string): Promise<string> {
+
+    try {
+      if (user.profile_id) {
+        ProfileEntity
+          .update({ id: user.profile_id }, { last_login: new Date() })
+          .catch((error) => this.logger.error(error));
+      }
+    } catch (error) {
+      this.logger.error(error);
+    }
+
     const cachedToken = this.tokens[user.profile_id];
 
     if (cachedToken && cachedToken.expire_at.getTime() > Date.now()) {

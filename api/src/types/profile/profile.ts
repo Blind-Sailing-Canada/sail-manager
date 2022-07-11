@@ -17,6 +17,7 @@ export interface Profile extends ExpiresBase {
   clinics_attendances: ClinicAttendance[];
   email: string;
   expires_at: Date;
+  last_login: Date;
   name: string;
   phone: string;
   photo: string;

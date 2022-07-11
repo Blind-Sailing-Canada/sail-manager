@@ -73,6 +73,14 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   })
     roles: ProfileRole[];
 
+  @Column({
+    nullable: true,
+    default: null,
+    type: 'timestamptz',
+  })
+  @Index()
+    last_login: Date;
+
   @DeleteDateColumn()
     deleted_at: Date;
 
