@@ -3,23 +3,21 @@ import {
   Component,
   Inject,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { MediaService } from '../../../services/media.service';
 import { Media } from '../../../../../../api/src/types/media/media';
-import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWhile } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { STORE_SLICES } from '../../../store/store';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
-import { Sort } from '@angular/material/sort';
 import { MediaType } from '../../../../../../api/src/types/media/media-type';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatedMedia } from '../../../../../../api/src/types/media/paginated-media';
 import { WindowService } from '../../../services/window.service';
 import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
+import { FilterInfo } from '../../../models/filter-into';
 
 @Component({
   selector: 'app-media-list-page',
@@ -30,14 +28,11 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
 
   public dataSource = new MatTableDataSource<Media>([]);
   public displayedColumns: string[] = ['url', 'title', 'posted_by', 'media_type', 'created_at', 'action'];
-  public displayedColumnsSmall: string[] = ['url', 'posted_by', 'action'];
+  public displayedColumnsMobile: string[] = ['url'];
   public entities: string[] = [];
-  public filter: string;
   public mediaType: MediaType | 'ANY' = 'ANY';
   public mediaTypeValues = { ...MediaType, ANY: 'ANY' };
   public paginatedData: PaginatedMedia;
-  public pagination = DEFAULT_PAGINATION;
-  public sort: string;
   public MediaTypes = MediaType;
   public width = 100;
   public height = 100;
@@ -45,8 +40,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     SailEntity: 'sail',
     SocialEntity: 'social',
   };
-
-  @ViewChild('filterInput', { static: false }) private filterInput;
+  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
 
   constructor(
     @Inject(Router) router: Router,
@@ -65,39 +59,20 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     this.filterMedia();
   }
 
-  ngAfterViewInit(): void {
-    const typeAhead = fromEvent(this.filterInput.nativeElement, 'input')
-      .pipe(
-        takeWhile(() => this.active),
-        map((e: any) => (e.target.value || '') as string),
-        debounceTime(1000),
-        map(text => text ? text.trim() : ''),
-        filter(text => text.length === 0 || text.length > 2),
-        switchMap((text) => {
-          this.filter = text;
-          return this.filterMedia();
-        }),
-      );
-
-    typeAhead.subscribe();
-
-    super.ngAfterViewInit();
-  }
-
   public async filterMedia(): Promise<void> {
-    const pagination = this.pagination;
+    const { search, sort, pagination } = this.filterInfo;
     const query = { $and: [] };
 
     if (this.entities.length) {
       query.$and.push({ media_for_type: { $in:  this.entities } });
     }
 
-    if (this.filter) {
+    if (search) {
       query.$and.push({ $or: [
-        { url: { $contL: this.filter } },
-        { title: { $contL: this.filter } },
-        { description: { $contL: this.filter } },
-        { 'posted_by.name': { $contL: this.filter } },
+        { url: { $contL: search } },
+        { title: { $contL: search } },
+        { description: { $contL: search } },
+        { 'posted_by.name': { $contL: search } },
       ] });
     }
 
@@ -107,7 +82,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
 
     this.startLoading();
 
-    const mediaFetch =  this.mediaService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
+    const mediaFetch =  this.mediaService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
@@ -116,17 +91,8 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     this.dispatchMessage(`Displaying ${page.count} of ${page.total} media on page #${page.page}.`);
   }
 
-  public paginationHandler(event: PageEvent) {
-    this.pagination = event;
-    this.filterMedia();
-  }
-
-  public sortHandler(event: Sort) {
-    if (event.direction) {
-      this.sort = `${event.active},${event.direction.toUpperCase()}`;
-    } else {
-      this.sort = '';
-    }
+  public filterHandler(event: FilterInfo): void {
+    this.filterInfo = event;
 
     this.filterMedia();
   }

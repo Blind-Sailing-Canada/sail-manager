@@ -1,0 +1,27 @@
+table {
+  width: 100%;
+}
+
+.table-filters {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: flex-end;
+  padding: 20px 20px 0 20px;
+}
+
+:host ::ng-deep .table-row-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
+
+@media screen and (max-width: 670px) {
+  .table-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 20px 0 20px;
+  }
+}

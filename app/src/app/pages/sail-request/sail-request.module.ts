@@ -5,6 +5,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
+import { MaterialTableModule } from '../../components/material-table/material-table.module';
 import { ProfileBulletModule } from '../../components/profile-bullet/profile-bullet.module';
 import { SailRequestListModule } from '../../components/sail-request-list/sail-request-list.module';
 import { TableModule } from '../../components/table/table.module';
@@ -28,6 +29,7 @@ import { SailRequestViewPageComponent } from './sail-request-view-page/sail-requ
     BasePageModule,
     CommonModule,
     FormsModule,
+    MaterialTableModule,
     PipesModule,
     ProfileBulletModule,
     ReactiveFormsModule,

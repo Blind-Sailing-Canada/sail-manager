@@ -20,6 +20,7 @@ import { MaintenanceResolvePageComponent } from './maintenance-resolve-page/main
 import { MaintenanceRoutingModule } from './maintenance-routing.module';
 import { MaintenanceViewPageComponent } from './maintenance-view-page/maintenance-view-page.component';
 import { NewCommentFormModule } from '../../components/new-comment-form/new-comment-form.module';
+import { MaterialTableModule } from '../../components/material-table/material-table.module';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { NewCommentFormModule } from '../../components/new-comment-form/new-comm
     ImageListModule,
     MaintenanceListModule,
     MaintenanceRoutingModule,
+    MaterialTableModule,
     NewCommentFormModule,
     NgxFilesizeModule,
     PipesModule,

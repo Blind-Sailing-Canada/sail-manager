@@ -1,9 +1,7 @@
 import {
-  AfterViewInit,
   Component,
   Inject,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,31 +19,26 @@ import {
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { PaginatedMaintenance } from '../../../../../../api/src/types/boat-maintenance/paginated-maintenance';
-import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
-import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWhile } from 'rxjs';
-import { Sort } from '@angular/material/sort';
-import { PageEvent } from '@angular/material/paginator';
+import { firstValueFrom } from 'rxjs';
 import { BoatMaintenanceService } from '../../../services/boat-maintenance.service';
 import { WindowService } from '../../../services/window.service';
+import { FilterInfo } from '../../../models/filter-into';
+import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 
 @Component({
   selector: 'app-maintenance-list-page',
   templateUrl: './maintenance-list-page.component.html',
   styleUrls: ['./maintenance-list-page.component.css']
 })
-export class MaintenanceListPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
+export class MaintenanceListPageComponent extends BasePageComponent implements OnInit {
   public boat_id: string;
   public dataSource = new MatTableDataSource<BoatMaintenance>([]);
-  public displayedColumns: string[] = ['request_details', 'boat', 'created_at', 'status', 'action'];
+  public displayedColumns: string[] = ['request_details', 'boat.name', 'created_at', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['request_details'];
-  public filter: string;
+  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
   public maintenanceStatus: BoatMaintenanceStatus | 'ANY' = BoatMaintenanceStatus.New;
   public maintenanceStatusValues = { ...BoatMaintenanceStatus, ANY: 'ANY' };
   public paginatedData: PaginatedMaintenance;
-  public pagination = DEFAULT_PAGINATION;
-  public sort: string;
-
-  @ViewChild('filterInput', { static: false }) private filterInput;
 
   constructor(
     @Inject(MatDialog) dialog: MatDialog,
@@ -66,25 +59,6 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
     this.subscribeToStoreSliceWithUser(STORE_SLICES.LOGIN);
 
     this.filterMaintenances();
-  }
-
-  ngAfterViewInit(): void {
-    const typeAhead = fromEvent(this.filterInput.nativeElement, 'input')
-      .pipe(
-        takeWhile(() => this.active),
-        map((e: any) => (e.target.value || '') as string),
-        debounceTime(1000),
-        map(text => text ? text.trim() : ''),
-        filter(text => text.length === 0 || text.length > 2),
-        switchMap((text) => {
-          this.filter = text;
-          return this.filterMaintenances();
-        }),
-      );
-
-    typeAhead.subscribe();
-
-    super.ngAfterViewInit();
   }
 
   public get boatName(): string {
@@ -108,18 +82,19 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
   }
 
   public async filterMaintenances(): Promise<void> {
-    const pagination = this.pagination;
+    const { search, sort, pagination } = this.filterInfo;
+
     const query = { $and: [] };
 
-    if (this.filter) {
+    if (search) {
       query.$and.push({ $or: [
-        { 'boat.name': { $contL: this.filter } },
-        { 'comments.comment': { $contL: this.filter } },
-        { 'requested_by.name': { $contL: this.filter } },
-        { 'requested_by.name': { $contL: this.filter } },
-        { request_details: { $contL: this.filter } },
-        { resolution_details: { $contL: this.filter } },
-        { service_details: { $contL: this.filter } },
+        { 'boat.name': { $contL: search } },
+        { 'comments.comment': { $contL: search } },
+        { 'requested_by.name': { $contL: search } },
+        { 'requested_by.name': { $contL: search } },
+        { request_details: { $contL: search } },
+        { resolution_details: { $contL: search } },
+        { service_details: { $contL: search } },
       ] });
     }
 
@@ -133,7 +108,7 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
 
     this.startLoading();
 
-    const mediaFetch =  this.maintenanceService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
+    const mediaFetch =  this.maintenanceService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
@@ -142,17 +117,8 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
     this.dispatchMessage(`Displaying ${page.count} of ${page.total} requests on page #${page.page}.`);
   }
 
-  public paginationHandler(event: PageEvent) {
-    this.pagination = event;
-    this.filterMaintenances();
-  }
-
-  public sortHandler(event: Sort) {
-    if (event.direction) {
-      this.sort = `${event.active},${event.direction.toUpperCase()}`;
-    } else {
-      this.sort = '';
-    }
+  public filterHandler(event: FilterInfo): void {
+    this.filterInfo = event;
 
     this.filterMaintenances();
   }

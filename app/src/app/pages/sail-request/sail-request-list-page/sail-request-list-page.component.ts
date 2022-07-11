@@ -3,27 +3,26 @@ import {
   Component,
   Inject,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
-import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {
   ActivatedRoute,
   Router,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWhile } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { PaginatedSailRequest } from '../../../../../../api/src/types/sail-request/paginated-sail-request';
 import { SailRequest } from '../../../../../../api/src/types/sail-request/sail-request';
 import { SailRequestStatus } from '../../../../../../api/src/types/sail-request/sail-request-status';
 import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
+import { FilterInfo } from '../../../models/filter-into';
 import { SailCategoryState } from '../../../models/sail-category-state.interface';
 import {
   createSailRequestRoute,
 } from '../../../routes/routes';
 import { SailRequestService } from '../../../services/sail-request.service';
+import { WindowService } from '../../../services/window.service';
 import { fetchSailCategories } from '../../../store/actions/sail-category.actions';
 import { STORE_SLICES } from '../../../store/store';
 import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-request-base-page.component';
@@ -36,18 +35,15 @@ import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-req
 export class SailRequestListPageComponent extends SailRequestBasePageComponent implements OnInit, AfterViewInit {
 
   public dataSource = new MatTableDataSource<SailRequest>([]);
-  public displayedColumns: string[] = ['entity_number', 'created_at', 'requested_by', 'category', 'status'];
-  public filter: string;
+  public displayedColumns: string[] = ['entity_number', 'details', 'requested_by', 'category', 'created_at', 'status'];
+  public displayedColumnsMobile: string[] = ['entity_number'];
+  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,ASC' };
   public paginatedData: PaginatedSailRequest;
   public profile_id: string;
-  public requestStatus: SailRequestStatus | 'ANY' = SailRequestStatus.New;
   public requestCategory: string | 'ANY' = 'ANY';
   public requestCategoryValues: string[] = ['ANY'];
+  public requestStatus: SailRequestStatus | 'ANY' = SailRequestStatus.New;
   public requestStatusValues = { ...SailRequestStatus, ANY: 'ANY' };
-  public sort: string;
-  public pagination = DEFAULT_PAGINATION;
-
-  @ViewChild('filterInput', { static: false }) private filterInput;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -55,6 +51,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
     @Inject(Router) router: Router,
     @Inject(MatDialog) dialog: MatDialog,
     @Inject(SailRequestService) private sailRequestService: SailRequestService,
+    @Inject(WindowService) public windowService: WindowService,
   ) {
     super(store, route, router, dialog);
   }
@@ -77,38 +74,20 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
     this.filterSailRequests();
   }
 
-  ngAfterViewInit(): void {
-    const typeAhead = fromEvent(this.filterInput.nativeElement, 'input')
-      .pipe(
-        takeWhile(() => this.active),
-        map((e: any) => (e.target.value || '') as string),
-        debounceTime(1000),
-        map(text => text ? text.trim() : ''),
-        filter(text => text.length === 0 || text.length > 2),
-        switchMap((text) => {
-          this.filter = text;
-          return this.filterSailRequests();
-        }),
-      );
-
-    typeAhead.subscribe();
-
-    super.ngAfterViewInit();
-  }
-
   public get createSailRequestRouteLink(): string {
     return createSailRequestRoute.toString();
   }
 
   public async filterSailRequests(): Promise<void> {
-    const pagination = this.pagination;
+    const { search, sort, pagination } = this.filterInfo;
+
     const query = { $and: [] };
 
-    if (this.filter) {
+    if (search) {
       query.$and.push({ $or: [
-        { details: { $contL: this.filter } },
-        { 'requested_by.name': { $contL: this.filter } },
-        { 'interest.profile.name': { $contL: this.filter } },
+        { details: { $contL: search } },
+        { 'requested_by.name': { $contL: search } },
+        { 'interest.profile.name': { $contL: search } },
       ] });
     }
 
@@ -122,7 +101,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
 
     this.startLoading();
 
-    const mediaFetch =  this.sailRequestService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
+    const mediaFetch =  this.sailRequestService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
@@ -131,17 +110,8 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
     this.dispatchMessage(`Displaying ${page.count} of ${page.total} requests on page #${page.page}.`);
   }
 
-  public paginationHandler(event: PageEvent) {
-    this.pagination = event;
-    this.filterSailRequests();
-  }
-
-  public sortHandler(event: Sort) {
-    if (event.direction) {
-      this.sort = `${event.active},${event.direction.toUpperCase()}`;
-    } else {
-      this.sort = '';
-    }
+  public filterHandler(event: FilterInfo): void {
+    this.filterInfo = event;
 
     this.filterSailRequests();
   }

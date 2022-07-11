@@ -14,7 +14,14 @@
     <ng-container [ngTemplateOutlet]="CONTROLS"></ng-container>
   </mat-card-actions>
   <mat-card-content>
-    <ng-container *ngTemplateOutlet="SAIL_REQUESTS_TABLE"></ng-container>
+    <ng-container
+      [ngTemplateOutlet]="SAIL_REQUESTS_TABLE"
+      *ngIf="!windowService.isSmallWidth"
+    ></ng-container>
+    <ng-container
+      [ngTemplateOutlet]="SAIL_REQUESTS_TABLE_MOBILE"
+      *ngIf="windowService.isSmallWidth"
+    ></ng-container>
   </mat-card-content>
 </mat-card>
 
@@ -27,15 +34,17 @@
 </ng-template>
 
 <ng-template #SAIL_REQUESTS_TABLE>
-  <div class="mat-elevation-z2">
-    <div class="table-filters">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          #filterInput
-        >
-      </mat-form-field>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of requests"
+  >
+
+    <ng-container tableFilters>
       <mat-form-field>
         <mat-label>Category</mat-label>
         <select
@@ -64,15 +73,13 @@
           >{{status.key}}</option>
         </select>
       </mat-form-field>
-    </div>
-    <table
-      mat-table
-      [dataSource]="dataSource"
+    </ng-container>
+
+    <ng-container
+      tableColumns
       matSort
-      (matSortChange)="sortHandler($event)"
-      matSortActive="entity_number"
-      matSortDirection="asc"
     >
+
       <ng-container matColumnDef="entity_number">
         <th
           *matHeaderCellDef
@@ -85,6 +92,20 @@
           *matCellDef="let element"
         > {{element.entity_number}} </td>
       </ng-container>
+
+      <ng-container matColumnDef="details">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Request </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.details}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="created_at">
         <th
           *matHeaderCellDef
@@ -136,29 +157,89 @@
           *matCellDef="let element"
         > {{element.status}} </td>
       </ng-container>
+    </ng-container>
 
-      <tr
-        mat-header-row
-        *matHeaderRowDef="displayedColumns"
-      ></tr>
-      <tr
-        (click)="viewSailRequest(row.id)"
-        *matRowDef="let row; columns: displayedColumns;"
-        class="clickable"
-        mat-row
-        aria-details="Click to go to sail request details page."
-      ></tr>
-    </table>
+  </app-material-table>
 
-    <mat-paginator
-      (page)="paginationHandler($event)"
-      [disabled]="loading"
-      [length]="paginatedData?.total || 0"
-      [pageSizeOptions]="[1, 10, 20, 50]"
-      [pageSize]="20"
-      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
-      aria-label="Select page of sail request"
+</ng-template>
+
+<ng-template #SAIL_REQUESTS_TABLE_MOBILE>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumnsMobile"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of requests"
+  >
+
+    <ng-container tableFilters>
+      <mat-form-field>
+        <mat-label>Category</mat-label>
+        <select
+          [(ngModel)]="requestCategory"
+          [ngModelOptions]="{standalone: true}"
+          matNativeControl
+          (ngModelChange)="filterSailRequests()"
+        >
+          <option
+            *ngFor="let category of requestCategoryValues"
+            [value]="category"
+          >{{category}}</option>
+        </select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <select
+          [(ngModel)]="requestStatus"
+          [ngModelOptions]="{standalone: true}"
+          matNativeControl
+          (ngModelChange)="filterSailRequests()"
+        >
+          <option
+            *ngFor="let status of requestStatusValues | keyvalue"
+            [value]="status.value"
+          >{{status.key}}</option>
+        </select>
+      </mat-form-field>
+    </ng-container>
+
+    <ng-container
+      tableColumns
+      matSort
     >
-    </mat-paginator>
-  </div>
+
+      <ng-container matColumnDef="entity_number">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Request </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          <p>#{{element.entity_number}} {{element.status}} {{element.created_at | humanDateWithTime}}</p>
+          <p>{{element.details}}</p>
+          <div class="table-row-controls">
+            <button
+              (click)="showProfileDialog(element.requested_by)"
+              mat-button
+              title="Click to view profile {{element.requested_by?.name}}"
+            >{{element.requested_by?.name}}</button>
+            <a
+              (click)="goToEntity('SailRequestEntity', element.id)"
+              mat-button
+              title="Click to view this request"
+            >View</a>
+          </div>
+        </td>
+      </ng-container>
+
+    </ng-container>
+
+  </app-material-table>
+
 </ng-template>

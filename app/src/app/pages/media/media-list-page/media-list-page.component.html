@@ -17,7 +17,7 @@
       *ngIf="!windowServer.isSmallWidth"
     ></ng-container>
     <ng-container
-      [ngTemplateOutlet]="MEDIA_TABLE_SMALL"
+      [ngTemplateOutlet]="MEDIA_TABLE_MOBILE"
       *ngIf="windowServer.isSmallWidth"
     ></ng-container>
   </mat-card-content>
@@ -27,15 +27,16 @@
 </ng-template>
 
 <ng-template #MEDIA_TABLE_FULL>
-  <div class="mat-elevation-z2">
-    <div class="table-filters">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          #filterInput
-        >
-      </mat-form-field>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of media"
+  >
+    <ng-container tableFilters>
       <mat-form-field>
         <mat-label>Type</mat-label>
         <select
@@ -50,14 +51,11 @@
           >{{type.key}}</option>
         </select>
       </mat-form-field>
-    </div>
-    <table
-      (matSortChange)="sortHandler($event)"
-      [dataSource]="dataSource"
-      mat-table
+    </ng-container>
+
+    <ng-container
+      tableColumns
       matSort
-      matSortActive="created_at"
-      matSortDirection="desc"
     >
       <ng-container matColumnDef="url">
         <th
@@ -147,40 +145,23 @@
             View {{EntityLabels[element.media_for_type]}}
           </button> </td>
       </ng-container>
+    </ng-container>
+  </app-material-table>
 
-      <tr
-        mat-header-row
-        *matHeaderRowDef="displayedColumns"
-      ></tr>
-      <tr
-        *matRowDef="let row; columns: displayedColumns;"
-        mat-row
-      ></tr>
-    </table>
-
-    <mat-paginator
-      (page)="paginationHandler($event)"
-      [disabled]="loading"
-      [length]="paginatedData?.total || 0"
-      [pageSizeOptions]="[1, 10, 20, 50]"
-      [pageSize]="20"
-      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
-      aria-label="Select page of media"
-    >
-    </mat-paginator>
-  </div>
 </ng-template>
 
-<ng-template #MEDIA_TABLE_SMALL>
-  <div class="mat-elevation-z2">
-    <div class="table-filters">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          #filterInput
-        >
-      </mat-form-field>
+<ng-template #MEDIA_TABLE_MOBILE>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumnsMobile"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of media"
+  >
+
+    <ng-container tableFilters>
       <mat-form-field>
         <mat-label>Type</mat-label>
         <select
@@ -195,84 +176,51 @@
           >{{type.key}}</option>
         </select>
       </mat-form-field>
-    </div>
-    <table
-      (matSortChange)="sortHandler($event)"
-      [dataSource]="dataSource"
-      mat-table
+    </ng-container>
+
+    <ng-container
+      tableColumns
       matSort
-      matSortActive="created_at"
-      matSortDirection="desc"
     >
+
       <ng-container matColumnDef="url">
         <th
           *matHeaderCellDef
           [disabled]="loading"
           mat-header-cell
           mat-sort-header
-        > Image </th>
+        > Media </th>
         <td
           mat-cell
           *matCellDef="let element"
         >
-          <ng-container *ngTemplateOutlet="MEDIA_PICTURE; context:{picture: element}"></ng-container>
+          <p>{{element.title}}</p>
+          <div class="table-row-controls">
+            <ng-container *ngTemplateOutlet="MEDIA_PICTURE; context:{picture: element}"></ng-container>
+          </div>
+          <p>{{element.description}}</p>
+
+          <div class="table-row-controls">
+            <app-profile-bullet
+              class="clickable"
+              (click)="showProfileDialog(element.posted_by)"
+              [profile]="element.posted_by"
+            ></app-profile-bullet>
+            <a
+              mat-flat-button
+              (click)="goToEntity(element.media_for_type, element.media_for_id)"
+              title="Click to view {{EntityLabels[element.media_for_type]}}"
+            >
+              View {{EntityLabels[element.media_for_type]}}
+            </a>
+          </div>
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="posted_by">
-        <th
-          *matHeaderCellDef
-          [disabled]="loading"
-          mat-header-cell
-          mat-sort-header
-        > Posted by </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-        > <button
-            (click)="showProfileDialog(element.posted_by)"
-            mat-flat-button
-            title="Click show open profile dialog"
-          >{{element.posted_by?.name}}</button> </td>
-      </ng-container>
+    </ng-container>
 
-      <ng-container matColumnDef="action">
-        <th
-          *matHeaderCellDef
-          mat-header-cell
-        > </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-        > <button
-            mat-flat-button
-            (click)="goToEntity(element.media_for_type, element.media_for_id)"
-          >
-            View {{EntityLabels[element.media_for_type]}}
-          </button> </td>
-      </ng-container>
+  </app-material-table>
 
-      <tr
-        mat-header-row
-        *matHeaderRowDef="displayedColumnsSmall"
-      ></tr>
-      <tr
-        *matRowDef="let row; columns: displayedColumnsSmall;"
-        mat-row
-      ></tr>
-    </table>
-
-    <mat-paginator
-      (page)="paginationHandler($event)"
-      [disabled]="loading"
-      [length]="paginatedData?.total || 0"
-      [pageSizeOptions]="[1, 10, 20, 50]"
-      [pageSize]="20"
-      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
-      aria-label="Select page of media"
-    >
-    </mat-paginator>
-  </div>
 </ng-template>
 
 <ng-template

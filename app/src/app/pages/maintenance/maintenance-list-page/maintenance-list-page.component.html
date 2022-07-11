@@ -49,15 +49,16 @@
 </ng-template>
 
 <ng-template #MAINTENANCE_TABLE>
-  <div class="mat-elevation-z2">
-    <div class="table-filters">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          #filterInput
-        >
-      </mat-form-field>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of requests"
+  >
+    <ng-container tableFilters>
       <mat-form-field>
         <mat-label>Status</mat-label>
         <select
@@ -65,6 +66,7 @@
           [ngModelOptions]="{standalone: true}"
           matNativeControl
           (ngModelChange)="filterMaintenances()"
+          title="filter by maintenance status"
         >
           <option
             *ngFor="let status of maintenanceStatusValues | keyvalue"
@@ -72,14 +74,11 @@
           >{{status.key}}</option>
         </select>
       </mat-form-field>
-    </div>
-    <table
-      mat-table
-      [dataSource]="dataSource"
+    </ng-container>
+
+    <ng-container
+      tableColumns
       matSort
-      (matSortChange)="sortHandler($event)"
-      matSortActive="created_at"
-      matSortDirection="desc"
     >
       <ng-container matColumnDef="request_details">
         <th
@@ -93,7 +92,7 @@
           *matCellDef="let element"
         > {{element.request_details}} </td>
       </ng-container>
-      <ng-container matColumnDef="boat">
+      <ng-container matColumnDef="boat.name">
         <th
           *matHeaderCellDef
           [disabled]="loading"
@@ -137,9 +136,7 @@
       <ng-container matColumnDef="action">
         <th
           *matHeaderCellDef
-          [disabled]="loading"
           mat-header-cell
-          mat-sort-header
         > </th>
         <td
           mat-cell
@@ -151,39 +148,22 @@
           >View</a> </td>
       </ng-container>
 
-      <tr
-        mat-header-row
-        *matHeaderRowDef="displayedColumns"
-      ></tr>
-      <tr
-        *matRowDef="let row; columns: displayedColumns;"
-        mat-row
-      ></tr>
-    </table>
-
-    <mat-paginator
-      (page)="paginationHandler($event)"
-      [disabled]="loading"
-      [length]="paginatedData?.total || 0"
-      [pageSizeOptions]="[1, 10, 20, 50]"
-      [pageSize]="20"
-      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
-      aria-label="Select page of requests"
-    >
-    </mat-paginator>
-  </div>
+    </ng-container>
+  </app-material-table>
 </ng-template>
 
 <ng-template #MAINTENANCE_TABLE_MOBILE>
-  <div class="mat-elevation-z2">
-    <div class="table-filters">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          #filterInput
-        >
-      </mat-form-field>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumnsMobile"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of requests"
+  >
+
+    <ng-container tableFilters>
       <mat-form-field>
         <mat-label>Status</mat-label>
         <select
@@ -198,12 +178,11 @@
           >{{status.key}}</option>
         </select>
       </mat-form-field>
-    </div>
-    <table
-      mat-table
-      [dataSource]="dataSource"
+    </ng-container>
+
+    <ng-container
+      tableColumns
       matSort
-      (matSortChange)="sortHandler($event)"
     >
       <ng-container matColumnDef="request_details">
         <th
@@ -232,26 +211,7 @@
           </div>
         </td>
       </ng-container>
+    </ng-container>
 
-      <tr
-        mat-header-row
-        *matHeaderRowDef="displayedColumnsMobile"
-      ></tr>
-      <tr
-        *matRowDef="let row; columns: displayedColumnsMobile;"
-        mat-row
-      ></tr>
-    </table>
-
-    <mat-paginator
-      (page)="paginationHandler($event)"
-      [disabled]="loading"
-      [length]="paginatedData?.total || 0"
-      [pageSizeOptions]="[1, 10, 20, 50]"
-      [pageSize]="20"
-      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
-      aria-label="Select page of requests"
-    >
-    </mat-paginator>
-  </div>
+  </app-material-table>
 </ng-template>

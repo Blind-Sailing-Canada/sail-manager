@@ -42,6 +42,7 @@ import {
   viewClinicRoute,
   viewDocumentRoute,
   viewProfileRoute,
+  viewSailRequestRoute,
   viewSailRoute,
   viewSocialRoute,
 } from '../../routes/routes';
@@ -160,6 +161,9 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
         break;
       case 'ClinicEntity':
         this.viewClinic(entityId);
+        break;
+      case 'SailRequestEntity':
+        this.viewSailRequest(entityId);
         break;
     }
   }
@@ -614,6 +618,10 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
   protected viewClinic(id: string): void {
     this.goTo([viewClinicRoute(id)]);
+  }
+
+  protected viewSailRequest(id: string): void {
+    this.goTo([viewSailRequestRoute(id)]);
   }
 
   protected viewProfile(id: string): void {
