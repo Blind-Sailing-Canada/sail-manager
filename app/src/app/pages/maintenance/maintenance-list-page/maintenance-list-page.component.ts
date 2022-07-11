@@ -26,6 +26,7 @@ import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWh
 import { Sort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 import { BoatMaintenanceService } from '../../../services/boat-maintenance.service';
+import { WindowService } from '../../../services/window.service';
 
 @Component({
   selector: 'app-maintenance-list-page',
@@ -36,6 +37,7 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
   public boat_id: string;
   public dataSource = new MatTableDataSource<BoatMaintenance>([]);
   public displayedColumns: string[] = ['request_details', 'boat', 'created_at', 'status', 'action'];
+  public displayedColumnsMobile: string[] = ['request_details'];
   public filter: string;
   public maintenanceStatus: BoatMaintenanceStatus | 'ANY' = BoatMaintenanceStatus.New;
   public maintenanceStatusValues = { ...BoatMaintenanceStatus, ANY: 'ANY' };
@@ -51,6 +53,7 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
     @Inject(Router) router: Router,
     @Inject(Store) store: Store<any>,
     @Inject(BoatMaintenanceService) private maintenanceService: BoatMaintenanceService,
+    @Inject(WindowService) public windowService: WindowService,
   ) {
     super(store, route, router, dialog);
   }
