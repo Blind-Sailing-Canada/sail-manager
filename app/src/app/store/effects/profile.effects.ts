@@ -78,8 +78,8 @@ export class ProfileEffects {
         action => this.profileService.fetchProfiles(action.query)
           .pipe(
             mergeMap(profiles => of(
-              putProfiles({ profiles }),
-              action.notify && putSnack({ snack: { type: SnackType.INFO, message: `Fetched ${profiles.length} profiles.` } }),
+              putProfiles({ profiles: profiles.data }),
+              action.notify && putSnack({ snack: { type: SnackType.INFO, message: `Fetched ${profiles.data.length} profiles.` } }),
             )),
             catchError(errorCatcher(`Failed to fetch profiles: ${action.query}`))
           )

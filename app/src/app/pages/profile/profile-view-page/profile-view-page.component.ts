@@ -158,7 +158,7 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
         if (this.linkAccountsDialogRef && this.linkAccountsDialogRef.componentInstance) {
           this.linkAccountsDialogRef.componentInstance.data = {
             ...this.linkAccountsDialogRef.componentInstance.data,
-            accounts: accounts.filter(account => account.id !== this.profile.id),
+            accounts: accounts.data.filter(account => account.id !== this.profile.id),
           };
         }
       });

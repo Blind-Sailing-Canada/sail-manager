@@ -1,25 +1,15 @@
 import {
-  fromEvent,
-  of,
+  firstValueFrom,
 } from 'rxjs';
-import {
-  debounceTime,
-  filter,
-  map,
-  switchMap,
-  takeWhile,
-} from 'rxjs/operators';
 import {
   AfterViewInit,
   Component,
   Inject,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IProfileMap } from '../../../models/profile-state.interface';
-import { SnackType } from '../../../models/snack-state.interface';
 import {
   editProfilePrivilegesRoute, listSailCategoriesRoute,
 } from '../../../routes/routes';
@@ -27,9 +17,7 @@ import { ProfileService } from '../../../services/profile.service';
 import {
   fetchProfiles,
   fetchTotalProfileCount,
-  putProfiles,
 } from '../../../store/actions/profile.actions';
-import { putSnack } from '../../../store/actions/snack.actions';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
@@ -37,6 +25,11 @@ import { ProfileStatus } from '../../../../../../api/src/types/profile/profile-s
 import { CreateUserDialogComponent } from '../../../components/create-user-dialog/create-user-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CreateUserDialogData } from '../../../models/create-user-dialog-data.interface';
+import { MatTableDataSource } from '@angular/material/table';
+import { FilterInfo } from '../../../models/filter-into';
+import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
+import { PaginatedProfile } from '../../../../../../api/src/types/profile/paginated-profile';
+import { WindowService } from '../../../services/window.service';
 
 @Component({
   selector: 'app-admin-dashboard-page',
@@ -45,17 +38,24 @@ import { CreateUserDialogData } from '../../../models/create-user-dialog-data.in
 })
 export class AdminDashboardPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('profileSearchInput', { static: false }) private profileSearchInput;
-
-  public searchedProfiles: Profile[];
   public createUserDialogRef: MatDialogRef<CreateUserDialogComponent>;
   public pendingApproval: Profile[];
+
+  public dataSource = new MatTableDataSource<Profile>([]);
+  public displayedColumns: string[] = ['photo', 'name', 'email', 'roles', 'created_at', 'status', 'action'];
+  public displayedColumnsMobile: string[] = ['name'];
+  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'name,ASC' };
+  public paginatedData: PaginatedProfile;
+  public profile_id: string;
+  public profileStatus: ProfileStatus | 'ANY' = 'ANY';
+  public profileStatusValues = { ...ProfileStatus, ANY: 'ANY' };
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ProfileService) private profileService: ProfileService,
     @Inject(Router) router: Router,
     @Inject(MatDialog) dialog: MatDialog,
+    @Inject(WindowService) public windowService: WindowService,
   ) {
     super(store, undefined, router, dialog);
   }
@@ -66,10 +66,6 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
     }
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES, () => {
-      if (!this.searchedProfiles) {
-        this.searchedProfiles = this.profilesArray;
-      }
-
       const profiles = this.profiles || {} as IProfileMap;
       const profile_ids = Object.keys(profiles);
       this.pendingApproval = profile_ids
@@ -80,41 +76,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
     this.fetchPendingProfiles();
     this.dispatchAction(fetchTotalProfileCount());
-  }
-
-  ngAfterViewInit(): void {
-    const typeAhead = fromEvent(this.profileSearchInput.nativeElement, 'input')
-      .pipe(
-        takeWhile(() => this.active),
-        map((e: any) => (e.target.value || '') as string),
-        debounceTime(1000),
-        map(text => text ? text.trim() : ''),
-        filter(text => !text || text.length > 2),
-        switchMap((text) => {
-          if (!text) {
-            return of(this.profilesArray);
-          }
-
-          return this.profileService.searchByNameOrEmail(text);
-        }),
-      );
-
-    typeAhead
-      .subscribe((profiles) => {
-        this.dispatchAction(
-          putSnack({ snack: { type: SnackType.INFO, message: `Found ${profiles.length} users.` } })
-        );
-        this.searchedProfiles = profiles;
-        this.dispatchAction(putProfiles({ profiles }));
-      });
-
-    super.ngAfterViewInit();
-  }
-
-  public fetchAllUsers(): void {
-    this.searchedProfiles = null;
-    this.profileSearchInput.nativeElement.value = '';
-    this.dispatchAction(fetchProfiles({ query: 'sort=name,ASC', notify: true }));
+    this.filterProfiles();
   }
 
   public get totalProfileCount(): number {
@@ -155,6 +117,40 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
         this.dispatchError(`Failed to create user. ${error.error?.message || ''}.`);
         throw new Error(error.error?.message || error.message);
       });
+  }
+
+  public async filterProfiles(): Promise<void> {
+    const { search, sort, pagination } = this.filterInfo;
+
+    const query = { $and: [] };
+
+    if (search) {
+      query.$and.push({ $or: [
+        { name: { $contL: search } },
+        { email: { $contL: search } },
+        { bio: { $contL: search } },
+      ] });
+    }
+
+    if (this.profileStatus !== 'ANY') {
+      query.$and.push({ status: this.profileStatus });
+    }
+
+    this.startLoading();
+
+    const mediaFetch =  this.profileService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    this.dataSource.data = this.paginatedData.data;
+
+    const page = this.paginatedData;
+
+    this.dispatchMessage(`Displaying ${page.count} of ${page.total} profiles on page #${page.page}.`);
+  }
+
+  public filterHandler(event: FilterInfo): void {
+    this.filterInfo = event;
+
+    this.filterProfiles();
   }
 
 }

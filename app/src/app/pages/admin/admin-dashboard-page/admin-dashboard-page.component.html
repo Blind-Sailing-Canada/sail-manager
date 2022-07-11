@@ -24,76 +24,19 @@
     </section>
     <section role="search">
       <h3>Total users in the system: {{totalProfileCount}}</h3>
-      <mat-form-field>
-        <mat-label
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          <mat-icon>search</mat-icon>Search users by name or email (min 3 characters)
-        </mat-label>
-        <input
-          #profileSearchInput
-          (keyup)="$event.keyCode === 13? searchCount?.focus() : false"
-          (keyup.enter)="searchCount?.focus(); false"
-          aria-controls="users_table"
-          aria-label="Search users by name or email (minimum 3 characters)."
-          matInput
-          title="Search user by name or email (minimum 3 characters)."
-          type="text"
-        >
-      </mat-form-field>
-      <h3
-        #searchCount
-        tabindex="0"
-      >{{searchedProfiles? "Found " + searchedProfiles.length + " users.": ""}}</h3>
-      <app-table
-        id="users_table"
-        *ngIf="searchedProfiles?.length"
-      >
-        <thead>
-          <tr
-            aria-hidden="true"
-            tabindex="-1"
-          >
-            <th>Name</th>
-            <th>Roles</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tr
-          (click)="editProfilePrivileges(profile)"
-          *ngFor="let profile of searchedProfiles; let i = index;"
-          attr.aria-label="Profile {{i + 1}} of {{searchedProfiles.length}}"
-          attr.aria-posinset="{{i + 1}}"
-          attr.aria-setsize="{{searchedProfiles.length}}"
-          class="clickable"
-          title="{{profile.name}} has {{(profile.roles||[]).join(', ')}} roles and status of {{profile.status}}. Click to edit permissions."
-          role="listitem"
-          tabindex="0"
-        >
-          <td
-            aria-hidden="true"
-            tabindex="-1"
-          >{{profile.name}}</td>
-          <td
-            aria-hidden="true"
-            tabindex="-1"
-          >{{profile.roles?.join(', ')}}</td>
-          <td
-            aria-hidden="true"
-            tabindex="-1"
-          >{{profile.status}}</td>
-        </tr>
-      </app-table>
+      <ng-container
+        [ngTemplateOutlet]="PROFILE_TABLE"
+        *ngIf="!windowService.isSmallWidth"
+      ></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="PROFILE_TABLE_MOBILE"
+        *ngIf="windowService.isSmallWidth"
+      ></ng-container>
     </section>
   </mat-card-content>
 </mat-card>
 
 <ng-template #controls>
-  <button
-    mat-raised-button
-    (click)="fetchAllUsers()"
-  >Get All Users</button>
   <button
     mat-raised-button
     (click)="openCreateUserDialog()"
@@ -102,4 +45,218 @@
     mat-raised-button
     (click)="goToSailCategories()"
   >Sail Categories</button>
+</ng-template>
+
+<ng-template #PROFILE_TABLE>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of profiles"
+  >
+
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="name"
+      matSortDirection="asc"
+      tableColumns
+    >
+
+      <ng-container matColumnDef="photo">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Photo </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <img src="{{element.photo || 'assets/icons/icon-person.png'}}?width=100&height=100"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Name </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <a
+            class="clickable"
+            (click)="showProfileDialog(element)"
+            title="click to show profile dialog for {{element.name}}"
+          >{{element.name}}</a> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Email </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="roles">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Roles </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.roles.join(', ')}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Created at </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.created_at | humanDate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Status </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <a
+            mat-button
+            (click)="editProfilePrivileges(element)"
+            title="Edit profile of {{element.name}} {{element.email}}"
+          >Edit</a> </td>
+      </ng-container>
+
+    </ng-container>
+
+  </app-material-table>
+
+</ng-template>
+
+<ng-template #PROFILE_TABLE_MOBILE>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumnsMobile"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of profiles"
+  >
+
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="name"
+      matSortDirection="asc"
+      tableColumns
+    >
+
+      <ng-container matColumnDef="name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Name </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          <div class="profile-row-mobile">
+            <div class="profile-picture"><img
+                src="{{element.photo || 'assets/icons/icon-person.png'}}?width=100&height=100"
+                width="100px"
+                height="100px"
+              ></div>
+            <div>
+              <p><label>Name: </label><span><a
+                    class="clickable"
+                    (click)="showProfileDialog(element)"
+                    title="click to show profile dialog for {{element.name}}"
+                  >{{element.name}}</a></span>
+              </p>
+              <p><label>Email: </label><span>{{element.email}}</span></p>
+              <p><label>Created: </label><span>{{element.created_at | humanDateWithTime}}</span></p>
+              <p><label>Status: </label><span>{{element.status}}</span></p>
+              <p><label>Roles: </label><span>{{element.roles.join(', ')}}</span></p>
+            </div>
+          </div>
+          <div class="table-row-controls">
+            <a
+              mat-raised-button
+              (click)="editProfilePrivileges(element)"
+              title="Edit profile of {{element.name}} {{element.email}}"
+            >Edit</a>
+          </div>
+        </td>
+      </ng-container>
+
+    </ng-container>
+
+  </app-material-table>
+
+</ng-template>
+
+<ng-template #TABLE_FILTERS>
+  <mat-form-field>
+    <mat-label>Status</mat-label>
+    <select
+      [(ngModel)]="profileStatus"
+      [ngModelOptions]="{standalone: true}"
+      matNativeControl
+      (ngModelChange)="filterProfiles()"
+    >
+      <option
+        *ngFor="let status of profileStatusValues | keyvalue"
+        [value]="status.value"
+      >{{status.value}}</option>
+    </select>
+  </mat-form-field>
 </ng-template>

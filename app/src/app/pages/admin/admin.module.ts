@@ -10,6 +10,8 @@ import { AdminUserEditPageComponent } from './admin-user-edit-page/admin-user-ed
 import { BasePageModule } from '../base-page/base-page.module';
 import { CreateUserDialogModule } from '../../components/create-user-dialog/create-user-dialog.module';
 import { AdminSailCategoryPageComponent } from './admin-sail-category-page/admin-sail-category-page.component';
+import { MaterialTableModule } from '../../components/material-table/material-table.module';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { AdminSailCategoryPageComponent } from './admin-sail-category-page/admin
     CommonModule,
     CreateUserDialogModule,
     FormsModule,
+    MaterialTableModule,
+    PipesModule,
     ProfileListModule,
     ReactiveFormsModule,
     TableModule,

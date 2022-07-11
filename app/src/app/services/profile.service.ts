@@ -4,13 +4,13 @@ import {
   Inject,
   Injectable,
 } from '@angular/core';
-import { ProfileRole } from '../../../../api/src/types/profile/profile-role';
 import { Profile } from '../../../../api/src/types/profile/profile';
 import { ProfileReview } from '../../../../api/src/types/profile/profile-review';
 import { UserAccess } from '../../../../api/src/types/user-access/user-access';
 import { ProfileLinkInfo } from '../../../../api/src/types/user/profile-link-info';
 import { RequiredAction } from '../../../../api/src/types/required-action/required-action';
 import { User } from '../../../../api/src/types/user/user';
+import { PaginatedProfile } from '../../../../api/src/types/profile/paginated-profile';
 
 interface ProfileReviewReturn {
   profile: Profile;
@@ -39,29 +39,24 @@ export class ProfileService {
     return this.http.get<number>(`${this.API_URL}/count`);
   }
 
-  fetchProfiles(query: string): Observable<Profile[]> {
-    return this.http.get<Profile[]>(`${this.API_URL}?${query}`);
+  public fetchAllPaginated(
+    query?: any,
+    page: number = 1,
+    per_page: number = 10,
+    sort: string = 'name,ASC',
+  ): Observable<PaginatedProfile> {
+
+    return this.http
+      .get<PaginatedProfile>(`${this.API_URL}?s=${JSON.stringify(query || {})}&page=${page}&per_page=${per_page}&sort=${sort}`);
+
+  }
+
+  fetchProfiles(query: string): Observable<PaginatedProfile> {
+    return this.http.get<PaginatedProfile>(`${this.API_URL}?${query}`);
   }
 
   fetchOne(id: string): Observable<Profile> {
     return this.http.get<Profile>(`${this.API_URL}/${id}`);
-  }
-
-  fetchSkippers(): Observable<Profile[]> {
-    return this.http.get<Profile[]>(`${this.API_URL}?filter=roles||$eq||${ProfileRole.Skipper}`);
-  }
-
-  fetchProfileBatch(ids: string[]): Observable<Profile[]> {
-    const query = ids.map(id => `_id=${id}`).join('&');
-    return this.http.get<Profile[]>(`${this.API_URL}?${query}`);
-  }
-
-  fetchCrew(): Observable<Profile[]> {
-    return this.http.get<Profile[]>(`${this.API_URL}?filter=roles||$eq||${ProfileRole.Crew}`);
-  }
-
-  fetchMembers(): Observable<Profile[]> {
-    return this.http.get<Profile[]>(`${this.API_URL}?filter=roles||$eq||${ProfileRole.Member}`);
   }
 
   updateInfo(id: string, profile: Partial<Profile>): Observable<Profile> {

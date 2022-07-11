@@ -1,3 +1,13 @@
-mat-form-field {
-  width: 100%;
+.profile-row-mobile {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+}
+
+.profile-row-mobile .profile-picture {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
