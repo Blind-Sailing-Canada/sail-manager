@@ -3,7 +3,6 @@ import {
   Component,
   Inject,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,9 +21,9 @@ import { PaginatedDocument } from '../../../../../../api/src/types/document/pagi
 import { MatTableDataSource } from '@angular/material/table';
 import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { DocumentService } from '../../../services/document.service';
-import { Sort } from '@angular/material/sort';
-import { PageEvent } from '@angular/material/paginator';
-import { debounceTime, filter, firstValueFrom, fromEvent, map, switchMap, takeWhile } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
+import { FilterInfo } from '../../../models/filter-into';
+import { WindowService } from '../../../services/window.service';
 
 @Component({
   selector: 'app-document-list-page',
@@ -35,18 +34,16 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
 
   public dataSource = new MatTableDataSource<Document>([]);
   public displayedColumns: string[] = ['title', 'documentable_type', 'created_at', 'download'];
-  public filter: string;
+  public displayedColumnsMobile: string[] = ['title'];
+  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'title,ASC' };
   public paginatedData: PaginatedDocument;
-  public pagination = DEFAULT_PAGINATION;
-  public sort: string;
-
-  @ViewChild('filterInput', { static: false }) private filterInput;
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(Router) router: Router,
     @Inject(MatDialog) dialog: MatDialog,
     @Inject(ActivatedRoute) route: ActivatedRoute,
+    @Inject(WindowService) public windowService: WindowService,
     private documentSErvice: DocumentService,
   ) {
     super(store, route, router, dialog);
@@ -60,25 +57,6 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
     }
 
     this.filterDocuments();
-  }
-
-  ngAfterViewInit(): void {
-    const typeAhead = fromEvent(this.filterInput.nativeElement, 'input')
-      .pipe(
-        takeWhile(() => this.active),
-        map((e: any) => (e.target.value || '') as string),
-        debounceTime(1000),
-        map(text => text ? text.trim() : ''),
-        filter(text => text.length === 0 || text.length > 2),
-        switchMap((text) => {
-          this.filter = text;
-          return this.filterDocuments();
-        }),
-      );
-
-    typeAhead.subscribe();
-
-    super.ngAfterViewInit();
   }
 
   public get entity_type(): EntityType {
@@ -119,14 +97,14 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
   }
 
   public async filterDocuments(): Promise<void> {
-    const pagination = this.pagination;
+    const { search, sort, pagination } = this.filterInfo;
     const query = { $and: [] };
 
-    if (this.filter) {
+    if (search) {
       query.$and.push({ $or: [
-        { title: { $contL: this.filter } },
-        { description: { $contL: this.filter } },
-        { 'author.name': { $contL: this.filter } },
+        { title: { $contL: search } },
+        { description: { $contL: search } },
+        { 'author.name': { $contL: search } },
       ] });
     }
 
@@ -137,7 +115,7 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
 
     this.startLoading();
 
-    const mediaFetch =  this.documentSErvice.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
+    const mediaFetch =  this.documentSErvice.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
@@ -150,17 +128,8 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
     return entityName ? entityName.replace('Entity', ''): '';
   }
 
-  public paginationHandler(event: PageEvent) {
-    this.pagination = event;
-    this.filterDocuments();
-  }
-
-  public sortHandler(event: Sort) {
-    if (event.direction) {
-      this.sort = `${event.active},${event.direction.toUpperCase()}`;
-    } else {
-      this.sort = '';
-    }
+  public filterHandler(event: FilterInfo): void {
+    this.filterInfo = event;
 
     this.filterDocuments();
   }

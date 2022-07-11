@@ -14,7 +14,14 @@
   </mat-card-header>
   <mat-card-actions *ngTemplateOutlet="CONTROLS_TEMPLATE"></mat-card-actions>
   <mat-card-content>
-    <ng-container [ngTemplateOutlet]="documentTable"></ng-container>
+    <ng-container
+      [ngTemplateOutlet]="DOCUMENT_TABLE"
+      *ngIf="!windowService.isSmallWidth"
+    ></ng-container>
+    <ng-container
+      [ngTemplateOutlet]="DOCUMENT_TABLE_MOBILE"
+      *ngIf="windowService.isSmallWidth"
+    ></ng-container>
   </mat-card-content>
 </mat-card>
 
@@ -27,25 +34,29 @@
   >New</button>
 </ng-template>
 
-<ng-template #documentTable>
-  <div class="mat-elevation-z2">
-    <div class="table-filters">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          #filterInput
-        >
-      </mat-form-field>
-    </div>
-    <table
-      mat-table
-      [dataSource]="dataSource"
+<ng-template #DOCUMENT_TABLE>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of documents"
+  >
+
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
       matSort
-      (matSortChange)="sortHandler($event)"
-      matSortActive="created_at"
-      matSortDirection="desc"
+      matSortActive="title"
+      matSortDirection="asc"
+      tableColumns
     >
+
       <ng-container matColumnDef="title">
         <th
           *matHeaderCellDef
@@ -91,7 +102,7 @@
         <td
           mat-cell
           *matCellDef="let element"
-        > {{element.created_at | humanDateWithTime}} </td>
+        > {{element.created_at | humanDate}} </td>
       </ng-container>
 
       <ng-container matColumnDef="end_at">
@@ -125,25 +136,81 @@
           </a></td>
       </ng-container>
 
-      <tr
-        mat-header-row
-        *matHeaderRowDef="displayedColumns"
-      ></tr>
-      <tr
-        *matRowDef="let row; columns: displayedColumns;"
-        mat-row
-      ></tr>
-    </table>
+    </ng-container>
 
-    <mat-paginator
-      (page)="paginationHandler($event)"
-      [disabled]="loading"
-      [length]="paginatedData?.total || 0"
-      [pageSizeOptions]="[1, 10, 20, 50]"
-      [pageSize]="20"
-      [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
-      aria-label="Select page of documents"
+  </app-material-table>
+
+</ng-template>
+
+<ng-template #DOCUMENT_TABLE_MOBILE>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumnsMobile"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of documents"
+  >
+
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="title"
+      matSortDirection="asc"
+      tableColumns
     >
-    </mat-paginator>
-  </div>
+
+      <ng-container matColumnDef="title">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Title </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          <div class="row-mobile">
+            <div>
+              <p>{{element.title}}</p>
+              <p><i>{{element.description}}</i></p>
+            </div>
+          </div>
+          <div class="table-row-controls">
+            <a
+              mat-button
+              (click)="goToEntity(element.documentable_type, element.documentable_id)"
+              *ngIf="element.documentable_id"
+            >{{getEntityLabel(element.documentable_type)}} </a>
+            <a *ngIf="!element.documentable_id"> </a>
+            <a
+              (click)="viewDocument(element.id)"
+              mat-button
+              title="Click to go to document details page."
+            >View details</a>
+            <a
+              [href]="element.fileLocation"
+              mat-button
+              target="_blank"
+              title="click to download file: {{element.title}}"
+            >
+              <mat-icon>file_download</mat-icon> Download
+            </a>
+          </div>
+        </td>
+      </ng-container>
+
+    </ng-container>
+
+  </app-material-table>
+
+</ng-template>
+
+<ng-template #TABLE_FILTERS>
 </ng-template>

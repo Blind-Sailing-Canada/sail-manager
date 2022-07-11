@@ -17,6 +17,7 @@ import { ProfileBulletModule } from '../../components/profile-bullet/profile-bul
 import { ProfileDialogModule } from '../../components/profile-dialog/profile-dialog.module';
 import { TableModule } from '../../components/table/table.module';
 import { DocumentBasePageComponent } from './document-base-page/document-base-page';
+import { MaterialTableModule } from '../../components/material-table/material-table.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { DocumentBasePageComponent } from './document-base-page/document-base-pa
     FormsModule,
     IconTextModule,
     ListFilterModule,
+    MaterialTableModule,
     PipesModule,
     ProfileBulletModule,
     ProfileDialogModule,
