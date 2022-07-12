@@ -60,3 +60,18 @@ export class FormatDateYYYYMMDDPipe implements PipeTransform {
     return this.momentService.yyyymmdd(date);
   }
 }
+
+
+@Pipe({ name: 'ddmmyyyy' })
+export class FormatDateDDMMYYYYPipe implements PipeTransform {
+  constructor(
+    @Inject(MomentService) private momentService: MomentService,
+  ) { }
+  transform(date: string | Date): string {
+    if (!date) {
+      return 'n/a';
+    }
+
+    return this.momentService.ddmmyyyy(date);
+  }
+}

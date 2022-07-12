@@ -38,6 +38,18 @@ export class MomentService {
     return formattedValue;
   }
 
+  public ddmmyyyy(date: string | Date): string {
+    if (!date) {
+      return '';
+    }
+
+    const formattedValue = new Date(date)
+      .toLocaleString('en-us', { year: 'numeric', month: '2-digit', day: '2-digit' })
+      .replace(/(\d+)\/(\d+)\/(\d+)/, '$2-$1-$3');
+
+    return formattedValue;
+  }
+
   public humanizeDateWithTime(date: string | Date, short: boolean): string {
     if (!date) {
       return '';

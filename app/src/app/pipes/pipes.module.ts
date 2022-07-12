@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DurationPipe } from './duration.pipe';
 import {
+  FormatDateDDMMYYYYPipe,
   FormatDatePipe,
   FormatDateYYYYMMDDPipe,
   HumanDatePipe,
@@ -12,6 +13,7 @@ import { MarkdownPipe } from './markdown.pipe';
 @NgModule({
   declarations: [
     DurationPipe,
+    FormatDateDDMMYYYYPipe,
     FormatDatePipe,
     FormatDateYYYYMMDDPipe,
     HumanDatePipe,
@@ -20,6 +22,7 @@ import { MarkdownPipe } from './markdown.pipe';
   ],
   exports: [
     DurationPipe,
+    FormatDateDDMMYYYYPipe,
     FormatDatePipe,
     FormatDateYYYYMMDDPipe,
     HumanDatePipe,

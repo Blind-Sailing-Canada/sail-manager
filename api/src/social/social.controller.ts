@@ -30,6 +30,7 @@ import { ProfileRole } from '../types/profile/profile-role';
       manifest: { eager: true },
       'manifest.profile': { eager: true },
       'manifest.guest_of': { eager: true },
+      cancelled_by: { eager: true },
       comments: { eager: true },
       pictures: { eager: true },
       'pictures.posted_by': { eager: true },

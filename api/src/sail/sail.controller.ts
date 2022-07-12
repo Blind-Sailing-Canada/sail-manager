@@ -39,6 +39,7 @@ import { SailStatus } from '../types/sail/sail-status';
       boat: { eager: true },
       'boat.checklist': { eager: true },
       'boat.instructions': { eager: true },
+      cancelled_by: { eager: true },
       checklists: { eager: true },
       manifest: { eager: true },
       'manifest.profile': { eager: true },
