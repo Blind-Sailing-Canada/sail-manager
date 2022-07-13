@@ -24,7 +24,7 @@ import { DocumentBasePageComponent } from '../document-base-page/document-base-p
 @Component({
   selector: 'app-document-edit-page',
   templateUrl: './document-edit-page.component.html',
-  styleUrls: ['./document-edit-page.component.css']
+  styleUrls: ['./document-edit-page.component.scss']
 })
 export class DocumentEditPageComponent extends DocumentBasePageComponent implements OnInit {
 

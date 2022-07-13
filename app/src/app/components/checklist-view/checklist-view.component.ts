@@ -4,7 +4,7 @@ import { Sail } from '../../../../../api/src/types/sail/sail';
 
 @Component({
   selector: 'app-checklist-view',
-  styleUrls: ['./checklist-view.component.css'],
+  styleUrls: ['./checklist-view.component.scss'],
   templateUrl: './checklist-view.component.html',
 })
 export class ChecklistViewComponent {

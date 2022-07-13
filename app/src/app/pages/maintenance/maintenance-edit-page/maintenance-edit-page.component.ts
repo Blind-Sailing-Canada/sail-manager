@@ -29,7 +29,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-maintenance-edit-page',
   templateUrl: './maintenance-edit-page.component.html',
-  styleUrls: ['./maintenance-edit-page.component.css']
+  styleUrls: ['./maintenance-edit-page.component.scss']
 })
 export class MaintenanceEditPageComponent extends BasePageComponent implements OnInit {
 

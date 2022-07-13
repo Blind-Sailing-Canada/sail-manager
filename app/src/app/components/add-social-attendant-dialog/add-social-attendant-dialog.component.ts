@@ -12,7 +12,7 @@ import { AddSocialAttendantDialogData } from '../../models/add-social-attendant-
 @Component({
   selector: 'app-add-social-attendant-dialog',
   templateUrl: './add-social-attendant-dialog.component.html',
-  styleUrls: ['./add-social-attendant-dialog.component.css']
+  styleUrls: ['./add-social-attendant-dialog.component.scss']
 })
 export class AddSocialAttendantDialogComponent {
 

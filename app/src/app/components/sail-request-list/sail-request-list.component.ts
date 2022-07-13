@@ -13,7 +13,7 @@ import { User } from '../../models/user.interface';
 @Component({
   selector: 'app-sail-request-list',
   templateUrl: './sail-request-list.component.html',
-  styleUrls: ['./sail-request-list.component.css']
+  styleUrls: ['./sail-request-list.component.scss']
 })
 export class SailRequestListComponent {
 

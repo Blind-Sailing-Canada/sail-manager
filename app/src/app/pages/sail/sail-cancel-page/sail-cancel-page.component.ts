@@ -21,7 +21,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-sail-edit-page',
   templateUrl: './sail-cancel-page.component.html',
-  styleUrls: ['./sail-cancel-page.component.css']
+  styleUrls: ['./sail-cancel-page.component.scss']
 })
 export class SailCancelPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
   public sailCancelForm: UntypedFormGroup;

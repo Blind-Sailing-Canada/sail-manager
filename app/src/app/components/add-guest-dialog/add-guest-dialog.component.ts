@@ -11,7 +11,7 @@ import { AddGuestDialogData } from '../../models/add-guest-dialog-data.interface
 @Component({
   selector: 'app-add-guest-dialog',
   templateUrl: './add-guest-dialog.component.html',
-  styleUrls: ['./add-guest-dialog.component.css']
+  styleUrls: ['./add-guest-dialog.component.scss']
 })
 export class AddGuestDialogComponent {
 

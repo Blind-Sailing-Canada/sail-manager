@@ -16,15 +16,17 @@ import { putSnack } from '../../../store/actions/snack.actions';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { SettingService } from '../../../services/setting.service';
 import { Setting } from '../../../../../../api/src/types/settings/setting';
+import { setAppTheme } from '../../../store/actions/app.actions';
 
 @Component({
   selector: 'app-profile-settings-page',
   templateUrl: './profile-settings-page.component.html',
-  styleUrls: ['./profile-settings-page.component.css']
+  styleUrls: ['./profile-settings-page.component.scss']
 })
 export class ProfileSettingsPageComponent extends BasePageComponent implements OnInit {
 
   public form: UntypedFormGroup;
+  public theme = 'light';
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -33,6 +35,9 @@ export class ProfileSettingsPageComponent extends BasePageComponent implements O
   ) {
     super(store);
     this.buildForm();
+
+    const defaultTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    this.theme = localStorage.getItem('theme') || defaultTheme;
   }
 
   ngOnInit(): void {
@@ -46,6 +51,11 @@ export class ProfileSettingsPageComponent extends BasePageComponent implements O
 
   public get profile(): Profile {
     return this.user.profile;
+  }
+
+  public themeHandler(event: string): void {
+    localStorage.setItem('theme', event);
+    this.dispatchAction(setAppTheme({ theme: event }));
   }
 
   public saveSettings(): void {

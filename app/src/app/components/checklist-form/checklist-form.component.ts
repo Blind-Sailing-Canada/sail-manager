@@ -7,7 +7,7 @@ import { SelectOption } from '../../models/select-option';
 @Component({
   selector: 'app-checklist-form',
   templateUrl: './checklist-form.component.html',
-  styleUrls: ['./checklist-form.component.css']
+  styleUrls: ['./checklist-form.component.scss']
 })
 export class ChecklistFormComponent implements OnChanges{
 

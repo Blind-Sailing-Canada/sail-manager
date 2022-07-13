@@ -15,7 +15,7 @@ import { MomentService } from '../../services/moment.service';
 @Component({
   selector: 'app-checklist-summary',
   templateUrl: './checklist-summary.component.html',
-  styleUrls: ['./checklist-summary.component.css']
+  styleUrls: ['./checklist-summary.component.scss']
 })
 export class ChecklistSummaryComponent {
 

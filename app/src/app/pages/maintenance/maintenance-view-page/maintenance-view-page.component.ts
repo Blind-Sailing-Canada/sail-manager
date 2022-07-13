@@ -35,7 +35,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-maintenance-view-page',
   templateUrl: './maintenance-view-page.component.html',
-  styleUrls: ['./maintenance-view-page.component.css']
+  styleUrls: ['./maintenance-view-page.component.scss']
 })
 export class MaintenanceViewPageComponent extends BasePageComponent implements OnInit {
 

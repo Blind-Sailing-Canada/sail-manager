@@ -46,7 +46,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-challenge-view-page',
   templateUrl: './challenge-view-page.component.html',
-  styleUrls: ['./challenge-view-page.component.css']
+  styleUrls: ['./challenge-view-page.component.scss']
 })
 export class ChallengeViewPageComponent extends BasePageComponent implements OnInit {
 

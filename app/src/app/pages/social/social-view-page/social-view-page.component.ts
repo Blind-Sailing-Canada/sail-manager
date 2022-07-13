@@ -34,7 +34,7 @@ import { SocialNotificationDialogComponent } from '../../../components/social-no
 
 @Component({
   selector: 'app-social-view-page',
-  styleUrls: ['./social-view-page.component.css'],
+  styleUrls: ['./social-view-page.component.scss'],
   templateUrl: './social-view-page.component.html',
 })
 export class SocialViewPageComponent extends BasePageComponent implements OnInit {

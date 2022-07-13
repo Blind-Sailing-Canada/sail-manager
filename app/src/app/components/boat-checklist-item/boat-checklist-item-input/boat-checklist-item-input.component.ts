@@ -6,7 +6,7 @@ import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-boat-checklist-item-input',
-  styleUrls: ['./boat-checklist-item-input.component.css'],
+  styleUrls: ['./boat-checklist-item-input.component.scss'],
   templateUrl: './boat-checklist-item-input.component.html',
 })
 export class BoatChecklistItemInputComponent {

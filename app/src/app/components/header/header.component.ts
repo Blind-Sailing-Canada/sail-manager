@@ -21,12 +21,14 @@ import {
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnChanges {
 
   @Input() userProfile: Profile;
+  @Input() isDarkTheme = false;
   @Output() logoutListener: EventEmitter<void> = new EventEmitter<void>();
+  @Output() toggleDarkTheme: EventEmitter<boolean> = new EventEmitter();
 
   public WindowWidth = WINDOW_WIDTH;
   public viewHelpLink: string;

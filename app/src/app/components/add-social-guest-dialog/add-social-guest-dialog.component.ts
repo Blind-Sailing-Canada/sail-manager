@@ -11,7 +11,7 @@ import { AddSocialGuestDialogData } from '../../models/add-social-guest-dialog-d
 @Component({
   selector: 'app-add-social-guest-dialog',
   templateUrl: './add-social-guest-dialog.component.html',
-  styleUrls: ['./add-social-guest-dialog.component.css']
+  styleUrls: ['./add-social-guest-dialog.component.scss']
 })
 export class AddSocialGuestDialogComponent {
 

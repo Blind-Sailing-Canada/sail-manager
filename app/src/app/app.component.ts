@@ -1,19 +1,20 @@
 import { takeWhile } from 'rxjs/operators';
 import {
   Component,
+  HostBinding,
   Inject,
   OnInit,
 } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
-import { IAppState } from './models/app-state.interface';
+import { AppState } from './models/app-state.interface';
 import {
   ISnackState,
   Snack,
   SnackType,
 } from './models/snack-state.interface';
 import { BasePageComponent } from './pages/base-page/base-page.component';
-import { setAppFontSize } from './store/actions/app.actions';
+import { setAppFontSize, setAppTheme } from './store/actions/app.actions';
 import { logOut } from './store/actions/login.actions';
 import {
   putSnack,
@@ -22,28 +23,31 @@ import {
 import { STORE_SLICES } from './store/store';
 import { Profile } from '../../../api/src/types/profile/profile';
 import { HttpClient } from '@angular/common/http';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-root',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   templateUrl: './app.component.html',
 })
 export class AppComponent extends BasePageComponent implements OnInit {
-  public userProfile: Profile;
-  public changingAppFont = false;
-
+  private currentFontSize;
   private loadingTimer: any;
   private readonly LOADING_TIME = 1000;
   private readonly SNACK_DEFAULT_TIME = 5000;
   private readonly SNACK_GREET_TIME = 5000;
   private snackRef;
   private snacks: Snack[] = [];
-  private currentFontSize;
+  public changingAppFont = false;
+  public userProfile: Profile;
+
+  @HostBinding('class') className = '';
 
   constructor(
     @Inject(MatSnackBar) private snackBar: MatSnackBar,
     @Inject(Store) store: Store<any>,
     @Inject(HttpClient) private httpClient: HttpClient,
+    private overlay: OverlayContainer
   ) {
     super(store, null, null);
   }
@@ -60,9 +64,17 @@ export class AppComponent extends BasePageComponent implements OnInit {
 
     sessionStorage.setItem('csrfToken', csrfToken.csrfToken);
 
-    this.subscribeToStoreSlice(STORE_SLICES.APP, (appState: IAppState) => {
+    this.subscribeToStoreSlice(STORE_SLICES.APP, (appState: AppState) => {
       if (appState.loading) {
         this.startLoadingTimer();
+      }
+
+      if (appState.theme === 'dark') {
+        this.overlay.getContainerElement().classList.add('darkMode');
+        this.className = 'darkMode';
+      } else {
+        this.overlay.getContainerElement().classList.remove('darkMode');
+        this.className = '';
       }
 
       this.changingAppFont = appState.changingFont;
@@ -98,6 +110,10 @@ export class AppComponent extends BasePageComponent implements OnInit {
           );
         }
       });
+  }
+
+  public toggleDarkTheme(isDark: boolean): void {
+    this.dispatchAction(setAppTheme({ theme: isDark? 'dark': 'light' }));
   }
 
   public changeFontSize(size: string): void {

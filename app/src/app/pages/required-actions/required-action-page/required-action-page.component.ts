@@ -21,7 +21,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-required-action-page',
   templateUrl: './required-action-page.component.html',
-  styleUrls: ['./required-action-page.component.css']
+  styleUrls: ['./required-action-page.component.scss']
 })
 export class RequiredActionPageComponent extends BasePageComponent implements OnInit {
 

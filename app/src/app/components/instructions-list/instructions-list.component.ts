@@ -10,7 +10,7 @@ import { BoatInstruction } from '../../../../../api/src/types/boat-instructions/
 @Component({
   selector: 'app-instructions-list',
   templateUrl: './instructions-list.component.html',
-  styleUrls: ['./instructions-list.component.css']
+  styleUrls: ['./instructions-list.component.scss']
 })
 export class InstructionsListComponent {
 

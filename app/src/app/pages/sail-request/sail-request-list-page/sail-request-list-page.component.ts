@@ -30,7 +30,7 @@ import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-req
 @Component({
   selector: 'app-sail-request-list-page',
   templateUrl: './sail-request-list-page.component.html',
-  styleUrls: ['./sail-request-list-page.component.css']
+  styleUrls: ['./sail-request-list-page.component.scss']
 })
 export class SailRequestListPageComponent extends SailRequestBasePageComponent implements OnInit, AfterViewInit {
 

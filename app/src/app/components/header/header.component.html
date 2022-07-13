@@ -41,6 +41,15 @@
       <mat-icon>help_outline</mat-icon>
     </a>
     <button
+      mat-icon-button
+      (click)="toggleDarkTheme.emit(!isDarkTheme)"
+      class="theme-toggle"
+      aria-label="Toggle Dark Theme"
+      title="Switch to {{isDarkTheme? 'light' : 'dark'}} theme"
+    >
+      <mat-icon>{{ isDarkTheme ? "dark_mode" : "light_mode" }}</mat-icon>
+    </button>
+    <button
       (click)="logout()"
       aria-label="log out"
       mat-button

@@ -4,7 +4,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-help-page',
   templateUrl: './help-page.component.html',
-  styleUrls: ['./help-page.component.css']
+  styleUrls: ['./help-page.component.scss']
 })
 export class HelpPageComponent extends BasePageComponent {
 

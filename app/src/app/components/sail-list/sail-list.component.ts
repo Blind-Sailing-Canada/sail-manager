@@ -11,7 +11,7 @@ import { MomentService } from '../../services/moment.service';
 
 @Component({
   selector: 'app-sail-list',
-  styleUrls: ['./sail-list.component.css'],
+  styleUrls: ['./sail-list.component.scss'],
   templateUrl: './sail-list.component.html',
 })
 export class SailListComponent {

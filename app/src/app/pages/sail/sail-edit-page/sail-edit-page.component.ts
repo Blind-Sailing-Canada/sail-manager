@@ -51,7 +51,7 @@ import { BoatStatus } from '../../../../../../api/src/types/boat/boat-status';
 @Component({
   selector: 'app-sail-edit-page',
   templateUrl: './sail-edit-page.component.html',
-  styleUrls: ['./sail-edit-page.component.css']
+  styleUrls: ['./sail-edit-page.component.scss']
 })
 export class SailEditPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
   public availableBoats: Boat[] = [];

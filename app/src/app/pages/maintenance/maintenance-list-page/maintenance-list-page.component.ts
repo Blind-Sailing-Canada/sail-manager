@@ -28,7 +28,7 @@ import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 @Component({
   selector: 'app-maintenance-list-page',
   templateUrl: './maintenance-list-page.component.html',
-  styleUrls: ['./maintenance-list-page.component.css']
+  styleUrls: ['./maintenance-list-page.component.scss']
 })
 export class MaintenanceListPageComponent extends BasePageComponent implements OnInit {
   public boat_id: string;

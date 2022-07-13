@@ -8,7 +8,7 @@ import { Boat } from '../../../../../api/src/types/boat/boat';
 
 @Component({
   selector: 'app-boat-list',
-  styleUrls: ['./boat-list.component.css'],
+  styleUrls: ['./boat-list.component.scss'],
   templateUrl: './boat-list.component.html',
 })
 export class BoatListComponent {

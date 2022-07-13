@@ -17,7 +17,7 @@ import {
 @Component({
   selector: 'app-list-filter',
   templateUrl: './list-filter.component.html',
-  styleUrls: ['./list-filter.component.css']
+  styleUrls: ['./list-filter.component.scss']
 })
 export class ListFilterComponent implements AfterViewInit, OnDestroy {
 

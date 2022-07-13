@@ -13,7 +13,7 @@ import { CreateUserDialogData } from '../../models/create-user-dialog-data.inter
 @Component({
   selector: 'app-create-user-dialog',
   templateUrl: './create-user-dialog.component.html',
-  styleUrls: ['./create-user-dialog.component.css']
+  styleUrls: ['./create-user-dialog.component.scss']
 })
 export class CreateUserDialogComponent implements OnInit {
 

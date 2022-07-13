@@ -28,7 +28,7 @@ import { BoatInstructionsBasePageComponent } from '../boat-instructions-base-pag
 @Component({
   selector: 'app-boat-instructions-edit-page',
   templateUrl: './boat-instructions-edit-page.component.html',
-  styleUrls: ['./boat-instructions-edit-page.component.css']
+  styleUrls: ['./boat-instructions-edit-page.component.scss']
 })
 export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageComponent implements OnInit {
 

@@ -30,7 +30,7 @@ import { Clinic } from '../../../../../../api/src/types/clinic/clinic';
 @Component({
   selector: 'app-clinic-edit-page',
   templateUrl: './clinic-edit-page.component.html',
-  styleUrls: ['./clinic-edit-page.component.css']
+  styleUrls: ['./clinic-edit-page.component.scss']
 })
 export class ClinicEditPageComponent extends BasePageComponent implements OnInit {
 

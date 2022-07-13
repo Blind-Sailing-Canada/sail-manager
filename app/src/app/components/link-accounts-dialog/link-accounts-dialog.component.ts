@@ -14,7 +14,7 @@ import { LinkAccountsDialogData } from '../../models/link-accounts-dialog-data.i
 @Component({
   selector: 'app-link-accounts-dialog',
   templateUrl: './link-accounts-dialog.component.html',
-  styleUrls: ['./link-accounts-dialog.component.css']
+  styleUrls: ['./link-accounts-dialog.component.scss']
 })
 export class LinkAccountsDialogComponent implements OnInit {
 

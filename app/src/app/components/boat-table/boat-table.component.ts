@@ -4,7 +4,7 @@ import { Boat } from '../../../../../api/src/types/boat/boat';
 @Component({
   selector: 'app-boat-table',
   templateUrl: './boat-table.component.html',
-  styleUrls: ['./boat-table.component.css']
+  styleUrls: ['./boat-table.component.scss']
 })
 export class BoatTableComponent {
 

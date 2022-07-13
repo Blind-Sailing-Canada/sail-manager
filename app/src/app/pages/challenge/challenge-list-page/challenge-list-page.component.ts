@@ -21,7 +21,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-challenge-list-page',
   templateUrl: './challenge-list-page.component.html',
-  styleUrls: ['./challenge-list-page.component.css']
+  styleUrls: ['./challenge-list-page.component.scss']
 })
 export class ChallengeListPageComponent extends BasePageComponent implements OnInit {
 

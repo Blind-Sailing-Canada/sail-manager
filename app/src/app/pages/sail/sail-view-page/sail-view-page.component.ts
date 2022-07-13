@@ -44,7 +44,7 @@ import { SailNotificationDialogData } from '../../../models/sail-notification-di
 
 @Component({
   selector: 'app-sail-view-page',
-  styleUrls: ['./sail-view-page.component.css'],
+  styleUrls: ['./sail-view-page.component.scss'],
   templateUrl: './sail-view-page.component.html',
 })
 export class SailViewPageComponent extends BasePageComponent implements OnInit {

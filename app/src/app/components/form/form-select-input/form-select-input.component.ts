@@ -7,7 +7,7 @@ import { SelectOption } from '../../../models/select-option';
 
 @Component({
   selector: 'app-form-select-input',
-  styleUrls: ['./form-select-input.component.css'],
+  styleUrls: ['./form-select-input.component.scss'],
   templateUrl: './form-select-input.component.html',
 })
 export class FormSelectInputComponent {

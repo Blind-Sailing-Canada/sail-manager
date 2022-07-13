@@ -12,7 +12,7 @@ import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-req
 @Component({
   selector: 'app-sail-request-view-page',
   templateUrl: './sail-request-view-page.component.html',
-  styleUrls: ['./sail-request-view-page.component.css']
+  styleUrls: ['./sail-request-view-page.component.scss']
 })
 export class SailRequestViewPageComponent extends SailRequestBasePageComponent {
 

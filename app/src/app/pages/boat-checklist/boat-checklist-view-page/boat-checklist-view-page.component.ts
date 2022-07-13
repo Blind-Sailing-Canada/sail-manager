@@ -22,7 +22,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-boat-checklist-view-page',
   templateUrl: './boat-checklist-view-page.component.html',
-  styleUrls: ['./boat-checklist-view-page.component.css']
+  styleUrls: ['./boat-checklist-view-page.component.scss']
 })
 export class BoatChecklistViewPageComponent extends BasePageComponent implements OnInit {
 

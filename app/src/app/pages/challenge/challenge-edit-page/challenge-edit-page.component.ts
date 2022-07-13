@@ -27,7 +27,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-challenge-edit-page',
   templateUrl: './challenge-edit-page.component.html',
-  styleUrls: ['./challenge-edit-page.component.css']
+  styleUrls: ['./challenge-edit-page.component.scss']
 })
 export class ChallengeEditPageComponent extends BasePageComponent implements OnInit {
 

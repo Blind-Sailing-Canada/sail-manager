@@ -22,7 +22,7 @@ import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail
 @Component({
   selector: 'app-sail-checklist-view-page',
   templateUrl: './sail-checklist-view-page.component.html',
-  styleUrls: ['./sail-checklist-view-page.component.css']
+  styleUrls: ['./sail-checklist-view-page.component.scss']
 })
 export class SailChecklistViewPageComponent extends SailChecklistBasePageComponent implements OnInit {
 

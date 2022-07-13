@@ -11,7 +11,7 @@ import { BoatDialogData } from '../../models/boat-dialog-data.interface';
 @Component({
   selector: 'app-boat-dialog',
   templateUrl: './boat-dialog.component.html',
-  styleUrls: ['./boat-dialog.component.css']
+  styleUrls: ['./boat-dialog.component.scss']
 })
 export class BoatDialogComponent {
 

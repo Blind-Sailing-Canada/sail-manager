@@ -6,7 +6,7 @@ import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-date-time-form',
-  styleUrls: ['./date-time-form.component.css'],
+  styleUrls: ['./date-time-form.component.scss'],
   templateUrl: './date-time-form.component.html'
 })
 export class DateTimeFormComponent {

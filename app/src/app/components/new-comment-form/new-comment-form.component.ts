@@ -19,7 +19,7 @@ import { User } from '../../models/user.interface';
 @Component({
   selector: 'app-new-comment-form',
   templateUrl: './new-comment-form.component.html',
-  styleUrls: ['./new-comment-form.component.css']
+  styleUrls: ['./new-comment-form.component.scss']
 })
 export class NewCommentFormComponent implements OnDestroy {
 

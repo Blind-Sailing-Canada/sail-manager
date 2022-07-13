@@ -21,7 +21,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-social-edit-page',
   templateUrl: './social-cancel-page.component.html',
-  styleUrls: ['./social-cancel-page.component.css']
+  styleUrls: ['./social-cancel-page.component.scss']
 })
 export class SocialCancelPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
   public socialCancelForm: UntypedFormGroup;

@@ -21,7 +21,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-feedback-list-page',
   templateUrl: './feedback-list-page.component.html',
-  styleUrls: ['./feedback-list-page.component.css']
+  styleUrls: ['./feedback-list-page.component.scss']
 })
 export class FeedbackListPageComponent extends BasePageComponent implements OnInit {
 

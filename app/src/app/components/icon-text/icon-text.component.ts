@@ -6,7 +6,7 @@ import {
 @Component({
   selector: 'app-icon-text',
   templateUrl: './icon-text.component.html',
-  styleUrls: ['./icon-text.component.css']
+  styleUrls: ['./icon-text.component.scss']
 })
 export class IconTextComponent {
 

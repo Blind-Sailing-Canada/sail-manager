@@ -33,7 +33,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-sail-manifest-edit-page',
   templateUrl: './sail-manifest-edit-page.component.html',
-  styleUrls: ['./sail-manifest-edit-page.component.css']
+  styleUrls: ['./sail-manifest-edit-page.component.scss']
 })
 export class SailManifestEditPageComponent extends BasePageComponent implements OnInit {
 

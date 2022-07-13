@@ -28,7 +28,7 @@ import { WindowService } from '../../../services/window.service';
 @Component({
   selector: 'app-document-list-page',
   templateUrl: './document-list-page.component.html',
-  styleUrls: ['./document-list-page.component.css']
+  styleUrls: ['./document-list-page.component.scss']
 })
 export class DocumentListPageComponent extends DocumentBasePageComponent implements OnInit, AfterViewInit {
 

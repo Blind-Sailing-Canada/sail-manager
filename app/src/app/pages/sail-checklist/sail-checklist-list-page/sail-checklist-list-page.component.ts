@@ -30,7 +30,7 @@ interface SailChecklistsMap {
 @Component({
   selector: 'app-sail-checklist-list-page',
   templateUrl: './sail-checklist-list-page.component.html',
-  styleUrls: ['./sail-checklist-list-page.component.css']
+  styleUrls: ['./sail-checklist-list-page.component.scss']
 })
 export class SailChecklistListPageComponent extends BasePageComponent implements OnInit {
 

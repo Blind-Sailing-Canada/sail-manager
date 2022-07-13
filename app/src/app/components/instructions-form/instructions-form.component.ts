@@ -19,7 +19,7 @@ import { CDN_ACTION_STATE } from '../../store/actions/cdn.actions';
 @Component({
   selector: 'app-instructions-form',
   templateUrl: './instructions-form.component.html',
-  styleUrls: ['./instructions-form.component.css']
+  styleUrls: ['./instructions-form.component.scss']
 })
 export class InstructionsFormComponent implements OnChanges {
 

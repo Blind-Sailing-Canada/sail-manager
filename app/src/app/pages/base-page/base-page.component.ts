@@ -19,7 +19,7 @@ import {
 import { Sail } from '../../../../../api/src/types/sail/sail';
 import { BoatDialogComponent } from '../../components/boat-dialog/boat-dialog.component';
 import { ProfileDialogComponent } from '../../components/profile-dialog/profile-dialog.component';
-import { IAppState } from '../../models/app-state.interface';
+import { AppState } from '../../models/app-state.interface';
 import { BoatDialogData } from '../../models/boat-dialog-data.interface';
 import { IBoatMaintenanceMap } from '../../models/boat-maintenance-state.interface';
 import { IBoatMap } from '../../models/boat-state.interface';
@@ -116,7 +116,7 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const appState: IAppState = this.store[STORE_SLICES.APP];
+    const appState: AppState = this.store[STORE_SLICES.APP];
 
     if (appState.fontSize !== 'default') {
       this.setFontSize(appState.fontSize);

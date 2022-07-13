@@ -18,6 +18,31 @@
     <mat-accordion>
       <mat-expansion-panel [expanded]="true">
         <mat-expansion-panel-header>
+          <h3>Theme</h3>
+        </mat-expansion-panel-header>
+        <form>
+          <mat-radio-group
+            [(ngModel)]="theme"
+            [ngModelOptions]="{standalone: true}"
+            matNativeControl
+            (ngModelChange)="themeHandler($event)"
+          >
+            <mat-radio-button
+              value="light"
+              aria-label="Light theme"
+            ><span tabindex="-1">Light</span></mat-radio-button>
+            <mat-radio-button
+              value="dark"
+              aria-label="Dark theme"
+            ><span tabindex="-1">Dark</span></mat-radio-button>
+          </mat-radio-group>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
           <h3>Notification Subscriptions</h3>
         </mat-expansion-panel-header>
         <form [formGroup]="form">

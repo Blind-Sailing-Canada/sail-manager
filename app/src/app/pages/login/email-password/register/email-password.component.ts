@@ -17,7 +17,7 @@ import { BasePageComponent } from '../../../base-page/base-page.component';
 @Component({
   selector: 'app-email-password',
   templateUrl: './email-password.component.html',
-  styleUrls: ['./email-password.component.css']
+  styleUrls: ['./email-password.component.scss']
 })
 export class EmailPasswordComponent extends BasePageComponent implements OnInit {
 

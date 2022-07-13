@@ -22,7 +22,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-maintenance-resolve-page',
   templateUrl: './maintenance-resolve-page.component.html',
-  styleUrls: ['./maintenance-resolve-page.component.css']
+  styleUrls: ['./maintenance-resolve-page.component.scss']
 })
 export class MaintenanceResolvePageComponent extends BasePageComponent implements OnInit {
 

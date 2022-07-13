@@ -34,7 +34,7 @@ export enum EDIT_ACTIONS {
 @Component({
   selector: 'app-profile-view-page',
   templateUrl: './profile-view-page.component.html',
-  styleUrls: ['./profile-view-page.component.css']
+  styleUrls: ['./profile-view-page.component.scss']
 })
 export class ProfileViewPageComponent extends BasePageComponent implements OnInit {
   public captionActions = [

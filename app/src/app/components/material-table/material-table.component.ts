@@ -15,7 +15,7 @@ import { WindowService } from '../../services/window.service';
 @Component({
   selector: 'app-material-table',
   templateUrl: './material-table.component.html',
-  styleUrls: ['./material-table.component.css']
+  styleUrls: ['./material-table.component.scss']
 })
 export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestroy, AfterContentInit {
   @Input() public dataSource = new MatTableDataSource<T>([]);

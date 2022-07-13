@@ -23,7 +23,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-document-view-page',
   templateUrl: './document-view-page.component.html',
-  styleUrls: ['./document-view-page.component.css']
+  styleUrls: ['./document-view-page.component.scss']
 })
 export class DocumentViewPageComponent extends BasePageComponent implements OnInit {
 

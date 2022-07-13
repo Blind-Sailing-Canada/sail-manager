@@ -14,7 +14,7 @@ import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail
 @Component({
   selector: 'app-sail-checklist-edit-page',
   templateUrl: './sail-checklist-edit-page.component.html',
-  styleUrls: ['./sail-checklist-edit-page.component.css']
+  styleUrls: ['./sail-checklist-edit-page.component.scss']
 })
 export class SailChecklistEditPageComponent extends SailChecklistBasePageComponent {
 

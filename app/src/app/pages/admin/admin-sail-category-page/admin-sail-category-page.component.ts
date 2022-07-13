@@ -20,7 +20,7 @@ import { STORE_SLICES } from '../../../store/store';
 @Component({
   selector: 'app-admin-sail-category-page',
   templateUrl: './admin-sail-category-page.component.html',
-  styleUrls: ['./admin-sail-category-page.component.css']
+  styleUrls: ['./admin-sail-category-page.component.scss']
 })
 export class AdminSailCategoryPageComponent extends BasePageComponent implements OnInit {
 

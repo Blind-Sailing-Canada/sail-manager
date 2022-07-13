@@ -11,7 +11,7 @@ import { MomentService } from '../../services/moment.service';
 @Component({
   selector: 'app-maintenance-list',
   templateUrl: './maintenance-list.component.html',
-  styleUrls: ['./maintenance-list.component.css']
+  styleUrls: ['./maintenance-list.component.scss']
 })
 export class MaintenanceListComponent {
 

@@ -5,7 +5,7 @@ import { RequiredActionType } from '../../../../../api/src/types/required-action
 @Component({
   selector: 'app-required-actions-list',
   templateUrl: './required-actions-list.component.html',
-  styleUrls: ['./required-actions-list.component.css']
+  styleUrls: ['./required-actions-list.component.scss']
 })
 export class RequiredActionsListComponent {
 

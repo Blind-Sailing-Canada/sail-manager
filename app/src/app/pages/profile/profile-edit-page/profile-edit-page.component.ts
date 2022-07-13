@@ -30,7 +30,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-profile-edit-page',
   templateUrl: './profile-edit-page.component.html',
-  styleUrls: ['./profile-edit-page.component.css']
+  styleUrls: ['./profile-edit-page.component.scss']
 })
 export class ProfileEditPageComponent extends BasePageComponent implements OnInit {
 

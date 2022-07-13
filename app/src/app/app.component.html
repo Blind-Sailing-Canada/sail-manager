@@ -1,7 +1,9 @@
-<div class="app-container">
+<div class="app-container mat-app-background">
   <app-header
     [userProfile]="userProfile"
     (logoutListener)="logout()"
+    [isDarkTheme]="className === 'darkMode'"
+    (toggleDarkTheme)="toggleDarkTheme($event)"
   >
   </app-header>
   <mat-progress-bar

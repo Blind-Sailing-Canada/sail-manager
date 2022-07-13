@@ -5,7 +5,7 @@ import { BoatInstructionsBasePageComponent } from '../boat-instructions-base-pag
 @Component({
   selector: 'app-boat-instructions-view-page',
   templateUrl: './boat-instructions-view-page.component.html',
-  styleUrls: ['./boat-instructions-view-page.component.css']
+  styleUrls: ['./boat-instructions-view-page.component.scss']
 })
 export class BoatInstructionsViewPageComponent extends BoatInstructionsBasePageComponent {
 

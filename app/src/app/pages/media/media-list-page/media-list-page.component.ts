@@ -21,7 +21,7 @@ import { FilterInfo } from '../../../models/filter-into';
 
 @Component({
   selector: 'app-media-list-page',
-  styleUrls: ['./media-list-page.component.css'],
+  styleUrls: ['./media-list-page.component.scss'],
   templateUrl: './media-list-page.component.html',
 })
 export class MediaListPageComponent extends BasePageComponent implements OnInit, AfterViewInit {

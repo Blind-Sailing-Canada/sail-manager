@@ -30,7 +30,7 @@ import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-req
 @Component({
   selector: 'app-sail-request-edit-page',
   templateUrl: './sail-request-edit-page.component.html',
-  styleUrls: ['./sail-request-edit-page.component.css']
+  styleUrls: ['./sail-request-edit-page.component.scss']
 })
 export class SailRequestEditPageComponent extends SailRequestBasePageComponent implements OnInit {
 

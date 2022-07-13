@@ -19,7 +19,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-clinic-list-page',
   templateUrl: './clinic-list-page.component.html',
-  styleUrls: ['./clinic-list-page.component.css']
+  styleUrls: ['./clinic-list-page.component.scss']
 })
 export class ClinicListPageComponent extends BasePageComponent implements OnInit {
 

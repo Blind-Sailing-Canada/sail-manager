@@ -10,7 +10,7 @@ import { BasePageComponent } from '../base-page/base-page.component';
 @Component({
   selector: 'app-account-review',
   templateUrl: './account-review.component.html',
-  styleUrls: ['./account-review.component.css']
+  styleUrls: ['./account-review.component.scss']
 })
 export class AccountReviewComponent extends BasePageComponent {
 

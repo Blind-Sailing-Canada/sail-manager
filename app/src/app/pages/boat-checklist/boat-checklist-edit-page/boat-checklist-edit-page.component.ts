@@ -27,7 +27,7 @@ import { finishLoading, startLoading } from '../../../store/actions/app.actions'
 @Component({
   selector: 'app-boat-checklist-edit-page',
   templateUrl: './boat-checklist-edit-page.component.html',
-  styleUrls: ['./boat-checklist-edit-page.component.css']
+  styleUrls: ['./boat-checklist-edit-page.component.scss']
 })
 export class BoatChecklistEditPageComponent extends BasePageComponent implements OnInit {
 

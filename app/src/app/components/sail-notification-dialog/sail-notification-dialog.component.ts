@@ -13,7 +13,7 @@ import { SailNotificationDialogData } from '../../models/sail-notification-dialo
 @Component({
   selector: 'app-sail-notification-dialog',
   templateUrl: './sail-notification-dialog.component.html',
-  styleUrls: ['./sail-notification-dialog.component.css']
+  styleUrls: ['./sail-notification-dialog.component.scss']
 })
 export class SailNotificationDialogComponent implements OnInit {
 

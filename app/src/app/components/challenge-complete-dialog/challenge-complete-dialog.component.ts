@@ -11,7 +11,7 @@ import { ChallengeCompleteDialogData } from '../../models/challenge-complete-dia
 @Component({
   selector: 'app-challenge-complete-dialog',
   templateUrl: './challenge-complete-dialog.component.html',
-  styleUrls: ['./challenge-complete-dialog.component.css']
+  styleUrls: ['./challenge-complete-dialog.component.scss']
 })
 export class ChallengeCompleteDialogComponent {
 

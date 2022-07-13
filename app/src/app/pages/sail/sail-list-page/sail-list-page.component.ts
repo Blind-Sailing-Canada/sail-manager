@@ -22,7 +22,7 @@ import { STORE_SLICES } from '../../../store/store';
 
 @Component({
   selector: 'app-sail-list-page',
-  styleUrls: ['./sail-list-page.component.css'],
+  styleUrls: ['./sail-list-page.component.scss'],
   templateUrl: './sail-list-page.component.html',
 })
 export class SailListPageComponent extends BasePageComponent implements OnInit {

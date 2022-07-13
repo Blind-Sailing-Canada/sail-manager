@@ -34,7 +34,7 @@ import { WindowService } from '../../../services/window.service';
 @Component({
   selector: 'app-admin-dashboard-page',
   templateUrl: './admin-dashboard-page.component.html',
-  styleUrls: ['./admin-dashboard-page.component.css']
+  styleUrls: ['./admin-dashboard-page.component.scss']
 })
 export class AdminDashboardPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
 

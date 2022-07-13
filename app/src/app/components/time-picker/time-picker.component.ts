@@ -6,7 +6,7 @@ import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-time-picker',
-  styleUrls: ['./time-picker.component.css'],
+  styleUrls: ['./time-picker.component.scss'],
   templateUrl: './time-picker.component.html',
 })
 export class TimePickerComponent {

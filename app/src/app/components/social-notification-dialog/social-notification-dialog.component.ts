@@ -13,7 +13,7 @@ import { SocialNotificationDialogData } from '../../models/social-notification-d
 @Component({
   selector: 'app-social-notification-dialog',
   templateUrl: './social-notification-dialog.component.html',
-  styleUrls: ['./social-notification-dialog.component.css']
+  styleUrls: ['./social-notification-dialog.component.scss']
 })
 export class SocialNotificationDialogComponent implements OnInit {
 

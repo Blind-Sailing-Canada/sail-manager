@@ -23,7 +23,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-feedback-submit-page',
   templateUrl: './feedback-submit-page.component.html',
-  styleUrls: ['./feedback-submit-page.component.css']
+  styleUrls: ['./feedback-submit-page.component.scss']
 })
 export class FeedbackSubmitPageComponent extends BasePageComponent implements OnInit {
 

@@ -11,7 +11,7 @@ import { ProfileDialogData } from '../../models/profile-dialog-data.interface';
 @Component({
   selector: 'app-profile-dialog',
   templateUrl: './profile-dialog.component.html',
-  styleUrls: ['./profile-dialog.component.css']
+  styleUrls: ['./profile-dialog.component.scss']
 })
 export class ProfileDialogComponent {
 

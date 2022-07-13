@@ -33,7 +33,7 @@ import { MediaType } from '../../../../../../api/src/types/media/media-type';
 @Component({
   selector: 'app-sail-pictures-page',
   templateUrl: './sail-pictures-page.component.html',
-  styleUrls: ['./sail-pictures-page.component.css']
+  styleUrls: ['./sail-pictures-page.component.scss']
 })
 export class SailPicturesPageComponent extends BasePageComponent implements OnInit {
 

@@ -35,7 +35,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-boat-edit-page',
   templateUrl: './boat-edit-page.component.html',
-  styleUrls: ['./boat-edit-page.component.css']
+  styleUrls: ['./boat-edit-page.component.scss']
 })
 export class BoatEditPageComponent extends BasePageComponent implements OnInit {
 

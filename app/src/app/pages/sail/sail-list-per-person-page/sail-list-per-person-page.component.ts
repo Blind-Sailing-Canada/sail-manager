@@ -28,7 +28,7 @@ import { Boat } from '../../../../../../api/src/types/boat/boat';
 @Component({
   selector: 'app-sail-list-per-person-page',
   templateUrl: './sail-list-per-person-page.component.html',
-  styleUrls: ['./sail-list-per-person-page.component.css']
+  styleUrls: ['./sail-list-per-person-page.component.scss']
 })
 export class SailListPerPersonPageComponent extends BasePageComponent implements OnInit {
 

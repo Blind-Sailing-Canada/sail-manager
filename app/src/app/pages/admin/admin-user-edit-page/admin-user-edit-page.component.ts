@@ -35,7 +35,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-admin-user-edit-page',
   templateUrl: './admin-user-edit-page.component.html',
-  styleUrls: ['./admin-user-edit-page.component.css']
+  styleUrls: ['./admin-user-edit-page.component.scss']
 })
 export class AdminUserEditPageComponent extends BasePageComponent implements OnInit {
 

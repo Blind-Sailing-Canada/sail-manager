@@ -28,7 +28,7 @@ import { BasePageComponent } from '../base-page/base-page.component';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css']
+  styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent extends BasePageComponent implements OnInit {
 

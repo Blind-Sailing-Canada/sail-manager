@@ -14,7 +14,7 @@ import { MediaType } from '../../../../../api/src/types/media/media-type';
 @Component({
   selector: 'app-image-form',
   templateUrl: './image-form.component.html',
-  styleUrls: ['./image-form.component.css']
+  styleUrls: ['./image-form.component.scss']
 })
 export class ImageFormComponent {
 

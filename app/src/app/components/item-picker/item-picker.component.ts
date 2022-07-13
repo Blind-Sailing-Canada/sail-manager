@@ -22,7 +22,7 @@ import { MatSelectionList } from '@angular/material/list';
 
 @Component({
   selector: 'app-item-picker',
-  styleUrls: ['./item-picker.component.css'],
+  styleUrls: ['./item-picker.component.scss'],
   templateUrl: './item-picker.component.html',
 })
 export class ItemPickerComponent implements OnChanges, AfterViewInit, OnDestroy {

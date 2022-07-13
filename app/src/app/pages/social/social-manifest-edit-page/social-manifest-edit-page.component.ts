@@ -32,7 +32,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-social-manifest-edit-page',
   templateUrl: './social-manifest-edit-page.component.html',
-  styleUrls: ['./social-manifest-edit-page.component.css']
+  styleUrls: ['./social-manifest-edit-page.component.scss']
 })
 export class SocialManifestEditPageComponent extends BasePageComponent implements OnInit {
 

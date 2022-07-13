@@ -4,7 +4,7 @@ import { Profile } from '../../../../../api/src/types/profile/profile';
 @Component({
   selector: 'app-profile-list',
   templateUrl: './profile-list.component.html',
-  styleUrls: ['./profile-list.component.css']
+  styleUrls: ['./profile-list.component.scss']
 })
 export class ProfileListComponent {
 

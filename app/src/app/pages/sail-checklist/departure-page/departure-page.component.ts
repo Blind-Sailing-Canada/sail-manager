@@ -21,7 +21,7 @@ import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail
 @Component({
   selector: 'app-departure-page',
   templateUrl: './departure-page.component.html',
-  styleUrls: ['./departure-page.component.css']
+  styleUrls: ['./departure-page.component.scss']
 })
 export class DeparturePageComponent extends SailChecklistBasePageComponent {
 

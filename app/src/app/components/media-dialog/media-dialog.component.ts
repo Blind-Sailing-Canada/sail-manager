@@ -11,7 +11,7 @@ import { MediaDialogData } from '../../models/media-dialog-data.interface';
 @Component({
   selector: 'app-media-dialog',
   templateUrl: './media-dialog.component.html',
-  styleUrls: ['./media-dialog.component.css']
+  styleUrls: ['./media-dialog.component.scss']
 })
 export class MediaDialogComponent {
 

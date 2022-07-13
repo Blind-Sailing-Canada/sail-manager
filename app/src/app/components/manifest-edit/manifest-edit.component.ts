@@ -15,7 +15,7 @@ import { SailorRole } from '../../../../../api/src/types/sail-manifest/sailor-ro
 @Component({
   selector: 'app-manifest-edit',
   templateUrl: './manifest-edit.component.html',
-  styleUrls: ['./manifest-edit.component.css']
+  styleUrls: ['./manifest-edit.component.scss']
 })
 export class ManifestEditComponent {
 

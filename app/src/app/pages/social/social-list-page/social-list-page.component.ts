@@ -26,7 +26,7 @@ import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 
 @Component({
   selector: 'app-social-list-page',
-  styleUrls: ['./social-list-page.component.css'],
+  styleUrls: ['./social-list-page.component.scss'],
   templateUrl: './social-list-page.component.html',
 })
 export class SocialListPageComponent extends BasePageComponent implements OnInit, AfterViewInit  {

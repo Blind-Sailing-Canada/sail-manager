@@ -25,7 +25,7 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 @Component({
   selector: 'app-boat-view-page',
   templateUrl: './boat-view-page.component.html',
-  styleUrls: ['./boat-view-page.component.css']
+  styleUrls: ['./boat-view-page.component.scss']
 })
 export class BoatViewPageComponent extends BasePageComponent implements OnInit {
 

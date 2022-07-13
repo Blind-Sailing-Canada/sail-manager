@@ -28,7 +28,7 @@ import { Social } from '../../../../../../api/src/types/social/social';
 @Component({
   selector: 'app-social-edit-page',
   templateUrl: './social-edit-page.component.html',
-  styleUrls: ['./social-edit-page.component.css']
+  styleUrls: ['./social-edit-page.component.scss']
 })
 export class SocialEditPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
   public creatingNewSocial = false;

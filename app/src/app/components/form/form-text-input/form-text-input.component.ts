@@ -6,7 +6,7 @@ import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-form-text-input',
-  styleUrls: ['./form-text-input.component.css'],
+  styleUrls: ['./form-text-input.component.scss'],
   templateUrl: './form-text-input.component.html',
 })
 export class FormTextInputComponent {

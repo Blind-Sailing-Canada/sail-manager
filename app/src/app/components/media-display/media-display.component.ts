@@ -8,7 +8,7 @@ import { MediaType } from '../../../../../api/src/types/media/media-type';
 @Component({
   selector: 'app-media-display',
   templateUrl: './media-display.component.html',
-  styleUrls: ['./media-display.component.css']
+  styleUrls: ['./media-display.component.scss']
 })
 export class MediaDisplayComponent {
 

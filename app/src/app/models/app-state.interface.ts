@@ -1,5 +1,6 @@
-export interface IAppState {
+export interface AppState {
   loading: number;
   fontSize: string;
   changingFont: boolean;
+  theme: string;
 }

@@ -12,7 +12,7 @@ import { AddSailorDialogData } from '../../models/add-sailor-dialog-data.interfa
 @Component({
   selector: 'app-add-sailor-dialog',
   templateUrl: './add-sailor-dialog.component.html',
-  styleUrls: ['./add-sailor-dialog.component.css']
+  styleUrls: ['./add-sailor-dialog.component.scss']
 })
 export class AddSailorDialogComponent {
 
