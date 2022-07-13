@@ -83,6 +83,10 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
     return this.store.profiles.totalCount;
   }
 
+  public profileThumbnail(profile: Profile): string {
+    return `${profile.photo || 'assets/icons/icon-person.png'}?width=100&height=100`;
+  }
+
   public fetchPendingProfiles(notify?: boolean): void {
     this.dispatchAction(fetchProfiles({ notify, query: `status=${ProfileStatus.PendingApproval}&sort=name,ASC` }));
   }
