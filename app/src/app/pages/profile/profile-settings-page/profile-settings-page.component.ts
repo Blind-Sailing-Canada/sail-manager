@@ -37,9 +37,6 @@ export class ProfileSettingsPageComponent extends BasePageComponent implements O
   ) {
     super(store);
     this.buildForm();
-
-    const defaultTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    this.theme = localStorage.getItem('theme') || defaultTheme;
   }
 
   ngOnInit(): void {
