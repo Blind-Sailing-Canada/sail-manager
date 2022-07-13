@@ -17,6 +17,8 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 import { SettingService } from '../../../services/setting.service';
 import { Setting } from '../../../../../../api/src/types/settings/setting';
 import { setAppTheme } from '../../../store/actions/app.actions';
+import { STORE_SLICES } from '../../../store/store';
+import { AppState } from '../../../models/app-state.interface';
 
 @Component({
   selector: 'app-profile-settings-page',
@@ -41,6 +43,10 @@ export class ProfileSettingsPageComponent extends BasePageComponent implements O
   }
 
   ngOnInit(): void {
+    this.subscribeToStoreSlice(STORE_SLICES.APP, (appState: AppState) => {
+      this.theme = appState.theme;
+    });
+
     this.settingsService
       .fetchSettingsForProfile(this.user.profile.id)
       .pipe(take(1))

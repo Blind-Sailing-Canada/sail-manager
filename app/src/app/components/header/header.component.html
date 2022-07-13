@@ -14,6 +14,20 @@
     COMPANY_NAME_SHORT_HEADER
   </a>
   <div
+    *ngIf="!userProfile"
+    class="header-controls"
+  >
+    <button
+      mat-icon-button
+      (click)="toggleDarkTheme.emit(!isDarkTheme)"
+      class="theme-toggle"
+      aria-label="Toggle Dark Theme"
+      title="Switch to {{isDarkTheme? 'light' : 'dark'}} theme"
+    >
+      <mat-icon>{{ isDarkTheme ? "dark_mode" : "light_mode" }}</mat-icon>
+    </button>
+  </div>
+  <div
     *ngIf="userProfile"
     class="header-controls"
   >
