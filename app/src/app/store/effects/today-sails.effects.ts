@@ -15,7 +15,6 @@ import {
 } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SnackType } from '../../models/snack-state.interface';
-import { SailService } from '../../services/sail.service';
 import { errorCatcher } from '../../utils/error-catcher';
 import {
   finishLoading,
@@ -23,6 +22,7 @@ import {
 } from '../actions/app.actions';
 import { putSnack } from '../actions/snack.actions';
 import { fetchTodaySailsForAll, fetchTodaySailsForUser, putTodaySailsForAll, putTodaySailsForUser } from '../actions/today-sails.actions';
+import { UserSailsService } from '../../services/user-sails.service';
 
 @Injectable()
 export class TodaySailsEffects {
@@ -32,7 +32,7 @@ export class TodaySailsEffects {
       ofType(fetchTodaySailsForAll),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchTodaySailsForAll(action.query)
+        action => this.userSailService.fetchTodaySailsForAll(action.query)
           .pipe(
             mergeMap((sails) => {
               if (action.notify) {
@@ -54,7 +54,7 @@ export class TodaySailsEffects {
       ofType(fetchTodaySailsForUser),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchTodaySailsForUser(action.profile_id, action.query)
+        action => this.userSailService.fetchTodaySailsForUser(action.profile_id, action.query)
           .pipe(
             mergeMap((sails) => {
               if (action.notify) {
@@ -73,7 +73,7 @@ export class TodaySailsEffects {
 
   constructor(
     @Inject(Actions) private actions$: Actions,
-    @Inject(SailService) private sailService: SailService,
+    @Inject(UserSailsService) private userSailService: UserSailsService,
     @Inject(Store) private store: Store<any>,
   ) { }
 }

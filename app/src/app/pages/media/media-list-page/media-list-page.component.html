@@ -241,7 +241,7 @@
       [width]="width"
       async
       title="picture. description: {{picture.title || ''}} {{picture.description || ''}}"
-      src="{{picture.url}}?width={{width}}&height={{height}}"
+      src="{{picture.url}}?width={{width}}"
     >
     <div
       *ngSwitchCase="MediaTypes.Video"
@@ -265,7 +265,7 @@
       [width]="width"
       async
       title="picture. comment: {{picture.title || ''}} {{picture.description || ''}}"
-      src="{{picture.url}}?width={{width}}&height={{height}}"
+      src="{{picture.url}}?width={{width}}"
     >
   </a>
 </ng-template>

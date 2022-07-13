@@ -16,6 +16,7 @@ import { ImageFormModule } from '../../components/image-form/image-form.module';
 import { ImageListModule } from '../../components/image-list/image-list.module';
 import { ItemPickerModule } from '../../components/item-picker/item-picker.module';
 import { ListFilterModule } from '../../components/list-filter/list-filter.module';
+import { MaterialTableModule } from '../../components/material-table/material-table.module';
 import { MediaDialogModule } from '../../components/media-dialog/media-dialog.module';
 import { NewCommentFormModule } from '../../components/new-comment-form/new-comment-form.module';
 import { ProfileBulletModule } from '../../components/profile-bullet/profile-bullet.module';
@@ -60,6 +61,7 @@ import { SailViewPageComponent } from './sail-view-page/sail-view-page.component
     ImageListModule,
     ItemPickerModule,
     ListFilterModule,
+    MaterialTableModule,
     MediaDialogModule,
     NewCommentFormModule,
     PipesModule,

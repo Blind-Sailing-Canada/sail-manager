@@ -49,17 +49,22 @@ export class FirebaseAdminController {
       alpha: 1,
     };
 
+    const resizeOptions = {
+      ...options,
+      background: options.background || background,
+      fastShrinkOnLoad: options.fastShrinkOnLoad || false,
+      fit: options.fit || 'outside',
+      kernel: options.kernel || 'lanczos3',
+      width: +options.width,
+    };
+
+    if (options.height) {
+      resizeOptions.height = +options.height;
+    }
+
     return sharp(image)
       .rotate()
-      .resize({
-        ...options,
-        background: options.background || background,
-        fastShrinkOnLoad: options.fastShrinkOnLoad || false,
-        fit: options.fit || 'outside',
-        height: +options.height,
-        kernel: options.kernel || 'lanczos3',
-        width: +options.width,
-      })
+      .resize(resizeOptions)
       .toFile(destination);
   }
 

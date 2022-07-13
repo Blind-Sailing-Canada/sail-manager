@@ -52,68 +52,12 @@ export class SailService {
     return this.http.get<Boat[]>(`${this.API_URL}/available-boats?start=${start_date}&end=${end_date}`);
   }
 
-  public fetchTodaySailsForAll(query?: string): Observable<Sail[]> {
-    if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/today?${query}`);
-    }
-
-    return this.http.get<Sail[]>(`${this.API_URL}/user/today`);
-  }
-
-  public fetchTodaySailsForUser(profile_id: string, query?: string): Observable<Sail[]> {
-    if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/today?${query}&profile_id=${profile_id}`);
-    }
-
-    return this.http.get<Sail[]>(`${this.API_URL}/user/today?profile_id=${profile_id}`);
-  }
-
-  public fetchPastSailsForAll(query?: string): Observable<Sail[]> {
-    if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/past?${query}`);
-    }
-
-    return this.http.get<Sail[]>(`${this.API_URL}/user/past`);
-  }
-
-  public fetchPastSailsForUser(profile_id: string, query?: string): Observable<Sail[]> {
-    if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/past?${query}&profile_id=${profile_id}`);
-    }
-
-    return this.http.get<Sail[]>(`${this.API_URL}/user/past?profile_id=${profile_id}`);
-  }
-
   public fetchAvailableSails(query?: string): Observable<Sail[]> {
     if (query) {
       return this.http.get<Sail[]>(`${this.API_URL}/available?${query}`);
     }
 
     return this.http.get<Sail[]>(`${this.API_URL}/available`);
-  }
-
-  public fetchInProgressSailsForAll(query?: string): Observable<Sail[]> {
-    if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/in-progress?${query}`);
-    }
-
-    return this.http.get<Sail[]>(`${this.API_URL}/user/in-progress`);
-  }
-
-  public fetchInProgressSailsForUser(profile_id: string, query?: string): Observable<Sail[]> {
-    if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/in-progress?${query}&profile_id=${profile_id}`);
-    }
-
-    return this.http.get<Sail[]>(`${this.API_URL}/user/in-progress?profile_id=${profile_id}`);
-  }
-
-  public fetchFutureSailsForUser(profile_id: string, query?: string): Observable<Sail[]> {
-    if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/future?${query}&profile_id=${profile_id}`);
-    }
-
-    return this.http.get<Sail[]>(`${this.API_URL}/user/future?profile_id=${profile_id}`);
   }
 
   public fetchOne(id: string): Observable<Sail> {
@@ -126,22 +70,6 @@ export class SailService {
     }
 
     return this.http.get<number>(`${this.API_URL}/count`);
-  }
-
-  public countUserSail(profile_id: string, query?: string): Observable<number> {
-    if (query) {
-      return this.http.get<number>(`${this.API_URL}/user/${profile_id}/count?${query}`);
-    }
-
-    return this.http.get<number>(`${this.API_URL}/user/${profile_id}/count`);
-  }
-
-  public fetchUserSail(profile_id: string, query?: string): Observable<Sail[]> {
-    if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}/user/all?${query}&profile_id=${profile_id}`);
-    }
-
-    return this.http.get<Sail[]>(`${this.API_URL}/user/all?profile_id=${profile_id}`);
   }
 
   public fetchAll(query?: string): Observable<Sail[]> {

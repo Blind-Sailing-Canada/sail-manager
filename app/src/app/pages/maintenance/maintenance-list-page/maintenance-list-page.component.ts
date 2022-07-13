@@ -108,8 +108,8 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
 
     this.startLoading();
 
-    const mediaFetch =  this.maintenanceService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
-    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    const fetcher =  this.maintenanceService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
     const page = this.paginatedData;

@@ -20,3 +20,8 @@
 .mat-list-item:last-child {
   border-bottom: 1px solid black;
 }
+
+.profile-photo {
+  border-radius: 50%;
+  object-fit: cover;
+}

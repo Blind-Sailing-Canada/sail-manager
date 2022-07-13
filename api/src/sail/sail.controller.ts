@@ -34,7 +34,8 @@ import { SailStatus } from '../types/sail/sail-status';
     primary: true,
   } },
   query: {
-    alwaysPaginate: false,
+    alwaysPaginate: true,
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
     join: {
       boat: { eager: true },
       'boat.checklist': { eager: true },

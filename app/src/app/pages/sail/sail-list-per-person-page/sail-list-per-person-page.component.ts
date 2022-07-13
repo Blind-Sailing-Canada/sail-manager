@@ -1,4 +1,3 @@
-import { take } from 'rxjs/operators';
 import {
   Component,
   Inject,
@@ -10,14 +9,21 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { SnackType } from '../../../models/snack-state.interface';
 import { createSailRequestRoute, sailRequestsRoute, viewSailRoute } from '../../../routes/routes';
-import { SailService } from '../../../services/sail.service';
-import { putSnack } from '../../../store/actions/snack.actions';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { Sail } from '../../../../../../api/src/types/sail/sail';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
+import { MatTableDataSource } from '@angular/material/table';
+import { FilterInfo } from '../../../models/filter-into';
+import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
+import { firstValueFrom } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { PaginatedSail } from '../../../../../../api/src/types/sail/paginated-sail';
+import { SailStatus } from '../../../../../../api/src/types/sail/sail-status';
+import { UserSailsService } from '../../../services/user-sails.service';
+import { WindowService } from '../../../services/window.service';
+import { Boat } from '../../../../../../api/src/types/boat/boat';
 
 @Component({
   selector: 'app-sail-list-per-person-page',
@@ -26,23 +32,27 @@ import { Profile } from '../../../../../../api/src/types/profile/profile';
 })
 export class SailListPerPersonPageComponent extends BasePageComponent implements OnInit {
 
-  public currentCount = 0;
   public createSailRequestRoute = createSailRequestRoute.toString();
+  public dataSource = new MatTableDataSource<Sail>([]);
+  public displayedColumns: string[] = ['entity_number', 'name', 'start_at', 'boat.name', 'status', 'action'];
+  public displayedColumnsMobile: string[] = ['entity_number'];
+  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'start_at,DESC' };
   public listSailRequestRoute = sailRequestsRoute.toString();
-  public fetching = false;
-  public paginationSize = 10;
+  public paginatedData: PaginatedSail;
   public profile: Profile;
   public profile_id: string;
-  public profileSails: Sail[] = [];
-  public totalCount = 0;
+  public sailStatus: SailStatus | 'ANY' = 'ANY';
+  public sailStatusValues = { ...SailStatus, ANY: 'ANY' };
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(SailService) private sailService: SailService,
+    @Inject(MatDialog) dialog: MatDialog,
+    @Inject(UserSailsService) private userSailsService: UserSailsService,
+    @Inject(WindowService) public windowService: WindowService,
   ) {
-    super(store, route, router);
+    super(store, route, router, dialog);
   }
 
   ngOnInit() {
@@ -52,28 +62,52 @@ export class SailListPerPersonPageComponent extends BasePageComponent implements
       this.profile = this.getProfile(this.profile_id);
     });
 
-    this.getLatestSails();
+    this.filterSails();
   }
 
-  public getLatestSails(): void {
-    this.fetching = true;
+  public boatThumbnail(boat: Boat): string {
+    if (!boat?.pictures?.length) {
+      return '/assets/icons/sailing_black_48dp.svg';
+    }
+    return `${boat.pictures[0]}?width=200`;
+  }
 
-    const queryString = `limit=${this.paginationSize}&sort=start,DESC`;
+  public async filterSails() {
+    const { search, sort, pagination } = this.filterInfo;
 
-    this.sailService
-      .fetchUserSail(this.profile_id, queryString)
-      .pipe(take(1))
-      .subscribe((sails) => {
-        this.profileSails = sails;
-        this.currentCount = sails.length;
-        this.totalCount = sails.length;
-        this.fetching = false;
-        this.dispatchAction(putSnack({ snack: { message: `Fetched ${sails.length} sails`, type: SnackType.INFO } }));
-      });
+    const query = { $and: [] };
+
+    if (search) {
+      query.$and.push({ $or: [
+        { 'boat.name': { $contL: search } },
+        { category: { $contL: search } },
+        { description: { $contL: search } },
+        { name: { $contL: search } },
+      ] });
+    }
+
+    if (this.sailStatus !== 'ANY') {
+      query.$and.push({ status: this.sailStatus });
+    }
+
+    this.startLoading();
+
+    const fetcher =  this.userSailsService.fetchUserSailsPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
+    this.dataSource.data = this.paginatedData.data;
+
+    const page = this.paginatedData;
+
+    this.dispatchMessage(`Displaying ${page.count} of ${page.total} sails on page #${page.page}.`);
   }
 
   public goToSail(sail: Sail): void {
     this.goTo([viewSailRoute(sail.id)]);
   }
 
+  public filterHandler(event: FilterInfo): void {
+    this.filterInfo = event;
+
+    this.filterSails();
+  }
 }

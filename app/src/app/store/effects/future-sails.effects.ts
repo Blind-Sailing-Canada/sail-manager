@@ -29,6 +29,7 @@ import {
   putFutureSailsForAll,
   putFutureSailsForUser
 } from '../actions/future-sails.actions';
+import { UserSailsService } from '../../services/user-sails.service';
 
 @Injectable()
 export class FutureSailsEffects {
@@ -57,7 +58,7 @@ export class FutureSailsEffects {
       ofType(fetchFutureSailsForUser),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchFutureSailsForUser(action.profile_id, action.query)
+        action => this.userSailService.fetchFutureSailsForUser(action.profile_id, action.query)
           .pipe(
             mergeMap(sails => of(
               putFutureSailsForUser({ sails, profile_id: action.profile_id }),
@@ -74,6 +75,7 @@ export class FutureSailsEffects {
   constructor(
     @Inject(Actions) private actions$: Actions,
     @Inject(SailService) private sailService: SailService,
+    @Inject(UserSailsService) private userSailService: UserSailsService,
     @Inject(Store) private store: Store<any>,
   ) { }
 }

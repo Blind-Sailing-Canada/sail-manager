@@ -101,8 +101,8 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
 
     this.startLoading();
 
-    const mediaFetch =  this.sailRequestService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
-    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    const fetcher =  this.sailRequestService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
     const page = this.paginatedData;

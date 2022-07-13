@@ -10,7 +10,7 @@
           *ngIf="imageControl.value.url && imageControl.value.media_type === MediaTypes.Picture"
           alt="Image {{i+1}} of {{controlsArray.length}}"
           async
-          src="{{imageControl.value.url}}?width=100&height=100"
+          src="{{imageControl.value.url}}?width=100"
         >
         <video
           *ngIf="imageControl.value.url && imageControl.value.media_type === MediaTypes.Video"

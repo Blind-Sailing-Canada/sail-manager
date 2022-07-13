@@ -115,8 +115,8 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
 
     this.startLoading();
 
-    const mediaFetch =  this.socialService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
-    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    const fetcher =  this.socialService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, this.sort);
+    this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
     const page = this.paginatedData;

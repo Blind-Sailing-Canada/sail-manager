@@ -16,7 +16,7 @@
         [width]="width"
         async
         attr.aria-label="picture {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
-        src="{{picture.url}}?width={{width}}&height={{height}}"
+        src="{{picture.url}}?width={{width}}"
       >
       <div
         *ngSwitchCase="MediaTypes.Video"
@@ -39,7 +39,7 @@
         [width]="width"
         async
         attr.aria-label="picture {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
-        src="{{picture.url}}?width={{width}}&height={{height}}"
+        src="{{picture.url}}?width={{width}}"
       >
     </a>
     <div *ngIf="allowDelete && canDelete(picture)">

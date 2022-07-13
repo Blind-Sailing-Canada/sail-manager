@@ -1,6 +1,6 @@
-export interface PaginatedData {
+export interface PaginatedData<T> {
   count: number;
-  data: any[];
+  data: T[];
   page: number;
   pageCount: number;
   total: number;

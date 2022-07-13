@@ -84,7 +84,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
   }
 
   public profileThumbnail(profile: Profile): string {
-    return `${profile.photo || 'assets/icons/icon-person.png'}?width=100&height=100`;
+    return `${profile.photo || 'assets/icons/icon-person.png'}?width=100`;
   }
 
   public fetchPendingProfiles(notify?: boolean): void {
@@ -142,8 +142,8 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
     this.startLoading();
 
-    const mediaFetch =  this.profileService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
-    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    const fetcher =  this.profileService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
     const page = this.paginatedData;

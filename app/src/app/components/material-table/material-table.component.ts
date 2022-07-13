@@ -19,11 +19,12 @@ import { WindowService } from '../../services/window.service';
 })
 export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestroy, AfterContentInit {
   @Input() public dataSource = new MatTableDataSource<T>([]);
+  @Input() public defaultFilterInfo: FilterInfo;
   @Input() public displayedColumns: string[] = [];
   @Input() public loading: boolean;
-  @Input() public paginatedData: PaginatedData;
+  @Input() public paginatedData: PaginatedData<T>;
   @Input() public paginationLabel: string;
-  @Input() public defaultFilterInfo: FilterInfo;
+  @Input() public showPaginator = true;
   @Output() public filterHandler: EventEmitter<FilterInfo> = new EventEmitter();
 
   @ViewChild('filterInput', { static: false }) private filterInput;

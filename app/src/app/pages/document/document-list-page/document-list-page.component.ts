@@ -115,8 +115,8 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
 
     this.startLoading();
 
-    const mediaFetch =  this.documentSErvice.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
-    this.paginatedData = await firstValueFrom(mediaFetch).finally(() => this.finishLoading());
+    const fetcher =  this.documentSErvice.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
     const page = this.paginatedData;

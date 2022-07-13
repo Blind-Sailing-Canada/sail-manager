@@ -16,7 +16,6 @@ import {
 } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SnackType } from '../../models/snack-state.interface';
-import { SailService } from '../../services/sail.service';
 import { errorCatcher } from '../../utils/error-catcher';
 import {
   finishLoading,
@@ -29,6 +28,7 @@ import {
   putInProgressSailsForUser,
 } from '../actions/in-progress-sails.actions';
 import { putSnack } from '../actions/snack.actions';
+import { UserSailsService } from '../../services/user-sails.service';
 
 @Injectable()
 export class InProgressSailsEffects {
@@ -38,7 +38,7 @@ export class InProgressSailsEffects {
       ofType(fetchInProgressSailsForAll),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchInProgressSailsForAll(action.query)
+        action => this.userSailService.fetchInProgressSailsForAll(action.query)
           .pipe(
             mergeMap(sails => of(
               putInProgressSailsForAll({ sails }),
@@ -57,7 +57,7 @@ export class InProgressSailsEffects {
       ofType(fetchInProgressSailsForUser),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchInProgressSailsForUser(action.id, action.query)
+        action => this.userSailService.fetchInProgressSailsForUser(action.id, action.query)
           .pipe(
             mergeMap(sails => of(
               putInProgressSailsForUser({ sails, profile_id: action.id }),
@@ -73,7 +73,7 @@ export class InProgressSailsEffects {
 
   constructor(
     @Inject(Actions) private actions$: Actions,
-    @Inject(SailService) private sailService: SailService,
+    @Inject(UserSailsService) private userSailService: UserSailsService,
     @Inject(Store) private store: Store<any>,
   ) { }
 }

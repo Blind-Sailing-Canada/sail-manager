@@ -15,7 +15,6 @@ import {
 } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SnackType } from '../../models/snack-state.interface';
-import { SailService } from '../../services/sail.service';
 import { errorCatcher } from '../../utils/error-catcher';
 import {
   finishLoading,
@@ -28,6 +27,7 @@ import {
   putPastSailsForUser,
 } from '../actions/past-sails.actions';
 import { putSnack } from '../actions/snack.actions';
+import { UserSailsService } from '../../services/user-sails.service';
 
 @Injectable()
 export class PastSailsEffects {
@@ -37,7 +37,7 @@ export class PastSailsEffects {
       ofType(fetchPastSailsForAll),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchPastSailsForAll(action.query)
+        action => this.userSailService.fetchPastSailsForAll(action.query)
           .pipe(
             mergeMap((sails) => {
               if (action.notify) {
@@ -59,7 +59,7 @@ export class PastSailsEffects {
       ofType(fetchPastSailsForUser),
       tap(() => this.store.dispatch(startLoading())),
       mergeMap(
-        action => this.sailService.fetchPastSailsForUser(action.profile_id, action.query)
+        action => this.userSailService.fetchPastSailsForUser(action.profile_id, action.query)
           .pipe(
             mergeMap((sails) => {
               if (action.notify) {
@@ -78,7 +78,7 @@ export class PastSailsEffects {
 
   constructor(
     @Inject(Actions) private actions$: Actions,
-    @Inject(SailService) private sailService: SailService,
+    @Inject(UserSailsService) private userSailService: UserSailsService,
     @Inject(Store) private store: Store<any>,
   ) { }
 }

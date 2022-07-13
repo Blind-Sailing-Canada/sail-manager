@@ -2,6 +2,7 @@ import {
   Controller,  Get, Headers, Logger, Param, Query, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Crud } from '@nestjsx/crud';
 import {
   FindOptionsWhere,
   In,
@@ -14,12 +15,54 @@ import { LoginGuard } from '../guards/login.guard';
 import { SailManifestEntity } from '../sail-manifest/sail-manifest.entity';
 import { SailStatus } from '../types/sail/sail-status';
 import { SailEntity } from './sail.entity';
+import { SailService } from './sail.service';
 
-@Controller('sail/user')
-@ApiTags('sail/user')
+@Crud({
+  model: { type: SailEntity },
+  params: { id: {
+    field: 'id',
+    type: 'uuid',
+    primary: true,
+  } },
+  query: {
+    alwaysPaginate: true,
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
+    join: {
+      boat: { eager: true },
+      'boat.checklist': { eager: true },
+      'boat.instructions': { eager: true },
+      cancelled_by: { eager: true },
+      checklists: { eager: true },
+      manifest: { eager: true },
+      'manifest.profile': { eager: true },
+      'manifest.guest_of': { eager: true },
+      comments: { eager: true },
+      'comments.author': {
+        eager: true,
+        alias: 'comment_author',
+      },
+      'comments.replies': {
+        eager: true,
+        alias: 'comment_replies',
+      },
+      'comments.replies.author': {
+        eager: true,
+        alias: 'comment_replies_author',
+      },
+    },
+  },
+  routes: { only: [
+    'getOneBase',
+    'getManyBase'
+  ] },
+})
+@Controller('user_sails')
+@ApiTags('user_sails')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class UserSailController {
   private readonly logger = new Logger(UserSailController.name);
+
+  constructor(public service: SailService) { }
 
   @Get('/:profile_id/count')
   async count(@Param('profile_id') profile_id) {
@@ -37,7 +80,8 @@ export class UserSailController {
     const sails = await SailEntity.find({
       take,
       where,
-      order: { start_at: 'DESC' }
+      order: { start_at: 'ASC' },
+      relations: ['checklists'],
     });
 
     return sails;
@@ -54,7 +98,8 @@ export class UserSailController {
     const sails = await SailEntity.find({
       take,
       where,
-      order: { start_at: 'DESC' }
+      order: { start_at: 'DESC' },
+      relations: ['checklists'],
     });
 
     return sails;
@@ -77,6 +122,7 @@ export class UserSailController {
           take,
           where,
           order: { start_at: 'ASC' },
+          relations: ['checklists'],
         }
       );
 
@@ -132,15 +178,4 @@ export class UserSailController {
     return sails;
   }
 
-  @Get('/all')
-  async allSails(@Query('profile_id') profile_id, @Query('limit') take = 10) {
-    const sails = await SailEntity
-      .find({
-        take,
-        order: { start_at: 'DESC' },
-        where: { manifest: { profile_id } },
-      });
-
-    return sails;
-  }
 }
