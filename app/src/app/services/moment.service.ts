@@ -61,6 +61,14 @@ export class MomentService {
     return new Date(date).toLocaleTimeString([], { month: size, day: digits, year: digits, hour12: true });
   }
 
+  public time(date: string | Date): string {
+    if (!date) {
+      return '';
+    }
+
+    return new Date(date).toLocaleTimeString([], { hour12: false });
+  }
+
   public humanizeDate(date: string | Date, short?: boolean): string {
     if (!date) {
       return '';

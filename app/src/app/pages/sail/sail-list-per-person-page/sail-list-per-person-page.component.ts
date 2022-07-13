@@ -90,6 +90,7 @@ export class SailListPerPersonPageComponent extends BasePageComponent implements
       query.$and.push({ status: this.sailStatus });
     }
 
+    query.$and.push({ 'manifest.profile_id': this.profile_id });
     this.startLoading();
 
     const fetcher =  this.userSailsService.fetchUserSailsPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);

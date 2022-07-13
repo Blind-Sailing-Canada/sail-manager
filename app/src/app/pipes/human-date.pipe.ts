@@ -33,6 +33,20 @@ export class HumanDatePipe implements PipeTransform {
   }
 }
 
+@Pipe({ name: 'time' })
+export class TimePipe implements PipeTransform {
+  constructor(
+    @Inject(MomentService) private momentService: MomentService,
+  ) { }
+  transform(date: string | Date): string {
+    if (!date) {
+      return 'n/a';
+    }
+
+    return this.momentService.time(date);
+  }
+}
+
 @Pipe({ name: 'formatDate' })
 export class FormatDatePipe implements PipeTransform {
   constructor(

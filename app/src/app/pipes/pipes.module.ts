@@ -7,6 +7,7 @@ import {
   FormatDateYYYYMMDDPipe,
   HumanDatePipe,
   HumanDateWithTimePipe,
+  TimePipe,
 } from './human-date.pipe';
 import { MarkdownPipe } from './markdown.pipe';
 
@@ -19,6 +20,7 @@ import { MarkdownPipe } from './markdown.pipe';
     HumanDatePipe,
     HumanDateWithTimePipe,
     MarkdownPipe,
+    TimePipe,
   ],
   exports: [
     DurationPipe,
@@ -28,6 +30,7 @@ import { MarkdownPipe } from './markdown.pipe';
     HumanDatePipe,
     HumanDateWithTimePipe,
     MarkdownPipe,
+    TimePipe,
   ],
   imports: [
     CommonModule,

@@ -84,7 +84,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
   }
 
   public profileThumbnail(profile: Profile): string {
-    return `${profile.photo || 'assets/icons/icon-person.png'}?width=100`;
+    return `${profile.photo || 'assets/icons/icon-person.png'}?width=200`;
   }
 
   public fetchPendingProfiles(notify?: boolean): void {
