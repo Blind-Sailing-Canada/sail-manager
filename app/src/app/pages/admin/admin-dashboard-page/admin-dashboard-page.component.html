@@ -230,14 +230,16 @@
           *matCellDef="let element"
         >
           <div class="profile-row-mobile">
-            <div class="profile-picture"><img
+            <div class="profile-picture">
+              <img
                 (click)="showProfileDialog(element)"
+                [src]="profileThumbnail(element)"
                 class="clickable"
                 height="100px"
-                src="{{element.photo || 'assets/icons/icon-person.png'}}?width=100&height=100"
                 title="click to show profile dialog for {{element.name}}"
                 width="100px"
-              ></div>
+              >
+            </div>
             <div>
               <p><label>Name: </label><span>{{element.name}}</span></p>
               <p><label>Email: </label><span>{{element.email}}</span></p>
