@@ -48,13 +48,13 @@
     title="Leave this social"
   >Leave</button>
   <a
-    (click)="cancelSocial()"
+    [routerLink]="cancelSocialLink()"
     *ngIf="canCancelSocial"
     mat-raised-button
     title="Cancel this social"
   >Cancel</a>
   <a
-    (click)="goToSocialPicturesPage()"
+    [routerLink]="socialPicturesPageLink()"
     mat-raised-button
     title="Go to social's pictures page"
   >Pictures</a>

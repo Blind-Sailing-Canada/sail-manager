@@ -11,16 +11,16 @@
     <mat-card-subtitle tabindex="0"> Use one of the methods below to log in. </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <a
+    <button
       (click)="authenticateWithGoogle()"
       mat-stroked-button
       title="Login with your google account."
-    > Google Account </a>
-    <a
+    > Google Account </button>
+    <button
       mat-stroked-button
       title="Login with your email/password account."
       [routerLink]="emailAndPasswordLink"
-    > Email and Password </a>
+    > Email and Password </button>
   </mat-card-content>
   <mat-card-footer>
     <mat-card-actions>

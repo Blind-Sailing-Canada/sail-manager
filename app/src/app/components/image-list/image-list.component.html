@@ -2,46 +2,46 @@
   <div
     *ngFor="let picture of picturesArray; let i = index;"
     class="image-list-item"
+    [ngSwitch]="picture.media_type"
   >
     <h5>{{picture.title || '&nbsp;'}}</h5>
-    <a
+    <img
       (click)="showMediaDialog.emit(picture)"
-      [ngSwitch]="picture.media_type"
-      target="_blank"
+      *ngSwitchCase="MediaTypes.Picture"
+      [height]="height"
+      async
+      attr.aria-label="picture {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
       class="clickable"
+      src="{{picture.url}}?width={{width}}"
+      style="border: none;"
     >
-      <img
-        *ngSwitchCase="MediaTypes.Picture"
+    <div
+      *ngSwitchCase="MediaTypes.Video"
+      class="video-container"
+    >
+      <mat-icon>play_circle</mat-icon>
+      <video
+        (click)="showMediaDialog.emit(picture)"
         [height]="height"
         [width]="width"
         async
-        attr.aria-label="picture {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
-        src="{{picture.url}}?width={{width}}"
-      >
-      <div
-        *ngSwitchCase="MediaTypes.Video"
-        class="video-container"
-      >
-        <mat-icon>play_circle</mat-icon>
-        <video
-          [height]="height"
-          [width]="width"
-          preload="none"
-          async
-          attr.aria-label="video {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
-          src="{{picture.url}}"
-        ></video>
-      </div>
+        attr.aria-label="video {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
+        class="clickable"
+        preload="none"
+        src="{{picture.url}}"
+      ></video>
+    </div>
 
-      <img
-        *ngSwitchDefault
-        [height]="height"
-        [width]="width"
-        async
-        attr.aria-label="picture {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
-        src="{{picture.url}}?width={{width}}"
-      >
-    </a>
+    <img
+      (click)="showMediaDialog.emit(picture)"
+      *ngSwitchDefault
+      [height]="height"
+      [width]="width"
+      async
+      attr.aria-label="picture {{i+1}} of {{picturesArray.length}}. comment: {{picture.description || 'none'}}"
+      class="clickable"
+      src="{{picture.url}}?width={{width}}"
+    >
     <div *ngIf="allowDelete && canDelete(picture)">
       <button
         (click)="deleteClick.emit(picture)"

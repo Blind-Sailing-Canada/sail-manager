@@ -26,12 +26,12 @@
 </mat-card>
 
 <ng-template #CONTROLS_TEMPLATE>
-  <a
+  <button
     (click)="editChallenge()"
     *ngIf="canEditNewChallenge"
     mat-raised-button
     title="Go to edit challenge page"
-  >Edit</a>
+  >Edit</button>
   <button
     (click)="openChallengeCompleteDialog(user.profile)"
     *ngIf="userJoinedChallenge && !userAccomplishedChallenge"

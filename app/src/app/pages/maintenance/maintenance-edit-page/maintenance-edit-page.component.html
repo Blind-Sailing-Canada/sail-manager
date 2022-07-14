@@ -46,14 +46,14 @@
   </mat-card-footer>
 </mat-card>
 <ng-template #controls>
-  <a
+  <button
     (click)="goToViewMaintenance()"
     *ngIf="!creatingNewMaintenance"
     mat-raised-button
   >
     <mat-icon>photo_camera</mat-icon>
     Add pictures
-  </a>
+  </button>
 </ng-template>
 <ng-template #TemplateRequestStatus>
   <h4

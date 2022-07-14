@@ -82,7 +82,6 @@
       <tr
         role="list"
         *ngIf="!!request.interest?.length"
-
       >
         <th
           [attr.rowspan]="request.interest.length + 1"
@@ -134,18 +133,18 @@
       </tr>
     </app-table>
     <mat-action-row>
-      <a
+      <button
         *ngIf="canCreateSail(request)"
         (click)="createSail.emit(request.id)"
         mat-raised-button
         title="Create sail for this request #{{request.entity_number}}"
-      >Create sail</a>
-      <a
+      >Create sail</button>
+      <button
         *ngIf="canEditRequest(request)"
         (click)="editSailRequest.emit(request.id)"
         mat-raised-button
         title="Edit sail request #{{request.entity_number}}"
-      >Edit</a>
+      >Edit</button>
       <button
         (click)="cancelSailRequest.emit(request.id)"
         *ngIf="canCancelRequest(request)"

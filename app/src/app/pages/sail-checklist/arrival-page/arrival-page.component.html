@@ -10,12 +10,12 @@
     >After Arrival Checklist Form</mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <a
+    <button
       mat-raised-button
       (click)="goToMaintenanceRequest()"
     >
       Maintenance request
-    </a>
+    </button>
   </mat-card-actions>
   <mat-card-content>
     <ng-container [ngTemplateOutlet]="arrivalFormContent"></ng-container>

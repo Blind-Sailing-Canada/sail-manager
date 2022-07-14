@@ -179,12 +179,12 @@
   </mat-card-footer>
 </mat-card>
 <ng-template #controls>
-  <a
+  <button
     (click)="createSail()"
     *ngIf="canCreateSail"
     mat-raised-button
     title="Create sail for this request #{{sailRequest.entity_number}}"
-  >Create sail</a>
+  >Create sail</button>
   <a
     *ngIf="canEditRequest"
     [routerLink]="editSailRequestRoute"

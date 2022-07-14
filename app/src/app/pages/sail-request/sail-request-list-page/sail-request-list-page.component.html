@@ -229,11 +229,11 @@
               mat-button
               title="Click to view profile {{element.requested_by?.name}}"
             >{{element.requested_by?.name}}</button>
-            <a
+            <button
               (click)="goToEntity('SailRequestEntity', element.id)"
               mat-button
               title="Click to view this request"
-            >View</a>
+            >View</button>
           </div>
         </td>
       </ng-container>

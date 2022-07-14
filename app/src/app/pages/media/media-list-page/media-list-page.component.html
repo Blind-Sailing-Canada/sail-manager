@@ -206,13 +206,13 @@
               (click)="showProfileDialog(element.posted_by)"
               [profile]="element.posted_by"
             ></app-profile-bullet>
-            <a
+            <button
               mat-flat-button
               (click)="goToEntity(element.media_for_type, element.media_for_id)"
               title="Click to view {{EntityLabels[element.media_for_type]}}"
             >
               View {{EntityLabels[element.media_for_type]}}
-            </a>
+            </button>
           </div>
         </td>
       </ng-container>
@@ -227,21 +227,23 @@
   #MEDIA_PICTURE
   let-picture="picture"
 >
-  <a
+  <button
     *ngIf="picture.url"
     (click)="showMediaDialog(picture)"
-    class="clickable"
+    mat-flat-button
     [ngSwitch]="picture.media_type"
     target="_blank"
     style="margin: 10px; display: inline-block;"
+    title="click to open media dialog"
   >
     <img
       *ngSwitchCase="MediaTypes.Picture"
       [height]="height"
       [width]="width"
       async
+      style="object-fit: cover;"
       title="picture. description: {{picture.title || ''}} {{picture.description || ''}}"
-      src="{{picture.url}}?width={{width}}"
+      src="{{picture.url}}?width={{width+100}}"
     >
     <div
       *ngSwitchCase="MediaTypes.Video"
@@ -267,5 +269,5 @@
       title="picture. comment: {{picture.title || ''}} {{picture.description || ''}}"
       src="{{picture.url}}?width={{width}}"
     >
-  </a>
+  </button>
 </ng-template>

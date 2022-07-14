@@ -27,13 +27,21 @@
     </mat-expansion-panel-header>
     <p>
       Before requesting a new sail, please check if a similar request was submitted by someone else.
-      You can check latest sail requests by going to <a routerLink="/sail-requests"><strong>dashboard > my sails > sail
+      You can check latest sail requests by going to <a
+        routerLink="/sail-requests"
+        mat-flat-button
+        style="text-decoration: underline; padding: 0;"
+      ><strong>dashboard > my sails > sail
           request</strong></a>.
       If you find a sail request that matches your needs, you can join it by clicking <strong>I'm interested</strong>
       button.
     </p>
     <p>
-      To request a new sail go to <a routerLink="/sail-requests/create"><strong>dashboard > my sails > request a
+      To request a new sail go to <a
+        routerLink="/sail-requests/create"
+        mat-flat-button
+        style="text-decoration: underline; padding: 0;"
+      ><strong>dashboard > my sails > request a
           sail</strong></a>.
       Fill out the form by providing details about the sail. Provide information such as date and time of the sail, boat
       preference, and what kind of sail it is (regular, racing, cruising).

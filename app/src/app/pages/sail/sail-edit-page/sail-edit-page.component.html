@@ -219,11 +219,11 @@
     tabindex="0"
     *ngIf="!creatingNewSail"
   >Current skipper: {{skipperName || 'not assigned'}}</p>
-  <a
+  <button
     (click)="editManifest()"
     *ngIf="!creatingNewSail && !sailForm.dirty"
     mat-raised-button
-  >Edit Manifest</a>
+  >Edit Manifest</button>
 </ng-template>
 <ng-template #sailCrew>
   <h4>Step 9 of 10: Sail's Crew</h4>
@@ -235,11 +235,11 @@
     tabindex="0"
     *ngIf="!creatingNewSail"
   >Current crew: {{crewName || 'not assigned'}}</p>
-  <a
+  <button
     (click)="editManifest()"
     *ngIf="!creatingNewSail && !sailForm.dirty"
     mat-raised-button
-  >Edit Manifest</a>
+  >Edit Manifest</button>
 </ng-template>
 <ng-template #sailSailors>
   <h4>Step 10 of 10: Sail's Sailors</h4>
@@ -251,9 +251,9 @@
     tabindex="0"
     *ngIf="!creatingNewSail"
   >Current sailors: {{sailorNames || 'not assigned'}}</p>
-  <a
+  <button
     (click)="editManifest()"
     *ngIf="!creatingNewSail && !sailForm.dirty"
     mat-raised-button
-  >Edit Manifest</a>
+  >Edit Manifest</button>
 </ng-template>

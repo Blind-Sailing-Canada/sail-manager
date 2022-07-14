@@ -2,19 +2,15 @@
   background-color: lightblue;
 }
 
-mat-action-list {
+mat-nav-list {
   margin-bottom: 20px;
 }
 
-mat-action-list a:nth-child(even) {
+mat-list-item:nth-child(even) {
   border-bottom: 1px solid black;
   border-top: 1px solid black;
 }
 
-mat-action-list a:last-child {
+mat-list-item:last-child {
   border-bottom: 1px solid black;
-}
-
-::ng-deep .mat-list-item-content {
-  padding: 0 !important;
 }

@@ -9,12 +9,12 @@
     >{{title}}</h4>
     <div class="caption-controls">
       <button
-        class="caption-control"
         (click)="captionActionsCallBack(action.name)"
         *ngFor="let action of captionActions"
         [title]="action.tooltip"
-        tabindex="0"
         aria-hidden="true"
+        class="caption-control"
+        tabindex="0"
       >
         <mat-icon [inline]="true">{{action.icon}}</mat-icon>
       </button>

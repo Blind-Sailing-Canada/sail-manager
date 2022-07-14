@@ -10,23 +10,23 @@
     >{{title}}</mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <a
+    <button
       *ngIf="boat_id"
       mat-raised-button
       (click)="goToBoatInstructions()"
       title="Click to edit boat's instructions"
-    >Instructions</a>
+    >Instructions</button>
   </mat-card-actions>
   <mat-card-content>
     <form [formGroup]="boatForm">
-        <ng-container *ngTemplateOutlet="boatName"></ng-container>
-        <ng-container *ngTemplateOutlet="boatModel"></ng-container>
-        <ng-container *ngTemplateOutlet="boatMaxOccupancy"></ng-container>
-        <ng-container *ngTemplateOutlet="boatPicture"></ng-container>
-        <ng-container *ngTemplateOutlet="boatStatus"></ng-container>
-        <ng-container *ngTemplateOutlet="boatWiki"></ng-container>
-        <ng-container *ngTemplateOutlet="boatCalendarResourceId"></ng-container>
-        <ng-container *ngTemplateOutlet="boatHull"></ng-container>
+      <ng-container *ngTemplateOutlet="boatName"></ng-container>
+      <ng-container *ngTemplateOutlet="boatModel"></ng-container>
+      <ng-container *ngTemplateOutlet="boatMaxOccupancy"></ng-container>
+      <ng-container *ngTemplateOutlet="boatPicture"></ng-container>
+      <ng-container *ngTemplateOutlet="boatStatus"></ng-container>
+      <ng-container *ngTemplateOutlet="boatWiki"></ng-container>
+      <ng-container *ngTemplateOutlet="boatCalendarResourceId"></ng-container>
+      <ng-container *ngTemplateOutlet="boatHull"></ng-container>
     </form>
   </mat-card-content>
   <mat-card-footer>

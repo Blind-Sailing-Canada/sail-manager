@@ -1,6 +1,6 @@
-<mat-action-list>
+<mat-nav-list>
   <h4 mat-header>{{title}}</h4>
-  <a
+  <mat-list-item
     (click)="clicked(action)"
     (keydown)="clickedViaKey($event, action)"
     *ngFor="let action of actions; let i = index;"
@@ -11,9 +11,10 @@
   >
     <mat-icon
       aria-hidden="true"
-      mat-list-icon
+      mat-list-avatar
+      style="height: unset;"
     >{{actionIcon(action.required_action_type)}}</mat-icon>
-    {{action.title}}
+    <span matLine>{{action.title}}</span>
     <mat-icon>navigate_next</mat-icon>
-  </a>
-</mat-action-list>
+  </mat-list-item>
+</mat-nav-list>

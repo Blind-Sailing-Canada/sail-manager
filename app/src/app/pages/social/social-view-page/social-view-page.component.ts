@@ -91,8 +91,8 @@ export class SocialViewPageComponent extends BasePageComponent implements OnInit
     this.dispatchAction(deleteSocialComment({ comment_id, social_id: this.social_id, notify: true }));
   }
 
-  public goToSocialPicturesPage(): void {
-    this.goTo([viewSocialPicturesRoute(this.social_id)]);
+  public socialPicturesPageLink(): string {
+    return viewSocialPicturesRoute(this.social_id);
   }
 
   public get isSocialCancelled(): boolean {
@@ -162,8 +162,8 @@ export class SocialViewPageComponent extends BasePageComponent implements OnInit
     return can;
   }
 
-  public cancelSocial(): void {
-    this.goTo([cancelSocialRoute(this.social_id)]);
+  public cancelSocialLink(): string {
+    return cancelSocialRoute(this.social_id);
   }
 
   public get isSocialFull(): boolean {

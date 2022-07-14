@@ -63,12 +63,12 @@
     mat-raised-button
     title="Leave this sail"
   >Leave</button>
-  <a
+  <button
     (click)="cancelSail()"
     *ngIf="canCancelSail"
     mat-raised-button
     title="Cancel this sail"
-  >Cancel</a>
+  >Cancel</button>
   <a
     *ngIf="canViewChecklist"
     [routerLink]="viewSailChecklistRouteLink"
@@ -81,11 +81,11 @@
     mat-raised-button
     title="Go to sail's feedback page"
   >Feedback</a>
-  <a
+  <button
     (click)="goToSailPicturesPage()"
     mat-raised-button
     title="Go to sail's pictures page"
-  >Pictures</a>
+  >Pictures</button>
   <button
     *ngIf="canSendNotification"
     mat-raised-button

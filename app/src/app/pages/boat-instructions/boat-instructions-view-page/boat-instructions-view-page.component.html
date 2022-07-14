@@ -10,24 +10,24 @@
     >{{title}}</mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <a
+    <button
       (click)="goToBoatInstructions()"
       *ngIf="shouldEnableEditButton"
       mat-raised-button
       title="Click to edit boat's instructions"
-    >Edit</a>
-    <a
+    >Edit</button>
+    <button
       (click)="toggleRearrange()"
       *ngIf="shouldEnableEditButton"
       mat-raised-button
       title="Click to rearrange boat's instructions"
-    >Rearrange</a>
-    <a
+    >Rearrange</button>
+    <button
       (click)="save()"
       *ngIf="rearrange && shouldEnableEditButton"
       mat-raised-button
       title="Click to save boat's instructions"
-    >Save</a>
+    >Save</button>
   </mat-card-actions>
   <mat-card-content>
     <app-instructions-list

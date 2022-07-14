@@ -98,12 +98,12 @@
         <td
           mat-cell
           *matCellDef="let element"
-        > <a
+        > <button
             mat-button
             style="margin: 10px;"
             (click)="showBoatDialog(element.boat)"
             title="click to view boat info"
-          >{{element.boat?.name}}</a></td>
+          >{{element.boat?.name}}</button></td>
       </ng-container>
 
       <ng-container matColumnDef="status">
@@ -130,12 +130,12 @@
           mat-cell
           *matCellDef="let element"
         >
-          <a
+          <button
             mat-button
             style="margin: 10px;"
             (click)="goToEntity('SailEntity', element.id)"
             title="Click to go to sail page for {{element.name}}"
-          >View</a>
+          >View</button>
         </td>
       </ng-container>
 

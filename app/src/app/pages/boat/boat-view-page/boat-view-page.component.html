@@ -22,27 +22,27 @@
       mat-raised-button
       title="Click to edit this boat's checklist."
     >Checklist</a>
-    <a
+    <button
       (click)="goToBoatMaintenance()"
       *ngIf="shouldShowEditBoat"
       mat-raised-button
       title="Click to view boat's maintenance page."
-    >Maintenance</a>
-    <a
+    >Maintenance</button>
+    <button
       mat-raised-button
       (click)="goToBoatInstructions()"
       title="Click to view boat's instructions page."
-    >Instructions</a>
-    <a
+    >Instructions</button>
+    <button
       mat-raised-button
       (click)="goToChecklists()"
       title="Sail Checklists."
-    >Sail Checklists</a>
-    <a
+    >Sail Checklists</button>
+    <button
       mat-raised-button
       (click)="goToBoatDocuments()"
       title="Boat documents."
-    >Documents</a>
+    >Documents</button>
   </mat-card-actions>
 
   <mat-card-content>

@@ -46,11 +46,11 @@
   </mat-card-footer>
 </mat-card>
 <ng-template #controls>
-  <a
+  <button
     (click)="editManifest()"
     *ngIf="!creatingNewSocial && !socialForm.dirty"
     mat-raised-button
-  >Edit Manifest</a>
+  >Edit Manifest</button>
 </ng-template>
 <ng-template #socialName>
   <h4
