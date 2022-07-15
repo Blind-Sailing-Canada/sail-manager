@@ -3,13 +3,14 @@
     (click)="decreaseFontSize()"
     [disabled]="changingAppFont || currentFontSize === min"
     mat-button
-    aria-label="Click to decrease font size"
+    title="Click to decrease font size"
   >
     <mat-icon [inline]="true">remove</mat-icon>
   </button>
   <span
-    tabindex="0"
+    class="footer-copyright"
     tabindex="-1"
+    tabindex="0"
   >
     <mat-icon [inline]="true">copyright</mat-icon>
     <span
@@ -21,7 +22,7 @@
     (click)="increaseFontSize()"
     [disabled]="changingAppFont || currentFontSize === max"
     mat-button
-    aria-label="Click to increase font size"
+    title="Click to increase font size."
   >
     <mat-icon [inline]="true">add</mat-icon>
   </button>
