@@ -9,7 +9,9 @@ import {
   takeWhile,
 } from 'rxjs/operators';
 import {
+  AfterViewChecked,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   Inject,
   OnInit,
@@ -53,7 +55,7 @@ import { BoatStatus } from '../../../../../../api/src/types/boat/boat-status';
   templateUrl: './sail-edit-page.component.html',
   styleUrls: ['./sail-edit-page.component.scss']
 })
-export class SailEditPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
+export class SailEditPageComponent extends BasePageComponent implements OnInit, AfterViewInit, AfterViewChecked {
   public availableBoats: Boat[] = [];
   public availableCrew: Profile[] = [];
   public availableMembers: Profile[] = [];
@@ -73,8 +75,13 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(MomentService) private momentService: MomentService,
     @Inject(SailService) private sailsService: SailService,
+    private changeDetector: ChangeDetectorRef,
   ) {
     super(store, route, router);
+  }
+
+  ngAfterViewChecked() {
+    this.changeDetector.detectChanges();
   }
 
   ngOnInit() {

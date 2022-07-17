@@ -56,7 +56,7 @@ export class SailActionsController {
       sail_id,
     };
 
-    this.sailQueue.add('update-sail',job);
+    this.sailQueue.add('update-sail', job);
   }
 
   @Put(':id/join/skipper')

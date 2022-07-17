@@ -113,11 +113,6 @@ export class GoogleCalendarService {
 
     this.logger.log('event' + JSON.stringify(event, null, 2));
 
-    if (!event.attendees?.length) {
-      this.logger.log(`no sailors for sail ${sail.id}`);
-      return Promise.resolve();
-    }
-
     const createdEvent = await this.calendar
       .events
       .insert({
@@ -244,7 +239,7 @@ export class GoogleCalendarService {
       })
       .then(response => response.data);
 
-    const currentAttendees = existingEvent.attendees;
+    const currentAttendees = existingEvent.attendees || [];
 
     if (currentAttendees.some(attendee => attendee.email === profile.email)) {
       return Promise.resolve();
@@ -285,7 +280,7 @@ export class GoogleCalendarService {
       })
       .then(response => response.data);
 
-    const currentAttendees = existingEvent.attendees;
+    const currentAttendees = existingEvent.attendees || [];
 
     if (currentAttendees.some(attendee => attendee.email === profile.email)) {
       return Promise.resolve();
@@ -326,7 +321,7 @@ export class GoogleCalendarService {
       })
       .then(response => response.data);
 
-    const currentAttendees = existingEvent.attendees;
+    const currentAttendees = existingEvent.attendees || [];
 
     const newAttendees = currentAttendees.filter(attendee => attendee.email !== profile.email);
 
@@ -358,7 +353,7 @@ export class GoogleCalendarService {
       })
       .then(response => response.data);
 
-    const currentAttendees = existingEvent.attendees;
+    const currentAttendees = existingEvent.attendees || [];
 
     const newAttendees = currentAttendees.filter(attendee => attendee.email !== profile.email);
 

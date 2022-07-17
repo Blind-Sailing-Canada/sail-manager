@@ -1,5 +1,7 @@
 import { takeWhile } from 'rxjs/operators';
 import {
+  AfterViewChecked,
+  ChangeDetectorRef,
   Component,
   HostBinding,
   Inject,
@@ -30,7 +32,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
   styleUrls: ['./app.component.scss'],
   templateUrl: './app.component.html',
 })
-export class AppComponent extends BasePageComponent implements OnInit {
+export class AppComponent extends BasePageComponent implements OnInit, AfterViewChecked {
   private currentFontSize;
   private loadingTimer: any;
   private readonly LOADING_TIME = 1000;
@@ -47,9 +49,14 @@ export class AppComponent extends BasePageComponent implements OnInit {
     @Inject(MatSnackBar) private snackBar: MatSnackBar,
     @Inject(Store) store: Store<any>,
     @Inject(HttpClient) private httpClient: HttpClient,
-    private overlay: OverlayContainer
+    private overlay: OverlayContainer,
+    private changeDetector: ChangeDetectorRef,
   ) {
     super(store, null, null);
+  }
+
+  ngAfterViewChecked() {
+    this.changeDetector.detectChanges();
   }
 
   async ngOnInit(): Promise<void> {

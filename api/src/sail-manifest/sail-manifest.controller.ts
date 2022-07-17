@@ -1,9 +1,11 @@
+import { InjectQueue } from '@nestjs/bull';
 import {
   Body,
   Controller, Get, Param, Post, Query, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { Queue } from 'bull';
 import {
   ILike,
   In, Not
@@ -16,6 +18,7 @@ import { SailEntity } from '../sail/sail.entity';
 import { ProfileStatus } from '../types/profile/profile-status';
 import { SailManifest } from '../types/sail-manifest/sail-manifest';
 import { SailStatus } from '../types/sail/sail-status';
+import { SailUpdateJob } from '../types/sail/sail-update-job';
 import { SailManifestEntity } from './sail-manifest.entity';
 import { SailManifestService } from './sail-manifest.service';
 
@@ -36,7 +39,10 @@ import { SailManifestService } from './sail-manifest.service';
 @ApiTags('sail-manifest')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class SailManifestController {
-  constructor(public service: SailManifestService) { }
+  constructor(
+    public service: SailManifestService,
+    @InjectQueue('sail') private readonly sailQueue: Queue,
+  ) { }
 
   @Post('/update-sail-manifest/:sail_id')
   async updateSailManifest(@Param('sail_id') sail_id: string, @Body() manifests: Partial<SailManifest>[]) {
@@ -60,6 +66,13 @@ export class SailManifestController {
     if (manifestsToDelete.length) {
       await SailManifestEntity.getRepository().delete(manifestsToDelete);
     }
+
+    const job: SailUpdateJob = {
+      message: '',
+      sail_id,
+    };
+
+    this.sailQueue.add('update-sail', job);
 
     return SailEntity.findOne({
       where: { id: sail_id },

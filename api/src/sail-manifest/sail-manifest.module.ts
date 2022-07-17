@@ -1,3 +1,4 @@
+import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
@@ -9,6 +10,7 @@ import { SailManifestService } from './sail-manifest.service';
   imports: [
     TypeOrmModule.forFeature([SailManifestEntity]),
     AuthModule,
+    BullModule.registerQueue({ name: 'sail' }),
   ],
   controllers: [SailManifestController],
   providers: [SailManifestService],

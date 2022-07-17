@@ -15,6 +15,7 @@ import { SailNewJob } from '../types/sail/sail-new-job';
 import { SailUpdateJob } from '../types/sail/sail-update-job';
 import { BaseQueueProcessor } from '../utils/base-queue-processor';
 import { SailEntity } from './sail.entity';
+import * as Sentry from '@sentry/node';
 
 @Processor('sail')
 export class SailProcessor extends BaseQueueProcessor {
@@ -34,6 +35,7 @@ export class SailProcessor extends BaseQueueProcessor {
       await this.calendarService.createSailEvent(sail, job.data.message);
     } catch (error) {
       this.logger.error(error);
+      Sentry.captureException(error);
     }
   }
 
@@ -45,6 +47,7 @@ export class SailProcessor extends BaseQueueProcessor {
       await this.calendarService.updateSailEvent(sail, job.data.message);
     } catch (error) {
       this.logger.error(error);
+      Sentry.captureException(error);
     }
   }
 
@@ -57,6 +60,7 @@ export class SailProcessor extends BaseQueueProcessor {
       await this.calendarService.joinSailEvent(sail, profile);
     } catch (error) {
       this.logger.error(error);
+      Sentry.captureException(error);
     }
   }
 
@@ -69,6 +73,7 @@ export class SailProcessor extends BaseQueueProcessor {
       await this.calendarService.leaveSailEvent(sail, profile);
     } catch (error) {
       this.logger.error(error);
+      Sentry.captureException(error);
     }
   }
 
@@ -95,6 +100,7 @@ export class SailProcessor extends BaseQueueProcessor {
       await this.emailService.sendBccEmail(emailInfo);
     } catch (error) {
       this.logger.error(error);
+      Sentry.captureException(error);
     }
   }
 }

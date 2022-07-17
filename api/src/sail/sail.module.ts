@@ -13,6 +13,7 @@ import { SailController } from './sail.controller';
 import { SailEntity } from './sail.entity';
 import { SailProcessor } from './sail.processor';
 import { SailService } from './sail.service';
+import { SailSubscriber } from './sail.subscriber';
 import { UserSailController } from './user-sail.controller';
 
 @Module({
@@ -21,8 +22,8 @@ import { UserSailController } from './user-sail.controller';
     BullModule.registerQueue({ name: 'sail' }),
     EmailModule,
     FirebaseAdminModule,
-    TypeOrmModule.forFeature([SailEntity]),
     GoogleApiModule,
+    TypeOrmModule.forFeature([SailEntity]),
   ],
   controllers: [
     SailActionsController,
@@ -33,8 +34,9 @@ import { UserSailController } from './user-sail.controller';
     UserSailController,
   ],
   providers: [
-    SailService,
     SailProcessor,
+    SailService,
+    SailSubscriber,
   ],
 })
 export class SailModule { }

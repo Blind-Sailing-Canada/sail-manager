@@ -25,6 +25,9 @@ import { User } from '../user/user.decorator';
 import { UserAccess } from '../user-access/user-access.decorator';
 import { UserAccessFields } from '../types/user-access/user-access-fields';
 import { SailStatus } from '../types/sail/sail-status';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { SailUpdateJob } from '../types/sail/sail-update-job';
 
 @Crud({
   model: { type: SailEntity },
@@ -70,7 +73,10 @@ import { SailStatus } from '../types/sail/sail-status';
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class SailController {
 
-  constructor(public service: SailService) { }
+  constructor(
+    public service: SailService,
+    @InjectQueue('sail') private readonly sailQueue: Queue,
+  ) { }
 
   @Patch('/:sail_id')
   async updateSail(@User() user: JwtObject, @Param('sail_id') sail_id: string, @Body() sail_data: Sail) {
@@ -92,6 +98,13 @@ export class SailController {
     }
 
     await SailEntity.update(sail_id, sail_data);
+
+    const job: SailUpdateJob = {
+      message: '',
+      sail_id,
+    };
+
+    this.sailQueue.add('update-sail', job);
 
     return SailEntity.findOne({ where: { id: sail_id } });
   }
