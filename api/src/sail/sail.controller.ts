@@ -111,10 +111,14 @@ export class SailController {
 
   @Get('/available')
   async availableSails(@User() user: JwtObject ) {
-    const futureSails = await SailEntity.find({ where: {
-      status: SailStatus.New,
-      start_at: MoreThanOrEqual(new Date()),
-    } });
+    const futureSails = await SailEntity.find({
+      relations: ['checklists'],
+      where: {
+        status: SailStatus.New,
+        start_at: MoreThanOrEqual(new Date()),
+      },
+      order: { start_at: 'ASC' }
+    });
 
     return futureSails
       .filter(sail => !sail.manifest.some(sailor => sailor.profile_id === user.profile_id))
