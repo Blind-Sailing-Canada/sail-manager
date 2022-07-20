@@ -34,7 +34,7 @@ export class ChallengeListPageComponent extends BasePageComponent implements OnI
     @Inject(Store) store: Store<any>,
     @Inject(Router) router: Router,
     @Inject(MatDialog) dialog: MatDialog,
-    @Inject(WindowService) public windowServer: WindowService,
+    @Inject(WindowService) public windowService: WindowService,
   ) {
     super(store, undefined, router, dialog);
   }

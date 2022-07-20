@@ -14,11 +14,11 @@
   <mat-card-content>
     <ng-container
       [ngTemplateOutlet]="MEDIA_TABLE_FULL"
-      *ngIf="!windowServer.isSmallWidth"
+      *ngIf="!windowService.isSmallWidth"
     ></ng-container>
     <ng-container
       [ngTemplateOutlet]="MEDIA_TABLE_MOBILE"
-      *ngIf="windowServer.isSmallWidth"
+      *ngIf="windowService.isSmallWidth"
     ></ng-container>
   </mat-card-content>
 </mat-card>

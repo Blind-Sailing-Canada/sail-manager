@@ -1,13 +1,13 @@
 <mat-toolbar color="primary">
   <a
-    *ngIf="!windowServer.isSmallWidth"
+    *ngIf="!windowService.isSmallWidth"
     aria-label="Go back to dashboard."
     routerLink="/"
   >
     COMPANY_NAME_HEADER
   </a>
   <a
-    *ngIf="windowServer.isSmallWidth"
+    *ngIf="windowService.isSmallWidth"
     aria-label="Go back to dashboard."
     routerLink="/"
   >
@@ -55,10 +55,11 @@
       <mat-icon>help_outline</mat-icon>
     </a>
     <button
-      mat-icon-button
       (click)="toggleDarkTheme.emit(!isDarkTheme)"
-      class="theme-toggle"
+      *ngIf="!windowService.isSmallWidth"
       aria-label="Toggle Dark Theme"
+      class="theme-toggle"
+      mat-icon-button
       title="Switch to {{isDarkTheme? 'light' : 'dark'}} theme"
     >
       <mat-icon>{{ isDarkTheme ? "dark_mode" : "light_mode" }}</mat-icon>

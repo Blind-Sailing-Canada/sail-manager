@@ -48,7 +48,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     @Inject(Store) store: Store<any>,
     @Inject(MediaService) private mediaService: MediaService,
     @Inject(MatDialog) dialog: MatDialog,
-    @Inject(WindowService) public windowServer: WindowService,
+    @Inject(WindowService) public windowService: WindowService,
   ) {
     super(store, route, router, dialog);
   }

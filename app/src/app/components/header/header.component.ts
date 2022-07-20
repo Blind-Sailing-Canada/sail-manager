@@ -36,7 +36,7 @@ export class HeaderComponent implements OnChanges {
   public viewProfileSettingsLink: string;
 
   constructor(
-    @Inject(WindowService) public windowServer: WindowService,
+    @Inject(WindowService) public windowService: WindowService,
     @Inject(FirebaseService) private firebaseService: FirebaseService,
   ) { }
 
