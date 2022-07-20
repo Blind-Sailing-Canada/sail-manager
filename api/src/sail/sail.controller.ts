@@ -106,7 +106,10 @@ export class SailController {
 
     this.sailQueue.add('update-sail', job);
 
-    return SailEntity.findOne({ where: { id: sail_id } });
+    return SailEntity.findOne({
+      where: { id: sail_id },
+      relations: ['checklists'],
+    });
   }
 
   @Get('/available')
