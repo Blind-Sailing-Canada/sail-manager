@@ -26,6 +26,7 @@ import { FilterInfo } from '../../../models/filter-into';
 import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { Boat } from '../../../../../../api/src/types/boat/boat';
 import { WindowService } from '../../../services/window.service';
+import { putSails } from '../../../store/actions/sail.actions';
 
 @Component({
   selector: 'app-sail-list-page',
@@ -129,6 +130,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
 
     const page = this.paginatedData;
 
+    this.dispatchAction(putSails({ sails: this.paginatedData.data }));
     this.dispatchMessage(`Displaying ${page.count} of ${page.total} sails on page #${page.page}.`);
   }
 
