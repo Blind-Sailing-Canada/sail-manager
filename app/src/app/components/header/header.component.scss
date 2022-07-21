@@ -25,3 +25,18 @@ mat-toolbar {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 }
+
+@media screen and (max-width: 670px) {
+  mat-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    height: max-content;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+
+  .header-controls {
+    width: 100%;
+  }
+}

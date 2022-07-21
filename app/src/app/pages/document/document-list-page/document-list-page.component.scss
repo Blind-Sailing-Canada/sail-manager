@@ -10,6 +10,11 @@ table {
   padding: 20px 20px 0 20px;
 }
 
+:host .table-row-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 @media screen and (max-width: 670px) {
   .table-filters {
     display: flex;
@@ -17,4 +22,5 @@ table {
     gap: 20px;
     padding: 20px 20px 0 20px;
   }
+
 }

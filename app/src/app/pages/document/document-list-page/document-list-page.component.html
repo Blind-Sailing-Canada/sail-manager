@@ -189,7 +189,7 @@
               (click)="goToEntity(element.documentable_type, element.documentable_id)"
               *ngIf="element.documentable_id"
             >{{getEntityLabel(element.documentable_type)}} </button>
-            <a *ngIf="!element.documentable_id"> </a>
+            <div *ngIf="!element.documentable_id"> </div>
             <button
               (click)="viewDocument(element.id)"
               mat-button

@@ -27,6 +27,7 @@ import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { Boat } from '../../../../../../api/src/types/boat/boat';
 import { WindowService } from '../../../services/window.service';
 import { putSails } from '../../../store/actions/sail.actions';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sail-list-page',
@@ -55,8 +56,9 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
     @Inject(Store) store: Store<any>,
     @Inject(SailService) private sailService: SailService,
     @Inject(WindowService) public windowService: WindowService,
+    @Inject(MatDialog) dialog: MatDialog,
   ) {
-    super(store, undefined, router);
+    super(store, undefined, router, dialog);
   }
 
   ngOnInit() {
@@ -123,6 +125,8 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
 
   public async fetchSails() {
     const query = this.buildQuery();
+
+    this.startLoading();
 
     const fetcher = this.sailService.searchPaginated(query);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());

@@ -401,7 +401,7 @@ mat-card-footer mat-card-actions {
   }
   .app-container {
     grid-template-columns: auto;
-    grid-template-rows: 55px 10px auto 30px;
+    grid-template-rows: max-content 10px auto 30px;
     grid-template-areas: "header" "loader" "main" "footer";
   }
   footer {

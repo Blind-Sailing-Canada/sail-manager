@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <div mat-card-avatar>
-      <mat-icon>directions_boat</mat-icon>
+      <mat-icon>sailing</mat-icon>
     </div>
     <mat-card-title
       role="heading"
@@ -18,11 +18,11 @@
       aria-label="Create a new boat"
     >New</a>
     <a
-    mat-raised-button
-    [routerLink]="MAINTENANCE_ROUTE"
-    title="Go to maintenance dashboard"
-    aria-label="Go to maintenance dashboard"
-  >Maintenance</a>
+      mat-raised-button
+      [routerLink]="MAINTENANCE_ROUTE"
+      title="Go to maintenance dashboard"
+      aria-label="Go to maintenance dashboard"
+    >Maintenance</a>
   </mat-card-actions>
   <mat-card-content>
     <app-boat-list
