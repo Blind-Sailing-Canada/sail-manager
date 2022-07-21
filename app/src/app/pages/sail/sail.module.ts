@@ -20,7 +20,6 @@ import { MaterialTableModule } from '../../components/material-table/material-ta
 import { MediaDialogModule } from '../../components/media-dialog/media-dialog.module';
 import { NewCommentFormModule } from '../../components/new-comment-form/new-comment-form.module';
 import { ProfileBulletModule } from '../../components/profile-bullet/profile-bullet.module';
-import { SailListModule } from '../../components/sail-list/sail-list.module';
 import { SailNotificationDialogModule } from '../../components/sail-notification-dialog/sail-notification-dialog.module';
 import { TableModule } from '../../components/table/table.module';
 import { TimePickerModule } from '../../components/time-picker/time-picker.module';
@@ -67,7 +66,6 @@ import { SailViewPageComponent } from './sail-view-page/sail-view-page.component
     PipesModule,
     ProfileBulletModule,
     ReactiveFormsModule,
-    SailListModule,
     SailNotificationDialogModule,
     SailRoutingModule,
     TableModule,
