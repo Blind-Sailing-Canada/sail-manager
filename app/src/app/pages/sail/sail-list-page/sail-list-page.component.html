@@ -33,7 +33,7 @@
               type="reset"
             >Reset</button>
             <button
-              (click)="fetchSails(true); filterAccordion.close(); sailsFound?.focus();"
+              (click)="applyFilter(); filterAccordion.close();"
               mat-raised-button
               matTooltip="Apply sail filter"
             >Apply</button>
@@ -42,17 +42,14 @@
       </mat-accordion>
     </section>
     <section>
-      <h4
-        #sailsFound
-        aria-live="assertive"
-        tabindex="0"
-      >Found {{sailsSearchResults?.length}} sails.</h4>
-      <app-sail-list
-        (clicked)="goToViewSail($event.id)"
-        [sails]="sailsSearchResults"
-        emptyMessage="No sails."
-        title="Sails"
-      ></app-sail-list>
+      <ng-container
+        [ngTemplateOutlet]="SAIL_TABLE"
+        *ngIf="!windowService.isSmallWidth"
+      ></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="SAIL_TABLE_MOBILE"
+        *ngIf="windowService.isSmallWidth"
+      ></ng-container>
     </section>
   </mat-card-content>
 </mat-card>
@@ -163,25 +160,6 @@
         </mat-form-field>
       </form>
     </div>
-    <div>
-      <form>
-        <mat-form-field>
-          <mat-label
-            aria-hidden="true"
-            id="filterLabelSailLimit"
-            tabindex="-1"
-          >Max number of sails to return</mat-label>
-          <input
-            [(ngModel)]="sailLimit"
-            [ngModelOptions]="{standalone: true}"
-            aria-labelledby="filterLabelSailLimit"
-            title="Max number of sails to return"
-            matInput
-            type="number"
-          >
-        </mat-form-field>
-      </form>
-    </div>
   </div>
 </ng-template>
 <ng-template #controls>
@@ -206,4 +184,195 @@
     mat-raised-button
     title="Click to download sails as csv file."
   >.CSV</button>
+</ng-template>
+
+<ng-template #SAIL_TABLE>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    [showSearchInput]="false"
+    paginationLabel="Select page of sails"
+  >
+
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="start_at"
+      matSortDirection="desc"
+      tableColumns
+    >
+
+      <ng-container matColumnDef="entity_number">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > No. </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >{{element.entity_number}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Name </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          {{element.name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="start_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > When </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.start_at | humanDateWithTime }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="boat.name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Boat </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <button
+            mat-button
+            style="margin: 10px;"
+            (click)="showBoatDialog(element.boat)"
+            title="click to view boat info"
+          >{{element.boat?.name}}</button></td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Status </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          <button
+            mat-button
+            style="margin: 10px;"
+            (click)="goToEntity('SailEntity', element.id)"
+            title="Click to go to sail page for {{element.name}}"
+          >View</button>
+        </td>
+      </ng-container>
+
+    </ng-container>
+
+  </app-material-table>
+
+</ng-template>
+
+<ng-template #SAIL_TABLE_MOBILE>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumnsMobile"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    [showSearchInput]="false"
+    paginationLabel="Select page of sails"
+  >
+
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="start_at"
+      matSortDirection="desc"
+      tableColumns
+    >
+
+      <ng-container matColumnDef="entity_number">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Sail </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          <div class="row-mobile">
+            <div class="row-mobile-picture">
+              <img
+                [src]="boatThumbnail(element.boat)"
+                title="{{element.boat?.name}}. click to view boat info."
+                (click)="showBoatDialog(element.boat)"
+                class="clickable"
+              >
+            </div>
+            <div class="row-mobile-info">
+              <div><label>No.: </label><span>{{element.entity_number}}</span></div>
+              <div><label>Name: </label><span>{{element.name}}</span></div>
+              <div><label>Start: </label><span>{{element.start_at | humanDateWithTime}}</span></div>
+              <div><label>Boat: </label><span>{{element.boat?.name}}</span></div>
+            </div>
+          </div>
+          <div class="row-mobile-controls"><a
+              mat-button
+              style="margin: 10px;"
+              (click)="goToEntity('SailEntity', element.id)"
+              title="Click to go to sail page for {{element.name}}"
+            >View</a></div>
+        </td>
+      </ng-container>
+
+    </ng-container>
+
+  </app-material-table>
+
+</ng-template>
+
+<ng-template #TABLE_FILTERS>
 </ng-template>

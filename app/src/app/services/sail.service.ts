@@ -7,6 +7,7 @@ import {
 import { Comment } from '../../../../api/src/types/comment/comment';
 import { Sail } from '../../../../api/src/types/sail/sail';
 import { Boat } from '../../../../api/src/types/boat/boat';
+import { PaginatedSail } from '../../../../api/src/types/sail/paginated-sail';
 
 @Injectable({
   providedIn: 'root'
@@ -84,8 +85,8 @@ export class SailService {
     return this.http.get<Sail[]>(`${this.API_URL}/?substring=${name}&fields=name`);
   }
 
-  public search(query: any): Observable<Sail[]> {
-    return this.http.get<Sail[]>(`${this.API_URL}`, { params: query });
+  public searchPaginated(query: any): Observable<PaginatedSail> {
+    return this.http.get<PaginatedSail>(`${this.API_URL}`, { params: query });
   }
 
   public download(query: any) {

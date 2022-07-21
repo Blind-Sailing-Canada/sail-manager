@@ -50,6 +50,7 @@
     "dotenv": "16.0.1",
     "express-session": "1.17.3",
     "firebase-admin": "9.12.0",
+    "flat": "5.0.2",
     "googleapis": "88.2.0",
     "helmet": "5.1.0",
     "ioredis": "5.0.6",

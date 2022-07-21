@@ -11,7 +11,6 @@ import {
   sailChecklistsRoute,
   sailRequestsRoute,
 } from '../../../routes/routes';
-import { searchSails } from '../../../store/actions/sail.actions';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { Access } from '../../../../../../api/src/types/user-access/access';
 import { SailStatus } from '../../../../../../api/src/types/sail/sail-status';
@@ -19,6 +18,14 @@ import { ProfileRole } from '../../../../../../api/src/types/profile/profile-rol
 import { SailService } from '../../../services/sail.service';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
 import { STORE_SLICES } from '../../../store/store';
+import { firstValueFrom } from 'rxjs';
+import { PaginatedSail } from '../../../../../../api/src/types/sail/paginated-sail';
+import { Sail } from '../../../../../../api/src/types/sail/sail';
+import { MatTableDataSource } from '@angular/material/table';
+import { FilterInfo } from '../../../models/filter-into';
+import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
+import { Boat } from '../../../../../../api/src/types/boat/boat';
+import { WindowService } from '../../../services/window.service';
 
 @Component({
   selector: 'app-sail-list-page',
@@ -27,21 +34,26 @@ import { STORE_SLICES } from '../../../store/store';
 })
 export class SailListPageComponent extends BasePageComponent implements OnInit {
   public CREATE_SAIL_ROUTE = createSailRoute.toString();
-  public VIEW_SAIL_REQUESTS_ROUTE = sailRequestsRoute.toString();
   public VIEW_SAIL_CHECKLISTS_ROUTE = sailChecklistsRoute.toString();
+  public VIEW_SAIL_REQUESTS_ROUTE = sailRequestsRoute.toString();
   public boatName: string;
+  public dataSource = new MatTableDataSource<Sail>([]);
+  public displayedColumns: string[] = ['entity_number', 'name', 'start_at', 'boat.name', 'status', 'action'];
+  public displayedColumnsMobile: string[] = ['entity_number'];
+  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'start_at,DESC' };
+  public paginatedData: PaginatedSail;
   public sailEnd: string;
   public sailName: string;
   public sailStart: string;
   public sailStatus: SailStatus | 'ANY' = 'ANY';
   public sailStatusValues = { ...SailStatus, ANY: 'ANY' };
   public sailorName: string;
-  public sailLimit = 10;
 
   constructor(
     @Inject(Router) router: Router,
     @Inject(Store) store: Store<any>,
     @Inject(SailService) private sailService: SailService,
+    @Inject(WindowService) public windowService: WindowService,
   ) {
     super(store, undefined, router);
   }
@@ -56,7 +68,6 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
     this.sailStart = sailSearchData.sailStart;
     this.sailStatus = sailSearchData.sailStatus || 'ANY';
     this.sailorName = sailSearchData.sailorName;
-    this.sailLimit = sailSearchData.sailLimit || 10;
 
     this.fetchSails();
   }
@@ -68,7 +79,6 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
     this.sailStart = null;
     this.sailStatus = 'ANY';
     this.sailorName = null;
-    this.sailLimit = 10;
   }
 
   public goToViewSail(id: string): void {
@@ -101,17 +111,31 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
       );
   }
 
-  public fetchSails(notify = false): void {
+  public applyFilter(): void {
+    this.filterInfo = {
+      ...this.filterInfo,
+      pagination: DEFAULT_PAGINATION
+    };
+
+    this.fetchSails();
+  }
+
+  public async fetchSails() {
     const query = this.buildQuery();
 
-    this.dispatchAction(searchSails({ notify, query }));
+    const fetcher = this.sailService.searchPaginated(query);
+    this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
+    this.dataSource.data = this.paginatedData.data;
+
+    const page = this.paginatedData;
+
+    this.dispatchMessage(`Displaying ${page.count} of ${page.total} sails on page #${page.page}.`);
   }
 
   private buildQuery() {
     sessionStorage.setItem('sailSearchData', JSON.stringify({
       boatName: this.boatName,
       sailEnd: this.sailEnd,
-      sailLimit: this.sailLimit,
       sailName: this.sailName,
       sailStart: this.sailStart,
       sailStatus: this.sailStatus,
@@ -144,8 +168,9 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
       query.sailStatus = this.sailStatus;
     }
 
-    query.sort = 'start_at,DESC';
-    query.limit = this.sailLimit;
+    query.sort = this.filterInfo.sort;
+    query.page = this.filterInfo.pagination.pageIndex + 1;
+    query.per_page = this.filterInfo.pagination.pageSize;
 
     return query;
   }
@@ -164,6 +189,19 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
       roles.some(role => role === ProfileRole.Admin || role === ProfileRole.Coordinator);
 
     return should;
+  }
+
+  public filterHandler(event: FilterInfo): void {
+    this.filterInfo = event;
+
+    this.fetchSails();
+  }
+
+  public boatThumbnail(boat: Boat): string {
+    if (!boat?.pictures?.length) {
+      return '/assets/icons/sailing_black_48dp.svg';
+    }
+    return `${boat.pictures[0]}?width=200`;
   }
 
 }

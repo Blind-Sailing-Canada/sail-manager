@@ -46,8 +46,6 @@ import {
   postSailComment,
   putSail,
   putSails,
-  putSailSearchResults,
-  searchSails,
   sendSailNotification,
   startSail,
   updateSail,
@@ -299,28 +297,6 @@ export class SailEffects {
               putSnack({ snack: { type: SnackType.INFO, message: 'Saved' } }),
             )),
             catchError(errorCatcher(`Failed to update sail: ${action.id}`)),
-          )),
-      tap(() => this.store.dispatch(finishLoading())),
-    ),
-  );
-
-  searchSails$ = createEffect(
-    () => this.actions$.pipe(
-      ofType(searchSails),
-      tap(() => this.store.dispatch(startLoading())),
-      mergeMap(
-        action => this.sailService.search(action.query)
-          .pipe(
-            mergeMap((sails) => {
-              if (action.notify) {
-                return of(
-                  putSailSearchResults({ sails }),
-                  putSnack({ snack: { type: SnackType.INFO, message: `Found ${sails.length} sails.` } }),
-                );
-              }
-              return of(putSailSearchResults({ sails }));
-            }),
-            catchError(errorCatcher('Failed to fetch sails', [putSailSearchResults({ sails: [] })]))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

@@ -1,7 +1,18 @@
 import {
   AfterContentInit,
   AfterViewInit,
-  Component, ContentChild, ContentChildren, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, QueryList, ViewChild,
+  Component,
+  ContentChild,
+  ContentChildren,
+  EventEmitter,
+  Inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
 } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -17,7 +28,7 @@ import { WindowService } from '../../services/window.service';
   templateUrl: './material-table.component.html',
   styleUrls: ['./material-table.component.scss']
 })
-export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestroy, AfterContentInit {
+export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
   @Input() public dataSource = new MatTableDataSource<T>([]);
   @Input() public defaultFilterInfo: FilterInfo;
   @Input() public displayedColumns: string[] = [];
@@ -25,6 +36,7 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
   @Input() public paginatedData: PaginatedData<T>;
   @Input() public paginationLabel: string;
   @Input() public showPaginator = true;
+  @Input() public showSearchInput = true;
   @Output() public filterHandler: EventEmitter<FilterInfo> = new EventEmitter();
 
   @ViewChild('filterInput', { static: false }) private filterInput;
@@ -43,6 +55,10 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
   constructor(@Inject(WindowService) public windowService: WindowService) {
   }
 
+  ngOnChanges(): void {
+    this.pagination = this.defaultFilterInfo?.pagination || DEFAULT_PAGINATION;
+  }
+
   ngOnDestroy(): void {
     this.active = false;
   }
@@ -55,6 +71,10 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
   }
 
   ngAfterViewInit(): void {
+    if (!this.filterInput) {
+      return;
+    }
+
     const typeAhead = fromEvent(this.filterInput.nativeElement, 'input')
       .pipe(
         takeWhile(() => this.active),
@@ -64,7 +84,6 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
         filter(text => text.length === 0 || text.length > 2),
         switchMap((text) => {
           this.search = text;
-          console.log(text);
           return this.applyFilter();
         }),
       );

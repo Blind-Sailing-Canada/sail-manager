@@ -28,7 +28,8 @@ import { SailStatus } from '../types/sail/sail-status';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { SailUpdateJob } from '../types/sail/sail-update-job';
-
+import { PaginatedSail } from '../types/sail/paginated-sail';
+import  { unflatten } from 'flat';
 @Crud({
   model: { type: SailEntity },
   params: { id: {
@@ -131,7 +132,7 @@ export class SailController {
   @Get('/download')
   @UserAccess(UserAccessFields.DownloadSails)
   async download(@Query() query, @Res() response) {
-    const sails = await this.findSails(query);
+    const paginatedSails = await this.findSails(query);
 
     const fields = [
       '#',
@@ -147,7 +148,7 @@ export class SailController {
 
     const opts = { fields };
 
-    const data = sails.map(sail => ({
+    const data = paginatedSails.data.map(sail => ({
       '#': sail.entity_number,
       name: sail.name,
       description: sail.description,
@@ -257,7 +258,7 @@ export class SailController {
     return SailEntity.findOne({ where: { id: createdSailId } });
   }
 
-  private async findSails(query) {
+  private async findSails(query): Promise<PaginatedSail> {
     const sailStatus = query.sailStatus;
     const sailName = query.sailName;
     const boatName = query.boatName;
@@ -265,9 +266,11 @@ export class SailController {
     const start = query.sailStart;
     const end = query.sailEnd;
     const sort = query.sort;
-    const limit = query.limit;
+    const pageIndex = (query.page || 1) - 1;
+    const perPage = query.per_page || 20;
+    const skip = pageIndex * perPage;
 
-    let searchQuery = SailEntity.getRepository().createQueryBuilder('sail');
+    let searchQuery = SailEntity.getRepository().createQueryBuilder('sail').leftJoin('sail.boat', 'boat');
 
     if (sailStatus) {
       searchQuery = searchQuery
@@ -291,7 +294,6 @@ export class SailController {
 
     if (boatName) {
       searchQuery = searchQuery
-        .leftJoin('sail.boat', 'boat')
         .andWhere('boat.name ILIKE :boatName', { boatName: `%${boatName}%` });
     }
 
@@ -300,7 +302,7 @@ export class SailController {
         .leftJoin('sail.manifest', 'manifest')
         .leftJoin('manifest.profile', 'profile')
         .groupBy('manifest.sail_id, sail.id')
-        .having(`COUNT(*) = ${sailorNames.length}`);
+        .having(`COUNT(*) >= ${sailorNames.length}`);
 
       const sailorSearchQuery = sailorNames
         .map((_, index) => `manifest.person_name ILIKE :sailorName${index} OR profile.name ILIKE :sailorName${index}`)
@@ -322,27 +324,39 @@ export class SailController {
     }
 
     Object.keys(order).forEach((key) => {
-      searchQuery = searchQuery.addOrderBy(key, order[key]);
-    });
+      let finalKey = key;
 
-    if (limit) {
-      searchQuery = searchQuery.limit(limit);
-    }
+      if (!key.startsWith('boat.')) {
+        finalKey = `sail.${key}`;
+      }
+
+      searchQuery = searchQuery.addOrderBy(finalKey, order[key]);
+    });
 
     const foundSails = await searchQuery.select('sail.id').getMany();
 
-    const sail_ids = foundSails.map(sail => sail.id);
+    const total = foundSails.length;
+
+    const sail_ids = foundSails.slice(skip).slice(0, perPage).map(sail => sail.id);
+
+    let sails = [];
 
     if (sail_ids.length) {
-      return SailEntity
+      sails =  await SailEntity
         .find({
-          order: order,
-          relations: ['checklists'],
+          order: unflatten(order),
+          relations: ['checklists',],
           where: { id: In(sail_ids) },
         });
     }
 
-    return [];
+    return {
+      count: sail_ids.length,
+      data: sails,
+      page: pageIndex + 1,
+      pageCount: Math.ceil(total/perPage),
+      total,
+    };
   }
 
 }

@@ -1,6 +1,6 @@
 <div class="mat-elevation-z2">
   <div class="table-filters">
-    <mat-form-field>
+    <mat-form-field *ngIf="showSearchInput">
       <mat-label>Search</mat-label>
       <input
         matInput
@@ -35,7 +35,8 @@
     [disabled]="loading"
     [length]="paginatedData?.total || 0"
     [pageSizeOptions]="[1, 10, 20, 50]"
-    [pageSize]="20"
+    [pageSize]="pagination.pageSize"
+    [pageIndex]="pagination.pageIndex"
     [showFirstLastButtons]="paginatedData?.total > paginatedData?.count"
     attr.aria-label="{{paginationLabel}}"
   >
