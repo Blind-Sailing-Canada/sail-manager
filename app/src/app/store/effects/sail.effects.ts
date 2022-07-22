@@ -38,6 +38,7 @@ import {
   createSailFromSailRequest,
   deleteSailComment,
   fetchSail,
+  fetchSailByNumber,
   fetchSails,
   joinSailAsCrew,
   joinSailAsSailor,
@@ -341,6 +342,28 @@ export class SailEffects {
               return of(putSail({ sail, id: action.sail_id }));
             }),
             catchError(errorCatcher(`Failed to fetch sail: ${action.sail_id}`, [putSail({ sail: null, id: action.sail_id })])),
+          )),
+      tap(() => this.store.dispatch(finishLoading())),
+    ),
+  );
+
+  fetchSailByNumber$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(fetchSailByNumber),
+      tap(() => this.store.dispatch(startLoading())),
+      mergeMap(
+        action => this.sailService.fetchOneByNumber(action.sail_number)
+          .pipe(
+            mergeMap((sail) => {
+              if (action.notify) {
+                return of(
+                  putSail({ sail, id: sail.id }),
+                  putSnack({ snack: { type: SnackType.INFO, message: 'refreshed' } }),
+                );
+              }
+              return of(putSail({ sail, id: sail.id }));
+            }),
+            catchError(errorCatcher(`Failed to fetch sail: ${action.sail_number}`, [putSail({ sail: null, id: `${action.sail_number}` })])),
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

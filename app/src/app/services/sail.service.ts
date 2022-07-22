@@ -61,6 +61,10 @@ export class SailService {
     return this.http.get<Sail[]>(`${this.API_URL}/available`);
   }
 
+  public fetchOneByNumber(sail_number: number): Observable<Sail> {
+    return this.http.get<Sail>(`${this.API_URL}/number/${sail_number}`);
+  }
+
   public fetchOne(id: string): Observable<Sail> {
     return this.http.get<Sail>(`${this.API_URL}/${id}`);
   }

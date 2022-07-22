@@ -73,7 +73,7 @@ import { SailRequest } from '../../../../../api/src/types/sail-request/sail-requ
 import { fetchClinic } from '../../store/actions/clinic.actions';
 import { fetchDocument } from '../../store/actions/document.actions';
 import { fetchProfile } from '../../store/actions/profile.actions';
-import { fetchSail } from '../../store/actions/sail.actions';
+import { fetchSail, fetchSailByNumber } from '../../store/actions/sail.actions';
 import { fetchSailChecklist } from '../../store/actions/sail-checklist.actions';
 import { fetchSailRequest } from '../../store/actions/sail-request.actions';
 import { putSnack } from '../../store/actions/snack.actions';
@@ -292,6 +292,20 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
       delete this.fetching[id];
     } else if (sail === undefined && !this.fetching[id]) {
       this.fetchSail(id);
+    }
+
+    return sail;
+  }
+
+  public getSailByNumber(sail_number: number): Sail {
+    const sail = Object.values(this.sails).find(s => s.entity_number === sail_number);
+
+    const key = `sail_${sail_number}`;
+
+    if (sail) {
+      delete this.fetching[key];
+    } else if (sail === undefined && !this.fetching[key]) {
+      this.fetchSailByNumber(sail_number);
     }
 
     return sail;
@@ -538,6 +552,15 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     if (!this.fetching[sail_id]) {
       this.fetching[sail_id] = true;
       this.dispatchAction(fetchSail({ sail_id, ...options }));
+    }
+  }
+
+  protected fetchSailByNumber(sail_number: number, options = {} as any): void {
+    const key = `sail_${sail_number}`;
+
+    if (!this.fetching[key]) {
+      this.fetching[key] = true;
+      this.dispatchAction(fetchSailByNumber({ sail_number, ...options }));
     }
   }
 

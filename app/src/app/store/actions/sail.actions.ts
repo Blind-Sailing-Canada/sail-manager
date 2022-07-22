@@ -13,6 +13,7 @@ export enum SAIL_ACTION_TYPES {
   CREATE_FROM_SAIL_REQUEST = '[Sail] Create from sail request',
   FETCH_MANY = '[Sail] Fetch Many',
   FETCH_ONE = '[Sail] Fetch One',
+  FETCH_ONE_BY_NUMBER = '[Sail] Fetch One by number',
   JOIN_CREW = '[Sail] Join As Crew',
   JOIN_SAILOR = '[Sail] Join As Sailor',
   JOIN_SKIPPER = '[Sail] Join As Skipper',
@@ -44,6 +45,7 @@ export const createSailFromSailRequest = createAction(
   SAIL_ACTION_TYPES.CREATE_FROM_SAIL_REQUEST, props<{ sail: Sail; sail_request_id: string }>());
 export const startSail = createAction(SAIL_ACTION_TYPES.START, props<{ sail: Sail; notify?: boolean }>());
 export const fetchSail = createAction(SAIL_ACTION_TYPES.FETCH_ONE, props<{ sail_id: string; notify?: boolean }>());
+export const fetchSailByNumber = createAction(SAIL_ACTION_TYPES.FETCH_ONE_BY_NUMBER, props<{ sail_number: number; notify?: boolean }>());
 export const fetchSails = createAction(SAIL_ACTION_TYPES.FETCH_MANY, props<{ notify?: boolean; query?: string }>());
 export const joinSailAsCrew = createAction(SAIL_ACTION_TYPES.JOIN_CREW, props<{ sail_id: string; notify?: boolean }>());
 export const joinSailAsSailor = createAction(

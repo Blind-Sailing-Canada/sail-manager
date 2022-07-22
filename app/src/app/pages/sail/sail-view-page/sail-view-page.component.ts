@@ -73,31 +73,40 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     }
 
     this.sail_id = this.route.snapshot.params.id;
+
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
-      this.sail = this.getSail(this.sail_id);
-
-      if (this.sail) {
-        this.sailSkippers = [];
-        this.sailCrew = [];
-        this.sailSailors = [];
-
-        this.sail.manifest.forEach((sailor) => {
-          switch(sailor.sailor_role) {
-            case SailorRole.Skipper:
-              this.sailSkippers.push(sailor);
-              break;
-            case SailorRole.Crew:
-              this.sailCrew.push(sailor);
-              break;
-            default:
-              this.sailSailors.push(sailor);
-          }
-        });
-
-        const skipperCrewSpots = (this.sailSkippers.length || 1) + (this.sailCrew.length || 1);
-
-        this.sailorSpots = [].constructor(Math.max(this.sailSailors.length, (this.sail.max_occupancy || 6) - skipperCrewSpots));
+      if (Number.isInteger(+this.sail_id)) {
+        this.sail = this.getSailByNumber(+this.sail_id);
+      } else {
+        this.sail = this.getSail(this.sail_id);
       }
+
+
+      if (!this.sail) {
+        return;
+      }
+
+      this.sail_id = this.sail.id; // incase sail_id was a sail number instead of id
+      this.sailSkippers = [];
+      this.sailCrew = [];
+      this.sailSailors = [];
+
+      this.sail.manifest.forEach((sailor) => {
+        switch(sailor.sailor_role) {
+          case SailorRole.Skipper:
+            this.sailSkippers.push(sailor);
+            break;
+          case SailorRole.Crew:
+            this.sailCrew.push(sailor);
+            break;
+          default:
+            this.sailSailors.push(sailor);
+        }
+      });
+
+      const skipperCrewSpots = (this.sailSkippers.length || 1) + (this.sailCrew.length || 1);
+
+      this.sailorSpots = [].constructor(Math.max(this.sailSailors.length, (this.sail.max_occupancy || 6) - skipperCrewSpots));
 
     });
   }

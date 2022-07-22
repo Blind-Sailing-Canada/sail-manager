@@ -37,7 +37,6 @@ import { putBoats } from '../../../store/actions/boat.actions';
 import {
   createSail,
   createSailFromSailRequest,
-  fetchSail,
   updateSail,
 } from '../../../store/actions/sail.actions';
 import { STORE_SLICES } from '../../../store/store';
@@ -106,19 +105,20 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     });
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
-      if (!this.creatingNewSail) {
-        const sail = this.sails[this.sail_id];
+      let sail: Sail;
 
-        if (sail === undefined && !this.fetching[this.sail_id]) {
-          this.fetching[this.sail_id] = true;
-          this.dispatchAction(fetchSail({ sail_id: this.sail_id }));
-          return;
+      if (!this.creatingNewSail) {
+        if (Number.isInteger(+this.sail_id)) {
+          sail = this.getSailByNumber(+this.sail_id);
+        } else {
+          sail = this.getSail(this.sail_id);
         }
 
         if (!sail) {
           return;
         }
 
+        this.sail_id = sail.id;
         this.updateForm(sail);
 
       }
