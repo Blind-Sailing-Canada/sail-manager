@@ -35,6 +35,7 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
   @Input() public loading: boolean;
   @Input() public paginatedData: PaginatedData<T>;
   @Input() public paginationLabel: string;
+  @Input() public searchTitle = 'Search';
   @Input() public showPaginator = true;
   @Input() public showSearchInput = true;
   @Output() public filterHandler: EventEmitter<FilterInfo> = new EventEmitter();
@@ -84,6 +85,7 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
         filter(text => text.length === 0 || text.length > 2),
         switchMap((text) => {
           this.search = text;
+          this.pagination.pageIndex = 0;
           return this.applyFilter();
         }),
       );

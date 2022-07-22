@@ -35,6 +35,10 @@ section {
   width: 150px;
 }
 
+.row-mobile-picture img:hover {
+  filter: grayscale(100%);
+}
+
 .row-mobile-info {
   grid-area: info;
   padding: 10px;

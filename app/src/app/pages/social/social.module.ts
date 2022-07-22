@@ -16,6 +16,7 @@ import { ImageFormModule } from '../../components/image-form/image-form.module';
 import { ImageListModule } from '../../components/image-list/image-list.module';
 import { ItemPickerModule } from '../../components/item-picker/item-picker.module';
 import { ListFilterModule } from '../../components/list-filter/list-filter.module';
+import { MaterialTableModule } from '../../components/material-table/material-table.module';
 import { NewCommentFormModule } from '../../components/new-comment-form/new-comment-form.module';
 import { ProfileBulletModule } from '../../components/profile-bullet/profile-bullet.module';
 import { SocialNotificationDialogModule } from '../../components/social-notification-dialog/social-notification-dialog.module';
@@ -56,6 +57,7 @@ import { SocialViewPageComponent } from './social-view-page/social-view-page.com
     ImageListModule,
     ItemPickerModule,
     ListFilterModule,
+    MaterialTableModule,
     NewCommentFormModule,
     PipesModule,
     ProfileBulletModule,

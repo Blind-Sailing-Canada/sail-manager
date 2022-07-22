@@ -229,7 +229,7 @@
       [(ngModel)]="sailStatus"
       [ngModelOptions]="{standalone: true}"
       matNativeControl
-      (ngModelChange)="filterSails()"
+      (ngModelChange)="statusHandler()"
     >
       <option
         *ngFor="let status of sailStatusValues | keyvalue"

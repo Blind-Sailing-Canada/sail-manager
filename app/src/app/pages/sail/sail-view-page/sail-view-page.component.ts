@@ -434,7 +434,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     }
 
     if (!sail.manifest.some(sailor => sailor.sailor_role === SailorRole.Skipper)) {
-      return false;
+      return false; // no skipper assigned to the sail
     }
 
     if (!sail.boat) {
@@ -449,12 +449,8 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return false;
     }
 
-    const user = this.user;
 
-    const roles: string[] = user.roles || [];
-    const isSkipperOrCrew = roles.some(role => role === ProfileRole.Skipper || role === ProfileRole.Crew);
-
-    if (isSkipperOrCrew && (this.isUserSailSkipper || this.isUserSailCrew)) {
+    if (this.isUserSailSkipper || this.isUserSailCrew) {
       return true;
     }
 
@@ -468,12 +464,8 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return false;
     }
 
-    const user = this.user;
 
-    const roles: string[] = user.roles || [];
-    const isSkipperOrCrew = roles.some(role => role === ProfileRole.Skipper || role === ProfileRole.Crew);
-
-    if (isSkipperOrCrew && (this.isUserSailSkipper || this.isUserSailCrew)) {
+    if (this.isUserSailSkipper || this.isUserSailCrew) {
       return true;
     }
 

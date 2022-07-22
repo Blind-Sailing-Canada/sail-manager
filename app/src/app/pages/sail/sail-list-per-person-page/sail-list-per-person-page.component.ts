@@ -106,6 +106,12 @@ export class SailListPerPersonPageComponent extends BasePageComponent implements
     this.goTo([viewSailRoute(sail.id)]);
   }
 
+  public statusHandler(): void {
+    this.filterInfo.pagination.pageIndex = 0;
+
+    this.filterSails();
+  }
+
   public filterHandler(event: FilterInfo): void {
     this.filterInfo = event;
 

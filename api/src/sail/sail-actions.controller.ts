@@ -229,7 +229,10 @@ export class SailActionsController {
 
       const skipperAndCrew = sail
         .manifest
-        .filter(sailor => sailor.sailor_role === SailorRole.Skipper || sailor.sailor_role === SailorRole.Crew);
+        .filter(sailor => [
+          SailorRole.Skipper,
+          SailorRole.Crew
+        ].includes(sailor.sailor_role));
 
       let canPerformAction = false;
 
