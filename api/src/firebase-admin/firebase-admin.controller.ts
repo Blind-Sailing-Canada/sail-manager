@@ -55,11 +55,14 @@ export class FirebaseAdminController {
       fastShrinkOnLoad: options.fastShrinkOnLoad || false,
       fit: options.fit || 'outside',
       kernel: options.kernel || 'lanczos3',
-      width: +options.width,
     };
 
     if (options.height) {
       resizeOptions.height = +options.height;
+    }
+
+    if (options.width) {
+      resizeOptions.width = +options.width;
     }
 
     return sharp(image)
