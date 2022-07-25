@@ -94,6 +94,28 @@
   >Notify</button>
 </ng-template>
 <ng-template #sailContent>
+  <mat-nav-list *ngIf="boatMaintenanceCount">
+    <h4 mat-header>Attention</h4>
+    <mat-list-item
+      (click)="goToBoatMaintenance()"
+      (keydown)="goToBoatMaintenance()"
+    >
+      <mat-icon
+        color="warn"
+        mat-list-icon
+      >warning</mat-icon>
+      <h3
+        matLine
+        class="break-all"
+      >
+        There {{boatMaintenanceCount > 1 ? 'are' : 'is'}} {{boatMaintenanceCount}} maintenance
+        {{boatMaintenanceCount > 1 ? 'requests' : 'request'}} open for
+        {{sail.boat.name}}.
+      </h3>
+      <p matLine>Please review before using the boat.</p>
+      <mat-icon title="go to maintenance page">navigate_next</mat-icon>
+    </mat-list-item>
+  </mat-nav-list>
   <app-table>
     <tbody role="list">
       <tr
@@ -491,7 +513,8 @@
           class="warning"
           colspan="2"
         >
-          <mat-error><b>Warning: Sail max occupancy of {{sail.max_occupancy}} sailors has been exceeded!</b></mat-error>
+          <mat-error><b>Warning: Sail max occupancy of {{sail.max_occupancy}} sailors has been exceeded!</b>
+          </mat-error>
         </td>
       </tr>
     </tfoot>

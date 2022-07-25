@@ -30,6 +30,10 @@ export class BoatMaintenanceService {
 
   }
 
+  countMaintenances(boat_id: string): Observable<number> {
+    return this.http.get<number>(`${this.API_URL}/count/?boat_id=${boat_id}`);
+  }
+
   postMaintenanceComment(id: string, comment: Comment): Observable<BoatMaintenance> {
     return this.http.post<BoatMaintenance>(`${this.API_URL}/${id}/comments`, comment);
   }

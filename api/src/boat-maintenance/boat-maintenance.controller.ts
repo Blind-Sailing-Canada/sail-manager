@@ -1,10 +1,11 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
-  Body, Controller, Delete, Param, Patch, Post, UnauthorizedException, UseGuards
+  Body, Controller, Delete, Get, Param, Patch, Post, Query, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { Queue } from 'bull';
+import { Not } from 'typeorm';
 import { CommentEntity } from '../comment/comment.entity';
 import { FirebaseAdminService } from '../firebase-admin/firebase-admin.service';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
@@ -13,6 +14,7 @@ import { LoginGuard } from '../guards/login.guard';
 import { MediaEntity } from '../media/media.entity';
 import { BoatMaintenance } from '../types/boat-maintenance/boat-maintenance';
 import { BoatMaintenanceNewCommentJob } from '../types/boat-maintenance/boat-maintenance-new-comment-job';
+import { BoatMaintenanceStatus } from '../types/boat-maintenance/boat-maintenance-status';
 import { BoatMaintenanceUpdateJob } from '../types/boat-maintenance/boat-maintenance-update-request-job';
 import { Comment } from '../types/comment/comment';
 import { Media } from '../types/media/media';
@@ -70,6 +72,15 @@ export class BoatMaintenanceController {
     private firebaseService: FirebaseAdminService,
     @InjectQueue('boat-maintenance') private readonly boatMaintenanceQueue: Queue
   ) { }
+
+  @Get('/count')
+  countMaintenances(@Query('boat_id') boat_id: string) {
+    return BoatMaintenanceEntity
+      .createQueryBuilder()
+      .where({ boat_id })
+      .andWhere({ status: Not(BoatMaintenanceStatus.Resolved) })
+      .getCount();
+  }
 
   @Patch('/:id/pictures')
   async addPictures(@User() user: JwtObject, @Param('id') id: string, @Body() pictures: Partial<Media>[]) {

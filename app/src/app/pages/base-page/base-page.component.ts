@@ -142,7 +142,6 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
   }
 
   public goToEntity(entityType: string, entityId: string): void {
-    console.log(entityType, entityId);
     switch(entityType) {
       case 'SailEntity':
         this.viewSail(entityId);

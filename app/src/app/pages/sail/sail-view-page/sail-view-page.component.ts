@@ -16,6 +16,7 @@ import {
   editSailRoute,
   listFeedbackRoute,
   listSailPathsRoute,
+  maintenanceRoute,
   viewSailChecklistRoute,
   viewSailPicturesRoute,
 } from '../../../routes/routes';
@@ -41,6 +42,8 @@ import { SailManifest } from '../../../../../../api/src/types/sail-manifest/sail
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
 import { SailNotificationDialogComponent } from '../../../components/sail-notification-dialog/sail-notification-dialog.component';
 import { SailNotificationDialogData } from '../../../models/sail-notification-dialog-data.interface';
+import { BoatMaintenanceService } from '../../../services/boat-maintenance.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-sail-view-page',
@@ -55,6 +58,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
   public sailNotificationDialogRef: MatDialogRef<SailNotificationDialogComponent>;
   public sailSailors: SailManifest[] = [];
   public sailSkippers: SailManifest[] = [];
+  public boatMaintenanceCount = 0;
 
   private sail_id: string;
 
@@ -63,6 +67,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
     @Inject(Store) store: Store<any>,
+    @Inject(BoatMaintenanceService) private boatMaintenanceService: BoatMaintenanceService,
   ) {
     super(store, route, router, dialog);
   }
@@ -91,6 +96,8 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       this.sailCrew = [];
       this.sailSailors = [];
 
+      this.fetchBoatMaintenanceCount();
+
       this.sail.manifest.forEach((sailor) => {
         switch(sailor.sailor_role) {
           case SailorRole.Skipper:
@@ -109,6 +116,20 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       this.sailorSpots = [].constructor(Math.max(this.sailSailors.length, (this.sail.max_occupancy || 6) - skipperCrewSpots));
 
     });
+  }
+
+  public goToBoatMaintenance(): void {
+    this.goTo(
+      [maintenanceRoute],
+      { queryParams: { boat_id: this.sail.boat_id } },
+    );
+  }
+
+  public async fetchBoatMaintenanceCount() {
+    this.startLoading();
+
+    const fetcher = this.boatMaintenanceService.countMaintenances(this.sail.boat_id);
+    this.boatMaintenanceCount = await firstValueFrom(fetcher).finally(() => this.finishLoading());
   }
 
   public get exceedingMaxOccupancy(): boolean {
