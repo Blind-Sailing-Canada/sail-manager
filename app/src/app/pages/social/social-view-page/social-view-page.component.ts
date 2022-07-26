@@ -65,6 +65,14 @@ export class SocialViewPageComponent extends BasePageComponent implements OnInit
     });
   }
 
+  public get socialAddressUrl(): string {
+    if (this.social.address.startsWith('http')) {
+      return this.social.address;
+    }
+
+    return `https://maps.google.com/?q=${this.social.address.replace(/\s/g, '+')}`;
+  }
+
   public get exceedingMaxOccupancy(): boolean {
     return this.social.max_attendants !== -1 && this.social.manifest?.length > this.social.max_attendants;
   }

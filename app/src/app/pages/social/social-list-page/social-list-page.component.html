@@ -204,6 +204,14 @@
               <div><label>Description: </label>
                 <p>{{element.description}}</p>
               </div>
+              <div *ngIf="element.address"><label>Address: </label>
+                <address>
+                  <a
+                    [href]="socialAddressUrl(element)"
+                    target="_blank"
+                  >{{element.address}}</a>
+                </address>
+              </div>
             </div>
             <div class="row-mobile-controls"><button
                 (click)="goToViewSocial(element.id)"

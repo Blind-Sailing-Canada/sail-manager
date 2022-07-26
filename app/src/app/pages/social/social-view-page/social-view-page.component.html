@@ -271,14 +271,12 @@
           tabindex="0"
         >
           <b *ngIf="!social.address">'unknown'</b>
-          <address *ngIf="social.address && !social.address.startsWith('http')"><a
-              href="https://www.google.com/maps/place/{{social.address}}"
+          <address *ngIf="social.address">
+            <a
+              [href]="socialAddressUrl"
               target="_blank"
-            >{{social.address}}</a></address>
-          <address *ngIf="social.address && social.address.startsWith('http')"><a
-              href="{{social.address}}"
-              target="_blank"
-            >{{social.address}}</a></address>
+            >{{social.address}}</a>
+          </address>
         </td>
       </tr>
       <tr

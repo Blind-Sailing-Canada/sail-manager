@@ -51,6 +51,14 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
     this.filterSocials();
   }
 
+  public socialAddressUrl(social: Social): string {
+    if (social.address.startsWith('http')) {
+      return social.address;
+    }
+
+    return `https://maps.google.com/?q=${social.address.replace(/\s/g, '+')}`;
+  }
+
   public goToSocialsPictures() {
     this.goTo([listMediaRoute], { queryParams: { entity: 'SocialEntity' } });
   }

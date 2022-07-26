@@ -14,3 +14,9 @@ mat-list-item:nth-child(even) {
 mat-list-item:last-child {
   border-bottom: 1px solid black;
 }
+
+
+mat-list-item {
+  height: max-content !important;
+  padding: 10px 0 !important;
+}

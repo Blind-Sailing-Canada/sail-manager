@@ -11,10 +11,13 @@
   >
     <mat-icon
       aria-hidden="true"
-      mat-list-avatar
+      mat-list-icon
       style="height: unset;"
     >{{actionIcon(action.required_action_type)}}</mat-icon>
-    <span matLine>{{action.title}}</span>
+    <span
+      matLine
+      class="break-space"
+    >{{action.title}}</span>
     <mat-icon>navigate_next</mat-icon>
   </mat-list-item>
 </mat-nav-list>
