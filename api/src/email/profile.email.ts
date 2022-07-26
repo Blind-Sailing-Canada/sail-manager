@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DOMAIN } from '../auth/constants';
 import { EmailInfo } from '../types/email/email-info';
 import { Profile } from '../types/profile/profile';
+import { toLocalDate } from '../utils/date.util';
 
 @Injectable()
 export class ProfileEmail {
@@ -45,6 +46,39 @@ export class ProfileEmail {
     };
 
     return emailInfo;
+  }
+
+  awaitingApproval(profiles: Profile[]): EmailInfo {
+    if (!profiles?.length) {
+      return;
+    }
+
+    const emailInfo: EmailInfo = {
+      subject: `COMPANY_NAME_SHORT_HEADER: profiles awaiting approvals as of ${toLocalDate(new Date())}`,
+      content:  `
+        <html>
+          <body>
+            <h3>Here is a list of profiles wating to be reviewed</h3>
+            <div>
+              <ol>${this.profileList(profiles)}</ol>
+            </div>
+
+            <a href="${DOMAIN}/login">Login</a>
+          </body>
+        </html>
+      `.trim().replace(/\n/g, ''),
+    };
+
+    return emailInfo;
+  }
+
+  private profileList(profiles: Profile[]): string {
+    return profiles.reduce((red, profile) => {
+      return `
+      ${red}
+      <li><a href="${DOMAIN}/profiles/view/${profile.id}">${toLocalDate(profile.created_at)} - ${profile.name} (${profile.email})</a></li>
+      `.trim();
+    }, '');
   }
 
 }

@@ -8,6 +8,7 @@ import { EmailModule } from '../email/email.module';
 import { GoogleApiModule } from '../google-api/google-api.module';
 import { ProfileController } from './profile.controller';
 import { ProfileEntity } from './profile.entity';
+import { ProfileJob } from './profile.job';
 import { ProfileProcessor } from './profile.processor';
 import { ProfileService } from './profile.service';
 
@@ -21,8 +22,9 @@ import { ProfileService } from './profile.service';
   ],
   controllers: [ProfileController],
   providers: [
-    ProfileService,
+    ProfileJob,
     ProfileProcessor,
+    ProfileService,
   ],
   exports: [ProfileService],
 })
