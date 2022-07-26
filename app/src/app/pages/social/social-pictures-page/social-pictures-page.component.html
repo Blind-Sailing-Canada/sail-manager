@@ -55,6 +55,7 @@
     [showAuthor]="true"
     [user]="user"
     [allowDelete]="allowDelete"
+    (showMediaDialog)="showMediaDialog($event)"
     (deleteClick)="deletePicture($event)"
   ></app-image-list>
 </ng-template>

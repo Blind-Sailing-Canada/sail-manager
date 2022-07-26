@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BasePageComponent } from './base-page.component';
 import { BoatDialogModule } from '../../components/boat-dialog/boat-dialog.module';
 import { ProfileDialogModule } from '../../components/profile-dialog/profile-dialog.module';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -13,8 +14,9 @@ import { ProfileDialogModule } from '../../components/profile-dialog/profile-dia
   ],
   imports: [
     BoatDialogModule,
+    CommonModule,
+    PipesModule,
     ProfileDialogModule,
-    CommonModule
   ]
 })
 export class BasePageModule { }
