@@ -44,9 +44,10 @@
 <ng-template #REVIEW_PROFILES_LIST>
   <mat-nav-list>
     <h3>Profiles awaiting review: {{pendingApproval.length}}</h3>
-    <mat-list-item
+    <a
       *ngFor="let profile of pendingApproval;"
-      (click)="editProfilePrivileges(profile)"
+      [routerLink]="profileLink(profile.id)"
+      mat-list-item
       title="Click to review {{profile.name}}'s profile"
     >
       <img
@@ -57,7 +58,7 @@
       <span matLine>{{profile.name}}</span>
       <span matLine>{{profile.email}}</span>
       <mat-icon>chevron_right</mat-icon>
-    </mat-list-item>
+    </a>
   </mat-nav-list>
 </ng-template>
 

@@ -3,12 +3,16 @@ mat-radio-group {
   flex-direction: column;
 }
 
+mat-radio-button:first-child {
+  margin-top: 10px;
+}
+
 mat-radio-button {
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
-::ng-deep .mat-list-item-content {
+:host ::ng-deep .mat-list-item-content {
   padding: 0 !important;
 }
 

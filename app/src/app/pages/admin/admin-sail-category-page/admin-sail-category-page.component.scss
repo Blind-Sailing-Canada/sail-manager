@@ -8,7 +8,7 @@ mat-radio-button {
   margin-bottom: 5px;
 }
 
-::ng-deep .mat-list-item-content {
+:host .mat-list-item-content {
   padding: 0 !important;
 }
 

@@ -49,6 +49,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
   public profile_id: string;
   public profileStatus: ProfileStatus | 'ANY' = 'ANY';
   public profileStatusValues = { ...ProfileStatus, ANY: 'ANY' };
+  public profileLink = editProfilePrivilegesRoute;
 
   constructor(
     @Inject(Store) store: Store<any>,

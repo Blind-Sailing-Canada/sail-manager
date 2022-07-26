@@ -131,9 +131,9 @@
           *matCellDef="let element"
         >
           <button
-            mat-button
-            style="margin: 10px;"
             (click)="goToEntity('SailEntity', element.id)"
+            mat-raised-button
+            style="margin: 10px;"
             title="Click to go to sail page for {{element.name}}"
           >View</button>
         </td>
@@ -196,9 +196,9 @@
             </div>
           </div>
           <div class="row-mobile-controls"><a
-              mat-button
-              style="margin: 10px;"
               (click)="goToEntity('SailEntity', element.id)"
+              mat-raised-button
+              style="margin: 10px;"
               title="Click to go to sail page for {{element.name}}"
             >View</a></div>
         </td>
