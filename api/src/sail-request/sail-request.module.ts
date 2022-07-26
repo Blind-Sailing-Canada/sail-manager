@@ -6,6 +6,7 @@ import { EmailModule } from '../email/email.module';
 import { GoogleApiModule } from '../google-api/google-api.module';
 import { SailRequestController } from './sail-request.controller';
 import { SailRequestEntity } from './sail-request.entity';
+import { SailRequestJob } from './sail-request.job';
 import { SailRequestProcessor } from './sail-request.processor';
 import { SailRequestService } from './sail-request.service';
 import { SailRequestSubscriber } from './sail-request.subscriber';
@@ -20,6 +21,7 @@ import { SailRequestSubscriber } from './sail-request.subscriber';
   ],
   controllers: [SailRequestController],
   providers: [
+    SailRequestJob,
     SailRequestProcessor,
     SailRequestService,
     SailRequestSubscriber,

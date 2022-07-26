@@ -103,6 +103,28 @@ export class SocialEmail {
     return emailInfo;
   }
 
+  expiredSocials(socials: Social[]): EmailInfo {
+    const emailInfo: EmailInfo = {
+      subject: `COMPANY_NAME_SHORT_HEADER: Expired socials as of ${toLocalDate(new Date())}`,
+      content: `
+        <html>
+          <body>
+            <h3>Here is a list of expired socials</h3>
+            <div>
+              <ol>
+              ${this.socialList(socials)}
+              </ol>
+            </div>
+            <p>These socials have a status of New but their start date is in the past.</p>
+            <p>Their status should be updated to reflect their current state.</p>
+          </body>
+        </html>
+      `.trim().replace(/\n/g, ''),
+    };
+
+    return emailInfo;
+  }
+
   private socialList(socials: Social[]): string {
     return socials.reduce((red, social) => {
       return `

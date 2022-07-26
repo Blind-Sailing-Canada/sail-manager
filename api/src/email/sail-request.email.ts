@@ -4,6 +4,7 @@ import { ProfileEntity } from '../profile/profile.entity';
 import { SailRequestInterestEntity } from '../sail-request-interest/sail-request-interest.entity';
 import { EmailInfo } from '../types/email/email-info';
 import { SailRequest } from '../types/sail-request/sail-request';
+import { toLocalDate } from '../utils/date.util';
 
 @Injectable()
 export class SailRequestEmail {
@@ -29,6 +30,36 @@ export class SailRequestEmail {
             <p>${sail_request.details}</p>
             <p>requested by ${sail_request.requested_by.name}</p>
             <a href="${DOMAIN}/sail-requests/view/${sail_request.id}">View sail request</a>
+          </body>
+        </html>
+      `.trim().replace(/\n/g, ''),
+    };
+
+    return emailInfo;
+  }
+
+  async unschedledRequests(sailRequests: SailRequest[]): Promise<EmailInfo> {
+    if (!sailRequests?.length) {
+      return;
+    }
+
+    const sendTo: Set<string> = new Set<string>();
+
+    const sailCoordinators = await ProfileEntity.coordinators();
+
+    sailCoordinators.forEach(coordinator => sendTo.add(coordinator.email));
+
+    const emailInfo: EmailInfo = {
+      bcc: Array.from(sendTo),
+      subject: `COMPANY_NAME_SHORT_HEADER: sail requests as of ${toLocalDate(new Date())}`,
+      content:  `
+        <html>
+          <body>
+            <h3>Here is a list of sail requests older than 2 days and which have not been scheduled</h3>
+            <div>
+              <ol>${this.requestList(sailRequests)}</ol>
+            </div>
+            <p>Their status should be updated to reflect their current state.</p>
           </body>
         </html>
       `.trim().replace(/\n/g, ''),
@@ -96,5 +127,16 @@ export class SailRequestEmail {
     };
 
     return emailInfo;
+  }
+
+  private requestList(requests: SailRequest[]): string {
+    return requests.reduce((red, request) => {
+      return `
+      ${red}
+      <li>
+        <a href="${DOMAIN}/sail-requests/view/${request.id}">${toLocalDate(request.created_at)} - ${request.details}: ${request.status}</a>
+      </li>
+      `.trim();
+    }, '');
   }
 }

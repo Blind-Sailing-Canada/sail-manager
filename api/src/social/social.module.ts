@@ -10,6 +10,7 @@ import { SocialCommentsController } from './social-comments.controller';
 import { SocialPicturesController } from './social-pictures.controller';
 import { SocialController } from './social.controller';
 import { SocialEntity } from './social.entity';
+import { SocialJob } from './social.job';
 import { SocialProcessor } from './social.processor';
 import { SocialService } from './social.service';
 
@@ -29,6 +30,7 @@ import { SocialService } from './social.service';
     SocialPicturesController,
   ],
   providers: [
+    SocialJob,
     SocialProcessor,
     SocialService,
   ],
