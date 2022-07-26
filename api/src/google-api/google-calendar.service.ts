@@ -245,6 +245,8 @@ export class GoogleCalendarService {
       return Promise.resolve();
     }
 
+    const event = this.sailEvent(sail);
+
     currentAttendees
       .push({
         email: profile.email,
@@ -257,7 +259,7 @@ export class GoogleCalendarService {
       .patch({
         calendarId: CALENDAR_ID,
         eventId: sail.calendar_id,
-        requestBody: { attendees: currentAttendees },
+        requestBody: event,
         sendUpdates: 'all',
       });
   }
@@ -321,16 +323,24 @@ export class GoogleCalendarService {
       })
       .then(response => response.data);
 
+    if (!existingEvent) {
+      return Promise.resolve();
+    }
+
     const currentAttendees = existingEvent.attendees || [];
 
-    const newAttendees = currentAttendees.filter(attendee => attendee.email !== profile.email);
+    if (!currentAttendees.find(attendee => attendee.email === profile.email)) {
+      return Promise.resolve();
+    }
+
+    const event = this.sailEvent(sail);
 
     return this.calendar
       .events
       .patch({
         calendarId: CALENDAR_ID,
         eventId: sail.calendar_id,
-        requestBody: { attendees: newAttendees },
+        requestBody: event,
         sendUpdates: 'all',
       });
   }
@@ -367,15 +377,17 @@ export class GoogleCalendarService {
       });
   }
 
-  private sailEvent(sail: Sail, message: string) {
-    let attendees: calendar_v3.Schema$EventAttendee[] = sail.manifest
+  private sailEvent(sail: Sail, message?: string) {
+    const attendees: calendar_v3.Schema$EventAttendee[] = sail
+      .manifest
+      .filter(sailor => sailor.profile)
       .map(sailor => ({
         displayName: sailor.person_name,
         email: sailor.profile?.email,
         resource: false,
       }));
 
-    if (sail.boat.calendar_resource_id) {
+    if (sail.boat?.calendar_resource_id) {
       attendees.push({
         displayName: sail.boat.name,
         email: sail.boat.calendar_resource_id,
@@ -383,15 +395,13 @@ export class GoogleCalendarService {
       });
     }
 
-    attendees = attendees.filter(attendee => !!attendee.email);
-
     const skipperNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Skipper).map(sailor => sailor.person_name);
     const crewNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Crew).map(sailor => sailor.person_name);
     const sailorNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Sailor).map(sailor => sailor.person_name);
 
     const event: calendar_v3.Schema$Event = {
-      'summary': `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entity_number}: ${sail.name}`,
-      'description': `
+      summary: `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entity_number}: ${sail.name}`,
+      description: `
         <!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
           <body>
@@ -404,17 +414,18 @@ export class GoogleCalendarService {
             <div><label>Start: </label>${toLocalDate(sail.start_at)}</div>
             <div><label>End: </label>${toLocalDate(sail.end_at)}</div>
             <div><label>Boat: ${sail.boat.name} </label></div>
-            <div><label>Skipper: </label>${skipperNames.join(', ')}</div>
-            <div><label>Crew: </label>${crewNames.join(', ') || '-'}</div>
-            <p><label>Sailors: </label> ${sailorNames.join(', ') || '-'}</p>
+            <div><label>Skipper: </label>${skipperNames.join(', ') || 'None'}</div>
+            <div><label>Crew: </label>${crewNames.join(', ') || 'None'}</div>
+            <p><label>Sailors: </label> ${sailorNames.join(', ') || 'None'}</p>
             <div><a href="${DOMAIN}/sails/view/${sail.id}">View sail</a></div>
           </body>
         </html>
       `.trim().replace(/\n/g,''),
-      'start': { 'dateTime': sail.start_at.toISOString() },
-      'end': { 'dateTime':sail.end_at.toISOString() },
-      'attendees': attendees,
-      'reminders': { 'useDefault': true },
+      start: { 'dateTime': sail.start_at.toISOString() },
+      end: { 'dateTime':sail.end_at.toISOString() },
+      attendees: attendees,
+      guestsCanSeeOtherGuests: false,
+      reminders: { 'useDefault': true },
     };
 
     return event;
@@ -433,8 +444,8 @@ export class GoogleCalendarService {
     const attendantNames = social.manifest.map(sailor => sailor.person_name);
 
     const event: calendar_v3.Schema$Event = {
-      'summary': `COMPANY_NAME_SHORT_HEADER: Social #${social.entity_number}: ${social.name}`,
-      'description': `
+      summary: `COMPANY_NAME_SHORT_HEADER: Social #${social.entity_number}: ${social.name}`,
+      description: `
         <!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
           <body>
@@ -452,10 +463,11 @@ export class GoogleCalendarService {
           </body>
         </html>
       `.trim().replace(/\n/g,''),
-      'start': { 'dateTime': social.start_at.toISOString() },
-      'end': { 'dateTime': social.end_at.toISOString() },
-      'attendees': attendees,
-      'reminders': { 'useDefault': true },
+      start: { 'dateTime': social.start_at.toISOString() },
+      end: { 'dateTime': social.end_at.toISOString() },
+      attendees: attendees,
+      reminders: { 'useDefault': true },
+      guestsCanSeeOtherGuests: false,
     };
 
     return event;
