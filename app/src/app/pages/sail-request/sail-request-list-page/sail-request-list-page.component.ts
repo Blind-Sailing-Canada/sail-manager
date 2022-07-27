@@ -99,6 +99,10 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
       query.$and.push({ category: this.requestCategory });
     }
 
+    if (this.profile_id) {
+      query.$and.push({ requested_by_id: this.profile_id });
+    }
+
     this.startLoading();
 
     const fetcher =  this.sailRequestService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
