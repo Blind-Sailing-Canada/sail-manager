@@ -33,6 +33,7 @@ import { UserAccessModule } from './user-access/user-access.module';
 import { UserModule } from './user/user.module';
 import { SocialModule } from './social/social.module';
 import { SocialManifestModule } from './social-manifest/social-manifest.module';
+import { FormResponseModule } from './form-response/form-response.module';
 
 const DB_LOGGING = [];
 
@@ -97,6 +98,7 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\
     DocumentModule,
     EmailModule,
     FirebaseAdminModule,
+    FormResponseModule,
     MediaModule,
     ProfileModule,
     RequiredActionModule,

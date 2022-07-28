@@ -5,6 +5,7 @@ import { AngularMaterialModule } from '../../angular-material/angular-material.m
 import { FileSelectModule } from '../../components/file-select/file-select.module';
 import { LinkAccountsDialogModule } from '../../components/link-accounts-dialog/link-accounts-dialog.module';
 import { UserProfileModule } from '../../components/user-profile/user-profile.module';
+import { PipesModule } from '../../pipes/pipes.module';
 import { BasePageModule } from '../base-page/base-page.module';
 import { ProfileEditPageComponent } from './profile-edit-page/profile-edit-page.component';
 import { ProfileRoutingModule } from './profile-routing.module';
@@ -25,6 +26,7 @@ import { ProfileViewPageComponent } from './profile-view-page/profile-view-page.
     FormsModule,
     LinkAccountsDialogModule,
     ProfileRoutingModule,
+    PipesModule,
     ReactiveFormsModule,
     UserProfileModule,
   ]

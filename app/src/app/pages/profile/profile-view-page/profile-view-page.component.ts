@@ -25,6 +25,10 @@ import {
 import { ProfileService } from '../../../services/profile.service';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
+import { FormResponseService } from '../../../services/form-response.service';
+import { firstValueFrom } from 'rxjs';
+import { FormResponse } from '../../../../../../api/src/types/form-response/form-response';
+import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 
 export enum EDIT_ACTIONS {
   UPDATE_INFO = 'update info',
@@ -37,6 +41,8 @@ export enum EDIT_ACTIONS {
   styleUrls: ['./profile-view-page.component.scss']
 })
 export class ProfileViewPageComponent extends BasePageComponent implements OnInit {
+  public formResponses: FormResponse[] = [];
+
   public captionActions = [
     {
       name: EDIT_ACTIONS.UPDATE_INFO,
@@ -58,12 +64,33 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
     @Inject(ProfileService) private profileService: ProfileService,
+    @Inject(FormResponseService) private formResponseService: FormResponseService,
   ) {
     super(store, route, router, dialog);
   }
 
   ngOnInit(): void {
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
+    this.fetchFormResponses();
+  }
+
+  private async fetchFormResponses() {
+    if (!this.profile_id) {
+      return;
+    }
+
+    if (
+      this.user.profile.id !== this.profile_id
+      && !this.user.roles.includes(ProfileRole.Admin)
+      && !this.user.roles.includes(ProfileRole.Coordinator)
+    ) {
+      return;
+    }
+
+    this.startLoading();
+
+    const fetcher = this.formResponseService.fetchForProfile(this.profile_id);
+    this.formResponses = await firstValueFrom(fetcher).finally(() => this.finishLoading());
   }
 
   public get canLinkAccounts(): boolean {

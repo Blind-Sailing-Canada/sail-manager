@@ -11,6 +11,7 @@ import { AchievementEntity } from '../achievement/achievement.entity';
 import { ExpiresBaseModelEntity } from '../base/expires-base.entity';
 import { ChallengeParticipantEntity } from '../challenge/challenge-participant.entity';
 import { ClinicAttendanceEntity } from '../clinic/clinic-attendance.entity';
+import { FormResponseEntity } from '../form-response/form-response.entity';
 import { RequiredActionEntity } from '../required-action/required-action.entity';
 import { SailChecklistEntity } from '../sail-checklist/sail-checklist.entity';
 import { SailManifestEntity } from '../sail-manifest/sail-manifest.entity';
@@ -89,6 +90,9 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
 
   @OneToMany(() => AchievementEntity, (achievements) => achievements.profile, { eager: true })
     achievements: AchievementEntity[];
+
+  @OneToMany(() => FormResponseEntity, (form_responses) => form_responses.profile, { eager: false })
+    form_responses: FormResponseEntity[];
 
   @OneToMany(() => SailManifestEntity, (sailManifest) => sailManifest.profile)
     sail_manifests: SailManifestEntity[];
