@@ -68,6 +68,10 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(session(sess));
   app.use((req, res, next) => {
+    if (req.method === 'POST' && req.originalUrl.startsWith('/form-response')){
+      return next();
+    }
+
     if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/images/')){
       return next();
     }
