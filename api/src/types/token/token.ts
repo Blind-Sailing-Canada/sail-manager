@@ -1,6 +1,6 @@
 export interface Token {
   token: string
   provider: string
-  profile_id: string
+  user_id: string
   expire_at: Date
 }

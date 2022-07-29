@@ -8,7 +8,7 @@ import { Token } from '../types/token/token';
 @Entity('tokens')
 export class TokenEntity extends BaseModelEntity implements Token {
   @Column({ type: 'uuid' })
-    profile_id: string;
+    user_id: string;
 
   @Column()
     provider: string;

@@ -77,10 +77,12 @@ export class SailActionsController {
       throw new BadRequestException('This sail already has a skipper.');
     }
 
+    const sailorProfile = await ProfileEntity.findOneOrFail({ where: { id: user.profile_id } });
+
     await this.service.repository.manager.transaction(async transactionalEntityManager => {
       const sailor = new SailManifestEntity();
 
-      sailor.person_name = user.username;
+      sailor.person_name = sailorProfile.name;
       sailor.profile_id = user.profile_id;
       sailor.sail_id = sail.id;
       sailor.sailor_role = SailorRole.Skipper;
@@ -123,10 +125,12 @@ export class SailActionsController {
       throw new BadRequestException('Sail is full.');
     }
 
+    const sailorProfile = await ProfileEntity.findOneOrFail({ where: { id: user.profile_id } });
+
     await this.service.repository.manager.transaction(async transactionalEntityManager => {
       const sailor = new SailManifestEntity();
 
-      sailor.person_name = user.username;
+      sailor.person_name = sailorProfile.name;
       sailor.profile_id = user.profile_id;
       sailor.sail_id = sail.id;
       sailor.sailor_role = SailorRole.Crew;
@@ -170,10 +174,12 @@ export class SailActionsController {
       throw new BadRequestException('Sail is full.');
     }
 
+    const sailorProfile = await ProfileEntity.findOneOrFail({ where: { id: user.profile_id } });
+
     await this.service.repository.manager.transaction(async transactionalEntityManager => {
       const sailor = new SailManifestEntity();
 
-      sailor.person_name = user.username;
+      sailor.person_name = sailorProfile.name;
       sailor.profile_id = user.profile_id;
       sailor.sail_id = sail.id;
       sailor.sailor_role = SailorRole.Sailor;

@@ -28,6 +28,7 @@ export class FirebaseAdminService {
   public createAdminUser() {
     return admin.auth()
       .createUser({
+        displayName: 'Admin',
         email: process.env.ADMIN_USER_EMAIL || 'admin@admin.admin',
         password: process.env.ADMIN_USER_PASSWORD || 'password',
       });
@@ -48,6 +49,10 @@ export class FirebaseAdminService {
 
   public validateFirebaseAuthToken(idToken) {
     return admin.auth().verifyIdToken(idToken);
+  }
+
+  public getFirebaseUser(id: string) {
+    return admin.auth().getUser(id);
   }
 
   public listFiles(query?: GetFilesOptions): Promise<string[]> {

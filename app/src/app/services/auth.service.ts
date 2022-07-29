@@ -24,4 +24,9 @@ export class AuthService {
   logout(): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/logout`);
   }
+
+  createProfile(profile: Profile): Observable<Profile> {
+    return this.http.post<Profile>(`${this.API_URL}/create-profile`, profile);
+  }
+
 }

@@ -19,7 +19,6 @@ import { ProfileReview } from '../types/profile/profile-review';
 import { ProfileRole } from '../types/profile/profile-role';
 import { ProfileStatus } from '../types/profile/profile-status';
 import { RequiredActionStatus } from '../types/required-action/required-action-status';
-import { RequiredActionType } from '../types/required-action/required-action-type';
 import { JwtObject } from '../types/token/jwt-object';
 import { UserAccessFields } from '../types/user-access/user-access-fields';
 import { ProfileLink } from '../types/user/profile-link';
@@ -33,7 +32,6 @@ import { ProfileEntity } from './profile.entity';
 import { ProfileService } from './profile.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ProfileApprovedJob } from '../types/profile/profile-approved-job';
-import { ProfileNewJob } from '../types/profile/profile-new-job';
 
 @Crud({
   model: { type: ProfileEntity },
@@ -198,33 +196,7 @@ export class ProfileController {
       ...profile,
     });
 
-    if (user.status === ProfileStatus.Registration) {
-      updatedProfile.status = ProfileStatus.PendingApproval;
-      updatedProfile.expires_at = null;
-
-      await this.authService.logout(user.profile_id);
-
-      await this.service.repository.manager.transaction(async transactionalEntityManager => {
-        const admins = await ProfileEntity.admins();
-
-        const required_actions = admins.map(admin => RequiredActionEntity.create ({
-          actionable_id: user.profile_id,
-          actionable_type: 'ProfileEntity',
-          assigned_to_id: admin.id,
-          required_action_type: RequiredActionType.ReviewNewUser,
-          title: `Review ${user.email} account.`,
-        }));
-
-        await transactionalEntityManager.save(required_actions);
-        await transactionalEntityManager.save(updatedProfile);
-
-        const job: ProfileNewJob = { profile_id: id };
-
-        this.profileQueue.add('new-profile', job);
-      });
-    } else {
-      await ProfileEntity.save(updatedProfile);
-    }
+    await ProfileEntity.save(updatedProfile);
 
     return ProfileEntity.findOne({ where: { id } });
   }

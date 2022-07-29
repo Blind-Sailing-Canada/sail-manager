@@ -1,3 +1,4 @@
+import { BullModule } from '@nestjs/bull';
 import {
   forwardRef,
   Module
@@ -19,12 +20,13 @@ import { JwtStrategy } from './jwt.strategy';
 @Module({
   exports: [AuthService],
   imports: [
+    BullModule.registerQueue({ name: 'profile' }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    forwardRef(() => ProfileModule),
     TokenModule,
     UserAccessModule,
     UserModule,
     forwardRef(() => FirebaseAdminModule),
+    forwardRef(() => ProfileModule),
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: jwtConstants.expiresIn },

@@ -10,6 +10,7 @@ import {
 import { Store } from '@ngrx/store';
 import { ProfileStatus } from '../../../../../api/src/types/profile/profile-status';
 import { JwtObject } from '../../../../../api/src/types/token/jwt-object';
+import { LoginState } from '../../models/login-state';
 import {
   editProfileRoute,
   FullRoutes,
@@ -52,7 +53,7 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
 
     const tokenObject: JwtObject = decodeJwt(token);
 
-    if (tokenObject.expire_at < Date.now()) {
+    if (tokenObject.expire_time < Date.now()) {
       if (tokenObject.provider === 'google') {
         this.authenticateWithGoogle();
       } else {
@@ -64,12 +65,12 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
       return;
     }
 
-    this.subscribeToStoreSlice(STORE_SLICES.LOGIN, (login) => {
-      if (!login.user || !login.token) {
+    this.subscribeToStoreSlice(STORE_SLICES.LOGIN, (login: LoginState) => {
+      if (!login.tokenData) {
         return;
       }
 
-      switch (login.user.status) {
+      switch (login.tokenData.status) {
         case ProfileStatus.Approved:
           const redirectTo = window
             .sessionStorage
@@ -80,7 +81,7 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
           this.router.navigateByUrl(redirectTo);
           break;
         case ProfileStatus.Registration:
-          this.goTo([editProfileRoute(login.user.id)], undefined);
+          this.goTo([editProfileRoute('new')], undefined);
           break;
         case ProfileStatus.PendingApproval:
         case ProfileStatus.Deactivated:

@@ -10,7 +10,7 @@ import {
   Router,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ILoginState } from '../models/login-state.interface';
+import { LoginState } from '../models/login-state';
 import {
   IProfileMap,
   IProfileState,
@@ -38,7 +38,7 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
       .select(STORE_SLICES.LOGIN)
       .pipe(take(1))
       .toPromise()
-      .then((login: ILoginState) => login.user);
+      .then((login: LoginState) => login.user);
 
     if (!token || !loggedInUser || this.tokenService.isExpired) {
       this.router.navigate([FullRoutes.LOGIN]);

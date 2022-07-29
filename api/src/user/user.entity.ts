@@ -21,10 +21,17 @@ export class UserEntity extends BaseModelEntity implements User {
   @Column({ length: 150, })
     provider_user_id: string;
 
-  @Column({ type: 'uuid' })
+  @Column({
+    type: 'uuid',
+    default: null,
+    nullable: true,
+  })
     profile_id: string;
 
-  @Column()
+  @Column({
+    default: null,
+    nullable: true,
+  })
     original_profile_id: string;
 
   @Column({

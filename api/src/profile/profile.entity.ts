@@ -5,7 +5,7 @@ import {
   Entity,
   Index,
   OneToMany,
-  OneToOne
+  OneToOne,
 } from 'typeorm';
 import { AchievementEntity } from '../achievement/achievement.entity';
 import { ExpiresBaseModelEntity } from '../base/expires-base.entity';
@@ -23,7 +23,10 @@ import { UserAccessEntity } from '../user-access/user-access.entity';
 @Entity('profiles')
 export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   @Column({ length: 100 })
-  @Index('profile_name')
+  @Index('profile_name', {
+    unique: true,
+    where: 'deleted_at IS NULL'
+  })
     name: string;
 
   @Column({
@@ -32,11 +35,11 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   })
     photo: string;
 
-  @Column({
-    length: 500,
+  @Column({ length: 500 })
+  @Index('profile_email', {
     unique: true,
+    where: 'deleted_at IS NULL'
   })
-  @Index('profile_email')
     email: string;
 
   @Column({

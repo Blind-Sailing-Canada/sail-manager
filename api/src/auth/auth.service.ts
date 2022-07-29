@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   Injectable,
   Logger
 } from '@nestjs/common';
@@ -16,10 +15,11 @@ import { FirebaseUser } from '../types/auth/firebase.user';
 import { FirebaseAdminService } from '../firebase-admin/firebase-admin.service';
 import { ProfileRole } from '../types/profile/profile-role';
 import { ProfileStatus } from '../types/profile/profile-status';
-import { Access } from '../types/user-access/access';
 import { DefaultUserAccess } from '../types/user-access/default-user-access';
 import { v4 as uuidv4 } from 'uuid';
 import { GoogleEmailService } from '../google-api/google-email.service';
+import { ProviderUser } from '../types/user/provider-user';
+import { AuthenticatedUser } from '../types/user/authenticated-user';
 
 export interface CachedToken {
   token: string;
@@ -28,17 +28,6 @@ export interface CachedToken {
 
 export interface TokenCache {
   [propName: string]: CachedToken;
-}
-
-interface ProviderUser {
-  id: string
-  email: string;
-  name: string;
-  photo: string;
-  provider: string;
-  roles?: ProfileRole[];
-  status?: ProfileStatus;
-  access?: Access;
 }
 
 @Injectable()
@@ -71,7 +60,11 @@ export class AuthService {
       },
     };
 
-    return this.createNewUser(providerUser, false);
+    const admin_user = await this.createNewUser(providerUser);
+
+    await this.createNewProfileForExistingUser(providerUser, admin_user.id);
+
+    return admin_user;
   }
 
   public async createEmailPasswordUser(name: string, email: string, password: string) {
@@ -96,7 +89,9 @@ export class AuthService {
 
     const resetPasswordLink = await this.firebaseAdminService.generatePasswordResetLink(email);
 
-    const createdUser = await this.createNewUser(providerUser, false);
+    const createdUser = await this.createNewUser(providerUser);
+
+    await this.createNewProfileForExistingUser(providerUser, createdUser.id);
 
     await this.emailService.sendToEmail({
       to: [email],
@@ -112,12 +107,12 @@ export class AuthService {
     return createdUser;
   }
 
-  public getCachedToken(profile_id: string): CachedToken {
-    return this.tokens[profile_id];
+  public getCachedToken(user_id: string): CachedToken {
+    return this.tokens[user_id];
   }
 
-  public getStoredToken(profile_id: string): Promise<TokenEntity> {
-    return TokenEntity.findOne({ where: { profile_id } });
+  public getStoredToken(user_id: string): Promise<TokenEntity> {
+    return TokenEntity.findOne({ where: { user_id: user_id } });
   }
 
   /**
@@ -156,50 +151,38 @@ export class AuthService {
       });
 
     if (existingUser) {
-      if (!existingUser.profile) {
-        const newProfile = await this.createNewProfileForExistingUser(providerUser, existingUser.id);
-        existingUser.profile = newProfile; // why .reload() doesn't reload relations?
-      }
-
       return existingUser;
-    }
-
-    if (!existingUser) {
-      const profileExists = await ProfileEntity.count({ where: { email: providerUser.email } }) > 0;
-
-      if (profileExists) {
-        throw new ConflictException(
-          `Email ${providerUser.email} is already in use but it is not linked to this authentication method.`
-        );
-      }
     }
 
     return this.createNewUser(providerUser);
   }
 
-  logout(profile_id: string): Promise<DeleteResult> {
-    delete this.tokens[profile_id];
+  logout(user_id: string): Promise<DeleteResult> {
+    delete this.tokens[user_id];
 
     return TokenEntity
-      .delete({ profile_id } )
+      .delete({ user_id: user_id } )
       .catch(error => {
         this.logger.error(error);
         return null;
       });
   }
 
-  public cacheToken(profile_id: string, token: string, expire_at: Date): void {
-    this.tokens[profile_id] = {
+  public cacheToken(user_id: string, token: string, expire_at: Date): void {
+    this.tokens[user_id] = {
       expire_at,
       token,
     };
   }
 
-  public deleteCacheToken(profile_id: string): void {
-    delete this.tokens[profile_id];
+  private deleteCacheToken(user_id: string): void {
+    delete this.tokens[user_id];
   }
 
-  async login(user: UserEntity, provider: string): Promise<string> {
+  async login(authenticated_user: AuthenticatedUser, provider: string): Promise<string> {
+
+    const user: UserEntity = authenticated_user.user_entity;
+    const provider_user: ProviderUser = authenticated_user.provider_user;
 
     try {
       if (user.profile_id) {
@@ -211,20 +194,20 @@ export class AuthService {
       this.logger.error(error);
     }
 
-    const cachedToken = this.tokens[user.profile_id];
+    const cachedToken = this.tokens[user.id];
 
     if (cachedToken && cachedToken.expire_at.getTime() > Date.now()) {
       return Promise.resolve(cachedToken.token);
     }
 
     if (cachedToken) {
-      this.deleteCacheToken(user.profile_id);
+      this.deleteCacheToken(user.id);
     }
 
     if (!cachedToken) {
       // this is skipped if cached token is expired
       // try db stored token
-      const dbToken:TokenEntity = await TokenEntity.findOne({ where: { profile_id: user.profile_id } });
+      const dbToken:TokenEntity = await TokenEntity.findOne({ where: { user_id: user.id } });
 
       if (dbToken && dbToken.expire_at.getTime() > Date.now()) {
         this.cacheToken(user.profile_id, dbToken.token, dbToken.expire_at);
@@ -241,23 +224,23 @@ export class AuthService {
     // at this point we didn't find an existing valid token
     // so we create a new one
 
-    const profile: ProfileEntity = user.profile;
+    const profile: ProfileEntity = user.profile || {} as ProfileEntity;
     const expireAtDate = new Date();
     const access = profile.access;
 
     expireAtDate.setTime(expireAtDate.getTime() + (jwtConstants.expiresIn * 1000));
 
     const payload: JwtObject = {
-      provider,
       access,
       email: profile.email,
-      expire_at: expireAtDate.getTime(),
+      iat: new Date().getTime(),
       profile_id: profile.id,
+      provider,
+      provider_user: provider_user,
       roles: profile.roles,
-      status: profile.status,
-      sub: profile.id,
-      user_id: profile.id,
-      username: profile.name,
+      status: profile.status || ProfileStatus.Registration,
+      user_id: user.id,
+      expire_time: expireAtDate.getTime(),
     };
 
     const token = this.jwtService.sign(payload);
@@ -265,57 +248,28 @@ export class AuthService {
     const dbToken = TokenEntity.create({
       token,
       provider,
-      profile_id: profile.id,
+      user_id: user.id,
       expire_at: expireAtDate,
     });
 
     await dbToken.save();
 
-    this.cacheToken(profile.id, token, expireAtDate);
+    this.cacheToken(user.id, token, expireAtDate);
 
     return token;
   }
 
-  private async createNewUser(user: ProviderUser, expires = true): Promise<UserEntity> {
+  private async createNewUser(user: ProviderUser): Promise<UserEntity> {
 
     this.logger.log(`CREATING NEW USER ${JSON.stringify(user, null, 2)}`);
 
-    const expires_at = expires ? new Date(new Date().getTime() + (30 * 60 * 1000)): null;
-
-    const newProfile = ProfileEntity
-      .create({
-        id: uuidv4(),
-        email: user.email,
-        expires_at: expires_at,
-        name: user.name,
-        photo: user.photo,
-        roles: user.roles || [],
-        status: user.status || ProfileStatus.Registration,
-      });
-
-    const newUserAccess = UserAccessEntity
-      .create({
-        access: {
-          ...DefaultUserAccess,
-          ...user.access,
-        },
-        profile: newProfile,
-      });
-
-    const newUser = UserEntity
+    const newUser = await UserEntity
       .create({
         id: uuidv4(),
         provider: user.provider,
         provider_user_id: user.id,
-        profile: newProfile,
-        original_profile_id: newProfile.id,
-      });
-
-    await UserEntity.getRepository().manager.transaction(async transactionalEntityManager => {
-      await transactionalEntityManager.save(newProfile);
-      await transactionalEntityManager.save(newUserAccess);
-      await transactionalEntityManager.save(newUser);
-    });
+      })
+      .save();
 
     return UserEntity.findOne({
       where: { id: newUser.id },
@@ -323,19 +277,18 @@ export class AuthService {
     });
   }
 
-  private async createNewProfileForExistingUser(
-    user: ProviderUser, existingUserEntityId: string, expires = true): Promise<ProfileEntity> {
+  public async createNewProfileForExistingUser(user: ProviderUser, existingUserEntityId: string): Promise<ProfileEntity> {
 
     this.logger.log(`CREATING NEW PROFILE FOR EXISTING USER ${JSON.stringify(user, null, 2)}`);
 
-    const expires_at = expires ? new Date(new Date().getTime() + (30 * 60 * 1000)): null;
-
     const newProfile = ProfileEntity
       .create({
-        id: uuidv4(),
+        bio: user.bio,
         email: user.email,
-        expires_at: expires_at,
+        expires_at: null,
+        id: uuidv4(),
         name: user.name,
+        phone: user.phone,
         photo: user.photo,
         roles: user.roles || [],
         status: user.status || ProfileStatus.Registration,

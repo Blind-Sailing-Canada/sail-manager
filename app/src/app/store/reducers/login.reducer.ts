@@ -3,7 +3,7 @@ import {
   createReducer,
   on,
 } from '@ngrx/store';
-import { ILoginState } from '../../models/login-state.interface';
+import { LoginState } from '../../models/login-state';
 import { decodeJwt } from '../../utils/jwt';
 import {
   loggedIn,
@@ -12,7 +12,7 @@ import {
   resetLogin,
 } from '../actions/login.actions';
 
-const initialState: ILoginState = {
+const initialState: LoginState = {
   token: null,
   tokenData: null,
   user: null,
@@ -39,4 +39,4 @@ const reducerHandler = createReducer(
   on(loggedIn, (state, action) => Object.assign({}, state, { user: action.user, when: new Date() })),
 );
 
-export const loginReducer = (state: ILoginState | undefined, action: Action) => reducerHandler(state, action);
+export const loginReducer = (state: LoginState | undefined, action: Action) => reducerHandler(state, action);

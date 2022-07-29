@@ -11,10 +11,8 @@ import {
   Route,
   Router,
   RouterStateSnapshot,
-  UrlSegment,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ILoginState } from '../models/login-state.interface';
 import {
   IProfileMap,
   IProfileState,
@@ -23,7 +21,6 @@ import {
   editProfileRoute,
   FullRoutes,
   RootRoutes,
-  SubRoutes,
 } from '../routes/routes';
 import { TokenService } from '../services/token.service';
 import { STORE_SLICES } from '../store/store';
@@ -40,25 +37,11 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     @Inject(TokenService) private tokenService: TokenService,
   ) { }
 
-  async getProfile(url: string): Promise<Profile> {
-    const token = this.tokenService.token;
+  async getProfile(): Promise<Profile> {
+    const profile_id = this.tokenService.tokenData?.profile_id;
 
-    if (!token) {
-      window.sessionStorage.setItem('redirectTo', url);
+    if (!profile_id) {
       return null;
-    }
-
-    const loggedInUser = await this.store
-      .select(STORE_SLICES.LOGIN)
-      .pipe(take(1))
-      .toPromise()
-      .then((login: ILoginState) => login.user);
-
-    if (!token || !loggedInUser || this.tokenService.isExpired) {
-      window.sessionStorage.setItem('redirectTo', url);
-
-      this.router.navigate([FullRoutes.LOGIN]);
-      return Promise.resolve(null);
     }
 
     const profile = await this.store
@@ -66,79 +49,41 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       .pipe(take(1))
       .toPromise()
       .then((profiles: IProfileState) => profiles.profiles || {})
-      .then((profiles: IProfileMap) => profiles[loggedInUser.id]);
-
-    if (!profile) {
-      this.router.navigate([FullRoutes.LOGIN]);
-      return Promise.resolve(null);
-    }
+      .then((profiles: IProfileMap) => profiles[profile_id]);
 
     return Promise.resolve(profile);
   }
 
-  async canLoad(_route: Route, segments: UrlSegment[]): Promise<boolean> {
-    const url = segments.join('/');
-
-    const profile = await this.getProfile(url);
-
-    if (!profile) {
-      this.router.navigate([RootRoutes.ROOT]);
-      return;
-    }
-
-    let can = false;
-
-    const VIEW_PROFILE_ROUTE = `${RootRoutes.PROFILES}/${SubRoutes.VIEW_PROFILE}/${profile.id}`;
-    const EDIT_PROFILE_ROUTE = `${RootRoutes.PROFILES}/${SubRoutes.EDIT_PROFILE}/${profile.id}`;
-
-    switch (profile.status) {
-      case ProfileStatus.Approved:
-        can = true;
-        break;
-      case ProfileStatus.Registration:
-        can = url === VIEW_PROFILE_ROUTE || url === EDIT_PROFILE_ROUTE;
-        break;
-      case ProfileStatus.Deactivated:
-      case ProfileStatus.PendingApproval:
-      case ProfileStatus.Rejected:
-      default:
-        can = false;
-    }
-
-    if (!can) {
-      this.router.navigate([RootRoutes.LOGIN]);
-    }
-
-    return can;
+  async canLoad(_route: Route): Promise<boolean> {
+    return true;
   }
 
-  async canActivate(
-    _: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Promise<boolean> {
+  async canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const url: string = state.url;
 
     return this.checkLogin(url);
   }
 
   async checkLogin(url: string): Promise<boolean> {
-    const profile = await this.getProfile(url);
+    const profile = await this.getProfile();
+    const profileStatus = profile?.status || this.tokenService.tokenData?.status;
 
     let redirectTo = null;
     let can = true;
 
-    if (!profile) {
+    if (!profileStatus) {
       window.sessionStorage.setItem('redirectTo', url);
       this.router.navigate([RootRoutes.LOGIN]);
 
       return false;
     }
 
-    switch (profile.status) {
+    switch (profileStatus) {
       case ProfileStatus.Approved:
         can = true;
         break;
       case ProfileStatus.Registration:
-        redirectTo = editProfileRoute(profile.id);
+        redirectTo = editProfileRoute('new');
         break;
       case ProfileStatus.Deactivated:
       case ProfileStatus.PendingApproval:

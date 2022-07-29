@@ -15,6 +15,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Queue } from 'bull';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
+import { ProfileEntity } from '../profile/profile.entity';
 import { SocialManifestEntity } from '../social-manifest/social-manifest.entity';
 import { CancelRequest } from '../types/sail/cancel-request';
 import { SocialCancelJob } from '../types/social/social-cancel-job';
@@ -65,10 +66,12 @@ export class SocialActionsController {
       throw new NotFoundException(`Cannot find social with id = ${id}`);
     }
 
+    const profile = await ProfileEntity.findOneOrFail({ where: { id: user.profile_id } });
+
     await this.service.repository.manager.transaction(async transactionalEntityManager => {
       const socialor = new SocialManifestEntity();
 
-      socialor.person_name = user.username;
+      socialor.person_name = profile.name;
       socialor.profile_id = user.profile_id;
       socialor.social_id = social.id;
 

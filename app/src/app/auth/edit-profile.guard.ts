@@ -39,11 +39,15 @@ export class EditProfileGuard implements CanActivate {
 
     const tokenData = this.tokenService.tokenData;
 
-    if (tokenData.status !== ProfileStatus.Approved && tokenData.status !== ProfileStatus.Registration) {
+    if (profile_id === 'new' && tokenData.status === ProfileStatus.Registration) {
+      return true;
+    }
+
+    if (tokenData.status !== ProfileStatus.Approved) {
       return false;
     }
 
-    const isAdmin = tokenData.roles.includes(ProfileRole.Admin);
+    const isAdmin = tokenData.roles?.includes(ProfileRole.Admin);
     const access = tokenData.access?.access || {};
 
     const hasAccess = profile_id === tokenData.profile_id || access[UserAccessFields.EditUserProfile];

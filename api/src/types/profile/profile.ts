@@ -15,6 +15,7 @@ export interface Profile extends ExpiresBase {
   bio: string;
   challenges: ChallengeParticipant[];
   clinics_attendances: ClinicAttendance[];
+  deleted_at: Date;
   email: string;
   expires_at: Date;
   last_login: Date;

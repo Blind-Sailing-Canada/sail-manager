@@ -14,15 +14,19 @@ import {
   Router,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { firstValueFrom } from 'rxjs';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
 import { ProfileStatus } from '../../../../../../api/src/types/profile/profile-status';
 
 import { ICDNState } from '../../../models/cdn-state.interface';
+import { LoginState } from '../../../models/login-state';
 import { FullRoutes } from '../../../routes/routes';
+import { AuthService } from '../../../services/auth.service';
 import {
   CDN_ACTION_STATE,
   uploadProfilePicture,
 } from '../../../store/actions/cdn.actions';
+import { logOut } from '../../../store/actions/login.actions';
 import { updateProfileInfo } from '../../../store/actions/profile.actions';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
@@ -41,20 +45,45 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
 
   private fileToUpload: File;
   private profile_id: string;
-
+  public profile: Partial<Profile>;
 
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
-    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder) {
+    @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
+    @Inject(AuthService) private authService: AuthService) {
     super(store, route, router);
   }
 
   ngOnInit() {
+    this.buildForm();
+
     this.profile_id = this.route.snapshot.params.id;
 
-    this.buildForm();
+
+    this.subscribeToStoreSlice(STORE_SLICES.LOGIN, (login: LoginState) => {
+      if (this.profile_id !== 'new') {
+        return;
+      }
+
+      this.profile = {
+        bio: login.tokenData?.provider_user.bio || '',
+        email: login.tokenData?.provider_user.email || '',
+        name: login.tokenData?.provider_user.name || '',
+        phone: login.tokenData?.provider_user.phone || '',
+        photo: login.tokenData?.provider_user.photo || '',
+        status: login.tokenData?.status,
+      };
+
+      this.updateForm();
+    });
+
+
+    if (this.profile_id === 'new') {
+      return;
+    }
+
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CDN, (cdn: ICDNState) => {
       if (!this.fileToUpload) {
@@ -88,18 +117,14 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
     });
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES, (profilesState) => {
-      const profile = profilesState?.profiles[this.profile_id];
-      if (profile) {
-        if (profile.status !== ProfileStatus.Registration && profile.status !== ProfileStatus.Approved) {
+      this.profile = profilesState?.profiles[this.profile_id];
+      if (this.profile) {
+        if (this.profile.status !== ProfileStatus.Registration && this.profile.status !== ProfileStatus.Approved) {
           this.goTo([FullRoutes.ACCOUNT_REVIEW], undefined);
         }
         this.updateForm();
       }
     });
-  }
-
-  public get profile(): Profile {
-    return this.getProfile(this.profile_id);
   }
 
   public formErrors(controlName: string): string[] {
@@ -120,25 +145,29 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   }
 
   public get shouldHideUpdateButton(): boolean {
-    const isRegistration = this.profile.status === ProfileStatus.Registration;
-
-    if (isRegistration && !this.profileForm.dirty) {
-      // exit early the form should already be valid during registration
-      return false;
-    }
-
-    const should = !this.profileForm || !this.profileForm.dirty || !this.profileForm.valid;
+    const should = !this.profileForm || !this.profileForm.valid;
 
     return should;
   }
 
-  public save(): void {
+  public async save() {
     if (this.profile.status === ProfileStatus.Registration) {
       const profile = this.profileForm.getRawValue();
 
       profile.phone = profile.phone.replace(/\+1/g, '').replace(/[^\d]/g,'').substring(0, 10);
 
-      this.dispatchAction(updateProfileInfo({ profile, profile_id: this.profile_id }));
+      this.startLoading();
+      const fetcher = this.authService.createProfile(profile);
+
+      try {
+        await firstValueFrom(fetcher).finally(() => this.finishLoading());
+
+        this.dispatchAction(logOut({ message: 'Registration Submitted. You will be notified once your profile is approved.' }));
+      } catch (error) {
+        this.dispatchError(error.error?.message || 'Unable to register your profile.');
+        console.error(error);
+      }
+
       return;
     }
 
