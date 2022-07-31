@@ -72,6 +72,10 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
 
       switch (login.tokenData.status) {
         case ProfileStatus.Approved:
+          if (!login.user) {
+            return; // wait until user is populated
+          }
+
           const redirectTo = window
             .sessionStorage
             .getItem('redirectTo') || FullRoutes.DASHBOARD.toString();

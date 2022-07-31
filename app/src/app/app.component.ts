@@ -97,26 +97,28 @@ export class AppComponent extends BasePageComponent implements OnInit, AfterView
       this.processSnacks(this.snacks);
     });
 
-    this.subscribeToStore(STORE_SLICES.LOGIN)
-      .subscribe((login) => {
-        this.userProfile = login.user;
+    this.subscribeToStoreSlice(STORE_SLICES.LOGIN, (login) => {
+      this.userProfile = login.user;
 
-        if (this.userProfile) {
-          const message = `Welcome, ${this.userProfile.name}! ☺`;
-          this.dispatchAction(
-            putSnack({
-              snack: {
-                message,
-                type: SnackType.INFO,
-                options: {
-                  duration: this.SNACK_GREET_TIME,
-                  verticalPosition: 'top',
-                },
-              },
-            })
-          );
-        }
-      });
+      if (!this.userProfile) {
+        return;
+      }
+
+      const message = `Welcome, ${this.userProfile.name}! ☺`;
+
+      this.dispatchAction(
+        putSnack({
+          snack: {
+            message,
+            type: SnackType.INFO,
+            options: {
+              duration: this.SNACK_GREET_TIME,
+              verticalPosition: 'top',
+            },
+          },
+        })
+      );
+    });
   }
 
   public toggleDarkTheme(isDark: boolean): void {
