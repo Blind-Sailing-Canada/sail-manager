@@ -34,9 +34,9 @@ export class TokenService {
       return true;
     }
 
-    const exp = this.login.tokenData.expire_time;
+    const expired = Date.now() >= this.login.tokenData.expire_time;
 
-    return Date.now() >= (exp * 1000);
+    return expired;
   }
 
 }
