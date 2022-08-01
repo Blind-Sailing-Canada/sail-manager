@@ -16,7 +16,7 @@ export class DocumentCreateInterceptor implements NestInterceptor {
 
     context.getRequest().body = {
       ...body,
-      author_id: user.user_id,
+      author_id: user.profile_id,
     };
 
     return next.handle();
