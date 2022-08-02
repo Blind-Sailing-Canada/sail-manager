@@ -102,15 +102,15 @@ export class AuthController {
       return 'no user';
     }
 
-    const profile_id = user.profile_id;
+    const user_id = user.user_id;
 
-    this.authService.logout(profile_id);
+    this.authService.logout(user_id);
 
     if (typeof req.logout === 'function') {
       req.logout();
     }
 
-    req.user = { user_id: profile_id };
+    req.user = { user_id };
   }
 
   @Get('login')

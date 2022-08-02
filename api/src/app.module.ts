@@ -34,6 +34,7 @@ import { UserModule } from './user/user.module';
 import { SocialModule } from './social/social.module';
 import { SocialManifestModule } from './social-manifest/social-manifest.module';
 import { FormResponseModule } from './form-response/form-response.module';
+import { AdminModule } from './admin/admin.module';
 
 const DB_LOGGING = [];
 
@@ -87,6 +88,7 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\
     TypeOrmModule.forRoot(DB_CONNECTION_META),
     ScheduleModule.forRoot(),
     AchievementModule,
+    AdminModule,
     AuthModule,
     BoatChecklistModule,
     BoatInstructionsModule,

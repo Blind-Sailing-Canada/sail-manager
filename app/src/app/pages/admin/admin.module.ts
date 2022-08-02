@@ -12,9 +12,11 @@ import { CreateUserDialogModule } from '../../components/create-user-dialog/crea
 import { AdminSailCategoryPageComponent } from './admin-sail-category-page/admin-sail-category-page.component';
 import { MaterialTableModule } from '../../components/material-table/material-table.module';
 import { PipesModule } from '../../pipes/pipes.module';
+import { AdminDBPageComponent } from './admin-db-page/admin-db-page.component';
 
 @NgModule({
   declarations: [
+    AdminDBPageComponent,
     AdminDashboardPageComponent,
     AdminSailCategoryPageComponent,
     AdminUserEditPageComponent,

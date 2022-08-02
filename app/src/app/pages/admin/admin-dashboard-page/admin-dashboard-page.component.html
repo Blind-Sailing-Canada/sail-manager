@@ -39,6 +39,10 @@
     mat-raised-button
     (click)="goToSailCategories()"
   >Sail Categories</button>
+  <a
+    mat-raised-button
+    [routerLink]="dbQueryRoute.toString()"
+  >DB Query</a>
 </ng-template>
 
 <ng-template #REVIEW_PROFILES_LIST>

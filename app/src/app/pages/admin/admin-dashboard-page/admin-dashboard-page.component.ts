@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IProfileMap } from '../../../models/profile-state.interface';
 import {
-  editProfilePrivilegesRoute, listSailCategoriesRoute,
+  editProfilePrivilegesRoute, FullRoutes, listSailCategoriesRoute,
 } from '../../../routes/routes';
 import { ProfileService } from '../../../services/profile.service';
 import {
@@ -40,7 +40,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   public createUserDialogRef: MatDialogRef<CreateUserDialogComponent>;
   public pendingApproval: Profile[];
-
+  public dbQueryRoute = FullRoutes.ADMIN_DB;
   public dataSource = new MatTableDataSource<Profile>([]);
   public displayedColumns: string[] = ['photo', 'name', 'roles', 'created_at', 'last_login', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['name'];

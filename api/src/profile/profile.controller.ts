@@ -168,7 +168,11 @@ export class ProfileController {
       }
     });
 
-    await this.authService.logout(profile_id).catch(error => this.logger.error(error));
+    const users = await UserEntity.find({ where: { profile_id } });
+
+    for(const user of users) {
+      await this.authService.logout(user.id).catch(error => this.logger.error(error));
+    }
 
     return {
       access: await UserAccessEntity.findOne({ where: { profile_id: profile_id } }),
