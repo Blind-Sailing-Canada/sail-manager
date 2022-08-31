@@ -140,7 +140,7 @@ export class SailController {
   @Get('/download')
   @UserAccess(UserAccessFields.DownloadSails)
   async download(@Query() query, @Res() response) {
-    const paginatedSails = await this.findSails(query);
+    const paginatedSails = await this.findSails(query, true);
 
     const fields = [
       '#',
@@ -266,7 +266,7 @@ export class SailController {
     return SailEntity.findOne({ where: { id: createdSailId } });
   }
 
-  private async findSails(query): Promise<PaginatedSail> {
+  private async findSails(query, isDownload = false): Promise<PaginatedSail> {
     const sailStatus = query.sailStatus;
     const sailName = query.sailName;
     const boatName = query.boatName;
@@ -345,7 +345,7 @@ export class SailController {
 
     const total = foundSails.length;
 
-    const sail_ids = foundSails.slice(skip).slice(0, perPage).map(sail => sail.id);
+    const sail_ids = isDownload ? foundSails.map(sail => sail.id) : foundSails.slice(skip).slice(0, perPage).map(sail => sail.id);
 
     let sails = [];
 
