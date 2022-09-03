@@ -133,6 +133,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
       query.$and.push({ $or: [
         { name: { $contL: search } },
         { email: { $contL: search } },
+        { phone: { $contL: search } },
         { bio: { $contL: search } },
       ] });
     }
