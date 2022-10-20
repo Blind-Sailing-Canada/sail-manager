@@ -35,7 +35,7 @@ import { SailRequestBasePageComponent } from '../sail-request-base-page/sail-req
 export class SailRequestListPageComponent extends SailRequestBasePageComponent implements OnInit, AfterViewInit {
 
   public dataSource = new MatTableDataSource<SailRequest>([]);
-  public displayedColumns: string[] = ['entity_number', 'details', 'requested_by', 'category', 'created_at', 'status'];
+  public displayedColumns: string[] = ['entity_number', 'details', 'requested_by', 'category', 'created_at', 'status', 'actions'];
   public displayedColumnsMobile: string[] = ['entity_number'];
   public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,ASC' };
   public paginatedData: PaginatedSailRequest;
