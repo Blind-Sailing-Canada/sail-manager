@@ -158,6 +158,23 @@
         > {{element.status}} </td>
       </ng-container>
     </ng-container>
+    
+    <ng-container matColumnDef="actions">
+        <th
+          *matHeaderCellDef
+          mat-header-cell
+        > </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+            <button
+              (click)="goToEntity('SailRequestEntity', element.id)"
+              mat-button
+              title="Click to view this request"
+            >View</button>
+        </td>
+      </ng-container>
 
   </app-material-table>
 
