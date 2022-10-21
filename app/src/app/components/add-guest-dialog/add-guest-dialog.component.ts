@@ -21,7 +21,7 @@ export class AddGuestDialogComponent {
   ) { }
 
   public addAndClose(): void {
-    this.data.addGuest(this.data.guestName, this.data.guest_of_id);
+    this.data.addGuest(this.data.guestName, this.data.guest_email, this.data.guest_of_id);
     this.dialogRef.close();
   }
 }

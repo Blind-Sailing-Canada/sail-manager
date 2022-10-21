@@ -23,6 +23,23 @@
     >
   </mat-form-field>
   <mat-form-field
+    [(ngModel)]="data.guest_email"
+    ngDefaultControl
+  >
+    <mat-label
+      id="guestEmail"
+      aria-hidden="true"
+      tabindex="-1"
+    >Guest Email</mat-label>
+    <input
+      aria-labelledby="guestEmail"
+      aria-required="true"
+      matInput
+      required
+      type="email"
+    >
+  </mat-form-field>
+  <mat-form-field
     [(ngModel)]="data.guest_of_id"
     ngDefaultControl
   >

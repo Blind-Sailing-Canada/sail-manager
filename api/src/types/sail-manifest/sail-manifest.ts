@@ -5,6 +5,7 @@ import { SailorRole } from './sailor-role';
 
 export interface SailManifest extends Base {
   attended: boolean;
+  guest_email: string;
   guest_of: Profile;
   guest_of_id: string;
   person_name: string;

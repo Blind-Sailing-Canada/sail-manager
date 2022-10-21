@@ -89,10 +89,11 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
 
   public showAddGuestDialog(): void {
     const dialogData: AddGuestDialogData = {
-      addGuest: (guestName, guest_of_id) => this.addGuest(guestName, guest_of_id),
+      addGuest: (guestName, email, guest_of_id) => this.addGuest(guestName, email, guest_of_id),
       usersOnSail: this.usersOnSail,
       sail: this.sail,
       guestName: '',
+      guest_email: '',
       guest_of_id: this.usersOnSail[0]?.id,
     };
 
@@ -109,8 +110,8 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     return (this.manifestForm.controls.manifest as UntypedFormArray).controls as UntypedFormGroup[];
   }
 
-  public addGuest(name: string, guest_of_id: string): void {
-    this.addSailor({ name }, SailorRole.Guest, guest_of_id);
+  public addGuest(name: string, email: string, guest_of_id: string): void {
+    this.addSailor({ name, email }, SailorRole.Guest, guest_of_id);
   }
 
   public isGuest(role: SailorRole): boolean {
@@ -120,6 +121,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   public addSailor(sailor: Partial<Profile>, role: SailorRole = SailorRole.Sailor, guest_of_id?: string): void {
     (this.manifestForm.controls.manifest as UntypedFormArray).push(this.fb.group({
       guest_of_id: this.fb.control(guest_of_id),
+      guest_email: this.fb.control(guest_of_id? sailor.email : null),
       id: this.fb.control(undefined),
       person_name: this.fb.control(sailor.name, Validators.required),
       profile_id: this.fb.control(sailor.id),
@@ -234,6 +236,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
 
       const newManifestForm = this.fb.group({
         guest_of_id: this.fb.control(manifest.guest_of_id),
+        guest_email: this.fb.control(manifest.guest_email),
         id: this.fb.control(manifest.id),
         person_name: this.fb.control(manifest.person_name, Validators.required),
         profile_id: this.fb.control(manifest.profile_id),

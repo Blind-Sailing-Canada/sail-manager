@@ -93,6 +93,25 @@
         </select>
       </mat-form-field>
 
+      <mat-form-field
+        [formGroup]="sailor"
+        *ngIf="isGuest(sailor.controls.sailor_role.value)"
+      >
+        <mat-label
+          id="labelEmail"
+          aria-hidden="true"
+          tabindex="-1"
+        >Guest's Email</mat-label>
+        <input
+          aria-labelledby="labelEmail"
+          aria-required="true"
+          formControlName="guest_email"
+          matInput
+          required
+          type="email"
+        >
+      </mat-form-field>
+
       <div class="manifest-controls">
         <button
           mat-raised-button

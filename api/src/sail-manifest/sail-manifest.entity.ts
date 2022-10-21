@@ -78,4 +78,11 @@ export class SailManifestEntity extends BaseModelEntity implements SailManifest 
   })
     sailor_role: SailorRole;
 
+  @Column({
+    nullable: true,
+    default: null,
+    length: 500
+  })
+    guest_email: string;
+
 }
