@@ -8,15 +8,33 @@
       tabindex="0"
       id="pageTitle"
     >DB Query Runner</mat-card-title>
+    <mat-card-subtitle *ngIf="!!saved_query_id">{{queryForm.controls.name.value}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
+    <button
+      (click)="deleteSavedQuery()"
+      *ngIf="!!saved_query_id"
+      [disabled]="loading"
+      mat-raised-button
+    >Delete</button>
   </mat-card-actions>
   <mat-card-content>
-    <div class="query-controls">
-      <mat-form-field
-        [(ngModel)]="query"
-        ngDefaultControl
-      >
+    <form
+      [formGroup]="queryForm"
+      class="query-controls"
+    >
+      <mat-form-field>
+        <mat-label
+          aria-hidden="true"
+          tabindex="-1"
+        >Query Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="name"
+        >
+      </mat-form-field>
+      <mat-form-field>
         <mat-label
           aria-hidden="true"
           tabindex="-1"
@@ -27,14 +45,16 @@
           cdkTextareaAutosize
           matInput
           type="text"
-        >{{query}}</textarea>
+          formControlName="query"
+        ></textarea>
       </mat-form-field>
       <button
+        (click)="runQuery()"
+        [disabled]="!isFormValid"
         mat-raised-button
         title="Run query"
-        (click)="runQuery()"
       >Run</button>
-    </div>
+    </form>
     <div class="mat-elevation-z2">
       <table
         mat-table
@@ -76,6 +96,26 @@
   </mat-card-content>
   <mat-card-footer>
     <mat-card-actions>
+      <button
+        (click)="downloadQuery()"
+        [disabled]="!isFormValid"
+        mat-raised-button
+        title="Download query results"
+      >Download</button>
+      <button
+        (click)="createSavedQuery()"
+        [disabled]="!canSave"
+        mat-raised-button
+        title="Create query"
+        *ngIf="!saved_query_id"
+      >Create</button>
+      <button
+        (click)="updateSavedQuery()"
+        [disabled]="!canSave"
+        mat-raised-button
+        title="Save query"
+        *ngIf="!!saved_query_id"
+      >Save</button>
     </mat-card-actions>
   </mat-card-footer>
 </mat-card>

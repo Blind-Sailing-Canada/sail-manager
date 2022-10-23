@@ -1,0 +1,124 @@
+<mat-card *ngIf="user">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>troubleshoot</mat-icon>
+    </div>
+    <mat-card-title
+      role="heading"
+      tabindex="0"
+      id="pageTitle"
+    >Saved DB Queries</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      [routerLink]="createSavedQueryRoute"
+    >New</button>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="QUERY_TABLE"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #QUERY_TABLE>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    [showSearchInput]="true"
+    paginationLabel="Select page of queries"
+  >
+
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="created_at"
+      matSortDirection="desc"
+      tableColumns
+    >
+
+      <ng-container matColumnDef="name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Name </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          {{element.name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Created </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.created_at | humanDateWithTime }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_by">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Author </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <button
+            mat-button
+            style="margin: 10px;"
+            (click)="showProfileDialog(element.created_by)"
+            title="click to view author's info"
+          >{{element.created_by?.name}}</button></td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        >
+          <button
+            mat-button
+            style="margin: 10px;"
+            (click)="goToEntity('SavedQueryEntity', element.id)"
+            title="Click to go to query page for {{element.name}}"
+          >View</button>
+        </td>
+      </ng-container>
+
+    </ng-container>
+
+  </app-material-table>
+
+</ng-template>
+
+<ng-template #TABLE_FILTERS>
+</ng-template>

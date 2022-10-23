@@ -40,7 +40,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   public createUserDialogRef: MatDialogRef<CreateUserDialogComponent>;
   public pendingApproval: Profile[];
-  public dbQueryRoute = FullRoutes.ADMIN_DB;
+  public dbQueryRoute = FullRoutes.SAVED_QUERY;
   public dataSource = new MatTableDataSource<Profile>([]);
   public displayedColumns: string[] = ['photo', 'name', 'roles', 'created_at', 'last_login', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['name'];

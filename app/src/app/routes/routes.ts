@@ -38,8 +38,8 @@ export enum SubRoutes {
   CREATE_MAINTENANCE = 'create',
   CREATE_SAIL = 'create',
   CREATE_SAIL_REQUEST = 'create',
+  CREATE_SAVED_QUERY = 'create',
   CREATE_SOCIAL = 'create',
-  DB_QUERY = 'db',
   DEPARTURE_SAIL_CHECKLIST = 'departure',
   EDIT_BOAT = 'edit',
   EDIT_BOAT_CHECKLIST = 'edit',
@@ -56,6 +56,7 @@ export enum SubRoutes {
   EDIT_SAIL_MANIFEST = 'edit-sailors',
   EDIT_SAIL_PATH = 'edit',
   EDIT_SAIL_REQUEST = 'edit',
+  EDIT_SAVED_QUERY = 'edit',
   EDIT_SOCIAL = 'edit',
   EDIT_SOCIAL_MANIFEST = 'edit-attendants',
   EMAIL_AND_PASSWORD = 'email-password',
@@ -66,11 +67,13 @@ export enum SubRoutes {
   LIST_MEDIA = 'list',
   LIST_SAIL_CATEGORIES = 'list',
   LIST_SAIL_PATHS = 'list',
+  LIST_SAVED_QUERY = 'list',
   LIST_SOCIALS = 'list',
   PROFILE_SETTINGS = 'settings',
   RECORD_SAIL_PATH = 'record',
   RESET_PASSWORD = 'reset-password',
   RESOLVE_MAINTENANCE = 'resolve',
+  SAVED_QUERY = 'saved-db-query',
   SUBMIT_FEEDBACK = 'submit',
   VIEW_BOAT = 'view',
   VIEW_BOAT_INSTRUCTIONS = 'view',
@@ -87,6 +90,7 @@ export enum SubRoutes {
   VIEW_SAIL_PER_PERSON = 'user-sails',
   VIEW_SAIL_PICTURES = 'pictures',
   VIEW_SAIL_REQUEST = 'view',
+  VIEW_SAVED_QUERY = 'view',
   VIEW_SOCIAL = 'view',
   VIEW_SOCIAL_PICTURES = 'pictures',
 }
@@ -115,9 +119,9 @@ export enum FullRoutes {
   SAIL_CHECKLISTS = ROOT + RootRoutes.SAIL_CHECKLISTS,
   SAIL_PATHS = ROOT + RootRoutes.SAIL_PATHS,
   SAIL_REQUESTS = ROOT + RootRoutes.SAIL_REQUESTS,
+  SAVED_QUERY = ADMIN + SEPARATOR + SubRoutes.SAVED_QUERY,
   SOCIALS = ROOT + RootRoutes.SOCIALS,
   // ^ KEEP THESE SECOND^
-  ADMIN_DB = ADMIN + SEPARATOR + SubRoutes.DB_QUERY,
   ARRIVAL_SAIL_CHECKLIST = SAIL_CHECKLISTS + SEPARATOR + SubRoutes.ARRIVAL_SAIL_CHECKLIST,
   CANCEL_SAIL = SAILS + SEPARATOR + SubRoutes.CANCEL_SAIL,
   CANCEL_SOCIAL = SOCIALS + SEPARATOR + SubRoutes.CANCEL_SOCIAL,
@@ -128,6 +132,7 @@ export enum FullRoutes {
   CREATE_MAINTENANCE = MAINTENANCE + SEPARATOR + SubRoutes.CREATE_MAINTENANCE,
   CREATE_SAIL = SAILS + SEPARATOR + SubRoutes.CREATE_SAIL,
   CREATE_SAIL_REQUEST = SAIL_REQUESTS + SEPARATOR + SubRoutes.CREATE_SAIL_REQUEST,
+  CREATE_SAVED_QUERY = SAVED_QUERY + SEPARATOR + SubRoutes.CREATE_SAVED_QUERY,
   CREATE_SOCIAL = SOCIALS + SEPARATOR + SubRoutes.CREATE_SOCIAL,
   DEPARTURE_SAIL_CHECKLIST = SAIL_CHECKLISTS + SEPARATOR + SubRoutes.DEPARTURE_SAIL_CHECKLIST,
   EDIT_BOAT = BOATS + SEPARATOR + SubRoutes.EDIT_BOAT,
@@ -145,6 +150,7 @@ export enum FullRoutes {
   EDIT_SAIL_MANIFEST = SAILS + SEPARATOR + SubRoutes.EDIT_SAIL_MANIFEST,
   EDIT_SAIL_PATH = SAIL_PATHS + SEPARATOR + SubRoutes.EDIT_SAIL_PATH,
   EDIT_SAIL_REQUEST = SAIL_REQUESTS + SEPARATOR + SubRoutes.EDIT_SAIL_REQUEST,
+  EDIT_SAVED_QUERY = SAVED_QUERY + SEPARATOR + SubRoutes.EDIT_SAVED_QUERY,
   EDIT_SOCIAL = SOCIALS + SEPARATOR + SubRoutes.EDIT_SOCIAL,
   EDIT_SOCIAL_MANIFEST = SOCIALS + SEPARATOR + SubRoutes.EDIT_SOCIAL_MANIFEST,
   EMAIL_AND_PASSWORD = LOGIN + SEPARATOR + SubRoutes.EMAIL_AND_PASSWORD,
@@ -155,6 +161,7 @@ export enum FullRoutes {
   LIST_MEDIA = MEDIA + SEPARATOR + SubRoutes.LIST_MEDIA,
   LIST_SAIL_CATEGORIES = ADMIN + SEPARATOR + SubRoutes.LIST_SAIL_CATEGORIES,
   LIST_SAIL_PATHS = SAIL_PATHS + SEPARATOR + SubRoutes.LIST_SAIL_PATHS,
+  LIST_SAVED_QUERY = SAVED_QUERY + SEPARATOR + SubRoutes.LIST_SAVED_QUERY,
   LIST_SOCIALS = SOCIALS + SEPARATOR + SubRoutes.LIST_SOCIALS,
   PROFILE_SETTINGS = PROFILE + SEPARATOR + SubRoutes.PROFILE_SETTINGS,
   RECORD_SAIL_PATH = SAIL_PATHS + SEPARATOR + SubRoutes.RECORD_SAIL_PATH,
@@ -176,6 +183,7 @@ export enum FullRoutes {
   VIEW_SAIL_PER_PERSON = SAILS + SEPARATOR + SubRoutes.VIEW_SAIL_PER_PERSON,
   VIEW_SAIL_PICTURES = SAILS + SEPARATOR + SubRoutes.VIEW_SAIL_PICTURES,
   VIEW_SAIL_REQUEST = SAIL_REQUESTS + SEPARATOR + SubRoutes.VIEW_SAIL_REQUEST,
+  VIEW_SAVED_QUERY = SAVED_QUERY + SEPARATOR + SubRoutes.VIEW_SAVED_QUERY,
   VIEW_SOCIAL = SOCIALS + SEPARATOR + SubRoutes.VIEW_SOCIAL,
   VIEW_SOCIAL_PICTURES = SOCIALS + SEPARATOR + SubRoutes.VIEW_SOCIAL_PICTURES,
 }
@@ -195,6 +203,7 @@ export const createMaintenanceRoute = FullRoutes.CREATE_MAINTENANCE;
 export const createSailFromRequestRoute = (sail_request_id: string) => `${FullRoutes.CREATE_SAIL}/${sail_request_id}`;
 export const createSailRequestRoute = FullRoutes.CREATE_SAIL_REQUEST;
 export const createSailRoute = FullRoutes.CREATE_SAIL;
+export const createSavedQueryRoute = FullRoutes.CREATE_SAVED_QUERY;
 export const createSocialRoute = FullRoutes.CREATE_SOCIAL;
 export const departureSailChecklistRoute = (id: string) => `${FullRoutes.DEPARTURE_SAIL_CHECKLIST}/${id}`;
 export const editBoatChecklistRoute = (boat_id: string) => `${FullRoutes.EDIT_BOAT_CHECKLIST}/${boat_id}`;
@@ -209,10 +218,11 @@ export const editProfilePrivilegesRoute = (profile_id: string) => `${FullRoutes.
 export const editProfileRoute = (profile_id: string) => `${FullRoutes.EDIT_PROFILE}/${profile_id}`;
 export const editSailChecklistRoute = (id: string) => `${FullRoutes.EDIT_SAIL_CHECKLIST}/${id}`;
 export const editSailManifestRoute = (sail_id: string) => `${FullRoutes.EDIT_SAIL_MANIFEST}/${sail_id}`;
-export const editSocialManifestRoute = (social_id: string) => `${FullRoutes.EDIT_SOCIAL_MANIFEST}/${social_id}`;
 export const editSailPathRoute = (sailPathId: string) => `${FullRoutes.EDIT_SAIL_PATH}/${sailPathId}`;
 export const editSailRequestRoute = (id: string) => `${FullRoutes.EDIT_SAIL_REQUEST}/${id}`;
 export const editSailRoute = (sail_id: string) => `${FullRoutes.EDIT_SAIL}/${sail_id}`;
+export const editSavedQueryRoute = (id: string) => `${FullRoutes.EDIT_SAVED_QUERY}/${id}`;
+export const editSocialManifestRoute = (social_id: string) => `${FullRoutes.EDIT_SOCIAL_MANIFEST}/${social_id}`;
 export const editSocialRoute = (social_id: string) => `${FullRoutes.EDIT_SOCIAL}/${social_id}`;
 export const helpRoute = FullRoutes.HELP;
 export const listChallengesRoute = `${FullRoutes.LIST_CHALLENGES}`;
@@ -222,6 +232,7 @@ export const listFeedbackRoute = (sail_id: string) => `${FullRoutes.LIST_FEEDBAC
 export const listMediaRoute = FullRoutes.LIST_MEDIA;
 export const listSailCategoriesRoute = FullRoutes.LIST_SAIL_CATEGORIES;
 export const listSailPathsRoute = (sail_id: string) => `${FullRoutes.LIST_SAIL_PATHS}/${sail_id}`;
+export const listSavedQueryRoute = () => `${FullRoutes.LIST_SAVED_QUERY}`;
 export const listSocialsRoute = () => `${FullRoutes.LIST_SOCIALS}`;
 export const loginWithEmailAndPassword = FullRoutes.EMAIL_AND_PASSWORD;
 export const maintenanceRoute = FullRoutes.MAINTENANCE;
@@ -248,6 +259,7 @@ export const viewSailPathRoute = (sailPathId: string) => `${FullRoutes.VIEW_SAIL
 export const viewSailPicturesRoute = (sail_id: string) => `${FullRoutes.VIEW_SAIL_PICTURES}/${sail_id}`;
 export const viewSailRequestRoute = (id: string) => `${FullRoutes.VIEW_SAIL_REQUEST}/${id}`;
 export const viewSailRoute = (sail_id: string) => `${FullRoutes.VIEW_SAIL}/${sail_id}`;
+export const viewSavedQueryRoute = (id: string) => `${FullRoutes.VIEW_SAVED_QUERY}/${id}`;
 export const viewSocialPicturesRoute = (social_id: string) => `${FullRoutes.VIEW_SOCIAL_PICTURES}/${social_id}`;
 export const viewSocialRoute = (social_id: string) => `${FullRoutes.VIEW_SOCIAL}/${social_id}`;
 export const viewUserSailsRoute = (profile_id: string) => `${FullRoutes.VIEW_SAIL_PER_PERSON}/${profile_id}`;

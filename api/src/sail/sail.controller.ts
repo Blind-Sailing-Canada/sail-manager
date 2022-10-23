@@ -182,7 +182,7 @@ export class SailController {
     const date = new Date();
 
     response
-      .attachment(`COMPANY_NAME_SHORT_HEADER-sails-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}-.csv`);
+      .attachment(`COMPANY_NAME_SHORT_HEADER-sails-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.csv`);
     return response.send(csv);
   }
 

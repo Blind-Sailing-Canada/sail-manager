@@ -1,8 +1,5 @@
 import {
-  BadRequestException,
-  Body,
   Controller,
-  Post,
   UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -20,35 +17,4 @@ import { AdminService } from './admin.service';
 @UserRoles(ProfileRole.Admin)
 export class AdminController {
   constructor(public service: AdminService) { }
-
-  @Post()
-  runQuery(@Body() body: { query: string }) {
-    const query = body.query?.trim() || '';
-
-    if (!query.toLowerCase().startsWith('select ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    if (query.toLowerCase().includes('delete ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    if (query.toLowerCase().includes('insert ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    if (query.toLowerCase().includes('update ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    if (query.toLowerCase().includes('alter ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    if (query.toLowerCase().includes('drop ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    return this.service.dataSource.query(query);
-  }
 }

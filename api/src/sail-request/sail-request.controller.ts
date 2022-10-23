@@ -73,7 +73,7 @@ export class SailRequestController {
 
     const date = new Date();
 
-    response.attachment(`COMPANY_NAME_SHORT_HEADER-sail-requests-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}-.csv`);
+    response.attachment(`COMPANY_NAME_SHORT_HEADER-sail-requests-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.csv`);
     return response.send(csv);
   }
 }

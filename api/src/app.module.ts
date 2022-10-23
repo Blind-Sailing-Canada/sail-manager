@@ -35,6 +35,7 @@ import { SocialModule } from './social/social.module';
 import { SocialManifestModule } from './social-manifest/social-manifest.module';
 import { FormResponseModule } from './form-response/form-response.module';
 import { AdminModule } from './admin/admin.module';
+import { SavedQueryModule } from './admin/saved-query/saved-query.module';
 
 const DB_LOGGING = [];
 
@@ -110,6 +111,7 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\
     SailModule,
     SailRequestInterestModule,
     SailRequestModule,
+    SavedQueryModule,
     SettingModule,
     SocialManifestModule,
     SocialModule,

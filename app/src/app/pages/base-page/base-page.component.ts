@@ -44,6 +44,7 @@ import {
   viewProfileRoute,
   viewSailRequestRoute,
   viewSailRoute,
+  viewSavedQueryRoute,
   viewSocialRoute,
 } from '../../routes/routes';
 import {
@@ -163,6 +164,9 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
         break;
       case 'SailRequestEntity':
         this.viewSailRequest(entityId);
+        break;
+      case 'SavedQueryEntity':
+        this.viewSavedQuery(entityId);
         break;
     }
   }
@@ -644,6 +648,10 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
   protected viewSailRequest(id: string): void {
     this.goTo([viewSailRequestRoute(id)]);
+  }
+
+  protected viewSavedQuery(id: string): void {
+    this.goTo([viewSavedQueryRoute(id)]);
   }
 
   protected viewProfile(id: string): void {
