@@ -62,6 +62,8 @@ import  { unflatten } from 'flat';
         eager: true,
         alias: 'comment_replies_author',
       },
+      waiting_list: { eager: true },
+      'waiting_list.profile': { eager: true },
     },
   },
   routes: { only: [

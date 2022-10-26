@@ -17,6 +17,8 @@ import { SailChecklistEntity } from '../sail-checklist/sail-checklist.entity';
 import { SailFeedbackEntity } from '../sail-feedback/sail-feedback.entity';
 import { SailManifestEntity } from '../sail-manifest/sail-manifest.entity';
 import { SailRequestEntity } from '../sail-request/sail-request.entity';
+import { SailWaitListEntity } from '../sail-wait-llist/sail-wait-list.entity';
+import { SailWaitList } from '../types/sail-wait-list/sail-wait-list';
 import { Sail } from '../types/sail/sail';
 import { SailStatus } from '../types/sail/sail-status';
 
@@ -162,6 +164,13 @@ export class SailEntity extends BaseModelEntity implements Sail {
     eager: true,
   })
     pictures: MediaEntity[];
+
+  @OneToMany(() => SailWaitListEntity, (wait_list) => wait_list.sail, {
+    createForeignKeyConstraints: false,
+    nullable: true,
+    eager: true,
+  })
+    waiting_list: SailWaitList[];
 
   @BeforeInsert()
   async addEntityNumber() {

@@ -8,6 +8,7 @@ import { SailFeedback } from '../sail-feedback/sail-feedback';
 import { SailRequest } from '../sail-request/sail-request';
 import { Comment } from '../comment/comment';
 import { Media } from '../media/media';
+import { SailWaitList } from '../sail-wait-list/sail-wait-list';
 
 export interface Sail extends Base {
   boat: Boat;
@@ -34,4 +35,5 @@ export interface Sail extends Base {
   sail_request_id: string;
   start_at: Date;
   status: SailStatus;
+  waiting_list: SailWaitList[]
 }
