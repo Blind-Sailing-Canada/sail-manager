@@ -4,6 +4,7 @@ import { BoatMaintenanceEmail } from './boat-maintenance.email';
 import { ChallengeEmail } from './challenge.email';
 import { ClinicEmail } from './clinic.email';
 import { ProfileEmail } from './profile.email';
+import { ReleaseFormEmail } from './release-form.email';
 import { SailChecklistEmail } from './sail-checklist.email';
 import { SailRequestEmail } from './sail-request.email';
 import { SailEmail } from './sail.email';
@@ -16,6 +17,7 @@ import { SocialEmail } from './social.email';
     ChallengeEmail,
     ClinicEmail,
     ProfileEmail,
+    ReleaseFormEmail,
     SailChecklistEmail,
     SailEmail,
     SailRequestEmail,
@@ -27,6 +29,7 @@ import { SocialEmail } from './social.email';
     ChallengeEmail,
     ClinicEmail,
     ProfileEmail,
+    ReleaseFormEmail,
     SailChecklistEmail,
     SailEmail,
     SailRequestEmail,

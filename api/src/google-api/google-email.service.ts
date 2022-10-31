@@ -97,6 +97,7 @@ export class GoogleEmailService {
     const utf8Subject = `=?utf-8?B?${Buffer.from(emailInfo.subject).toString('base64')}?=`;
     const messageParts = [
       `To: ${emailInfo.to.join(', ')}`,
+      `Bcc: ${emailInfo.bcc.join(', ')}`,
       'Content-Type: text/html; charset=utf-8',
       'MIME-Version: 1.0',
       `Subject: ${utf8Subject}`,

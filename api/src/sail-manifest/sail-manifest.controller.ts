@@ -1,7 +1,7 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
   Body,
-  Controller, Get, Param, Post, Query, UseGuards
+  Controller, Get, Logger, Param, Post, Query, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
@@ -21,6 +21,8 @@ import { SailStatus } from '../types/sail/sail-status';
 import { SailUpdateJob } from '../types/sail/sail-update-job';
 import { SailManifestEntity } from './sail-manifest.entity';
 import { SailManifestService } from './sail-manifest.service';
+import * as Sentry from '@sentry/node';
+import { SailManifestGuestMustSignReleaseFormJob } from '../types/sail-manifest/sail-manifest-guest-must-sign-release-form-job';
 
 @Crud({
   model: { type: SailManifestEntity },
@@ -39,9 +41,12 @@ import { SailManifestService } from './sail-manifest.service';
 @ApiTags('sail-manifest')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class SailManifestController {
+  private readonly logger = new Logger(SailManifestController.name);
+
   constructor(
     public service: SailManifestService,
     @InjectQueue('sail') private readonly sailQueue: Queue,
+    @InjectQueue('guest-release-form') private readonly guestReleaseFormQueue: Queue,
   ) { }
 
   @Post('/update-sail-manifest/:sail_id')
@@ -50,7 +55,6 @@ export class SailManifestController {
 
     const currentManifestId = sail.manifest.map(manifest => manifest.id).filter(Boolean);
     const updatedManifestId = manifests.map(manifest => manifest.id).filter(Boolean);
-
     const manifestsToDelete = currentManifestId.filter(id => !updatedManifestId.includes(id));
 
     const manifestEntities = manifests.map((manifest) => {
@@ -73,6 +77,19 @@ export class SailManifestController {
     };
 
     this.sailQueue.add('update-sail', job);
+
+    const newGuestSailors = manifests.filter(manifest => !!manifest.guest_of_id).filter(manifest => !manifest.id);
+
+    for(const guest of newGuestSailors) {
+      try {
+        const releaseFormJob: SailManifestGuestMustSignReleaseFormJob = { email: guest.guest_email };
+        await this.guestReleaseFormQueue.removeJobs(guest.guest_email);
+        await this.guestReleaseFormQueue.add('must-sign-form', releaseFormJob, { jobId: guest.guest_email });
+      } catch (error) {
+        this.logger.error(`failed to create/remove guest release form job: ${error.message}`, error.stack);
+        Sentry.captureException(error);
+      }
+    }
 
     return SailEntity.findOne({
       where: { id: sail_id },

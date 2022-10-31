@@ -11,3 +11,4 @@ export const googleConstants = {
 
 export const DOMAIN = process.env.DOMAIN;
 export const NOTIFICATIONS_EMAIL = process.env.NOTIFICATIONS_EMAIL;
+export const RELEASE_FORM_URL = process.env.RELEASE_FORM_URL;
