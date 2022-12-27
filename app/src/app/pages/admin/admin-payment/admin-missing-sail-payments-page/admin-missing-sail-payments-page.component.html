@@ -19,6 +19,8 @@
   </mat-card-content>
 </mat-card>
 
+<ng-template #controls></ng-template>
+
 <ng-template #sailClaimsTable>
   <app-material-table
     (filterHandler)="filterHandler($event)"
@@ -83,16 +85,12 @@
           class="align-center"
         >
           <a
-            *ngIf="element.profile && !element.guest_name"
             [routerLink]="viewProfileRoute(element.profile.id)"
             aria-label="This claim is assigned to"
             title="Click to go to their profile page"
           >
             <app-profile-bullet [profile]="element.profile"></app-profile-bullet>
           </a>
-          <ng-container *ngIf="element.guest_name">
-            Guest: {{element.guest_name}} ({{element.guest_email}})
-          </ng-container>
         </td>
       </ng-container>
 
@@ -105,7 +103,7 @@
           mat-cell
           *matCellDef="let element"
         >
-          {{guest_name || '-'}}
+          {{element.guest_name || '-'}}
         </td>
       </ng-container>
 
@@ -141,3 +139,5 @@
     </ng-container>
   </app-material-table>
 </ng-template>
+
+<ng-template #TABLE_FILTERS></ng-template>
