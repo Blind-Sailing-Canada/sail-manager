@@ -1,0 +1,42 @@
+<h1
+  attr.aria-label="Find user"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>User Look Up Dialog</h1>
+<mat-dialog-content>
+  <mat-action-list
+    role='list'
+    id="user_list"
+  >
+    <div class="form">
+      <app-list-filter
+        label="Search users by name or email"
+        ariaLabel="Search user by name email"
+        tooltip="Search user by name or email"
+        (filter)="data.searchUsers($event)"
+      ></app-list-filter>
+    </div>
+    <mat-list-item
+      (click)="completeAndClose(selectedUser)"
+      *ngFor="let selectedUser of data.users; let i = index"
+      attr.aria-label="User {{i + 1}} of {{data.users.length}} {{selectedUser.name}}. Click to set user."
+      role="listitem"
+      tabindex="0"
+    >
+      <mat-icon matListIcon>add</mat-icon>{{i + 1 }}. {{selectedUser.name}}
+    </mat-list-item>
+    <mat-list-item
+      *ngIf="!data.users || data.users.length === 0"
+      tabindex="0"
+    >No users found.</mat-list-item>
+  </mat-action-list>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close dialog"
+  >CLOSE</button>
+</div>

@@ -5,6 +5,7 @@ import { AuthModule } from '../auth/auth.module';
 import { EmailModule } from '../email/email.module';
 import { FirebaseAdminModule } from '../firebase-admin/firebase-admin.module';
 import { GoogleApiModule } from '../google-api/google-api.module';
+import { SailPaymentClaimModule } from '../sail-payment-claim/sail-payment-claim.module';
 import { SailActionsController } from './sail-actions.controller';
 import { SailCategoryController } from './sail-category.controller';
 import { SailCommentsController } from './sail-comments.controller';
@@ -23,6 +24,7 @@ import { UserSailController } from './user-sail.controller';
     EmailModule,
     FirebaseAdminModule,
     GoogleApiModule,
+    SailPaymentClaimModule,
     TypeOrmModule.forFeature([SailEntity]),
   ],
   controllers: [

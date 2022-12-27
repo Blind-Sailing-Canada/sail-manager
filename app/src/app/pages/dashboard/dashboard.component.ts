@@ -22,6 +22,7 @@ import {
   listClinicsRoute,
   listDocumentsRoute,
   listMediaRoute,
+  outstandingPurchasesRoute,
   sailRequestsRoute,
   sailsRoute,
   socialsRoute,
@@ -51,6 +52,9 @@ import { TodaySailsState } from '../../models/today-sails-state.interface';
 import { fetchTodaySailsForAll, fetchTodaySailsForUser } from '../../store/actions/today-sails.actions';
 import { RequiredActionStatus } from '../../../../../api/src/types/required-action/required-action-status';
 import { UserAccessFields } from '../../../../../api/src/types/user-access/user-access-fields';
+import { SailPaymentClaim } from '../../../../../api/src/types/sail-payment-claim/sail-payment-claim';
+import { SailPaymentClaimService } from '../../services/sailpayment-claim.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -84,9 +88,13 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   public availableSails: Sail[] = [];
   public otherPastSails: Sail[] = [];
 
+  public outstandingSailFees: SailPaymentClaim[];
+  public outstandingPurchasesRoute = outstandingPurchasesRoute;
+
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(Router) router: Router,
+    @Inject(SailPaymentClaimService) private sailClaimService: SailPaymentClaimService,
   ) {
     super(store, undefined, router);
   }
@@ -134,12 +142,17 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
     this.fetchMyPastSails();
     this.fetchOtherPastSails();
     this.fetchNewRequiredActionsForUser();
+    this.fetchOutstandingSailFees();
   }
 
   get shouldDisplayAllInProgressSails(): boolean {
     const userType = this.user.roles.some(role => role === ProfileRole.Admin || role === ProfileRole.Coordinator);
 
     return userType && this.allInProgressSails.length > 0;
+  }
+
+  public gotToOutstandingSailFees(): void {
+    this.goTo([outstandingPurchasesRoute(this.user.profile.id)]);
   }
 
   public gotToRequiredAction(requiredAction: RequiredAction): void {
@@ -216,5 +229,15 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
 
   private fetchNewRequiredActionsForUser(): void {
     this.dispatchAction(fetchNewRequiredActionsForUser({ user_id: this.user.profile.id }));
+  }
+
+  private async fetchOutstandingSailFees() {
+    this.startLoading();
+
+    const query = { product_purchase_id: null, profile_id: this.user.profile.id };
+
+    this.outstandingSailFees = await firstValueFrom(this.sailClaimService.fetchAllPaginated(query))
+      .then((results) => results.data)
+      .finally(() => this.finishLoading());
   }
 }

@@ -36,6 +36,10 @@ import { SocialManifestModule } from './social-manifest/social-manifest.module';
 import { FormResponseModule } from './form-response/form-response.module';
 import { AdminModule } from './admin/admin.module';
 import { SavedQueryModule } from './admin/saved-query/saved-query.module';
+import { StripeModule } from './stripe/stripe.module';
+import { SailPaymentClaimModule } from './sail-payment-claim/sail-payment-claim.module';
+import { PaymentCaptureModule } from './payment-capture/payment-capture.module';
+import { ProductPurchaseModule } from './product-purchase/product-purchase.module';
 
 const DB_LOGGING = [];
 
@@ -103,18 +107,22 @@ const redisUrl = new URL(process.env.REDIS_CONNECTION_STRING.replace(/\\n/gm, '\
     FirebaseAdminModule,
     FormResponseModule,
     MediaModule,
+    PaymentCaptureModule,
+    ProductPurchaseModule,
     ProfileModule,
     RequiredActionModule,
     SailChecklistModule,
     SailFeedbackModule,
     SailManifestModule,
     SailModule,
+    SailPaymentClaimModule,
     SailRequestInterestModule,
     SailRequestModule,
     SavedQueryModule,
     SettingModule,
     SocialManifestModule,
     SocialModule,
+    StripeModule,
     TokenModule,
     UserAccessModule,
     UserModule,

@@ -1,0 +1,145 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>money_off</mat-icon>
+    </div>
+    <mat-card-title
+      role="heading"
+      tabindex="0"
+      id="pageTitle"
+    >{{profile ? 'User' : 'All'}} Outstanding Sail Fees</mat-card-title>
+    <mat-card-subtitle
+      *ngIf="profile"
+      role="heading"
+      aria-level="3"
+      tabindex="0"
+    >{{profile.name}} ({{profile.email}})</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="claimsTable"></ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #controls>
+
+</ng-template>
+
+<ng-template #claimsTable>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of purchases"
+  >
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="created_at"
+      matSortDirection="asc"
+      tableColumns
+    >
+      <ng-container matColumnDef="sail.entity_number">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Sail # </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.sail.entity_number}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sail.name">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-sort-header
+        > Sail name </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <a
+            [routerLink]="viewSailRoute(element.sail.id)"
+            title="Click to view sail page"
+          >{{element.sail.name}} </a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="profile.name">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-sort-header
+        > Profile name </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <a
+            [routerLink]="viewProfileRoute(element.profile.id)"
+            title="Click to go to {{element.profile.name}}'s profile page."
+          >
+            {{element.profile.name}}
+          </a> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="guest_name">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-sort-header
+        > Guest </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.guest_name || 'No'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sail.start_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Sailed at </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.sail.start_at | humanDateWithTime:true}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th
+          *matHeaderCellDef
+          mat-header-cell
+        > </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <a
+            mat-flat-button
+            title="Click to go view {{element.profile.name}}'s purchase history."
+            [routerLink]="listPurchasesRoute()"
+            [queryParams]="{profile_id: element.profile.id}"
+          >
+            <mat-icon>visibility</mat-icon>
+          </a> </td>
+      </ng-container>
+
+    </ng-container>
+  </app-material-table>
+</ng-template>

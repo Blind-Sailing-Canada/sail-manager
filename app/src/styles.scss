@@ -42,6 +42,10 @@ $angular-dark-theme: mat.define-dark-theme(
   /* this prevents text over lap when font size is large */
 }
 
+*:focus {
+  border: 1px solid black;
+}
+
 pre {
   overflow-x: auto;
   padding-bottom: 10px;

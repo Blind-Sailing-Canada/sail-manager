@@ -92,28 +92,6 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
     return this.user?.access[UserAccessFields.DownloadSails];
   }
 
-  public download(): void {
-    const query = this.buildQuery();
-
-    this.sailService
-      .download(query)
-      .subscribe(
-        (data: any) => {
-          const blob = new Blob([data], { type: 'text/csv' });
-          const date = new Date();
-
-          const fileName = `sails-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.csv`;
-
-          const link = document.createElement('a');
-
-          link.href = window.URL.createObjectURL(blob);
-          link.download = fileName;
-          link.click();
-        },
-        error => console.error('download error', error),
-      );
-  }
-
   public applyFilter(): void {
     this.filterInfo = {
       ...this.filterInfo,

@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {
   Inject,
@@ -75,6 +75,6 @@ export class ProfileService {
       url = `${url}&limit=${limit}`;
     }
 
-    return this.http.get<Profile[]>(url);
+    return this.http.get<PaginatedProfile>(url).pipe(map(results => results.data));
   }
 }

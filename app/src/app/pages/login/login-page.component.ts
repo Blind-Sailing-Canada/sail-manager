@@ -76,9 +76,7 @@ export class LoginPageComponent extends BasePageComponent implements OnInit {
             return; // wait until user is populated
           }
 
-          const redirectTo = window
-            .sessionStorage
-            .getItem('redirectTo') || FullRoutes.DASHBOARD.toString();
+          const redirectTo = window.sessionStorage.getItem('redirectTo') || FullRoutes.DASHBOARD.toString();
 
           window.sessionStorage.removeItem('redirectTo');
 

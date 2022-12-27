@@ -1,9 +1,4 @@
+import { PaginatedBase } from '../base/paginated-base';
 import { Profile } from './profile';
 
-export interface PaginatedProfile {
-  count:number
-  data: Profile[]
-  page:number
-  pageCount:number
-  total:number
-}
+export type PaginatedProfile = PaginatedBase<Profile>;

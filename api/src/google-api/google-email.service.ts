@@ -95,15 +95,24 @@ export class GoogleEmailService {
     }
 
     const utf8Subject = `=?utf-8?B?${Buffer.from(emailInfo.subject).toString('base64')}?=`;
-    const messageParts = [
-      `To: ${emailInfo.to.join(', ')}`,
-      `Bcc: ${emailInfo.bcc.join(', ')}`,
+    const messageParts = [];
+
+    if (emailInfo.to) {
+      messageParts.push(`To: ${emailInfo.to.join(', ')}`);
+    }
+
+    if(emailInfo.bcc) {
+      messageParts.push(`Bcc: ${emailInfo.bcc.join(', ')}`);
+    }
+
+    messageParts.push(
       'Content-Type: text/html; charset=utf-8',
       'MIME-Version: 1.0',
       `Subject: ${utf8Subject}`,
       '',
       emailInfo.content,
-    ];
+    );
+
     const message = messageParts.join('\n');
 
     const encodedMessage = Buffer.from(message)

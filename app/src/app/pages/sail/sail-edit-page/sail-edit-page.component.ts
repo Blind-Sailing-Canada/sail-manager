@@ -66,6 +66,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   public sail_request_id: string;
   public sailStartDateTimeForm: UntypedFormGroup;
   public sailCategories: SailCategory[] = [];
+  public totalFormSteps = 11;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -360,9 +361,10 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     const formValues = this.sailForm.getRawValue();
 
-    this.sailForm.controls.category.setValue(formValues.category || sail.category);
-    this.sailForm.controls.name.setValue(formValues.name || sail.name);
-    this.sailForm.controls.description.setValue(formValues.description || sail.description);
+    this.sailForm.controls.category.setValue(sail.category);
+    this.sailForm.controls.name.setValue(sail.name);
+    this.sailForm.controls.description.setValue(sail.description);
+    this.sailForm.controls.is_payment_free.setValue(sail.is_payment_free);
 
     const start = new Date(sail.start_at);
 
@@ -439,6 +441,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     this.sailForm = this.fb.group({
       category: this.fb.control(''),
+      is_payment_free: this.fb.control(false),
       name: new UntypedFormControl('', [
         (control) => {
           const name = control.value.trim();

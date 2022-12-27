@@ -2,7 +2,17 @@ import { InjectQueue } from '@nestjs/bull';
 import {
   BadRequestException,
   Body,
-  Controller, Delete, InternalServerErrorException, NotFoundException, Param, Patch,  Post,  Put, UnauthorizedException, UseGuards
+  Controller,
+  Delete,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Put,
+  UnauthorizedException,
+  UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Queue } from 'bull';
@@ -12,6 +22,8 @@ import { ProfileEntity } from '../profile/profile.entity';
 import { RequiredActionEntity } from '../required-action/required-action.entity';
 import { SailChecklistEntity } from '../sail-checklist/sail-checklist.entity';
 import { SailManifestEntity } from '../sail-manifest/sail-manifest.entity';
+import { SailPaymentClaimEntity } from '../sail-payment-claim/sail-payment-claim.entity';
+import { SailPaymentClaimService } from '../sail-payment-claim/sail-payment-claim.service';
 import { ProfileRole } from '../types/profile/profile-role';
 import { RequiredActionStatus } from '../types/required-action/required-action-status';
 import { RequiredActionType } from '../types/required-action/required-action-type';
@@ -34,10 +46,16 @@ import { SailService } from './sail.service';
 @ApiTags('sail')
 @UseGuards(JwtGuard, LoginGuard)
 export class SailActionsController {
+  private logger: Logger;
 
   constructor(
     private service: SailService,
-    @InjectQueue('sail') private readonly sailQueue: Queue) {}
+    @InjectQueue('sail') private readonly sailQueue: Queue,
+    private sailClaimService: SailPaymentClaimService,
+  )
+  {
+    this.logger = new Logger(SailActionsController.name);
+  }
 
   @Post('/:sail_id/new-sail-notification')
   sendNewSailEmail(@Param('sail_id') sail_id: string, @Body('message') message: string) {
@@ -341,7 +359,33 @@ export class SailActionsController {
 
       await transactionalEntityManager.save(required_actions);
 
+      if (sail.is_payment_free) {
+        return;
+      }
+
+      const sail_payment_claims = sail
+        .manifest
+        .filter(sailor => ![ // Skippers and Crew don't pay for sails they work on
+          SailorRole.Skipper,
+          SailorRole.Crew
+        ].includes(sailor.sailor_role))
+        .map(sailor => SailPaymentClaimEntity.create({
+          profile_id: sailor.guest_of_id ?? sailor.profile_id,
+          guest_email: sailor.guest_email,
+          guest_name: sailor.guest_of_id ? sailor.person_name : null,
+          sail_id: sail.id,
+          product_purchase_id: null,
+        }));
+
+      await transactionalEntityManager.save(sail_payment_claims);
+
     });
+
+    await this.sailClaimService
+      .linkAllClaimsToProfile()
+      .catch((error) => {
+        this.logger.error(error);
+      });
 
     return SailEntity.findOne({
       where: { id },

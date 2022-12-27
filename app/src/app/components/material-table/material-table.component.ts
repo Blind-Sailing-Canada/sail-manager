@@ -17,7 +17,7 @@ import {
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatColumnDef, MatHeaderRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
-import { debounceTime, filter, fromEvent, map, switchMap, takeWhile } from 'rxjs';
+import { debounceTime, fromEvent, map, switchMap, takeWhile } from 'rxjs';
 import { DEFAULT_PAGINATION } from '../../models/default-pagination';
 import { FilterInfo } from '../../models/filter-into';
 import { PaginatedData } from '../../models/paginated-data';
@@ -82,7 +82,7 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
         map((e: any) => (e.target.value || '') as string),
         debounceTime(1000),
         map(text => text ? text.trim() : ''),
-        filter(text => text.length === 0 || text.length > 2),
+        // filter(text => text.length === 0 || text.length > 2),
         switchMap((text) => {
           this.search = text;
           this.pagination.pageIndex = 0;

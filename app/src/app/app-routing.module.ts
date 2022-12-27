@@ -42,6 +42,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/profile/profile.module').then(mod => mod.ProfileModule),
   },
   {
+    path: RootRoutes.PURCHASES,
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/purchase/purchase.module').then(mod => mod.PurchaseModule),
+  },
+  {
     path: RootRoutes.BOATS,
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/boat/boat.module').then(mod => mod.BoatModule)

@@ -131,7 +131,11 @@ export class SailManifestController {
     }
 
     if (sailorName) {
-      searchQuery.andWhere({ name: ILike(`%${sailorName}%`) });
+      searchQuery.andWhere([
+        // THIS IS AN OR CONDITION
+        { name: ILike(`%${sailorName}%`) },
+        { email: ILike(`%${sailorName}%`) }
+      ]);
     }
 
     const availableSailors =  await searchQuery.getMany();

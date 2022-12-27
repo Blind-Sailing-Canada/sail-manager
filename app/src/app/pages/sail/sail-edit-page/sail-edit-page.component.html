@@ -18,16 +18,19 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <ng-container *ngTemplateOutlet="sailName"></ng-container>
-    <ng-container *ngTemplateOutlet="sailCategory"></ng-container>
-    <ng-container *ngTemplateOutlet="sailDescription"></ng-container>
-    <ng-container *ngTemplateOutlet="sailStart"></ng-container>
-    <ng-container *ngTemplateOutlet="sailEnd"></ng-container>
-    <ng-container *ngTemplateOutlet="sailBoat"></ng-container>
-    <ng-container *ngTemplateOutlet="sailMaxOccupancy"></ng-container>
-    <ng-container *ngTemplateOutlet="sailSkipper"></ng-container>
-    <ng-container *ngTemplateOutlet="sailCrew"></ng-container>
-    <ng-container *ngTemplateOutlet="sailSailors"></ng-container>
+    <form class='sail-edit-form'>
+      <ng-container *ngTemplateOutlet="sailName"></ng-container>
+      <ng-container *ngTemplateOutlet="sailPayment"></ng-container>
+      <ng-container *ngTemplateOutlet="sailCategory"></ng-container>
+      <ng-container *ngTemplateOutlet="sailDescription"></ng-container>
+      <ng-container *ngTemplateOutlet="sailStart"></ng-container>
+      <ng-container *ngTemplateOutlet="sailEnd"></ng-container>
+      <ng-container *ngTemplateOutlet="sailBoat"></ng-container>
+      <ng-container *ngTemplateOutlet="sailMaxOccupancy"></ng-container>
+      <ng-container *ngTemplateOutlet="sailSkipper"></ng-container>
+      <ng-container *ngTemplateOutlet="sailCrew"></ng-container>
+      <ng-container *ngTemplateOutlet="sailSailors"></ng-container>
+    </form>
   </mat-card-content>
   <mat-card-footer>
     <mat-card-actions>
@@ -52,76 +55,91 @@
   <h4
     aria-hidden="true"
     id="step1"
+    class='form-section-header'
     tabindex="-1"
-  >Step 1 of 10: Sail's Name{{sail_id ? ' (required)' : ' (leave blank for default name)'}}</h4>
+  >{{totalFormSteps}}: Sail's Name{{sail_id ? ' (required)' : ' (leave blank for default name)'}}</h4>
+  <mat-form-field [formGroup]="sailForm">
+    <input
+      aria-labelledby="step1"
+      formControlName="name"
+      matInput
+      title="Sail Name"
+    >
+  </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (sailForm.pristine ? []: nameErrors)"
+  >{{error}}</mat-error>
+</ng-template>
+<ng-template #sailPayment>
+  <h4
+    aria-hidden="true"
+    class='form-section-header'
+    id="step2"
+    tabindex="-1"
+  >{{totalFormSteps}}: Sail Payment</h4>
   <form [formGroup]="sailForm">
-    <mat-form-field>
-      <input
-        aria-labelledby="step1"
-        formControlName="name"
-        matInput
-        title="Sail Name"
-      >
-    </mat-form-field>
-    <mat-error
-      tabindex="0"
-      *ngFor="let error of (sailForm.pristine ? []: nameErrors)"
-    >{{error}}</mat-error>
+    <mat-checkbox
+      formControlName="is_payment_free"
+      title="If selected, payments will not be collected."
+    >Free</mat-checkbox>
   </form>
 </ng-template>
 <ng-template #sailCategory>
   <h4
     aria-hidden="true"
+    class='form-section-header'
     id="step2"
     tabindex="-1"
-  >Step 2 of 10: Sail Category</h4>
-  <form [formGroup]="sailForm">
-    <mat-form-field
-      appearance="fill"
-      appearance="standard"
+  >{{totalFormSteps}}: Sail Category</h4>
+  <mat-form-field
+    [formGroup]="sailForm"
+    appearance="fill"
+    appearance="standard"
+  >
+    <mat-label
+      id="stepLabelCategory"
+      aria-hidden="true"
+      tabindex="-1"
+    >Sail category</mat-label>
+    <select
+      formControlName="category"
+      aria-labelledby="step2"
+      matNativeControl
+      attr.aria-label="Selected category is {{sailForm.controls.category.value}}"
     >
-      <mat-label
-        id="stepLabelCategory"
-        aria-hidden="true"
-        tabindex="-1"
-      >Sail category</mat-label>
-      <select
-        formControlName="category"
-        aria-labelledby="step2"
-        matNativeControl
-        attr.aria-label="Selected category is {{sailForm.controls.category.value}}"
-      >
-        <option value=""></option>
-        <option
-          *ngFor="let category of sailCategories"
-          [value]="category.category"
-        >{{category.category}}</option>
-      </select>
-    </mat-form-field>
-  </form>
+      <option value=""></option>
+      <option
+        *ngFor="let category of sailCategories"
+        [value]="category.category"
+      >{{category.category}}</option>
+    </select>
+  </mat-form-field>
 </ng-template>
 <ng-template #sailDescription>
   <h4
     aria-hidden="true"
+    class='form-section-header'
     id="step3"
     tabindex="-1"
-  >Step 3 of 10: Sail's Description</h4>
-  <form [formGroup]="sailForm">
-    <mat-form-field>
-      <textarea
-        aria-labelledby="step2"
-        cdkAutosizeMaxRows="10"
-        cdkAutosizeMinRows="1"
-        cdkTextareaAutosize
-        formControlName="description"
-        matInput
-        title="Sail Description"
-      ></textarea>
-    </mat-form-field>
-  </form>
+  >{{totalFormSteps}}: Sail's Description</h4>
+  <mat-form-field [formGroup]="sailForm">
+    <textarea
+      aria-labelledby="step2"
+      cdkAutosizeMaxRows="10"
+      cdkAutosizeMinRows="1"
+      cdkTextareaAutosize
+      formControlName="description"
+      matInput
+      title="Sail Description"
+    ></textarea>
+  </mat-form-field>
 </ng-template>
 <ng-template #sailStart>
-  <h4 tabindex="0">Step 4 of 10: Sail's Start</h4>
+  <h4
+    tabindex="0"
+    class='form-section-header'
+  >{{totalFormSteps}}: Sail's Start</h4>
   <app-date-time-form
     [form]="sailStartDateTimeForm"
     formType="Start"
@@ -134,7 +152,10 @@
   <p tabindex="0">Start date preview: {{getTime("start_at")}}</p>
 </ng-template>
 <ng-template #sailEnd>
-  <h4 tabindex="0">Step 5 of 10: Sail's End</h4>
+  <h4
+    tabindex="0"
+    class='form-section-header'
+  >Step 5 of 10: Sail's End</h4>
   <app-date-time-form
     [form]="sailEndDateTimeForm"
     formType="End"
@@ -147,7 +168,10 @@
   <p tabindex="0">End date preview: {{getTime("end_at")}}</p>
 </ng-template>
 <ng-template #sailBoat>
-  <h4 tabindex="0">Step 6 of 10: Sail's Boat (required)</h4>
+  <h4
+    tabindex="0"
+    class='form-section-header'
+  >{{totalFormSteps}}: Sail's Boat (required)</h4>
   <p
     aria-live="polite"
     tabindex="0"
@@ -188,29 +212,31 @@
   <h4
     aria-hidden="true"
     id="step6"
+    class='form-section-header'
     tabindex="-1"
-  >Step 7 of 10: Sail's Maximum Occupancy (required)</h4>
-  <form [formGroup]="sailForm">
-    <mat-form-field>
-      <input
-        [max]="max_occupancy"
-        aria-labelledby="step6"
-        formControlName="max_occupancy"
-        matInput
-        title="Sail's maximum number of people"
-        min="2"
-        required
-        type="number"
-      >
-    </mat-form-field>
-  </form>
+  >{{totalFormSteps}}: Sail's Maximum Occupancy (required)</h4>
+  <mat-form-field [formGroup]="sailForm">
+    <input
+      [max]="max_occupancy"
+      aria-labelledby="step6"
+      formControlName="max_occupancy"
+      matInput
+      title="Sail's maximum number of people"
+      min="2"
+      required
+      type="number"
+    >
+  </mat-form-field>
   <mat-error
     tabindex="0"
     *ngFor="let error of max_occupancyErrors"
   >{{error}}</mat-error>
 </ng-template>
 <ng-template #sailSkipper>
-  <h4>Step 8 of 10: Sail's Skipper</h4>
+  <h4
+    tabindex="0"
+    class='form-section-header'
+  >{{totalFormSteps}}: Sail's Skipper</h4>
   <p
     tabindex="0"
     *ngIf="creatingNewSail"
@@ -226,7 +252,10 @@
   >Edit Manifest</button>
 </ng-template>
 <ng-template #sailCrew>
-  <h4>Step 9 of 10: Sail's Crew</h4>
+  <h4
+    tabindex="0"
+    class='form-section-header'
+  >{{totalFormSteps}}: Sail's Crew</h4>
   <p
     tabindex="0"
     *ngIf="creatingNewSail"
@@ -242,7 +271,10 @@
   >Edit Manifest</button>
 </ng-template>
 <ng-template #sailSailors>
-  <h4>Step 10 of 10: Sail's Sailors</h4>
+  <h4
+    tabindex="0"
+    class='form-section-header'
+  >{{totalFormSteps}}: Sail's Sailors</h4>
   <p
     tabindex="0"
     *ngIf="creatingNewSail"

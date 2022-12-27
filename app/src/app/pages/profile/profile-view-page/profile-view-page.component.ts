@@ -19,6 +19,7 @@ import { LinkAccountsDialogData } from '../../../models/link-accounts-dialog-dat
 import {
   editProfilePrivilegesRoute,
   editProfileRoute,
+  listPurchasesRoute,
   viewClinicRoute,
   viewUserSailsRoute,
 } from '../../../routes/routes';
@@ -30,11 +31,6 @@ import { firstValueFrom } from 'rxjs';
 import { FormResponse } from '../../../../../../api/src/types/form-response/form-response';
 import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 
-export enum EDIT_ACTIONS {
-  UPDATE_INFO = 'update info',
-  UPDATE_ACCESS = 'update access'
-}
-
 @Component({
   selector: 'app-profile-view-page',
   templateUrl: './profile-view-page.component.html',
@@ -42,20 +38,6 @@ export enum EDIT_ACTIONS {
 })
 export class ProfileViewPageComponent extends BasePageComponent implements OnInit {
   public formResponses: FormResponse[] = [];
-
-  public captionActions = [
-    {
-      name: EDIT_ACTIONS.UPDATE_INFO,
-      icon: 'edit',
-      tooltip: EDIT_ACTIONS.UPDATE_INFO,
-    },
-    {
-      name: EDIT_ACTIONS.UPDATE_ACCESS,
-      icon: 'security',
-      tooltip: EDIT_ACTIONS.UPDATE_ACCESS,
-    }
-  ];
-
   public linkAccountsDialogRef: MatDialogRef<LinkAccountsDialogComponent>;
 
   constructor(
@@ -101,6 +83,10 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
     return this.user.profile.id === this.profile_id || this.user.access[UserAccessFields.ViewUserSails];
   }
 
+  public get canViewPurchaces(): boolean {
+    return this.user.profile.id === this.profile_id || this.user.roles.includes(ProfileRole.Admin);
+  }
+
   public get profile_id(): string {
     return this.route.snapshot.params.id;
   }
@@ -121,17 +107,6 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
     return !!can;
   }
 
-  public actionsClicked(event): void {
-    switch (event) {
-      case EDIT_ACTIONS.UPDATE_INFO:
-        this.goTo([this.editProfileInfoLink(this.profile_id)]);
-        break;
-      case EDIT_ACTIONS.UPDATE_ACCESS:
-        this.goTo([this.editProfilePrivilegesLink(this.profile_id)]);
-        break;
-    }
-  }
-
   public editProfileInfoLink(profile_id: string): string {
     return editProfileRoute(profile_id);
   }
@@ -142,6 +117,10 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
 
   public viewUserSailsRouteLink(profile_id: string): string {
     return viewUserSailsRoute(profile_id);
+  }
+
+  public viewUserPurchacesRouteLink(): string {
+    return listPurchasesRoute();
   }
 
   public goToClinic(clinic_id: string): void {
