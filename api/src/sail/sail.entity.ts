@@ -42,6 +42,12 @@ export class SailEntity extends BaseModelEntity implements Sail {
 
   @Column({
     nullable: true,
+    default: false,
+  })
+    is_payment_free: boolean;
+
+  @Column({
+    nullable: true,
     default: null,
   })
     calendar_id: string;

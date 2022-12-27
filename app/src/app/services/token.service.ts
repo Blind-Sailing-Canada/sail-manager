@@ -22,7 +22,7 @@ export class TokenService {
   }
 
   public get savedToken(): string {
-    return window.sessionStorage.getItem('token');
+    return window.localStorage.getItem('token');
   }
 
   public get tokenData(): JwtObject {

@@ -239,6 +239,7 @@ export class AuthService {
       provider_user: provider_user,
       roles: profile.roles,
       status: profile.status || ProfileStatus.Registration,
+      sub: profile.id,
       user_id: user.id,
       expire_time: expireAtDate.getTime(),
     };

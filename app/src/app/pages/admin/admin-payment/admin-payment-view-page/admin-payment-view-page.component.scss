@@ -1,0 +1,16 @@
+.payment-info {
+  display: grid;
+  grid-template-columns: max-content auto;
+  gap: 10px;
+  column-gap: 16px;
+  padding: 16px;
+}
+
+.payment-info label {
+  font-weight: bold;
+}
+
+section {
+  padding: 16px;
+  margin-bottom: 16px;
+}

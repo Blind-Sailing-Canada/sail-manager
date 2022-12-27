@@ -26,6 +26,7 @@ export interface Sail extends Base {
   entity_number: number;
   entity_type: string;
   feedback: SailFeedback[];
+  is_payment_free: boolean;
   manifest: SailManifest[];
   max_occupancy: number;
   name: string;

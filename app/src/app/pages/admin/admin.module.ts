@@ -14,10 +14,22 @@ import { MaterialTableModule } from '../../components/material-table/material-ta
 import { PipesModule } from '../../pipes/pipes.module';
 import { SavedQueryEditPageComponent } from './saved-query/saved-query-edit-page/saved-query-edit-page.component';
 import { SavedQueryListPageComponent } from './saved-query/saved-query-list-page/saved-query-list-page.component';
+import { AdminPaymentDashboardPageComponent } from './admin-payment/admin-payment-dashboard-page/admin-payment-dashboard-page.component';
+import { AdminPaymentViewPageComponent } from './admin-payment/admin-payment-view-page/admin-payment-view-page.component';
+import { FindUserDialogModule } from '../../components/find-user-dialog/find-user-dialog.module';
+import { ProfileBulletModule } from '../../components/profile-bullet/profile-bullet.module';
+import { AdminPaymentManualPageComponent } from './admin-payment/admin-payment-manual-page/admin-payment-manual-page.component';
+import {
+  AdminMissingSailPaymentsPageComponent,
+} from './admin-payment/admin-missing-sail-payments-page/admin-missing-sail-payments-page.component';
 
 @NgModule({
   declarations: [
     AdminDashboardPageComponent,
+    AdminMissingSailPaymentsPageComponent,
+    AdminPaymentDashboardPageComponent,
+    AdminPaymentManualPageComponent,
+    AdminPaymentViewPageComponent,
     AdminSailCategoryPageComponent,
     AdminUserEditPageComponent,
     SavedQueryEditPageComponent,
@@ -29,9 +41,11 @@ import { SavedQueryListPageComponent } from './saved-query/saved-query-list-page
     BasePageModule,
     CommonModule,
     CreateUserDialogModule,
+    FindUserDialogModule,
     FormsModule,
     MaterialTableModule,
     PipesModule,
+    ProfileBulletModule,
     ProfileListModule,
     ReactiveFormsModule,
     TableModule,

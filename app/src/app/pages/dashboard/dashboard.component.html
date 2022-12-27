@@ -11,6 +11,7 @@
     <ng-container [ngTemplateOutlet]="controls"></ng-container>
   </mat-card-actions>
   <mat-card-content>
+    <ng-container *ngTemplateOutlet="TemplateOutstandingSailFees"></ng-container>
     <app-required-actions-list
       *ngIf="myRequiredActions && myRequiredActions?.length"
       [actions]="myRequiredActions"
@@ -28,6 +29,29 @@
     </mat-accordion>
   </mat-card-content>
 </mat-card>
+
+<ng-template #TemplateOutstandingSailFees>
+  <mat-nav-list *ngIf="outstandingSailFees?.length">
+    <h4 mat-header>Attention</h4>
+    <mat-list-item
+      [routerLink]="outstandingPurchasesRoute(user.profile.id)"
+      role="link"
+      (keydown)="gotToOutstandingSailFees()"
+    >
+      <mat-icon
+        color="warn"
+        mat-list-icon
+      >warning</mat-icon>
+      <h3
+        matLine
+        class="break-space"
+      >
+        You have {{outstandingSailFees.length}} outstanding sail fee{{outstandingSailFees.length > 1 ? 's': ''}}.
+      </h3>
+      <mat-icon title="go to outstanding sail fees page">navigate_next</mat-icon>
+    </mat-list-item>
+  </mat-nav-list>
+</ng-template>
 
 <ng-template #TemplateAllInProgressSails>
   <mat-expansion-panel *ngIf="shouldDisplayAllInProgressSails">

@@ -1,0 +1,135 @@
+<mat-card *ngIf="purchase">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>shoppingbag</mat-icon>
+    </div>
+    <mat-card-title
+      role="heading"
+      tabindex="0"
+      id="pageTitle"
+    >Purchase Details</mat-card-title>
+    <mat-card-subtitle
+      role="heading"
+      aria-level="3"
+      tabindex="0"
+    >{{purchase.product_name}} ({{purchase.profile?.name}} : {{purchase.profile.email}})</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <section
+      class="purchase-info mat-elevation-z8"
+      *ngIf="purchase"
+    >
+      <label>Product</label>
+      <span>{{purchase.product_name}}</span>
+      <label>Sails included</label>
+      <span>{{purchase.number_of_sails_included}}</span>
+      <label>Sails used</label>
+      <span>{{purchase.number_of_sails_used}}</span>
+      <label>Guest sails included</label>
+      <span>{{purchase.number_of_guest_sails_included}}</span>
+      <label>Guest sails used</label>
+      <span>{{purchase.number_of_guest_sails_used}}</span>
+      <label>Expires at</label>
+      <span>{{purchase.valid_until | humanDate}}</span>
+      <label>Assigned user</label>
+      <a
+        *ngIf="purchase.profile"
+        [routerLink]="viewProfileRoute(purchase.profile.id)"
+        aria-label="This purchase is assigned to"
+        title="Click to go to their profile page"
+      >
+        <app-profile-bullet [profile]="purchase.profile"></app-profile-bullet>
+      </a>
+      <label *ngIf="!purchase.profile_id">None</label>
+    </section>
+    <section class="mat-elevation-z8">
+      <h3>Sails</h3>
+      <ng-container [ngTemplateOutlet]="sailClaimsTable"></ng-container>
+    </section>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #controls>
+
+</ng-template>
+
+<ng-template #sailClaimsTable>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of claims"
+  >
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="created_at"
+      matSortDirection="asc"
+      tableColumns
+    >
+      <ng-container matColumnDef="sail.entity_number">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-sort-header
+        > Sail </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="align-center"
+        > <a [routerLink]="viewSailRoute(element.sail?.id)">
+            #{{element.sail?.entity_number}} {{element.sail?.name}}
+          </a></td>
+      </ng-container>
+
+      <ng-container matColumnDef="sailor">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+        > Sailor </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="align-center"
+        >
+          <a
+            *ngIf="element.profile && !element.guest_name"
+            [routerLink]="viewProfileRoute(element.profile.id)"
+            aria-label="This claim is assigned to"
+            title="Click to go to their profile page"
+          >
+            <app-profile-bullet [profile]="element.profile"></app-profile-bullet>
+          </a>
+          <ng-container *ngIf="element.guest_name">
+            Guest: {{element.guest_name}} ({{element.guest_email}})
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Purchaced at </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.created_at | humanDateWithTime:true}} </td>
+      </ng-container>
+
+    </ng-container>
+  </app-material-table>
+</ng-template>

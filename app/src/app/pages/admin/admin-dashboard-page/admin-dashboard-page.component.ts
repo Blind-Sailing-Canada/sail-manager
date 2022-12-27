@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IProfileMap } from '../../../models/profile-state.interface';
 import {
-  editProfilePrivilegesRoute, FullRoutes, listSailCategoriesRoute,
+  adminPaymentDashboardRoute,
+  editProfilePrivilegesRoute, FullRoutes, listSailCategoriesRoute, missingSailPaymentsRoute,
 } from '../../../routes/routes';
 import { ProfileService } from '../../../services/profile.service';
 import {
@@ -50,6 +51,9 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
   public profileStatus: ProfileStatus | 'ANY' = 'ANY';
   public profileStatusValues = { ...ProfileStatus, ANY: 'ANY' };
   public profileLink = editProfilePrivilegesRoute;
+  public missingSailPaymentsRoute = missingSailPaymentsRoute;
+  public adminPaymentDashboardRoute = adminPaymentDashboardRoute;
+  public listSailCategoriesRoute = listSailCategoriesRoute;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -107,10 +111,6 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
         maxWidth: 500,
         data: dialogData,
       });
-  }
-
-  public goToSailCategories(): void {
-    this.goTo([listSailCategoriesRoute]);
   }
 
   private createUser(name: string, email: string): Promise<void> {

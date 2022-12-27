@@ -6,6 +6,7 @@ import {
   HostBinding,
   Inject,
   OnInit,
+  Renderer2,
 } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
@@ -51,6 +52,7 @@ export class AppComponent extends BasePageComponent implements OnInit, AfterView
     @Inject(HttpClient) private httpClient: HttpClient,
     private overlay: OverlayContainer,
     private changeDetector: ChangeDetectorRef,
+    private renderer: Renderer2
   ) {
     super(store, null, null);
   }
@@ -69,7 +71,7 @@ export class AppComponent extends BasePageComponent implements OnInit, AfterView
         return { csrfToken: null };
       });
 
-    sessionStorage.setItem('csrfToken', csrfToken.csrfToken);
+    localStorage.setItem('csrfToken', csrfToken.csrfToken);
 
     this.subscribeToStoreSlice(STORE_SLICES.APP, (appState: AppState) => {
       if (appState.loading) {
@@ -78,9 +80,11 @@ export class AppComponent extends BasePageComponent implements OnInit, AfterView
 
       if (appState.theme === 'dark') {
         this.overlay.getContainerElement().classList.add('darkMode');
+        this.renderer.addClass(document.body, 'darkMode');
         this.className = 'darkMode';
       } else {
         this.overlay.getContainerElement().classList.remove('darkMode');
+        this.renderer.removeClass(document.body, 'darkMode');
         this.className = '';
       }
 

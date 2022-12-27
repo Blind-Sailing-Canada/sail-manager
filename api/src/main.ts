@@ -20,7 +20,7 @@ import { AllExceptionFilter } from './utils/all-exception.filter';
 
 async function bootstrap() {
 
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { rawBody: true });
 
   Sentry.init({
     dsn: process.env.SENTRY_DSN_BACKEND,
@@ -81,6 +81,10 @@ async function bootstrap() {
     }
 
     if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/documents/')){
+      return next();
+    }
+
+    if (req.originalUrl.startsWith('/stripe/webhook')){
       return next();
     }
 

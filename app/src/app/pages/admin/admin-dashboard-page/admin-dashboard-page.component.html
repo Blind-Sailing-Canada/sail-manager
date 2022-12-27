@@ -35,13 +35,25 @@
     mat-raised-button
     (click)="openCreateUserDialog()"
   >Create User</button>
-  <button
+  <a
     mat-raised-button
-    (click)="goToSailCategories()"
-  >Sail Categories</button>
+    [routerLink]="listSailCategoriesRoute"
+    title='Go to sail categories page'
+  >Sail Categories</a>
+  <a
+    mat-raised-button
+    [routerLink]="adminPaymentDashboardRoute"
+    title="Go to payments page"
+  >Payments</a>
+  <a
+    mat-raised-button
+    [routerLink]="missingSailPaymentsRoute"
+    title="Go to missing sail payments page."
+  >Missing Payments</a>
   <a
     mat-raised-button
     [routerLink]="dbQueryRoute.toString()"
+    title="Click to go to db query page."
   >DB Query</a>
 </ng-template>
 

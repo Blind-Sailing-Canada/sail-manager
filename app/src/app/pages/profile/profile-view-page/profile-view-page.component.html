@@ -35,7 +35,7 @@
 <ng-template #controls>
   <a
     *ngIf="canEditInfo"
-    [routerLink]="editProfileInfoLink(profile?.id)"
+    [routerLink]="editProfileInfoLink(profile.id)"
     mat-raised-button
     title="Edit your profile information"
   >
@@ -43,7 +43,7 @@
   </a>
   <a
     *ngIf="canEditPrivileges"
-    [routerLink]="editProfilePrivilegesLink(profile?.id)"
+    [routerLink]="editProfilePrivilegesLink(profile.id)"
     mat-raised-button
     title="Edit profile privileges"
   >
@@ -51,7 +51,7 @@
   </a>
   <a
     *ngIf="canViewSails"
-    [routerLink]="viewUserSailsRouteLink(profile?.id)"
+    [routerLink]="viewUserSailsRouteLink(profile.id)"
     mat-raised-button
     title="view users's sails"
   >
@@ -65,4 +65,13 @@
   >
     Link accounts
   </button>
+  <a
+    *ngIf="canViewPurchaces"
+    [routerLink]="viewUserPurchacesRouteLink()"
+    [queryParams]="{profile_id}"
+    mat-raised-button
+    title="view users's purchases"
+  >
+    Purchases
+  </a>
 </ng-template>

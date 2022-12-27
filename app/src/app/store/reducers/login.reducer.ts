@@ -27,13 +27,14 @@ const reducerHandler = createReducer(
     return initialState;
   }),
   on(putToken, (state, action) => {
-    sessionStorage.setItem('token', action.token);
+    localStorage.setItem('token', action.token);
     const tokenData = decodeJwt(action.token);
     return Object.assign({}, state, { tokenData, token: action.token, when: new Date() });
   }),
   on(loggedOut, () => {
     localStorage.clear();
     sessionStorage.clear();
+    localStorage.clear();
     return initialState;
   }),
   on(loggedIn, (state, action) => Object.assign({}, state, { user: action.user, when: new Date() })),

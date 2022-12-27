@@ -132,6 +132,18 @@ export class SavedQueryEditPageComponent extends BasePageComponent implements On
 
   }
 
+  public cellData(data) {
+    if (!data) {
+      return data;
+    }
+
+    if (typeof data === 'object') {
+      return JSON.stringify(data, null, 2);
+    }
+
+    return data;
+  }
+
   public async deleteSavedQuery(): Promise<void> {
     this.startLoading();
 

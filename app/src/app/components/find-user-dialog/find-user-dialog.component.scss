@@ -1,0 +1,25 @@
+.mat-dialog-actions {
+  justify-content: center;
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.mat-action-list {
+  text-align: center;
+}
+
+.mat-card {
+  margin-bottom: 1rem;
+}
+
+.mat-list-item:hover {
+  background-color: rgba(200, 200, 200, 0.3);
+}
+
+h1 {
+  text-align: center;
+}

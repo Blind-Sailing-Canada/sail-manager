@@ -1,0 +1,158 @@
+<mat-card *ngIf="user">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>paid</mat-icon>
+    </div>
+    <mat-card-title
+      id="pageTitle"
+      role="header"
+      tabindex="0"
+    >Admin Manual Payment Form</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="manualCreditForm"></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        (click)="saveManualCredit()"
+        *ngIf="shouldEnableSaveButton"
+        title="Click to create manual payment capture"
+      >Save</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #controls>
+
+</ng-template>
+
+<ng-template #manualCreditForm>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label
+        id="payment-capture-customer-name"
+        aria-hidden="true"
+        tabindex="-1"
+      >Customer name</mat-label>
+      <input
+        attr.aria-labelledby="payment-capture-customer-name"
+        matInput
+        type="text"
+        formControlName="customer_name"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="payment-capture-customer-email"
+        aria-hidden="true"
+        tabindex="-1"
+      >Customer email (must match profile email)</mat-label>
+      <input
+        attr.aria-labelledby="payment-capture-customer-email"
+        matInput
+        type="text"
+        formControlName="customer_email"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="payment-capture-product-name"
+        aria-hidden="true"
+        tabindex="-1"
+      >Product name</mat-label>
+      <input
+        attr.aria-labelledby="payment-capture-product-name"
+        matInput
+        type="text"
+        formControlName="product_name"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        tabindex="-1"
+        id="payment-capture-product-type"
+      >Product type</mat-label>
+      <select
+        matNativeControl
+        formControlName="product_type"
+        aria-labelledby="payment-capture-product-type"
+        attr.aria-label="Selected product type is {{form.controls.product_type.value}}"
+      >
+        <option value=""></option>
+        <option
+          *ngFor="let product_type of product_types"
+          [value]="product_type"
+        >{{product_type}}</option>
+      </select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="payment-capture-number-of-sails"
+        aria-hidden="true"
+        tabindex="-1"
+      >Number of sails included</mat-label>
+      <input
+        attr.aria-labelledby="payment-capture-number-of-sails"
+        matInput
+        type="number"
+        autocomplete="off"
+        min="0"
+        formControlName="number_of_sails_included"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="payment-capture-number-of-guest-sails"
+        aria-hidden="true"
+        tabindex="-1"
+      >Number of guest sails included</mat-label>
+      <input
+        attr.aria-labelledby="payment-capture-number-of-guest-sails"
+        matInput
+        type="number"
+        autocomplete="off"
+        min="0"
+        formControlName="number_of_guest_sails_included"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label
+        id="payment-capture-valid-until"
+        aria-hidden="true"
+        tabindex="-1"
+      >Expiry date</mat-label>
+      <input
+        attr.aria-labelledby="payment-capture-valid-until"
+        matInput
+        type="date"
+        autocomplete="off"
+        min="0"
+        formControlName="valid_until"
+      >
+    </mat-form-field>
+    <mat-checkbox formControlName="is_unlimited_sails">Unlimited sails</mat-checkbox>
+    <mat-form-field>
+      <mat-label
+        aria-hidden="true"
+        tabindex="-1"
+        id="payment-capture-note"
+      >Note</mat-label>
+      <textarea
+        formControlName="note"
+        aria-labelledby="payment-capture-note"
+        matInput
+        cdkAutosizeMaxRows="10"
+        cdkAutosizeMinRows="1"
+        autocomplete="off"
+        cdkTextareaAutosize
+        title="Manual payment capture note"
+      ></textarea>
+    </mat-form-field>
+  </form>
+</ng-template>

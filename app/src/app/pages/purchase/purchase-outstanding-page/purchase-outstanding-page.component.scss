@@ -1,0 +1,21 @@
+mat-list-item:nth-child(even) {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
+
+mat-list-item:last-child {
+  border-bottom: 1px solid black;
+}
+
+mat-list-item {
+  height: max-content !important;
+  padding: 10px 0 !important;
+}
+
+mat-list-item h4 {
+  margin-left: 0 !important;
+}
+
+.align-center {
+  text-align: center;
+}

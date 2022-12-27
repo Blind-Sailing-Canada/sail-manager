@@ -12,5 +12,8 @@
     "typescript.preferences.importModuleSpecifier": "relative",
     "cSpell.words": [
         "nestjs"
-    ]
+    ],
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
 }

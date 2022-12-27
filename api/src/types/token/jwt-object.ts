@@ -13,5 +13,6 @@ export interface JwtObject {
   provider_user: ProviderUser;
   roles: ProfileRole[];
   status: ProfileStatus;
+  sub: string, //// ProfileEntity id
   user_id: string; // UserEntity id
 }
