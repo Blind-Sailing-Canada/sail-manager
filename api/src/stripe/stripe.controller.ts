@@ -6,7 +6,9 @@ import { ApiTags } from '@nestjs/swagger';
 import { Queue } from 'bull';
 import Stripe from 'stripe';
 import { PaymentCaptureEntity } from '../payment-capture/payment-capture.entity';
+import { PaymentCaptureJobType } from '../types/payment-capture/payment-capture-job-type';
 import { PaymentCaptureNewJob } from '../types/payment-capture/payment-capture-new-job';
+import { PaymentCaptureProcessorType } from '../types/payment-capture/payment-capture-processor-type';
 import { ProductType } from '../types/product-purchase/product-type';
 
 const stripe = new Stripe(
@@ -15,14 +17,14 @@ const stripe = new Stripe(
   { apiVersion: process.env.STRIPE_API_VERSION as Stripe.LatestApiVersion, }
 );
 
-@Controller('stripe')
-@ApiTags('stripe')
+@Controller(PaymentCaptureProcessorType.Stripe)
+@ApiTags(PaymentCaptureProcessorType.Stripe)
 export class StripeController {
 
   private readonly logger: Logger;
 
   constructor(
-    @InjectQueue('stripe') private readonly stripeQueue: Queue
+    @InjectQueue(PaymentCaptureProcessorType.Stripe) private readonly stripeQueue: Queue
   ) {
     this.logger = new Logger(this.constructor.name);
   }
@@ -56,7 +58,7 @@ export class StripeController {
     if (captureEntity) {
       const job: PaymentCaptureNewJob = { payment_capture_id: captureEntity.id };
 
-      this.stripeQueue.add('new-stripe-payment', job);
+      this.stripeQueue.add(PaymentCaptureJobType.NewStripePayment, job);
     }
 
     return res.send();
@@ -72,17 +74,22 @@ export class StripeController {
           'payment_link',
         ] }
       );
-    const paymentCapture = new PaymentCaptureEntity();
-
-    paymentCapture.customer_email = expandedSession.customer_details.email.trim().toLowerCase();
-    paymentCapture.customer_name = expandedSession.customer_details.name.trim();
-    paymentCapture.payment_processor = 'stripe';
-    paymentCapture.product_name = expandedSession.line_items.data[0].description.trim();
-    paymentCapture.product_quantity = expandedSession.line_items.data[0].quantity || 1;
 
     const paymentMetadata = expandedSession.metadata;
     const productMetadata = (expandedSession.line_items?.data[0]?.price?.product as any)?.metadata;
 
+    if (paymentMetadata?.ignore_capture ?? productMetadata?.ignore_capture) {
+      this.logger.log('Ignoring stripe capture because ignore_capture is true');
+      return null;
+    }
+
+    const paymentCapture = new PaymentCaptureEntity();
+
+    paymentCapture.customer_email = expandedSession.customer_details.email.trim().toLowerCase();
+    paymentCapture.customer_name = expandedSession.customer_details.name.trim();
+    paymentCapture.payment_processor = PaymentCaptureProcessorType.Stripe;
+    paymentCapture.product_name = expandedSession.line_items.data[0].description.trim();
+    paymentCapture.product_quantity = expandedSession.line_items.data[0].quantity || 1;
     paymentCapture.product_type = (paymentMetadata?.product_type ?? productMetadata?.product_type) || ProductType.UNKNOWN;
     paymentCapture.data = expandedSession;
 
