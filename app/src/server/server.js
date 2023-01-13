@@ -84,6 +84,18 @@ app
   }
 
   app
+  // PROXY API CALLS
+  .use('/api', proxy(API_HOST, {
+    preserveHostHdr: true
+  }))
+  // PROXY CDN CALLS
+  .use('/cdn/*', proxy(CDN_HOST, {
+    preserveHostHdr: true,
+    proxyReqPathResolver: (req) => {
+      const redirect = req.originalUrl.substring(4);
+      return `/fba${redirect}`;
+    }
+  }))
   .use(compression())
   .use(express.json())
   .use(fileUpload({
@@ -166,18 +178,6 @@ app
         fs.unlink(tmpfileLocation, () => console.log(`deleted uploaded file ${tmpfileLocation}`));
       });
   })
-  // PROXY API CALLS
-  .use('/api', proxy(API_HOST, {
-    preserveHostHdr: true
-  }))
-  // PROXY CDN CALLS
-  .use('/cdn/*', proxy(CDN_HOST, {
-    preserveHostHdr: true,
-    proxyReqPathResolver: (req) => {
-      const redirect = req.originalUrl.substring(4);
-      return `/fba${redirect}`;
-    }
-  }))
   // Static content
   .use(express.static(DIST_DIR))
   // for everything else serve index.html
