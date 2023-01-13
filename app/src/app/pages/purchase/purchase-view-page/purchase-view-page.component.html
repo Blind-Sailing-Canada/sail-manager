@@ -25,7 +25,8 @@
       <label>Product</label>
       <span>{{purchase.product_name}}</span>
       <label>Sails included</label>
-      <span>{{purchase.number_of_sails_included}}</span>
+      <span *ngIf="purchase.is_unlimited_sails">unlimited</span>
+      <span *ngIf="!purchase.is_unlimited_sails">{{purchase.number_of_sails_included}}</span>
       <label>Sails used</label>
       <span>{{purchase.number_of_sails_used}}</span>
       <label>Guest sails included</label>

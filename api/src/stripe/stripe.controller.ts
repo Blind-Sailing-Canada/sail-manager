@@ -78,7 +78,9 @@ export class StripeController {
     const paymentMetadata = expandedSession.metadata;
     const productMetadata = (expandedSession.line_items?.data[0]?.price?.product as any)?.metadata;
 
-    if (paymentMetadata?.ignore_capture ?? productMetadata?.ignore_capture) {
+    const ignore_capture = (paymentMetadata?.ignore_capture ?? productMetadata?.ignore_capture) === 'true';
+
+    if (ignore_capture) {
       this.logger.log('Ignoring stripe capture because ignore_capture is true');
       return null;
     }

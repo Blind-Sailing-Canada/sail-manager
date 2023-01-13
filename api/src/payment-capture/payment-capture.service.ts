@@ -78,7 +78,7 @@ export class PaymentCaptureService extends BaseService<PaymentCaptureEntity> {
 
     const product = new ProductPurchaseEntity();
 
-    product.is_unlimited_sails = this.extractStripeField(data, 'is_unlimited_sails', false);
+    product.is_unlimited_sails = this.extractStripeField<string>(data, 'is_unlimited_sails', 'false') === 'true';
     product.number_of_guest_sails_included = quantity * this.extractStripeField(data, 'number_of_guest_sails_included', 0);
     product.number_of_sails_included = quantity * this.extractStripeField(data, 'number_of_sails_included', 0);
     product.payment_capture_id = payment.id;
