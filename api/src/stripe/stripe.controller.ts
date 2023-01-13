@@ -35,6 +35,9 @@ export class StripeController {
 
     let event: Stripe.Event;
 
+    console.log('stripe raw body', req.rawBody);
+    console.log('process.env.STRIPE_WEBHOOK_KEY', process.env.STRIPE_WEBHOOK_KEY);
+
     try {
       event = stripe.webhooks.constructEvent(req.rawBody, sig, process.env.STRIPE_WEBHOOK_KEY);
     } catch (err) {
