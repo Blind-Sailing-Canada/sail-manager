@@ -39,27 +39,11 @@ export class SavedQueryController {
   constructor(public service: SavedQueryService) { }
 
   private runQuery(query: string) {
-    if (!query.toLowerCase().startsWith('select ')) {
+    if (!query.toLowerCase().startsWith('select')) {
       throw new BadRequestException('query must be SELECT only');
     }
 
-    if (query.toLowerCase().includes('delete ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    if (query.toLowerCase().includes('insert ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    if (query.toLowerCase().includes('update ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    if (query.toLowerCase().includes('alter ')) {
-      throw new BadRequestException('query must be SELECT only');
-    }
-
-    if (query.toLowerCase().includes('drop ')) {
+    if (/.*(delete|insert|update|alter|drop|create)[\s\n\r].*/.test(query.toLowerCase())) {
       throw new BadRequestException('query must be SELECT only');
     }
 
