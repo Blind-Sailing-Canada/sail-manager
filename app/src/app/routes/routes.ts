@@ -25,7 +25,7 @@ export enum RootRoutes {
   SAIL_PATHS = 'sail-paths',
   SAIL_REQUESTS = 'sail-requests',
   SEPARATOR = '/',
-  SOCIALS = 'social',
+  SOCIALS = 'socials',
 }
 
 export enum SubRoutes {
