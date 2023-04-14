@@ -168,9 +168,6 @@ export class SocialEditPageComponent extends BasePageComponent implements OnInit
   }
 
   private updateForm(social: Social): void {
-
-    const formValues = this.socialForm.getRawValue();
-
     this.socialForm.controls.name.setValue(social.name);
     this.socialForm.controls.description.setValue(social.description);
     this.socialForm.controls.address.setValue(social.address);
