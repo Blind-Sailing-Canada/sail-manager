@@ -451,12 +451,13 @@ export class GoogleCalendarService {
           <body>
             <h2>You are attending social #${social.entity_number}.</h2>
             <p><label>Message from organizer: </label></p>
-            <pre>${message || 'Enjoy your sail.'}</pre>
+            <pre>${message || 'Enjoy your social.'}</pre>
             <h2>Social details</h2>
             <div><label>Name: </label>${social.name}</div>
             <div><label>Description: </label>${social.description || 'n/a'}</div>
             <div><label>Start: </label>${toLocalDate(social.start_at)}</div>
             <div><label>End: </label>${toLocalDate(social.end_at)}</div>
+            <div><label>Max capacity: </label>${(social.max_attendants == -1 ? 'unlimited' : social.max_attendants)}</div>
             <div><label>Address: ${social.address || 'n/a'} </label></div>
             <p><label>Attendants: </label> ${attendantNames.join(', ') || '-'}</p>
             <div><a href="${DOMAIN}/socials/view/${social.id}">View social</a></div>
