@@ -171,10 +171,10 @@ export class SocialEditPageComponent extends BasePageComponent implements OnInit
 
     const formValues = this.socialForm.getRawValue();
 
-    this.socialForm.controls.name.setValue(formValues.name || social.name);
-    this.socialForm.controls.description.setValue(formValues.description || social.description);
-    this.socialForm.controls.address.setValue(formValues.address || social.address);
-    this.socialForm.controls.max_attendants.setValue(formValues.max_attendants || social.max_attendants);
+    this.socialForm.controls.name.setValue(social.name);
+    this.socialForm.controls.description.setValue(social.description);
+    this.socialForm.controls.address.setValue(social.address);
+    this.socialForm.controls.max_attendants.setValue(social.max_attendants);
 
     const start = new Date(social.start_at);
 
