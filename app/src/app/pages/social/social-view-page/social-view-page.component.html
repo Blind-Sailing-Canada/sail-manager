@@ -144,6 +144,22 @@
         >{{social.status}}</td>
       </tr>
       <tr
+        aria-label="Social max capacity"
+        title="This social's max capacity is {{social.max_attendants}}"
+        tabindex="0"
+        role="listitem"
+        *ngIf="social.max_attendants > 0"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Max capacity</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        >{{social.max_attendants}}</td>
+      </tr>
+      <tr
         aria-label="Calendar Link"
         title="Calendar event link for this social"
         tabindex="0"
