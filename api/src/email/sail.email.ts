@@ -65,7 +65,7 @@ export class SailEmail {
           <body>
             <h2>New comment for "${sail.name}" (#${sail.entity_number})</h2>
             <div>
-              <label>Comment: </label> <span>${comment.comment}</span>
+              <label>Comment: </label> <pre>${comment.comment}</pre>
             </div>
             <div>
               <label>Posted by: </label> <span>${comment.author.name}</span>
