@@ -28,7 +28,7 @@ export class SocialEmail {
           <body>
             <h2>Your social "${social.name}" (#${social.entity_number}) was cancelled.</h2>
             <div>
-              <label>Cancellation reason: </label> <span>${social.cancel_reason}</span>
+              <label>Cancellation reason: </label> <pre>${social.cancel_reason}</pre>
             </div>
             <div>
               <label>Cancelled by: </label> <span>${social.cancelled_by.name}</span>
@@ -68,7 +68,7 @@ export class SocialEmail {
               <label>Comment: </label> <span>${comment.comment}</span>
             </div>
             <div>
-              <label>Posted by: </label> <span>${comment.author.name}</span>
+              <label>Posted by: </label> <pre>${comment.author.name}</pre>
             </div>
             <div>
               <label>Posted at: </label> <span>${toLocalDate(comment.created_at)}</span>
