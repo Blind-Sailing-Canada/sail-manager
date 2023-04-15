@@ -1,5 +1,6 @@
 import { takeWhile } from 'rxjs/operators';
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Inject,
@@ -21,11 +22,15 @@ import { User } from '../../models/user.interface';
   templateUrl: './new-comment-form.component.html',
   styleUrls: ['./new-comment-form.component.scss']
 })
-export class NewCommentFormComponent implements OnDestroy {
+export class NewCommentFormComponent implements OnDestroy, AfterViewInit {
 
   @Input() currentUser: User;
+  @Input() maxLength = 1000;
   @Output() postNewComment: EventEmitter<Comment> = new EventEmitter<Comment>();
+
   public form: UntypedFormGroup;
+  public currentLength = 0;
+  public remaining = 0;
 
   private active = true;
 
@@ -35,6 +40,10 @@ export class NewCommentFormComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.active = false;
+  }
+
+  ngAfterViewInit(): void {
+    this.remaining = this.maxLength;
   }
 
   public get shouldEnableCommentButton(): boolean {
@@ -67,10 +76,18 @@ export class NewCommentFormComponent implements OnDestroy {
       .pipe(
         takeWhile(() => this.active),
       )
-      .subscribe((data) => {
+      .subscribe((data: string | null) => {
         if (!data || !data.trim()) {
           this.form.markAsPristine();
+          this.currentLength = 0;
+          this.remaining = this.maxLength;
         }
+
+        if (data && this.maxLength > 0) {
+          this.currentLength = data.length;
+          this.remaining = this.maxLength - this.currentLength;
+        }
+
       });
   }
 

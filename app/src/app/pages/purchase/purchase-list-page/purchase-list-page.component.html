@@ -143,7 +143,7 @@
           [disabled]="loading"
           mat-header-cell
           mat-sort-header
-        > Purchaced at </th>
+        > Purchased at </th>
         <td
           mat-cell
           *matCellDef="let element"
@@ -215,7 +215,7 @@
               <label>Guest sails included: </label><span>{{element.number_of_guest_sails_included}}</span>
               <label>Guest sails used: </label><span>{{element.number_of_guest_sails_used}}</span>
               <label>Expires on: </label><span>{{element.valid_until | humanDate}}</span>
-              <label>Purchaced on: </label><span>{{element.created_at | humanDate}}</span>
+              <label>Purchased on: </label><span>{{element.created_at | humanDate}}</span>
             </div>
             <div class="row-mobile-controls">
               <a

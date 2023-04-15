@@ -16,7 +16,7 @@ import { PaginatedPaymentCapture } from '../../../../../../../api/src/types/paym
 import { FilterInfo } from '../../../../models/filter-into';
 import { DEFAULT_PAGINATION } from '../../../../models/default-pagination';
 import { MatTableDataSource } from '@angular/material/table';
-import { PaymentCapture } from '../../../../../../../api/src/types/payment-capture/paymet-capture';
+import { PaymentCapture } from '../../../../../../../api/src/types/payment-capture/payment-capture';
 import { createPurchaseRoute, viewAdminPaymentRoute, viewProfileRoute } from '../../../../routes/routes';
 import { ProductType } from '../../../../../../../api/src/types/product-purchase/product-type';
 

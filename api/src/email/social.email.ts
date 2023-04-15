@@ -65,10 +65,10 @@ export class SocialEmail {
           <body>
             <h2>New comment for "${social.name}" (#${social.entity_number})</h2>
             <div>
-              <label>Comment: </label> <span>${comment.comment}</span>
+              <label>Comment: </label> <pre>${comment.comment}</pre>
             </div>
             <div>
-              <label>Posted by: </label> <pre>${comment.author.name}</pre>
+              <label>Posted by: </label> <span>${comment.author.name}</span>
             </div>
             <div>
               <label>Posted at: </label> <span>${toLocalDate(comment.created_at)}</span>

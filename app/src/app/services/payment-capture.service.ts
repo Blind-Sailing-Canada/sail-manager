@@ -4,7 +4,7 @@ import {
   Inject,
   Injectable,
 } from '@angular/core';
-import { PaymentCapture } from '../../../../api/src/types/payment-capture/paymet-capture';
+import { PaymentCapture } from '../../../../api/src/types/payment-capture/payment-capture';
 import { PaginatedPaymentCapture } from '../../../../api/src/types/payment-capture/paginated-payment-capture';
 import { ManualCredit } from '../../../../api/src/types/payment-capture/manual-credit';
 

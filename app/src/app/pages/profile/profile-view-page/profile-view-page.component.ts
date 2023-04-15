@@ -83,7 +83,7 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
     return this.user.profile.id === this.profile_id || this.user.access[UserAccessFields.ViewUserSails];
   }
 
-  public get canViewPurchaces(): boolean {
+  public get canViewPurchases(): boolean {
     return this.user.profile.id === this.profile_id || this.user.roles.includes(ProfileRole.Admin);
   }
 
@@ -119,7 +119,7 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
     return viewUserSailsRoute(profile_id);
   }
 
-  public viewUserPurchacesRouteLink(): string {
+  public viewUserPurchasesRouteLink(): string {
     return listPurchasesRoute();
   }
 

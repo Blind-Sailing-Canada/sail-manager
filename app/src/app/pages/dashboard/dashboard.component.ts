@@ -53,7 +53,7 @@ import { fetchTodaySailsForAll, fetchTodaySailsForUser } from '../../store/actio
 import { RequiredActionStatus } from '../../../../../api/src/types/required-action/required-action-status';
 import { UserAccessFields } from '../../../../../api/src/types/user-access/user-access-fields';
 import { SailPaymentClaim } from '../../../../../api/src/types/sail-payment-claim/sail-payment-claim';
-import { SailPaymentClaimService } from '../../services/sailpayment-claim.service';
+import { SailPaymentClaimService } from '../../services/sail-payment-claim.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({

@@ -10,7 +10,7 @@ import { BasePageComponent } from '../../../base-page/base-page.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { WindowService } from '../../../../services/window.service';
 import { PaymentCaptureService } from '../../../../services/payment-capture.service';
-import { PaymentCapture } from '../../../../../../../api/src/types/payment-capture/paymet-capture';
+import { PaymentCapture } from '../../../../../../../api/src/types/payment-capture/payment-capture';
 import { firstValueFrom } from 'rxjs';
 import { FindUserDialogComponent } from '../../../../components/find-user-dialog/find-user-dialog.component';
 import { FindUserDialogData } from '../../../../models/find-user-dialog-data.interface';
@@ -22,7 +22,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FilterInfo } from '../../../../models/filter-into';
 import { DEFAULT_PAGINATION } from '../../../../models/default-pagination';
 import { PaginatedSailPaymentClaim } from '../../../../../../../api/src/types/sail-payment-claim/paginated-sail-payment-claim';
-import { SailPaymentClaimService } from '../../../../services/sailpayment-claim.service';
+import { SailPaymentClaimService } from '../../../../services/sail-payment-claim.service';
 
 @Component({
   selector: 'app-admin-payment-view-page',

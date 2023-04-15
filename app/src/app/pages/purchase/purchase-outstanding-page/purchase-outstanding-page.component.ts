@@ -19,7 +19,7 @@ import { Profile } from '../../../../../../api/src/types/profile/profile';
 import { listPurchasesRoute, viewProfileRoute, viewSailRoute } from '../../../routes/routes';
 import { SailPaymentClaim } from '../../../../../../api/src/types/sail-payment-claim/sail-payment-claim';
 import { PaginatedSailPaymentClaim } from '../../../../../../api/src/types/sail-payment-claim/paginated-sail-payment-claim';
-import { SailPaymentClaimService } from '../../../services/sailpayment-claim.service';
+import { SailPaymentClaimService } from '../../../services/sail-payment-claim.service';
 
 @Component({
   selector: 'app-purchase-outstanding-page',

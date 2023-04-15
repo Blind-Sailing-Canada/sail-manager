@@ -1,4 +1,4 @@
 import { PaginatedBase } from '../base/paginated-base';
-import { PaymentCapture } from './paymet-capture';
+import { PaymentCapture } from './payment-capture';
 
 export type PaginatedPaymentCapture = PaginatedBase<PaymentCapture>;

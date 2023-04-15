@@ -15,7 +15,7 @@ import { ProductPurchase } from '../../../../../../api/src/types/product-purchas
 import { WindowService } from '../../../services/window.service';
 import { firstValueFrom } from 'rxjs';
 import { viewProfileRoute, viewSailRoute } from '../../../routes/routes';
-import { SailPaymentClaimService } from '../../../services/sailpayment-claim.service';
+import { SailPaymentClaimService } from '../../../services/sail-payment-claim.service';
 import { SailPaymentClaim } from '../../../../../../api/src/types/sail-payment-claim/sail-payment-claim';
 import { MatTableDataSource } from '@angular/material/table';
 import { FilterInfo } from '../../../models/filter-into';

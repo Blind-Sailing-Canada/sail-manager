@@ -1,5 +1,5 @@
 import { Base } from '../base/base';
-import { PaymentCapture } from '../payment-capture/paymet-capture';
+import { PaymentCapture } from '../payment-capture/payment-capture';
 import { Profile } from '../profile/profile';
 import { ProductType } from './product-type';
 

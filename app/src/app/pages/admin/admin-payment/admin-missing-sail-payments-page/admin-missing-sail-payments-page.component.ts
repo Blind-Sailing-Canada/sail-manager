@@ -15,7 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FilterInfo } from '../../../../models/filter-into';
 import { DEFAULT_PAGINATION } from '../../../../models/default-pagination';
 import { PaginatedSailPaymentClaim } from '../../../../../../../api/src/types/sail-payment-claim/paginated-sail-payment-claim';
-import { SailPaymentClaimService } from '../../../../services/sailpayment-claim.service';
+import { SailPaymentClaimService } from '../../../../services/sail-payment-claim.service';
 
 @Component({
   selector: 'app-admin-missing-sail-payments-page',

@@ -6,11 +6,24 @@
       id="new-comment-label"
     >Add New Comment</mat-label>
     <textarea
+      *ngIf="maxLength < 0"
       aria-labelledby="new-comment-label"
       formControlName="comment"
       matInput
       title="New Comment"
     ></textarea>
+    <textarea
+      [maxlength]="maxLength"
+      *ngIf="maxLength > 0"
+      aria-labelledby="new-comment-label"
+      cdkAutosizeMaxRows="10"
+      cdkAutosizeMinRows="1"
+      cdkTextareaAutosize
+      formControlName="comment"
+      matInput
+      title="New Comment. Max length: {{maxLength}}. Remaining: {{remaining}}"
+    ></textarea>
+    <span class="text-area-counter">Remaining: {{remaining}}/{{maxLength}}</span>
   </mat-form-field>
   <div class="form-controls">
     <button
