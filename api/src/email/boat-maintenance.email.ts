@@ -39,7 +39,7 @@ export class BoatMaintenanceEmail {
             <a href="${DOMAIN}/maintenance/view/${report.id}">View request</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -124,7 +124,7 @@ export class BoatMaintenanceEmail {
             <a href="${DOMAIN}/maintenance/view/${report.id}">View request</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

@@ -30,7 +30,7 @@ export class ChallengeEmail {
             <a href="${DOMAIN}/challenges/view/${challenge.id}">View challenge</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -68,7 +68,7 @@ export class ChallengeEmail {
             <a href="${DOMAIN}/challenges/view/${challenge.id}">View challenge</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

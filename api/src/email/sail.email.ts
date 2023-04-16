@@ -40,7 +40,7 @@ export class SailEmail {
             <a href="${DOMAIN}/sails/view/${sail.id}">View sail</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -77,7 +77,7 @@ export class SailEmail {
             <a href="${DOMAIN}/sails/view/${sail.id}">View sail</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -97,7 +97,7 @@ export class SailEmail {
             </div>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

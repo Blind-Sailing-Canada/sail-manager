@@ -36,7 +36,7 @@ export class ClinicEmail {
             <a href="${DOMAIN}/clinics/view/${clinic.id}">View clinic</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

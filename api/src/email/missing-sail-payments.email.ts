@@ -31,7 +31,7 @@ export class MissingSailPaymentsEmail {
             <ul>${this.claimsList(claims)}</ul>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

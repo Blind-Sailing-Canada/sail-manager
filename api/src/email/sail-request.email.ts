@@ -32,7 +32,7 @@ export class SailRequestEmail {
             <a href="${DOMAIN}/sail-requests/view/${sail_request.id}">View sail request</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -62,7 +62,7 @@ export class SailRequestEmail {
             <p>Their status should be updated to reflect their current state.</p>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -89,7 +89,7 @@ export class SailRequestEmail {
             <a href="${DOMAIN}/sail-requests/view/${sail_request.id}">View sail request</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -123,7 +123,7 @@ export class SailRequestEmail {
             <a href="${DOMAIN}/sail-requests/view/${sail_requestInterest.sail_request.id}">View sail request</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

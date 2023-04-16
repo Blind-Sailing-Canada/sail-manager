@@ -25,7 +25,7 @@ export class AchievementEmail {
             <p>You can view your achievement in your <a href="${DOMAIN}/profiles/view/${achievement.profile_id}">profile</a></p>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

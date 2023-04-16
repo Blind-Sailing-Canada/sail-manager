@@ -21,7 +21,7 @@ export class ProfileEmail {
             <a href="${DOMAIN}/admin">Review profile</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -42,7 +42,7 @@ export class ProfileEmail {
             <a href="${DOMAIN}/login">Login</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -66,7 +66,7 @@ export class ProfileEmail {
             <a href="${DOMAIN}/login">Login</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

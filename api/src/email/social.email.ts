@@ -5,6 +5,7 @@ import { EmailInfo } from '../types/email/email-info';
 import { Profile } from '../types/profile/profile';
 import { Social } from '../types/social/social';
 import { toLocalDate } from '../utils/date.util';
+import validator from 'validator';
 
 @Injectable()
 export class SocialEmail {
@@ -28,7 +29,7 @@ export class SocialEmail {
           <body>
             <h2>Your social "${social.name}" (#${social.entity_number}) was cancelled.</h2>
             <div>
-              <label>Cancellation reason: </label> <pre>${social.cancel_reason}</pre>
+              <label>Cancellation reason: </label> <pre>${validator.escape(social.cancel_reason)}</pre>
             </div>
             <div>
               <label>Cancelled by: </label> <span>${social.cancelled_by.name}</span>
@@ -40,7 +41,7 @@ export class SocialEmail {
             <a href="${DOMAIN}/socials/view/${social.id}">View social</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -65,7 +66,7 @@ export class SocialEmail {
           <body>
             <h2>New comment for "${social.name}" (#${social.entity_number})</h2>
             <div>
-              <label>Comment: </label> <pre>${comment.comment}</pre>
+              <label>Comment: </label> <pre>${validator.escape(comment.comment)}</pre>
             </div>
             <div>
               <label>Posted by: </label> <span>${comment.author.name}</span>
@@ -77,7 +78,7 @@ export class SocialEmail {
             <a href="${DOMAIN}/socials/view/${social.id}">View social</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -97,7 +98,7 @@ export class SocialEmail {
             </div>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
@@ -119,7 +120,7 @@ export class SocialEmail {
             <p>Their status should be updated to reflect their current state.</p>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

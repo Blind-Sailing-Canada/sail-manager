@@ -26,7 +26,7 @@ export class ReleaseFormEmail {
             <a href="${RELEASE_FORM_URL}">Click here to go to the release form.</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;

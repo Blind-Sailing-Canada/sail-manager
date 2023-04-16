@@ -44,7 +44,7 @@ export class SailChecklistEmail {
             <a href="${DOMAIN}/sails/view/${sail.id}">View sail</a>
           </body>
         </html>
-      `.trim().replace(/\n/g, ''),
+      `.trim(),
     };
 
     return emailInfo;
