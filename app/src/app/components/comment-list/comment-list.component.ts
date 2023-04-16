@@ -20,12 +20,28 @@ import { ProfileRole } from '../../../../../api/src/types/profile/profile-role';
 })
 export class CommentListComponent {
 
-  @Input() comments: Comment[];
   @Input() user: User;
   @Output() profileClick: EventEmitter<Profile> = new EventEmitter<Profile>();
   @Output() commentDelete: EventEmitter<string> = new EventEmitter<string>();
 
+  public sortedComments: Comment[];
+  public latestFirst = true;
+  private _comments: Comment[];
+
   constructor(@Inject(MomentService) private momentService: MomentService) { }
+
+  public sortComments(): void {
+    if (this.latestFirst) {
+      this.sortedComments = [...this._comments].sort((b, a) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    } else {
+      this.sortedComments = [...this._comments].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    }
+  }
+
+  @Input() set comments(comments: Comment[]) {
+    this._comments = comments;
+    this.sortComments();
+  }
 
   public clickProfile(profile: Profile): void {
     this.profileClick.emit(profile);
@@ -49,7 +65,7 @@ export class CommentListComponent {
     const text = comment.comment;
 
     const label = `
-      Comment ${index + 1} of ${this.comments.length}.
+      Comment ${index + 1} of ${this.sortedComments.length}.
       Posted by: ${author.name},
       Posted: ${date}.
       Text: ${text}.
