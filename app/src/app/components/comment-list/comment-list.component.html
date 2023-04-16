@@ -1,10 +1,11 @@
 <mat-list role="list">
-  <h4 tabindex="0">Comments</h4>
-  <mat-slide-toggle
-    [(ngModel)]="latestFirst"
-    (ngModelChange)="sortComments()"
-  >Latest first: {{latestFirst? 'Yes' : 'No'}}</mat-slide-toggle>
-
+  <div class="comment-list-header">
+    <h4 tabindex="0">Comments</h4>
+    <mat-slide-toggle
+      [(ngModel)]="latestFirst"
+      (ngModelChange)="sortComments()"
+    >Latest first: {{latestFirst? 'Yes' : 'No'}}</mat-slide-toggle>
+  </div>
   <p
     tabindex="0"
     *ngIf="!sortedComments || !sortedComments.length"

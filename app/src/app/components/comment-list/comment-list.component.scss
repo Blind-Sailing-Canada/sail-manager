@@ -14,8 +14,14 @@
   align-self: normal;
 }
 
-.mat-slide-toggle {
-  margin-bottom: 10px
+.comment-list-header {
+  display: flex;
+  justify-content: space-between;
+
+  .mat-slide-toggle {
+    margin-bottom: auto;
+    margin-top: auto;
+  }
 }
 
 .delete-comment {
