@@ -12,7 +12,6 @@ import { Profile } from '../../types/profile/profile';
 import { SavedQuery } from '../../types/saved-query/saved-query';
 
 @Entity('saved-queries')
-@Index(['id'])
 export class SavedQueryEntity extends BaseModelEntity implements SavedQuery {
   @Column({
     default: '',

@@ -31,6 +31,7 @@ export class UserEntity extends BaseModelEntity implements User {
   @Column({
     default: null,
     nullable: true,
+    type: 'uuid'
   })
     original_profile_id: string;
 
