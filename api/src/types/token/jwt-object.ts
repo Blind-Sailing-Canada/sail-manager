@@ -6,6 +6,7 @@ import { UserAccess } from '../user-access/user-access';
 export interface JwtObject {
   access: UserAccess;
   email: string;
+  username: string;
   expire_time: number;
   iat: number; // issued at date
   profile_id: string; // ProfileEntity id

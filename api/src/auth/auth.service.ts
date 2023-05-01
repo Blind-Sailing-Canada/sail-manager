@@ -233,6 +233,7 @@ export class AuthService {
     const payload: JwtObject = {
       access,
       email: profile.email,
+      username: profile.name,
       iat: new Date().getTime(),
       profile_id: profile.id,
       provider,

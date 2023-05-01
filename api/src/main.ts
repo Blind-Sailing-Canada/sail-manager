@@ -14,6 +14,7 @@ import {
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AllExceptionFilter } from './utils/all-exception.filter';
+import { JwtObject } from './types/token/jwt-object';
 // import { LoggingInterceptor } from './utils/logging.interceptor';
 
 // console.log('process.env', process.env);
@@ -100,6 +101,17 @@ async function bootstrap() {
     }
     next();
   });
+
+  morgan.token('remote-user', (req) => {
+    if (!req.user) {
+      return '-';
+    }
+
+    const user: JwtObject = req.user as JwtObject;
+
+    return `${user.profile_id}:${user.username.split(' ')[0]}`;
+  });
+
   app.use(morgan('combined'));
   app.use((req, res, next) => {
     if (req.originalUrl.startsWith('/time')){
