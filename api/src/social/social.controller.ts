@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,  Get,  Param,  Patch, Post, UnauthorizedException, UseGuards
+  Controller,  Get,  Param,  Patch, Post, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
@@ -14,7 +14,9 @@ import { SocialEntity } from './social.entity';
 import { SocialService } from './social.service';
 import { SocialStatus } from '../types/social/social-status';
 import { Social } from '../types/social/social';
-import { ProfileRole } from '../types/profile/profile-role';
+import { UserAccess } from '../user-access/user-access.decorator';
+import { UserAccessFields } from '../types/user-access/user-access-fields';
+import { UserAccessGuard } from '../guards/user-access.guard';
 
 @Crud({
   model: { type: SocialEntity },
@@ -55,31 +57,28 @@ import { ProfileRole } from '../types/profile/profile-role';
 })
 @Controller('social')
 @ApiTags('social')
-@UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
+@UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard, UserAccessGuard)
 export class SocialController {
 
   constructor(public service: SocialService) { }
 
   @Post('/')
+  @UserAccess(UserAccessFields.CreateSocial)
   async createSocial(@User() user: JwtObject, @Body() social_data: Social) {
-    const canCreate = user.roles.includes(ProfileRole.Admin) || !!user.access.access.createSocial;
-
-    if (!canCreate) {
-      throw new UnauthorizedException('not authorized to create socials.');
-    }
-
-    const social = await SocialEntity.save(SocialEntity.create(social_data));
+    const social = await SocialEntity.save(SocialEntity.create({
+      ...social_data,
+      created_by_id: user.profile_id
+    }));
 
     return SocialEntity.findOne({ where: { id: social.id } });
   }
 
   @Patch('/:social_id')
+  @UserAccess(UserAccessFields.EditSocial, UserAccessFields.CreateSocial)
   async updateSocial(@User() user: JwtObject, @Param('social_id') social_id: string, @Body() social_data: Social) {
-    const canEdit = user.roles.includes(ProfileRole.Admin) || !!user.access.access.createSocial || !!user.access.access.editSocial;
 
-    if (!canEdit) {
-      throw new UnauthorizedException('not authorized to edit socials.');
-    }
+    delete social_data.created_by;
+    delete social_data.created_by_id;
 
     await SocialEntity.update(social_id, social_data);
 

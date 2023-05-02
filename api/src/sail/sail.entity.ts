@@ -8,7 +8,7 @@ import {
   OneToMany,
   OneToOne
 } from 'typeorm';
-import { BaseModelEntity } from '../base/base.entity';
+import { CreatedByBaseModelEntity } from '../base/created-by-base.entity';
 import { BoatEntity } from '../boat/boat.entity';
 import { CommentEntity } from '../comment/comment.entity';
 import { MediaEntity } from '../media/media.entity';
@@ -25,7 +25,7 @@ import { SailStatus } from '../types/sail/sail-status';
   'id',
   'entity_type',
 ])
-export class SailEntity extends BaseModelEntity implements Sail {
+export class SailEntity extends CreatedByBaseModelEntity implements Sail {
 
   @Column({
     nullable: true,

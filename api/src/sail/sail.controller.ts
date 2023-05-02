@@ -3,7 +3,9 @@ import {
   Controller,  Get,  Param,  Patch,  Post,  Query, Res, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Crud } from '@nestjsx/crud';
+import {
+  Crud, CrudController, CrudRequest, Override, ParsedRequest
+} from '@nestjsx/crud';
 import {
   FindOptionsOrder,
   In, MoreThanOrEqual, Not
@@ -30,6 +32,7 @@ import { Queue } from 'bull';
 import { SailUpdateJob } from '../types/sail/sail-update-job';
 import { PaginatedSail } from '../types/sail/paginated-sail';
 import  { unflatten } from 'flat';
+import { UserAccessGuard } from '../guards/user-access.guard';
 @Crud({
   model: { type: SailEntity },
   params: { id: {
@@ -64,20 +67,38 @@ import  { unflatten } from 'flat';
       },
     },
   },
-  routes: { only: [
-    'createOneBase',
-    'getOneBase',
-  ] },
+  routes: {
+    createOneBase: { decorators: [
+      UserAccess(UserAccessFields.CreateSail),
+      UseGuards(UserAccessGuard),
+    ] },
+    only: [
+      'createOneBase',
+      'getOneBase',
+    ]
+  },
 })
 @Controller('sail')
 @ApiTags('sail')
-@UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
+@UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard, UserAccessGuard)
 export class SailController {
 
   constructor(
     public service: SailService,
     @InjectQueue('sail') private readonly sailQueue: Queue,
   ) { }
+
+  get base(): CrudController<Sail> {
+    return this;
+  }
+
+  @Override()
+  @UserAccess(UserAccessFields.CreateSail)
+  createOne(@ParsedRequest() req: CrudRequest, @Body() dto: Sail, @User() user: JwtObject) {
+    dto.created_by_id = user.profile_id;
+
+    return this.base.createOneBase(req, dto);
+  }
 
   @Get('/number/:number')
   async getSailByNumber(@Param('number') sail_number: number) {
@@ -101,10 +122,14 @@ export class SailController {
     let canEdit = !!sail_manifest;
 
     canEdit = canEdit || user.access.access[UserAccessFields.EditSail] === true;
+    canEdit = canEdit || user.access.access[UserAccessFields.CreateSail] === true;
 
     if (!canEdit) {
       throw new UnauthorizedException('not authorized to edit sails.');
     }
+
+    delete sail_data.created_by;
+    delete sail_data.created_by_id;
 
     await SailEntity.update(sail_id, sail_data);
 
@@ -215,7 +240,8 @@ export class SailController {
   }
 
   @Post('/sail-request')
-  async createFromSailRequest(@Body() sailInfo: { sail: Partial<Sail>, sail_request_id: string }) {
+  @UserAccess(UserAccessFields.CreateSail)
+  async createFromSailRequest(@User() user: JwtObject, @Body() sailInfo: { sail: Partial<Sail>, sail_request_id: string }) {
     const createdSailId = await this.service.repository.manager.transaction(async transactionalEntityManager => {
       const sail_request = await SailRequestEntity
         .findOneOrFail(
@@ -233,6 +259,7 @@ export class SailController {
         description: sail_request.details,
         sail_request_id: sailInfo.sail_request_id,
         category: sail_request.category || 'other',
+        created_by_id: user.profile_id,
       });
 
       sail = await transactionalEntityManager.save(sail);

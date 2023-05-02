@@ -3,17 +3,22 @@ import {
   Body, Controller, Delete, Param, Patch, Post, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Crud } from '@nestjsx/crud';
+import {
+  Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest
+} from '@nestjsx/crud';
 import { Queue } from 'bull';
 import { CommentEntity } from '../comment/comment.entity';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
+import { UserAccessGuard } from '../guards/user-access.guard';
 import { MediaEntity } from '../media/media.entity';
+import { Challenge } from '../types/challenge/challenge';
 import { Media } from '../types/media/media';
 import { ProfileRole } from '../types/profile/profile-role';
 import { JwtObject } from '../types/token/jwt-object';
 import { UserAccessFields } from '../types/user-access/user-access-fields';
+import { UserAccess } from '../user-access/user-access.decorator';
 import { User } from '../user/user.decorator';
 import { ChallengeParticipantEntity } from './challenge-participant.entity';
 import { ChallengeEntity } from './challenge.entity';
@@ -26,6 +31,12 @@ import { ChallengeService } from './challenge.service';
     type: 'uuid',
     primary: true,
   } },
+  routes: { only: [
+    'createOneBase',
+    'getManyBase',
+    'getOneBase',
+    'updateOneBase',
+  ] },
   query: {
     alwaysPaginate: false,
     join: {
@@ -51,10 +62,31 @@ import { ChallengeService } from './challenge.service';
 })
 @Controller('challenge')
 @ApiTags('challenge')
-@UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
+@UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard, UserAccessGuard)
 export class ChallengeController {
   constructor(public service: ChallengeService,
     @InjectQueue('challenge') private readonly challengeQueue: Queue) { }
+
+  get base(): CrudController<Challenge> {
+    return this;
+  }
+
+  @Override()
+  @UserAccess(UserAccessFields.CreateChallenge)
+  createOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Challenge, @User() user: JwtObject) {
+    dto.created_by_id = user.profile_id;
+
+    return this.base.createOneBase(req, dto);
+  }
+
+  @Override()
+  @UserAccess(UserAccessFields.CreateChallenge, UserAccessFields.EditChallenge)
+  updateOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Challenge) {
+    delete dto.created_by_id;
+    delete dto.created_by;
+
+    return this.base.updateOneBase(req, dto);
+  }
 
   @Patch('/:id/accomplished-by/:profile_id')
   async setAccomplishedBy(

@@ -1,9 +1,9 @@
-import { Base } from '../base/base';
+import { CreatedByBase } from '../base/created-by-base';
 import { Profile } from '../profile/profile';
 import { ClinicAttendance } from './clinic-attendance';
 import { ClinicStatus } from './clinic-status';
 
-export interface Clinic extends Base {
+export interface Clinic extends CreatedByBase {
   attendance: ClinicAttendance[];
   badge: string;
   description: string;

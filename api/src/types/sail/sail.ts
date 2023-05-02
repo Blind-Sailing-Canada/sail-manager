@@ -2,14 +2,14 @@ import { Boat } from '../boat/boat';
 import { Profile } from '../profile/profile';
 import { SailChecklist } from '../sail-checklist/sail-checklist';
 import { SailManifest } from '../sail-manifest/sail-manifest';
-import { Base } from '../base/base';
 import { SailStatus } from './sail-status';
 import { SailFeedback } from '../sail-feedback/sail-feedback';
 import { SailRequest } from '../sail-request/sail-request';
 import { Comment } from '../comment/comment';
 import { Media } from '../media/media';
+import { CreatedByBase } from '../base/created-by-base';
 
-export interface Sail extends Base {
+export interface Sail extends CreatedByBase {
   boat: Boat;
   boat_id: string;
   calendar_id: string;

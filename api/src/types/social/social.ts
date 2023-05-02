@@ -1,11 +1,11 @@
 import { Profile } from '../profile/profile';
-import { Base } from '../base/base';
 import { Comment } from '../comment/comment';
 import { Media } from '../media/media';
 import { SocialStatus } from './social-status';
 import { SocialManifest } from '../social-manifest/social-manifest';
+import { CreatedByBase } from '../base/created-by-base';
 
-export interface Social extends Base {
+export interface Social extends CreatedByBase {
   address: string;
   calendar_id: string;
   calendar_link: string;

@@ -1,18 +1,22 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
-  Body,
   Controller, Delete, Param, Patch, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Crud } from '@nestjsx/crud';
+import {
+  Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest
+} from '@nestjsx/crud';
 import { Queue } from 'bull';
 import { AchievementEntity } from '../achievement/achievement.entity';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
+import { Clinic } from '../types/clinic/clinic';
 import { ClinicAttendeeNewJob } from '../types/clinic/clinic-attendee-new-job';
 import { ProfileRole } from '../types/profile/profile-role';
 import { JwtObject } from '../types/token/jwt-object';
+import { UserAccessFields } from '../types/user-access/user-access-fields';
+import { UserAccess } from '../user-access/user-access.decorator';
 import { User } from '../user/user.decorator';
 import { ClinicAttendanceEntity } from './clinic-attendance.entity';
 import { ClinicEntity } from './clinic.entity';
@@ -34,6 +38,7 @@ import { ClinicService } from './clinic.service';
     'createOneBase',
     'getManyBase',
     'getOneBase',
+    'updateOneBase',
   ] },
 })
 @Controller('clinic')
@@ -45,15 +50,25 @@ export class ClinicController {
     public service: ClinicService,
     @InjectQueue('clinic') private readonly clinicQueue: Queue) { }
 
-  @Patch('/:clinic_id')
-  async update(@Param('clinic_id') id: string, @Body() body) {
-    const result = await ClinicEntity.update(id, body);
+  get base(): CrudController<Clinic> {
+    return this;
+  }
 
-    if (result.affected !== 1) {
-      throw new Error(`Failed to update Clinic (${id})`);
-    }
+  @Override()
+  @UserAccess(UserAccessFields.CreateClinic)
+  createOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Clinic, @User() user: JwtObject) {
+    dto.created_by_id = user.profile_id;
 
-    return ClinicEntity.findOneOrFail({ where: { id } });
+    return this.base.createOneBase(req, dto);
+  }
+
+  @Override()
+  @UserAccess(UserAccessFields.CreateClinic, UserAccessFields.EditClinic)
+  updateOne(@ParsedRequest() req: CrudRequest, @ParsedBody() dto: Clinic) {
+    delete dto.created_by_id;
+    delete dto.created_by;
+
+    return this.base.updateOneBase(req, dto);
   }
 
   @Patch('/:clinic_id/enroll/:profile_id')

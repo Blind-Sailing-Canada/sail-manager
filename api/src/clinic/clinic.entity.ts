@@ -6,15 +6,15 @@ import {
   OneToMany,
   OneToOne
 } from 'typeorm';
-import { BaseModelEntity } from '../base/base.entity';
 import { ClinicAttendanceEntity } from './clinic-attendance.entity';
 import { Clinic } from '../types/clinic/clinic';
 import { ClinicStatus } from '../types/clinic/clinic-status';
 import { ProfileEntity } from '../profile/profile.entity';
 import { DocumentEntity } from '../document/document.entity';
+import { CreatedByBaseModelEntity } from '../base/created-by-base.entity';
 
 @Entity('clinics')
-export class ClinicEntity extends BaseModelEntity implements Clinic {
+export class ClinicEntity extends CreatedByBaseModelEntity implements Clinic {
   @Column({
     length: 100,
     unique: true,

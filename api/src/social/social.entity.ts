@@ -7,7 +7,7 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { BaseModelEntity } from '../base/base.entity';
+import { CreatedByBaseModelEntity } from '../base/created-by-base.entity';
 import { CommentEntity } from '../comment/comment.entity';
 import { MediaEntity } from '../media/media.entity';
 import { ProfileEntity } from '../profile/profile.entity';
@@ -20,7 +20,7 @@ import { SocialStatus } from '../types/social/social-status';
   'id',
   'entity_type',
 ])
-export class SocialEntity extends BaseModelEntity implements Social {
+export class SocialEntity extends CreatedByBaseModelEntity implements Social {
 
   @Column({
     nullable: true,

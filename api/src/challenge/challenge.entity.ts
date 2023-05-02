@@ -4,16 +4,16 @@ import {
   Index,
   OneToMany
 } from 'typeorm';
-import { BaseModelEntity } from '../base/base.entity';
 import { ChallengeParticipantEntity } from './challenge-participant.entity';
 import { Challenge } from '../types/challenge/challenge';
 import { ChallengeStatus } from '../types/challenge/challenge-status';
 import { CommentEntity } from '../comment/comment.entity';
 import { MediaEntity } from '../media/media.entity';
 import { DocumentEntity } from '../document/document.entity';
+import { CreatedByBaseModelEntity } from '../base/created-by-base.entity';
 
 @Entity('challenges')
-export class ChallengeEntity extends BaseModelEntity implements Challenge {
+export class ChallengeEntity extends CreatedByBaseModelEntity implements Challenge {
   @Column({
     length: 100,
     unique: true,
