@@ -10,6 +10,7 @@ import { FormResponse } from '../types/form-response/form-response';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
+import { IsNull } from 'typeorm';
 
 @Crud({
   model: { type: FormResponseEntity },
@@ -59,7 +60,7 @@ export class FormResponseController {
       where: [
         { profile_id },
         {
-          profile_id: null,
+          profile_id: IsNull(),
           email: profile.email,
         }
       ],
