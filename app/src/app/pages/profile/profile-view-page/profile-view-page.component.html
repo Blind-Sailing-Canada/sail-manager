@@ -26,7 +26,7 @@
       <h3>Form Responses</h3>
       <mat-list-item *ngFor="let response of formResponses;">
         <mat-icon mat-list-icon>list_alt</mat-icon>
-        <h4 mat-line>{{response.form_name}} (<i>{{response.form_id}}</i>)</h4>
+        <h4 mat-line>{{response.form_name}}</h4>
         <span mat-line>Submitted on {{response.created_at | humanDateWithTime}}</span>
       </mat-list-item>
     </mat-list>
