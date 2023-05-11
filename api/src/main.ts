@@ -109,7 +109,7 @@ async function bootstrap() {
 
     const user: JwtObject = req.user as JwtObject;
 
-    return `${user.profile_id}:${user.username.split(' ')[0]}`;
+    return `${user.profile_id}:${user.username?.split(' ')[0]}`;
   });
 
   app.use(morgan('combined'));

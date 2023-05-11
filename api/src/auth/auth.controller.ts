@@ -110,7 +110,10 @@ export class AuthController {
       req.logout();
     }
 
-    req.user = { user_id };
+    req.user = {
+      user_id,
+      username: user.username
+    };
   }
 
   @Get('login')
