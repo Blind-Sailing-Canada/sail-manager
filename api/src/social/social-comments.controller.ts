@@ -50,8 +50,8 @@ export class SocialCommentsController {
   async deleteComment(@User() user: JwtObject, @Param('id') id: string, @Param('commentId') commentId: string) {
     if (
       user.roles.includes(ProfileRole.Admin) ||
-      user.access.access[UserAccessFields.CreateSocial] ||
-      user.access.access[UserAccessFields.EditSocial]
+      user.access[UserAccessFields.CreateSocial] ||
+      user.access[UserAccessFields.EditSocial]
     ) {
       await CommentEntity.delete(commentId);
     } else {

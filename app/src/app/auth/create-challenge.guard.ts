@@ -43,7 +43,7 @@ export class CreateChallengeGuard implements CanActivate {
     }
 
     const isAdmin = tokenData.roles.includes(ProfileRole.Admin);
-    const access = tokenData.access.access || {};
+    const access = tokenData.access || {};
 
     const hasAccess = access[UserAccessFields.CreateChallenge];
 

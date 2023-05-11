@@ -63,6 +63,18 @@ async function bootstrap() {
 
   app.use(Sentry.Handlers.requestHandler());
   app.use(Sentry.Handlers.tracingHandler());
+
+  morgan.token('remote-user', (req) => {
+    if (!req.user && !req.original_user) {
+      return '-';
+    }
+
+    const user: JwtObject = (req.user || req.original_user) as JwtObject;
+
+    return `${user.profile_id}:${user.username?.split(' ')[0]}`;
+  });
+
+  app.use(morgan('combined'));
   app.useGlobalFilters(new AllExceptionFilter());
   // app.useGlobalInterceptors(new LoggingInterceptor());
   app.enableCors();
@@ -95,6 +107,7 @@ async function bootstrap() {
 
     return csurfValidation(req,res, next);
   });
+
   app.use((req, res, next) => {
     if (req.method === 'GET' && req.originalUrl === '/csrfToken') {
       return res.send({ csrfToken: req.csrfToken() });
@@ -102,17 +115,6 @@ async function bootstrap() {
     next();
   });
 
-  morgan.token('remote-user', (req) => {
-    if (!req.user) {
-      return '-';
-    }
-
-    const user: JwtObject = req.user as JwtObject;
-
-    return `${user.profile_id}:${user.username?.split(' ')[0]}`;
-  });
-
-  app.use(morgan('combined'));
   app.use((req, res, next) => {
     if (req.originalUrl.startsWith('/time')){
       return res.send(new Date());

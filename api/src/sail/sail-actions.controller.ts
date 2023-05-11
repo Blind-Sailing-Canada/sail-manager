@@ -262,7 +262,7 @@ export class SailActionsController {
 
       canPerformAction = canPerformAction || user.roles.includes(ProfileRole.Admin);
       canPerformAction = canPerformAction || skipperAndCrew.some(sailor => sailor.profile_id === user.profile_id);
-      canPerformAction = canPerformAction || user.access.access[UserAccessFields.EditSail];
+      canPerformAction = canPerformAction || user.access[UserAccessFields.EditSail];
 
       if (!canPerformAction) {
         throw new UnauthorizedException('Not authorized to start sails.');
@@ -329,7 +329,7 @@ export class SailActionsController {
 
       canPerformAction = canPerformAction || user.roles.includes(ProfileRole.Admin);
       canPerformAction = canPerformAction || skipperAndCrew.some(sailor => sailor.profile_id === user.profile_id);
-      canPerformAction = canPerformAction || user.access.access[UserAccessFields.EditSail];
+      canPerformAction = canPerformAction || user.access[UserAccessFields.EditSail];
 
       if (!canPerformAction) {
         throw new UnauthorizedException('Not authorized to complete sails.');
@@ -402,7 +402,7 @@ export class SailActionsController {
     canPerformAction = canPerformAction || user.roles.includes(ProfileRole.Admin);
     canPerformAction = canPerformAction || sail
       .manifest.some(sailor => sailor.sailor_role === SailorRole.Skipper && sailor.profile_id === user.profile_id);
-    canPerformAction = canPerformAction || user.access.access[UserAccessFields.EditSail];
+    canPerformAction = canPerformAction || user.access[UserAccessFields.EditSail];
 
     if (!canPerformAction) {
       throw new UnauthorizedException('Not authorized to cancel sails.');

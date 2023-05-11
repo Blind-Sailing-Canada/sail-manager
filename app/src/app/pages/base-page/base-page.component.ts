@@ -206,8 +206,8 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
     return {
       profile: user,
-      roles: (user || {}).roles,
-      access: ((tokenData || {}).access || {}).access || {},
+      roles: user?.roles || [],
+      access: tokenData?.access || {},
     };
   }
 

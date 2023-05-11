@@ -95,7 +95,7 @@ export class ChallengeController {
     @Param('profile_id') profile_id: string,
     @Body() note: { note: string }
   ) {
-    if (user.profile_id !== profile_id && !user.access.access[UserAccessFields.JudgeChallenge]) {
+    if (user.profile_id !== profile_id && !user.access[UserAccessFields.JudgeChallenge]) {
       throw new UnauthorizedException();
     }
 
@@ -153,7 +153,7 @@ export class ChallengeController {
 
   @Delete('/:id/pictures/:pictureId')
   async removePicture(@User() user: JwtObject, @Param('id') id: string, @Param('pictureId') pictureId: string) {
-    if (user.access.access[UserAccessFields.DeletePictures]) {
+    if (user.access[UserAccessFields.DeletePictures]) {
       await MediaEntity.delete(pictureId);
     } else {
       await MediaEntity.delete({
@@ -188,8 +188,8 @@ export class ChallengeController {
   async deleteComment(@User() user: JwtObject, @Param('id') id: string, @Param('commentId') commentId: string) {
     if (
       user.roles.includes(ProfileRole.Admin) ||
-      user.access.access[UserAccessFields.CreateChallenge] ||
-      user.access.access[UserAccessFields.EditChallenge]
+      user.access[UserAccessFields.CreateChallenge] ||
+      user.access[UserAccessFields.EditChallenge]
     ) {
       await CommentEntity.delete(commentId);
     } else {

@@ -9,6 +9,9 @@ import {
   Logger
 } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
+import { JwtObject } from '../types/token/jwt-object';
+
+type RequestWithUser = Request & { user?: JwtObject, original_user?: JwtObject }
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
@@ -27,10 +30,10 @@ export class AllExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    const request = ctx.getRequest<RequestWithUser>();
     const status = exception.status || 500;
 
-    const user = (request as any).user ?  (request as any).user : 'unknown';
+    const user = request.user || request.original_user || 'unknown';
 
     const errorMessage = JSON.stringify(
       {

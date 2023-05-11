@@ -121,8 +121,8 @@ export class SailController {
 
     let canEdit = !!sail_manifest;
 
-    canEdit = canEdit || user.access.access[UserAccessFields.EditSail] === true;
-    canEdit = canEdit || user.access.access[UserAccessFields.CreateSail] === true;
+    canEdit = canEdit || user.access[UserAccessFields.EditSail] === true;
+    canEdit = canEdit || user.access[UserAccessFields.CreateSail] === true;
 
     if (!canEdit) {
       throw new UnauthorizedException('not authorized to edit sails.');

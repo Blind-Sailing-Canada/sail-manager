@@ -110,8 +110,10 @@ export class AuthController {
       req.logout();
     }
 
-    req.user = {
+    req.user = undefined;
+    req.original_user = {
       user_id,
+      profile_id: user.profile_id,
       username: user.username
     };
   }

@@ -107,8 +107,8 @@ export class BoatMaintenanceController {
     if (
       user.roles.includes(ProfileRole.Admin) ||
       user.roles.includes(ProfileRole.FleetManager) ||
-      user.access.access[UserAccessFields.EditMaintenanceRequest] ||
-      user.access.access[UserAccessFields.ResolveMaintenanceRequest]
+      user.access[UserAccessFields.EditMaintenanceRequest] ||
+      user.access[UserAccessFields.ResolveMaintenanceRequest]
     ) {
       shouldUpdate = true;
     }
@@ -135,10 +135,10 @@ export class BoatMaintenanceController {
 
     if (
       user.roles.includes(ProfileRole.Admin) ||
-      user.access.access[UserAccessFields.DeletePictures] ||
-      user.access.access[UserAccessFields.CreateBoat] ||
-      user.access.access[UserAccessFields.EditBoat] ||
-      user.access.access[UserAccessFields.EditMaintenanceRequest]
+      user.access[UserAccessFields.DeletePictures] ||
+      user.access[UserAccessFields.CreateBoat] ||
+      user.access[UserAccessFields.EditBoat] ||
+      user.access[UserAccessFields.EditMaintenanceRequest]
     ) {
       shouldDelete = true;
     } else {
@@ -181,9 +181,9 @@ export class BoatMaintenanceController {
   async deleteComment(@User() user: JwtObject, @Param('id') id: string, @Param('commentId') commentId: string) {
     if (
       user.roles.includes(ProfileRole.Admin) ||
-      user.access.access[UserAccessFields.CreateBoat] ||
-      user.access.access[UserAccessFields.EditBoat] ||
-      user.access.access[UserAccessFields.EditMaintenanceRequest]
+      user.access[UserAccessFields.CreateBoat] ||
+      user.access[UserAccessFields.EditBoat] ||
+      user.access[UserAccessFields.EditMaintenanceRequest]
     ) {
       await CommentEntity.delete(commentId);
     } else {

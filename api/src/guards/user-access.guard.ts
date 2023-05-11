@@ -30,7 +30,7 @@ export class UserAccessGuard implements CanActivate {
       return true;
     }
 
-    const userAccess = (user.access || {}).access || {};
+    const userAccess = user.access || {};
     const can = requiredAccess.reduce((can, access) => can && userAccess[access], true);
 
     return can;

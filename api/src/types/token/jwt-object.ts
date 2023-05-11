@@ -1,10 +1,10 @@
 import { ProviderUser } from '../user/provider-user';
 import { ProfileRole } from '../profile/profile-role';
 import { ProfileStatus } from '../profile/profile-status';
-import { UserAccess } from '../user-access/user-access';
+import { Access } from '../user-access/access';
 
 export interface JwtObject {
-  access: UserAccess;
+  access: Access;
   email: string;
   username: string;
   expire_time: number;

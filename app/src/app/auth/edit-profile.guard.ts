@@ -48,7 +48,7 @@ export class EditProfileGuard implements CanActivate {
     }
 
     const isAdmin = tokenData.roles?.includes(ProfileRole.Admin);
-    const access = tokenData.access?.access || {};
+    const access = tokenData.access || {};
 
     const hasAccess = profile_id === tokenData.profile_id || access[UserAccessFields.EditUserProfile];
 

@@ -30,7 +30,7 @@ export class SomeUserAccessGuard implements CanActivate {
       return true;
     }
 
-    const userAccess = (user.access || {}).access || {};
+    const userAccess = user.access  || {};
     const can = requiredAccess.some(access => userAccess[access]);
 
     return can;

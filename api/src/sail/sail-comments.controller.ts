@@ -50,8 +50,8 @@ export class SailCommentsController {
   async deleteComment(@User() user: JwtObject, @Param('id') id: string, @Param('commentId') commentId: string) {
     if (
       user.roles.includes(ProfileRole.Admin) ||
-      user.access.access[UserAccessFields.CreateSail] ||
-      user.access.access[UserAccessFields.EditSail]
+      user.access[UserAccessFields.CreateSail] ||
+      user.access[UserAccessFields.EditSail]
     ) {
       await CommentEntity.delete(commentId);
     } else {
