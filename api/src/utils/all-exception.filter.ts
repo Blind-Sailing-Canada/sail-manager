@@ -46,8 +46,11 @@ export class AllExceptionFilter implements ExceptionFilter {
 
     this.sendToSentry(exception, request, response, () => true);
 
-    response
-      .status(status)
+    if (response.headersSent) {
+      return;
+    }
+
+    response.status(status)
       .json({
         statusCode: status,
         timestamp: new Date().toISOString(),
