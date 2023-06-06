@@ -109,6 +109,7 @@ export class BoatChecklistEditPageComponent extends BasePageComponent implements
 
   public deleteItem(index: number): void {
     this.formItems.removeAt(index);
+    this.form.markAsDirty();
   }
 
   public addSelectItem(item?: BoatChecklistItem): void {
@@ -140,7 +141,7 @@ export class BoatChecklistEditPageComponent extends BasePageComponent implements
       .keys(this.form.controls)
       .some(control => this.form.controls[control].dirty);
 
-    return isDirty;
+    return isDirty || this.form.dirty;
   }
 
   public get shouldDisableUpdateButton(): boolean {
