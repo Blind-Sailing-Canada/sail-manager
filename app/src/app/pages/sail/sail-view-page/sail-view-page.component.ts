@@ -336,12 +336,12 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     return can;
   }
 
-  public get canJoinSailor(): boolean {
+  public get canJoinAsSailor(): boolean {
     if (this.isInPast) {
       return false;
     }
 
-    if (this.isSailFull) {
+    if (!this.sailHasRoomForSailors) {
       return false;
     }
 
@@ -368,6 +368,13 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     const sail = this.sail;
 
     return sail.manifest.length >= sail.max_occupancy;
+  }
+
+  public get sailHasRoomForSailors(): boolean {
+    return this.sail
+      .manifest
+      .filter(sailor => ![SailorRole.Skipper, SailorRole.Crew].includes(sailor.sailor_role))
+      .length < this.sail.max_occupancy - 2;
   }
 
   public editSailLink(id): string {
