@@ -110,7 +110,7 @@ export class SailController {
 
   @Patch('/:sail_id')
   async updateSail(@User() user: JwtObject, @Param('sail_id') sail_id: string, @Body() sail_data: Sail) {
-    const sail_manifest = await SailManifestEntity.findOneOrFail({
+    const sail_manifest = await SailManifestEntity.findOne({
       where: {
         sail_id: sail_id,
         profile_id: user.profile_id,
