@@ -231,7 +231,7 @@ export class AuthService {
     expireAtDate.setTime(expireAtDate.getTime() + (jwtConstants.expiresIn * 1000));
 
     const payload: JwtObject = {
-      access: access.access,
+      access: access?.access || {},
       email: profile.email,
       username: profile.name,
       iat: new Date().getTime(),
