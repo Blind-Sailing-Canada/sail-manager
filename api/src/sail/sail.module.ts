@@ -12,6 +12,7 @@ import { SailCommentsController } from './sail-comments.controller';
 import { SailPicturesController } from './sail-pictures.controller';
 import { SailController } from './sail.controller';
 import { SailEntity } from './sail.entity';
+import { SailJob } from './sail.job';
 import { SailProcessor } from './sail.processor';
 import { SailService } from './sail.service';
 import { SailSubscriber } from './sail.subscriber';
@@ -36,6 +37,7 @@ import { UserSailController } from './user-sail.controller';
     UserSailController,
   ],
   providers: [
+    SailJob,
     SailProcessor,
     SailService,
     SailSubscriber,

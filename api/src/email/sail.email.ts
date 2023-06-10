@@ -1,13 +1,57 @@
 import { Injectable } from '@nestjs/common';
 import { DOMAIN } from '../auth/constants';
+import { ProfileEntity } from '../profile/profile.entity';
 import { Comment } from '../types/comment/comment';
 import { EmailInfo } from '../types/email/email-info';
 import { Profile } from '../types/profile/profile';
+import { SailorRole } from '../types/sail-manifest/sailor-role';
 import { Sail } from '../types/sail/sail';
 import { toLocalDate } from '../utils/date.util';
 
 @Injectable()
 export class SailEmail {
+
+  async pastSailsWithoutChecklists(sails: Sail[]): Promise<EmailInfo> {
+    const sendTo: Set<string> = new Set<string>();
+
+    const admins = await ProfileEntity.admins();
+    const fleetManagers = await ProfileEntity.fleetManagers();
+    const sailCoordinators  = await ProfileEntity.coordinators();
+
+    admins?.forEach(admin => sendTo.add(admin.email));
+    fleetManagers?.forEach(manager => sendTo.add(manager.email));
+    sailCoordinators?.forEach(coordinator => sendTo.add(coordinator.email));
+
+    const emailInfo: EmailInfo = {
+      bcc: Array.from(sendTo),
+      subject: `COMPANY_NAME_SHORT_HEADER: Past sails without checklists as of ${toLocalDate(new Date())}`,
+      content: `
+        <html>
+          <body>
+          <table>
+            <caption>Past sails with out submitted checklist</caption>
+            <thead>
+              <tr>
+                <th>Sail #</th>
+                <th>Name</th>
+                <th>Ended At</th>
+                <th>Boat</th>
+                <th>Skipper</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${this.sailTableRows(sails)}
+            </tbody>
+          </table>
+          <p><strong>These sails should be update with correct state in order to have accurate sail statistics.</strong></p>
+          </body>
+        </html>
+      `
+    };
+
+    return emailInfo;
+  }
 
   cancelSailEmail(sail: Sail, coordinators: Profile[]): EmailInfo {
     const sendTo: Set<string> = new Set<string>();
@@ -101,6 +145,21 @@ export class SailEmail {
     };
 
     return emailInfo;
+  }
+
+  private sailTableRows(sails: Sail[]): string {
+    return sails
+      .map(sail => `
+        <tr>
+          <td>${sail.entity_number}</td>
+          <td><a href="${DOMAIN}/sails/view/${sail.id}" title="Click to view sail ${sail.name}">${sail.name}</a></td>
+          <td>${toLocalDate(sail.end_at)}</td>
+          <td>${sail.boat?.name || 'no boat'}</td>
+          <td>${sail.manifest?.find(sailor => sailor.sailor_role == SailorRole.Skipper)?.person_name || 'no skipper'}</td>
+          <td>${sail.status}</td>
+        </tr>
+      `)
+      .join('\n');
   }
 
   private sailList(sails: Sail[]): string {

@@ -14,7 +14,7 @@ export class SailRequestJob {
     private emailService: GoogleEmailService
   ) {}
 
-  @Cron('0 0 1-31/2 * *')
+  @Cron('0 0 1-31/2 * *') // Every second day at noon.
   async unschedledRequests() {
 
     const twoDaysAgo = new Date();
