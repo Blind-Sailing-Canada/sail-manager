@@ -11,6 +11,38 @@ import { toLocalDate } from '../utils/date.util';
 @Injectable()
 export class SailEmail {
 
+  pastSailsWithoutChecklistForSKipper(sails: Sail[], skipperName: string): EmailInfo {
+    const emailInfo: EmailInfo = {
+      subject: `COMPANY_NAME_SHORT_HEADER: Your sail is missing a checklist [${toLocalDate(new Date())}]`,
+      content: `
+      <html>
+        <body>
+        <h2>${skipperName}, some of your past sails do not have a checklist.</h2>
+        <table>
+          <caption>Here are your sails that do not have a submitted checklist.</caption>
+          <thead>
+            <tr>
+              <th>Sail #</th>
+              <th>Name</th>
+              <th>Ended At</th>
+              <th>Boat</th>
+              <th>Skipper</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${this.sailTableRows(sails)}
+          </tbody>
+        </table>
+        <p><strong>These sails should be update with correct state in order to have accurate sail statistics.</strong></p>
+        </body>
+      </html>
+    `
+    };
+
+    return emailInfo;
+  }
+
   async pastSailsWithoutChecklists(sails: Sail[]): Promise<EmailInfo> {
     const sendTo: Set<string> = new Set<string>();
 
@@ -29,7 +61,7 @@ export class SailEmail {
         <html>
           <body>
           <table>
-            <caption>Past sails with out submitted checklist</caption>
+            <caption>Past sails without submitted checklist</caption>
             <thead>
               <tr>
                 <th>Sail #</th>
