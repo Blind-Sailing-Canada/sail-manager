@@ -24,7 +24,11 @@ export class SailChecklistProcessor extends BaseQueueProcessor {
     try {
       const checklist = await SailChecklistEntity.findOneOrFail({
         where: { id: job.data.sail_checklist_id },
-        relations: ['sail']
+        relations: [
+          'sail',
+          'sail.boat',
+          'sail.boat.checklist'
+        ],
       });
       const fleetManagers = await ProfileEntity.fleetManagers();
       const coordinators = await ProfileEntity.coordinators();
