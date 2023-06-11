@@ -33,6 +33,7 @@ import { SailUpdateJob } from '../types/sail/sail-update-job';
 import { PaginatedSail } from '../types/sail/paginated-sail';
 import  { unflatten } from 'flat';
 import { UserAccessGuard } from '../guards/user-access.guard';
+
 @Crud({
   model: { type: SailEntity },
   params: { id: {

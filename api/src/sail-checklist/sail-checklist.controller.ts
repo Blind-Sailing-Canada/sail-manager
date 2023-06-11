@@ -1,12 +1,10 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
-  Body, Controller, Get, Logger, Param, Patch, Query, UnauthorizedException, UseGuards
+  Body, Controller, Logger, Param, Patch, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Crud } from '@nestjsx/crud';
 import { Queue } from 'bull';
-import {
-  FindOptionsWhere, Not
-} from 'typeorm';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
@@ -20,6 +18,27 @@ import { User } from '../user/user.decorator';
 import { SailChecklistEntity } from './sail-checklist.entity';
 import { SailChecklistService } from './sail-checklist.service';
 
+@Crud({
+  model: { type: SailChecklistEntity },
+  params: { id: {
+    field: 'id',
+    type: 'uuid',
+    primary: true,
+  } },
+  query: {
+    alwaysPaginate: true,
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
+    join: {
+      submitted_by: { eager: true },
+      sail: { eager: true },
+      'sail.boat': { eager: true },
+    },
+  },
+  routes: { only: [
+    'getOneBase',
+    'getManyBase',
+  ] },
+})
 @Controller('checklist')
 @ApiTags('checklist')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
@@ -43,44 +62,6 @@ export class SailChecklistController {
     } catch(error) {
       this.logger.error(error); // don't care if queue fails
     }
-  }
-
-  @Get('/')
-  async fetchChecklists(@Query('boat_id') boat_id: string, @Query('exclude_sail_id') exclude_sail_id: string) {
-
-    const where = {} as FindOptionsWhere<SailChecklistEntity>;
-
-    if (boat_id) {
-      where.sail = { boat_id };
-    }
-
-    if (exclude_sail_id) {
-      where.sail_id = Not(exclude_sail_id);
-    }
-
-    const checklists = await SailChecklistEntity.find({
-      order: { created_at: 'DESC' },
-      relations: [
-        'sail',
-        'sail.manifest',
-        'sail.manifest.guest_of'
-      ],
-      where,
-    });
-
-    return checklists;
-  }
-
-  @Get('/:checklist_id')
-  async fetchChecklist(@Param('checklist_id') checklist_id: string) {
-    return SailChecklistEntity.findOne({
-      where: { id: checklist_id } ,
-      relations: [
-        'sail',
-        'sail.manifest',
-        'sail.manifest.guest_of'
-      ],
-    });
   }
 
   @Patch('/sail/:sail_id/update')

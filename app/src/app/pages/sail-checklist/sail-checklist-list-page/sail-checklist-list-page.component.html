@@ -17,26 +17,108 @@
     >All Checklists</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <p
-      *ngIf="!checklists.length"
-      tabindex="0"
-    >There are no checklist.</p>
-    <mat-accordion>
-      <mat-expansion-panel *ngFor="let checklist of checklists; let i = index;">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <h4 tabindex="0">Checklist {{i + 1}} of {{checklists.length}}: {{formatDate(checklist.sail.start_at)}}</h4>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-checklist-summary
-          (openBoatDialog)="showBoatDialog($event)"
-          (openProfileDialog)="showProfileDialog($event)"
-          (sailViewer)="viewSail($event)"
-          [afterArrival]="checklist.afterChecklist"
-          [beforeDeparture]="checklist.beforeChecklist"
-          [sail]="checklist.sail"
-        ></app-checklist-summary>
-      </mat-expansion-panel>
-    </mat-accordion>
+    <ng-container [ngTemplateOutlet]="sailChecklistTable"></ng-container>
   </mat-card-content>
 </mat-card>
+
+<ng-template #sailChecklistTable>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of checklists"
+  >
+    <ng-container
+      matSort
+      matSortActive="created_at"
+      matSortDirection="desc"
+      tableColumns
+    >
+      <ng-container matColumnDef="sail.entity_number">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Sail #</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <a [routerLink]="viewSailRoute(element.sail.id)">{{element.sail.entity_number}}</a> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Created at </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.created_at | humanDateWithTime}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sail.name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Sail </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.sail.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sail.boat.name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Boat </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > {{element.sail.boat.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="checklist_type">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+          class="align-center"
+        > Checklist Type </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="align-center"
+        > {{element.checklist_type}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th
+          *matHeaderCellDef
+          mat-header-cell
+        > </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <a
+            [routerLink]="viewSailChecklistRoute(element.sail.id)"
+            mat-flat-button
+            title="Click to go to checklist details page {{element.sail.name}}"
+          ><mat-icon>visibility</mat-icon></a> </td>
+      </ng-container>
+
+    </ng-container>
+  </app-material-table>
+</ng-template>

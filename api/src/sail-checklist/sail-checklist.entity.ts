@@ -66,7 +66,7 @@ export class SailChecklistEntity extends BaseModelEntity implements SailChecklis
   @Index()
     sail_id: string;
 
-  @ManyToOne(() => SailEntity, (sail) => sail.feedback)
+  @ManyToOne(() => SailEntity, (sail) => sail.checklists)
     sail: SailEntity;
 
   @Column({

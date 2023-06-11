@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { SailChecklist } from '../../../../api/src/types/sail-checklist/sail-checklist';
 import { Sail } from '../../../../api/src/types/sail/sail';
+import { PaginatedSailChecklist } from '../../../../api/src/types/sail-checklist/paginated-sail-checklist';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,16 @@ export class SailChecklistService {
 
   public create(checklist: Partial<SailChecklist>): Observable<SailChecklist> {
     return this.http.post<SailChecklist>(`${this.API_URL}`, checklist);
+  }
+
+  public fetchAllPaginated(
+    query?: any,
+    page: number = 1,
+    per_page: number = 10,
+    sort: string = 'created_at,DESC'
+  ): Observable<PaginatedSailChecklist> {
+    return this.http
+      .get<PaginatedSailChecklist>(`${this.API_URL}?s=${JSON.stringify(query || {})}&page=${page}&per_page=${per_page}&sort=${sort}`);
   }
 
 }
