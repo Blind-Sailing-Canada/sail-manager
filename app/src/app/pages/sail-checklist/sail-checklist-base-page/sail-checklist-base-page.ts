@@ -181,9 +181,9 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
     this.checklistForm
       .valueChanges
       .pipe(takeWhile(() => this.active))
-      .pipe(debounceTime(2000))
+      .pipe(debounceTime(1000))
       .subscribe(() => {
-        if (this.checklistForm.dirty) {
+        if (this.checklistForm.dirty && this.checklistForm.valid) {
           this.save(false);
         }
       });
