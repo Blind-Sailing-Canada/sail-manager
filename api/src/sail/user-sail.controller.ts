@@ -78,7 +78,7 @@ export class UserSailController {
     }
 
     const sails = await SailEntity.find({
-      take,
+      take: Number.isInteger(+take) ? +take : 10,
       where,
       order: { start_at: 'ASC' },
       relations: ['checklists'],
@@ -96,7 +96,7 @@ export class UserSailController {
     }
 
     const sails = await SailEntity.find({
-      take,
+      take: Number.isInteger(+take) ? +take : 5,
       where,
       order: { start_at: 'DESC' },
       relations: ['checklists'],
@@ -119,7 +119,7 @@ export class UserSailController {
     const sails = await SailEntity
       .find(
         {
-          take,
+          take: Number.isInteger(+take) ? +take : 5,
           where,
           order: { start_at: 'ASC' },
           relations: ['checklists'],

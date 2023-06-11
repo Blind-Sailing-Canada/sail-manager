@@ -160,19 +160,19 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   }
 
   public fetchMyPastSails(notify = false): void {
-    this.dispatchAction(fetchPastSailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=10' }));
+    this.dispatchAction(fetchPastSailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=5' }));
   }
 
   public fetchOtherPastSails(notify = false): void {
-    this.dispatchAction(fetchPastSailsForAll({ notify, query: 'limit=10' }));
+    this.dispatchAction(fetchPastSailsForAll({ notify, query: 'limit=5' }));
   }
 
   public fetchMyFutureSails(notify = false): void {
-    this.dispatchAction(fetchFutureSailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=10' }));
+    this.dispatchAction(fetchFutureSailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=5' }));
   }
 
   public fetchMyTodaySails(notify = false): void {
-    this.dispatchAction(fetchTodaySailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=10' }));
+    this.dispatchAction(fetchTodaySailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=5' }));
   }
 
   public fetchAllTodaySails(notify = false): void {
