@@ -46,6 +46,8 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   private fileToUpload: File;
   private profile_id: string;
   public profile: Partial<Profile>;
+  public saveError = '';
+  public existingAccount = false;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -160,10 +162,28 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
       const fetcher = this.authService.createProfile(profile);
 
       try {
+        this.saveError = '';
+        this.existingAccount = false;
+
         await firstValueFrom(fetcher).finally(() => this.finishLoading());
 
         this.dispatchAction(logOut({ message: 'Registration Submitted. You will be notified once your profile is approved.' }));
       } catch (error) {
+        this.saveError = error.error?.message;
+
+        const nameAlreadyExists = /Key \(name\)\=\(.{1,}\) already exists\./gi;
+        const emailAlreadyExists = /Key \(email\)\=\(.{1,}\) already exists\./gi;
+
+        if (nameAlreadyExists.test(this.saveError)) {
+          this.existingAccount = true;
+          this.saveError = 'An account with this name already exist.';
+        }
+
+        if (emailAlreadyExists.test(this.saveError)) {
+          this.existingAccount = true;
+          this.saveError = 'An account with this email already exists.';
+        }
+
         this.dispatchError(error.error?.message || 'Unable to register your profile.');
         console.error(error);
       }

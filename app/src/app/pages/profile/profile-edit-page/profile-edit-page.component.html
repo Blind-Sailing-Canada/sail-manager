@@ -209,6 +209,15 @@
   </mat-form-field>
   <mat-error
     tabindex="0"
+    *ngIf="existingAccount"
+  >
+    <p>{{saveError}}</p>
+    <p>If you forgot your account information, contact us at <a href="mailto:CONTACT_US_EMAIL">CONTACT_US_EMAIL</a> to
+      recover your account.</p>
+    <p>Do not create a new account without contacting us to resolve your existing account issue.</p>
+  </mat-error>
+  <mat-error
+    tabindex="0"
     *ngFor="let error of (profileForm.pristine ? []: formErrors('bio'))"
   >{{error}}</mat-error>
 </ng-template>
