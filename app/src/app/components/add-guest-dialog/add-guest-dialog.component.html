@@ -30,7 +30,7 @@
       id="guestEmail"
       aria-hidden="true"
       tabindex="-1"
-    >Guest Email</mat-label>
+    >Guest Email (required to sign waiver)</mat-label>
     <input
       aria-labelledby="guestEmail"
       aria-required="true"
@@ -58,6 +58,7 @@
       >{{user.name}}</option>
     </select>
   </mat-form-field>
+  <mat-error *ngIf="!isFormValid">Please fill out all required fields.</mat-error>
 </mat-dialog-content>
 
 <div mat-dialog-actions>
@@ -65,6 +66,7 @@
     (click)="addAndClose()"
     mat-raised-button
     title="Add guest"
+    [disabled]="!isFormValid"
   >ADD</button>
   <button
     [mat-dialog-close]="data"

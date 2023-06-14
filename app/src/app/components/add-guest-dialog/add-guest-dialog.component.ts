@@ -21,7 +21,17 @@ export class AddGuestDialogComponent {
   ) { }
 
   public addAndClose(): void {
-    this.data.addGuest(this.data.guestName, this.data.guest_email, this.data.guest_of_id);
+    this.data.addGuest(this.data.guestName?.trim(), this.data.guest_email?.trim(), this.data.guest_of_id);
     this.dialogRef.close();
+  }
+
+  public get isFormValid(): boolean {
+    let valid = !!this.data.guestName?.trim();
+    valid = valid && !!this.data.guest_email?.trim();
+    valid = valid && !!this.data.guest_of_id;
+    valid = valid && /.{1,}@.{1,}\..{1,}/g.test(this.data.guest_email.trim());
+    valid = valid && this.data.guest_email.includes('.');
+
+    return valid;
   }
 }

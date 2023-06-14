@@ -4,6 +4,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
+  AbstractControl,
+  FormGroup,
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -118,15 +120,26 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
     return role === SailorRole.Guest;
   }
 
+  private emailValidator(control: AbstractControl<any, any>) {
+    if (/.{1,}@.{1,}\..{1,}/g.test(control.value)) {
+      return null;
+    }
+
+    return { invalid_email: 'You must provide a valid email address for the guest.' };
+  }
+
   public addSailor(sailor: Partial<Profile>, role: SailorRole = SailorRole.Sailor, guest_of_id?: string): void {
+    const guestRequiredValidation = guest_of_id ? Validators.required : null;
+    const guestEmailValidation = guest_of_id ? [Validators.required, this.emailValidator]: null;
+
     (this.manifestForm.controls.manifest as UntypedFormArray).push(this.fb.group({
-      guest_of_id: this.fb.control(guest_of_id),
-      guest_email: this.fb.control(guest_of_id? sailor.email : null),
+      guest_of_id: this.fb.control(guest_of_id, guestRequiredValidation),
+      guest_email: this.fb.control(guest_of_id? sailor.email : null, guestEmailValidation),
       id: this.fb.control(undefined),
       person_name: this.fb.control(sailor.name, Validators.required),
       profile_id: this.fb.control(sailor.id),
       sail_id: this.fb.control(this.sail_id),
-      sailor_role: this.fb.control(role),
+      sailor_role: this.fb.control(role, Validators.required),
     }));
 
     this.manifestForm.updateValueAndValidity();
@@ -142,6 +155,16 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   }
 
   public removeSailor(index: number): void {
+    const sailor: FormGroup = (this.manifestForm.controls.manifest as UntypedFormArray).at(index) as FormGroup;
+
+    if (sailor.value.sailor_role as SailorRole !== SailorRole.Guest) {
+      (this.manifestForm.controls.manifest as UntypedFormArray).controls.forEach(control => {
+        if (control.value.guest_of_id === sailor.value.profile_id) {
+          control.patchValue({ guest_of_id: null });
+        }
+      });
+    }
+
     (this.manifestForm.controls.manifest as UntypedFormArray).removeAt(index);
     this.manifestForm.updateValueAndValidity();
     this.manifestForm.markAsDirty();
@@ -177,7 +200,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
   public get shouldEnableSubmitButton(): boolean {
     const isUserSpecial = this.user.roles.some(role => [ProfileRole.Admin, ProfileRole.Coordinator].includes(role));
 
-    return this.manifestForm.dirty && (!this.occupancyExceeded || isUserSpecial);
+    return this.manifestForm.dirty && this.manifestForm.valid && (!this.occupancyExceeded || isUserSpecial);
   }
 
   public get occupancyExceeded(): boolean {
@@ -234,9 +257,12 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
 
       this.buildSailorRoles(manifest.profile || {});
 
+      const guestRequiredValidation = manifest.guest_of_id ? Validators.required : null;
+      const guestEmailValidation = manifest.guest_of_id ? [Validators.required, this.emailValidator]: null;
+
       const newManifestForm = this.fb.group({
-        guest_of_id: this.fb.control(manifest.guest_of_id),
-        guest_email: this.fb.control(manifest.guest_email),
+        guest_of_id: this.fb.control(manifest.guest_of_id, guestRequiredValidation),
+        guest_email: this.fb.control(manifest.guest_email, guestEmailValidation),
         id: this.fb.control(manifest.id),
         person_name: this.fb.control(manifest.person_name, Validators.required),
         profile_id: this.fb.control(manifest.profile_id),

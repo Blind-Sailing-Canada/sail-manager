@@ -40,78 +40,84 @@
       attr.aria-label="Sailor {{i + 1}} of {{manifestControls.length}} {{sailor.controls.person_name.value}}."
     >
       <legend>Sailor {{i + 1}} of {{manifestControls.length}} {{sailor.controls.person_name.value}}.</legend>
-      <mat-form-field [formGroup]="sailor">
-        <mat-label
-          id="labelName"
-          aria-hidden="true"
-          tabindex="-1"
-        >Sailor's Name</mat-label>
-        <input
-          aria-labelledby="labelName"
-          aria-required="true"
-          formControlName="person_name"
-          matInput
-          required
-          type="text"
-        >
-      </mat-form-field>
-      <mat-form-field [formGroup]="sailor">
-        <mat-label
-          id="labelRole"
-          aria-hidden="true"
-          tabindex="-1"
-        >Sailor's Role</mat-label>
-        <select
-          matNativeControl
-          required
-          formControlName="sailor_role"
-        >
-          <option
-            *ngFor="let role of sailor_roles[i]"
-            [value]="role[1]"
-          >{{role[0]}}</option>
-        </select>
-      </mat-form-field>
-      <mat-form-field
-        [formGroup]="sailor"
-        *ngIf="isGuest(sailor.controls.sailor_role.value)"
-      >
-        <mat-label
-          id="labelRole"
-          aria-hidden="true"
-          tabindex="-1"
-        >Guest of</mat-label>
-        <select
-          matNativeControl
-          required
-          formControlName="guest_of_id"
-        >
-          <option
-            *ngFor="let user of usersOnSail"
-            [value]="user.id"
-          >{{user.name}}</option>
-        </select>
-      </mat-form-field>
-
-      <mat-form-field
-        [formGroup]="sailor"
-        *ngIf="isGuest(sailor.controls.sailor_role.value)"
-      >
-        <mat-label
-          id="labelEmail"
-          aria-hidden="true"
-          tabindex="-1"
-        >Guest's Email</mat-label>
-        <input
-          aria-labelledby="labelEmail"
-          aria-required="true"
-          formControlName="guest_email"
-          matInput
-          required
-          type="email"
-        >
-      </mat-form-field>
-
+      <ng-container>
+        <mat-form-field [formGroup]="sailor">
+          <mat-label
+            id="labelName"
+            aria-hidden="true"
+            tabindex="-1"
+          >Sailor's Name</mat-label>
+          <input
+            aria-labelledby="labelName"
+            aria-required="true"
+            formControlName="person_name"
+            matInput
+            required
+            type="text"
+          >
+        </mat-form-field>
+        <mat-error *ngFor="let error of sailor.controls.person_name.errors | keyvalue">{{error.key}}:
+          {{error.value}}</mat-error>
+      </ng-container>
+      <ng-container>
+        <mat-form-field [formGroup]="sailor">
+          <mat-label
+            id="labelRole"
+            aria-hidden="true"
+            tabindex="-1"
+          >Sailor's Role</mat-label>
+          <select
+            matNativeControl
+            required
+            formControlName="sailor_role"
+          >
+            <option
+              *ngFor="let role of sailor_roles[i]"
+              [value]="role[1]"
+            >{{role[0]}}</option>
+          </select>
+        </mat-form-field>
+      </ng-container>
+      <ng-container *ngIf="isGuest(sailor.controls.sailor_role.value)">
+        <mat-form-field [formGroup]="sailor">
+          <mat-label
+            id="labelRole"
+            aria-hidden="true"
+            tabindex="-1"
+          >Guest of</mat-label>
+          <select
+            matNativeControl
+            required
+            formControlName="guest_of_id"
+          >
+            <option
+              *ngFor="let user of usersOnSail"
+              [value]="user.id"
+            >{{user.name}}</option>
+          </select>
+        </mat-form-field>
+        <mat-error *ngFor="let error of sailor.controls.guest_of_id.errors | keyvalue">{{error.key}}:
+          {{error.value}}</mat-error>
+      </ng-container>
+      <ng-container *ngIf="isGuest(sailor.controls.sailor_role.value)">
+        <mat-form-field [formGroup]="sailor">
+          <mat-label
+            id="labelEmail"
+            aria-hidden="true"
+            tabindex="-1"
+          >Guest's Email</mat-label>
+          <input
+            aria-labelledby="labelEmail"
+            aria-required="true"
+            formControlName="guest_email"
+            matInput
+            required
+            type="email"
+          >
+        </mat-form-field>
+        <mat-error *ngFor="let error of sailor.controls.guest_email.errors | keyvalue">{{error.key}}:
+          {{error.value}}</mat-error>
+      </ng-container>
       <div class="manifest-controls">
         <button
           mat-raised-button

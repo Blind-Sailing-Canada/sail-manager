@@ -81,6 +81,13 @@ export class SailManifestController {
     const newGuestSailors = manifests.filter(manifest => !!manifest.guest_of_id).filter(manifest => !manifest.id);
 
     for(const guest of newGuestSailors) {
+      if (!guest.guest_email) {
+        const errorMessage = `guest ${guest.person_name} has no email on sail ${sail.id}`
+        this.logger.error(errorMessage);
+        Sentry.captureMessage(errorMessage);
+        continue;
+      }
+
       try {
         const releaseFormJob: SailManifestGuestMustSignReleaseFormJob = { email: guest.guest_email };
         await this.guestReleaseFormQueue.removeJobs(guest.guest_email);
