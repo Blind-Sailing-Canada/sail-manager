@@ -82,7 +82,7 @@ export class SailManifestController {
 
     for(const guest of newGuestSailors) {
       if (!guest.guest_email) {
-        const errorMessage = `guest ${guest.person_name} has no email on sail ${sail.id}`
+        const errorMessage = `guest ${guest.person_name} has no email on sail ${sail.id}`;
         this.logger.error(errorMessage);
         Sentry.captureMessage(errorMessage);
         continue;
