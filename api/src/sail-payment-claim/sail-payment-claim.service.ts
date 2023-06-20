@@ -24,6 +24,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
       .andWhere('number_of_guest_sails_included <= number_of_guest_sails_used')
       .andWhere('number_of_sails_included <= number_of_sails_used')
       .andWhere({ is_unlimited_sails: false })
+      .cache(false)
       .update({ is_exhausted: true });
   }
 
@@ -50,6 +51,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
       .where({ profile_id: claim.profile_id })
       .andWhere('number_of_guest_sails_included > number_of_guest_sails_used')
       .andWhere('(valid_until IS NULL OR valid_until > current_date)')
+      .cache(false)
       .getOne();
 
     if (!product) {
@@ -77,6 +79,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
       .andWhere('number_of_sails_included > number_of_sails_used')
       .andWhere('valid_until IS NOT NULL AND valid_until > current_date')
       .orderBy('valid_until', 'ASC')
+      .cache(false)
       .getOne();
 
     product = expiringPoduct;
@@ -90,6 +93,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
           is_unlimited_sails: true
         })
         .andWhere('(valid_until IS NULL OR valid_until > current_date)')
+        .cache(false)
         .getOne();
 
       product = unlimitedProduct;
@@ -102,6 +106,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
         .where({ profile_id: claim.profile_id })
         .andWhere('number_of_sails_included > number_of_sails_used')
         .andWhere('(valid_until IS NULL OR valid_until > current_date)')
+        .cache(false)
         .getOne();
 
       product = individualProduct;
