@@ -22,5 +22,6 @@ mat-list-item {
 }
 
 .required-action-list-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 50px;
 }
