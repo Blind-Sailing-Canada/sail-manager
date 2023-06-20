@@ -59,7 +59,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
   public sailSailors: SailManifest[] = [];
   public sailSkippers: SailManifest[] = [];
   public boatMaintenanceCount = 0;
-
+  public SailStatus = SailStatus;
   private sail_id: string;
 
   constructor(

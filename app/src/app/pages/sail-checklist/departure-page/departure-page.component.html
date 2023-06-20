@@ -4,10 +4,18 @@
       <mat-icon>playlist_add_check</mat-icon>
     </div>
     <mat-card-title
+      aria-level="1"
       id="pageTitle"
       role="heading"
       tabindex="0"
-    >Before Departure Checklist Form</mat-card-title>
+    > Before Departure Checklist Form </mat-card-title>
+    <mat-card-subtitle
+      aria-level="2"
+      role="heading"
+      tabindex="0"
+      *ngIf="sail.status === SailStatus.Started"
+    > <mat-icon color="warn">priority_high</mat-icon>Upon arrival you must end the sail by clicking the 'End' button on
+      the sail page and complete the arrival checklist. </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
     <button

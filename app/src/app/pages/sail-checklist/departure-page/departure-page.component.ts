@@ -12,6 +12,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
+import { SailStatus } from '../../../../../../api/src/types/sail/sail-status';
 import {
   maintenanceRoute,
   sailChecklistsRoute,
@@ -26,6 +27,7 @@ import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail
 export class DeparturePageComponent extends SailChecklistBasePageComponent {
 
   public showNewGuestForm = false;
+  public SailStatus = SailStatus;
 
   constructor(
     @Inject(Store) store: Store<any>,
