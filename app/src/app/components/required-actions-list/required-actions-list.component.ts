@@ -12,6 +12,7 @@ export class RequiredActionsListComponent {
   @Input() actions: RequiredAction[] = [];
   @Input() title = 'Required Actions:';
   @Output() actionClick: EventEmitter<RequiredAction> = new EventEmitter<RequiredAction>();
+  @Output() actionDismiss: EventEmitter<RequiredAction> = new EventEmitter<RequiredAction>();
 
   public actionIcon(actionType: RequiredActionType): string {
     switch (actionType) {
@@ -24,6 +25,10 @@ export class RequiredActionsListComponent {
       default:
         return 'notification_important';
     }
+  }
+
+  public dismissAction(action: RequiredAction): void {
+    this.actionDismiss.emit(action);
   }
 
   public clicked(action: RequiredAction): void {

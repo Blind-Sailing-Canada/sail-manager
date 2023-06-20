@@ -9,6 +9,7 @@ import { LoginGuard } from '../guards/login.guard';
 import { RequiredActionStatus } from '../types/required-action/required-action-status';
 import { JwtObject } from '../types/token/jwt-object';
 import { User } from '../user/user.decorator';
+import { RequiredActionOwnerGuard } from './required-action-owner.guard';
 import { RequiredActionEntity } from './required-action.entity';
 import { RequiredActionService } from './required-action.service';
 
@@ -19,6 +20,10 @@ import { RequiredActionService } from './required-action.service';
     type: 'uuid',
     primary: true,
   } },
+  routes: {
+    only: ['updateOneBase'],
+    updateOneBase: { decorators: [UseGuards(RequiredActionOwnerGuard),] },
+  }
 })
 @Controller('required-action')
 @ApiTags('required-action')

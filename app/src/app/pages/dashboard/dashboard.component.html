@@ -16,6 +16,7 @@
       *ngIf="myRequiredActions && myRequiredActions?.length"
       [actions]="myRequiredActions"
       (actionClick)="gotToRequiredAction($event)"
+      (actionDismiss)="dismissRequiredAction($event)"
     ></app-required-actions-list>
     <mat-accordion>
       <ng-container *ngTemplateOutlet="TemplateAllInProgressSails"></ng-container>

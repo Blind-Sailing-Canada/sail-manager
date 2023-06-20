@@ -38,7 +38,7 @@ import {
   fetchPastSailsForAll,
   fetchPastSailsForUser,
 } from '../../store/actions/past-sails.actions';
-import { fetchNewRequiredActionsForUser } from '../../store/actions/required-actions.actions';
+import { dismissRequiredAction, fetchNewRequiredActionsForUser } from '../../store/actions/required-actions.actions';
 import {
   fetchFutureSailsForAll,
   fetchFutureSailsForUser,
@@ -157,6 +157,10 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
 
   public gotToRequiredAction(requiredAction: RequiredAction): void {
     this.goTo([viewRequiredActionRoute(requiredAction.id)]);
+  }
+
+  public dismissRequiredAction(requiredAction: RequiredAction): void {
+    this.dispatchAction(dismissRequiredAction({ action_id: requiredAction.id, notify: true }));
   }
 
   public fetchMyPastSails(notify = false): void {

@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { RequiredActionController } from './required-action.controller';
 import { RequiredActionEntity } from './required-action.entity';
+import { RequiredActionJob } from './required-action.job';
 import { RequiredActionService } from './required-action.service';
 
 @Module({
@@ -11,6 +12,9 @@ import { RequiredActionService } from './required-action.service';
     AuthModule,
   ],
   controllers: [RequiredActionController],
-  providers: [RequiredActionService],
+  providers: [
+    RequiredActionJob,
+    RequiredActionService,
+  ],
 })
 export class RequiredActionModule { }

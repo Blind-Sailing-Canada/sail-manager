@@ -1,23 +1,32 @@
 <mat-nav-list>
   <h4 mat-header>{{title}}</h4>
-  <mat-list-item
-    (click)="clicked(action)"
-    (keydown)="clickedViaKey($event, action)"
+  <div
+    class="required-action-list-item"
     *ngFor="let action of actions; let i = index;"
-    attr.aria-label="{{i + 1}} of {{actions.length}} {{action.title}}"
-    mat-list-item
-    role="option"
-    tabindex="0"
-  >
-    <mat-icon
-      aria-hidden="true"
-      mat-list-icon
-      style="height: unset;"
-    >{{actionIcon(action.required_action_type)}}</mat-icon>
-    <span
-      matLine
-      class="break-space"
-    >{{action.title}}</span>
-    <mat-icon>navigate_next</mat-icon>
-  </mat-list-item>
+  ><mat-list-item
+      (click)="clicked(action)"
+      (keydown)="clickedViaKey($event, action)"
+      attr.aria-label="{{i + 1}} of {{actions.length}} {{action.title}}"
+      mat-list-item
+      role="option"
+      tabindex="0"
+    >
+      <mat-icon
+        aria-hidden="true"
+        mat-list-icon
+        style="height: unset;"
+      >{{actionIcon(action.required_action_type)}}</mat-icon>
+      <span
+        matLine
+        class="break-space"
+      >{{action.title}}</span>
+      <mat-icon>navigate_next</mat-icon>
+    </mat-list-item>
+    <button
+      mat-flat-button
+      title="Click to dismiss action: {{action.title}}"
+      (click)="dismissAction(action)"
+    ><mat-icon>cancel</mat-icon></button>
+  </div>
+
 </mat-nav-list>
