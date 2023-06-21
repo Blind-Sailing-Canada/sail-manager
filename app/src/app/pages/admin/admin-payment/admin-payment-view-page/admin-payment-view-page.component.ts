@@ -16,7 +16,7 @@ import { FindUserDialogComponent } from '../../../../components/find-user-dialog
 import { FindUserDialogData } from '../../../../models/find-user-dialog-data.interface';
 import { ProfileService } from '../../../../services/profile.service';
 import { Profile } from '../../../../../../../api/src/types/profile/profile';
-import { viewProfileRoute, viewSailRoute } from '../../../../routes/routes';
+import { RootRoutes, SubRoutes, viewProfileRoute, viewSailRoute } from '../../../../routes/routes';
 import { SailPaymentClaim } from '../../../../../../../api/src/types/sail-payment-claim/sail-payment-claim';
 import { MatTableDataSource } from '@angular/material/table';
 import { FilterInfo } from '../../../../models/filter-into';
@@ -45,6 +45,7 @@ export class AdminPaymentViewPageComponent extends BasePageComponent implements 
   public displayedColumnsMobile: string[] = ['product'];
   public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,ASC' };
   public paginatedData: PaginatedSailPaymentClaim;
+  public editPaymentRoute = (id: string) => `/${RootRoutes.ADMIN}/${SubRoutes.EDIT_ADMIN_PAYMENT}/${id}`;
 
   constructor(
     @Inject(Store) store: Store<any>,

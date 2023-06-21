@@ -21,6 +21,7 @@ import { User } from '../user/user.decorator';
 import { JwtObject } from '../types/token/jwt-object';
 import { ManualCredit } from '../types/payment-capture/manual-credit';
 import { ProfileEntity } from '../profile/profile.entity';
+import { PaymentCaptureEditGuard } from './payment-capture-edit.guard';
 
 interface ProfileData {
   profile_id: string
@@ -34,17 +35,21 @@ interface ProfileData {
     primary: true,
   } },
   query: {
-    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788,
     alwaysPaginate: true,
     join: {
       profile: { eager: true },
       product_purchase: { eager: true }
     }
   },
-  routes: { only: [
-    'getOneBase',
-    'getManyBase'
-  ], },
+  routes: {
+    only: [
+      'getOneBase',
+      'getManyBase',
+      'updateOneBase',
+    ],
+    updateOneBase: { decorators: [UseGuards(PaymentCaptureEditGuard)], }
+  },
 })
 @Controller('payment-capture')
 @ApiTags('payment-capture')

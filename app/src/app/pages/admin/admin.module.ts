@@ -22,12 +22,14 @@ import { AdminPaymentManualPageComponent } from './admin-payment/admin-payment-m
 import {
   AdminMissingSailPaymentsPageComponent,
 } from './admin-payment/admin-missing-sail-payments-page/admin-missing-sail-payments-page.component';
+import { AdminPaymentEditPageComponent } from './admin-payment/admin-payment-edit-page/admin-payment-edit-page.component';
 
 @NgModule({
   declarations: [
     AdminDashboardPageComponent,
     AdminMissingSailPaymentsPageComponent,
     AdminPaymentDashboardPageComponent,
+    AdminPaymentEditPageComponent,
     AdminPaymentManualPageComponent,
     AdminPaymentViewPageComponent,
     AdminSailCategoryPageComponent,

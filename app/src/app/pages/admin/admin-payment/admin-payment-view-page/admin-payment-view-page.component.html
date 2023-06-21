@@ -83,6 +83,11 @@
     *ngIf="!payment?.profile_id"
     (click)="showFindUserDialog()"
   >Assign user</button>
+  <a
+    mat-raised-button
+    *ngIf="payment?.payment_processor === 'manual'"
+    [routerLink]="editPaymentRoute(payment.id)"
+  >Edit</a>
 </ng-template>
 
 <ng-template #sailClaimsTable>

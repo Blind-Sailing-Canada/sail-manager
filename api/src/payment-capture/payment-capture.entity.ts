@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import {
   Column,
   DeleteDateColumn,
@@ -31,7 +30,6 @@ export class PaymentCaptureEntity extends BaseModelEntity implements PaymentCapt
     customer_name: string;
 
   @Column({ type: 'jsonb' })
-  @Exclude()
     data: Record<string, any>;
 
   @Column({ length: 100 })
@@ -69,7 +67,7 @@ export class PaymentCaptureEntity extends BaseModelEntity implements PaymentCapt
   @DeleteDateColumn()
     deleted_at?: Date;
 
-  @OneToOne(() => ProductPurchaseEntity)
+  @OneToOne(() => ProductPurchaseEntity, undefined, { cascade: true })
   @JoinColumn([
     {
       name: 'id',

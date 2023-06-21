@@ -21,6 +21,10 @@ export class PaymentCaptureService {
     return this.http.post<PaymentCapture>(`${this.API_URL}/manual_credit`, credit);
   }
 
+  updatePayment(id: string, payment: Partial<PaymentCapture>): Observable<PaymentCapture> {
+    return this.http.patch<PaymentCapture>(`${this.API_URL}/${id}`, payment);
+  }
+
   fetchPaymentCapture(payment_capture_id: string): Observable<PaymentCapture> {
     return this.http.get<PaymentCapture>(`${this.API_URL}/${payment_capture_id}`);
   }

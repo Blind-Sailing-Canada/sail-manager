@@ -11,6 +11,7 @@ import {
   AdminMissingSailPaymentsPageComponent,
 } from './admin-payment/admin-missing-sail-payments-page/admin-missing-sail-payments-page.component';
 import { AdminPaymentDashboardPageComponent } from './admin-payment/admin-payment-dashboard-page/admin-payment-dashboard-page.component';
+import { AdminPaymentEditPageComponent } from './admin-payment/admin-payment-edit-page/admin-payment-edit-page.component';
 import { AdminPaymentManualPageComponent } from './admin-payment/admin-payment-manual-page/admin-payment-manual-page.component';
 import { AdminPaymentViewPageComponent } from './admin-payment/admin-payment-view-page/admin-payment-view-page.component';
 import { AdminSailCategoryPageComponent } from './admin-sail-category-page/admin-sail-category-page.component';
@@ -34,6 +35,11 @@ const routes: Routes = [
     path: `${RootRoutes.PURCHASES}/${SubRoutes.CREATE_PURCHASE}`,
     canActivate: [AdminGuard],
     component: AdminPaymentManualPageComponent,
+  },
+  {
+    path: `${SubRoutes.EDIT_ADMIN_PAYMENT}/:id`,
+    canActivate: [AdminGuard],
+    component: AdminPaymentEditPageComponent,
   },
   {
     path: `${SubRoutes.ADMIN_PAYMENT_DASHBOARD}/${SubRoutes.MISSING_SAIL_PAYMENTS}`,
