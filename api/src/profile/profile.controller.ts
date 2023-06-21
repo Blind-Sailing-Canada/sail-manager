@@ -195,6 +195,10 @@ export class ProfileController {
       throw new UnauthorizedException('wrong user');
     }
 
+    if (profile.email) {
+      profile.email = profile.email.toLowerCase().trim();
+    }
+
     const updatedProfile = ProfileEntity.create({
       id,
       ...profile,

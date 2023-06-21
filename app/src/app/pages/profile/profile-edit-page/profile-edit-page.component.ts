@@ -157,6 +157,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
       const profile = this.profileForm.getRawValue();
 
       profile.phone = profile.phone.replace(/\+1/g, '').replace(/[^\d]/g,'').substring(0, 10);
+      profile.email = profile.email.toLowerCase().trim();
 
       this.startLoading();
       const fetcher = this.authService.createProfile(profile);
@@ -193,7 +194,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
 
     const formControls = this.profileForm.controls;
     const formKeys = Object.keys(formControls);
-    const changedValue = formKeys
+    const changedValue: Partial<Profile> = formKeys
       .filter(key => !formControls[key].pristine)
       .reduce(
         (red, key) => {
@@ -202,6 +203,11 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
         },
         {}
       ) as any;
+
+    if (changedValue.email) {
+      changedValue.email = changedValue.email.trim().toLowerCase();
+    }
+
     this.dispatchAction(updateProfileInfo({ profile_id: this.profile_id, profile: changedValue, notify: true }));
   }
 

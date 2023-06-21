@@ -17,5 +17,6 @@ export const errorCatcher = (
     ...(actionsToDispatchWithError ? actionsToDispatchWithError(error) : []),
     finishLoading(),
     notify && putSnack({ snack: { type: SnackType.ERROR, message: userFriendlyMessage } }),
+    notify && putSnack({ snack: { type: SnackType.ERROR, message: error.error?.message || error.message } }),
   );
 };

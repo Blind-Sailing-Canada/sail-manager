@@ -60,8 +60,8 @@ const DB_CONNECTION_META: ConnectionOptions = {
   url: process.env.DB_CONNECTION_STRING.replace(/\\n/gm, '\n'),
   logging: DB_LOGGING,
   entities: [
-    // '**/*.entity.ts', // when debugging
-    '**/*.entity.js',
+    '**/*.entity.ts', // when debugging
+    // '**/*.entity.js',
   ],
   synchronize: process.env.DB_SYNCHRONIZE === 'true',
   namingStrategy: new SnakeNamingStrategy(),

@@ -78,7 +78,7 @@ export class AuthService {
 
     const providerUser: ProviderUser = {
       id: user.uid,
-      email: user.email,
+      email: user.email.toLowerCase().trim(),
       name: user.displayName,
       photo: user.photoURL,
       roles: [],
@@ -128,7 +128,7 @@ export class AuthService {
         providerUser = {
           id: (user as GoogleUser).id,
           name: (user as GoogleUser).displayName,
-          email: (user as GoogleUser).emails[0].value,
+          email: (user as GoogleUser).emails[0].value.toLowerCase().trim(),
           photo: (user as GoogleUser).photos[0].value,
           provider,
         };
@@ -232,7 +232,7 @@ export class AuthService {
 
     const payload: JwtObject = {
       access: access?.access || {},
-      email: profile.email,
+      email: profile.email?.toLowerCase().trim(),
       username: profile.name,
       iat: new Date().getTime(),
       profile_id: profile.id,
@@ -286,7 +286,7 @@ export class AuthService {
     const newProfile = ProfileEntity
       .create({
         bio: user.bio,
-        email: user.email,
+        email: user.email.toLowerCase().trim(),
         expires_at: null,
         id: uuidv4(),
         name: user.name,

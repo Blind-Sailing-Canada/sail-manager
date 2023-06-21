@@ -152,7 +152,7 @@ export class AuthController {
 
     const provider_user: ProviderUser = {
       bio: (profile_data.bio || '').trim(),
-      email: (profile_data.email || '').trim(),
+      email: (profile_data.email || '').toLowerCase().trim(),
       id: user.provider_user.id,
       name: (profile_data.name || '').trim(),
       phone: (profile_data.phone || '').trim(),
@@ -205,7 +205,7 @@ export class AuthController {
   @Post('existing-user')
   checkForExistingUser(@Body('email') email: string): Promise<boolean> {
     return ProfileEntity
-      .count({ where: { email: `${email}`.toLowerCase() } })
+      .count({ where: { email: `${email}`.toLowerCase().trim() } })
       .then(count => count > 0);
   }
 }

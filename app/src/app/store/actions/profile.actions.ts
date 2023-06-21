@@ -30,7 +30,7 @@ export const putProfiles = createAction(PROFILE_ACTION_TYPES.PUT_MANY, props<{ p
 export const resetProfiles = createAction(PROFILE_ACTION_TYPES.RESET);
 export const updateProfileInfo = createAction(
   PROFILE_ACTION_TYPES.UPDATE_INFO,
-  props<{ profile_id: string; profile: Profile; notify?: boolean }>());
+  props<{ profile_id: string; profile: Partial<Profile>; notify?: boolean }>());
 export const reviewProfile = createAction(
   PROFILE_ACTION_TYPES.REVIEW_PROFILE,
   props<{ profile_id: string; profileReview: Partial<ProfileReview>; notify?: boolean }>());

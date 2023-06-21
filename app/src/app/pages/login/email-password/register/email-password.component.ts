@@ -117,7 +117,7 @@ export class EmailPasswordComponent extends BasePageComponent implements OnInit 
   }
 
   private get validateEmail(): string {
-    return `${this.form.controls.email.value}`.trim();
+    return `${this.form.controls.email.value}`.toLowerCase().trim();
   }
 
   private get validatePassword(): string {
