@@ -47,7 +47,17 @@ export class AdminPaymentManualPageComponent extends BasePageComponent implement
 
   }
 
+  public get invalidFields(): string {
+    return Object
+      .entries(this.form.controls).filter(value => !value[1].valid)
+      .map(value => value[0])
+      .map(value => value.replace('_', ' '))
+      .join(', ');
+  }
+
   private buildForm() {
+    const date = new Date();
+
     this.form = this.fb.group<ManualCreditForm>({
       customer_email: this.fb.control('', [Validators.required]),
       customer_name: this.fb.control('', [Validators.required]),
@@ -57,7 +67,7 @@ export class AdminPaymentManualPageComponent extends BasePageComponent implement
       number_of_sails_included: this.fb.control(0),
       product_name: this.fb.control('', [Validators.required]),
       product_type: this.fb.control('', [Validators.required]),
-      valid_until: this.fb.control(null),
+      valid_until: this.fb.control(`${date.getFullYear()}-12-30`),
     });
   }
 

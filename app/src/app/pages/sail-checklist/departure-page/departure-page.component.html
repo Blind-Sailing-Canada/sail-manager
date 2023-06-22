@@ -42,7 +42,7 @@
         [disabled]="shouldDisableUpdateButton"
         (click)="save()"
       >Update</button>
-      <label *ngIf="shouldDisableUpdateButton && !beforeFormControls.dirty">Already saved.</label>
+      <label *ngIf="shouldDisableUpdateButton && !beforeFormControls.dirty">Auto-saved.</label>
       <label *ngIf="!beforeFormControls.valid">Please fill out all required field.</label>
     </mat-card-actions>
   </mat-card-footer>

@@ -31,7 +31,7 @@
         *ngIf="shouldEnableSaveButton"
         title="Click to create manual payment capture"
       >Save</button>
-      <mat-error *ngIf="!shouldEnableSaveButton">Please fill out all required fields.</mat-error>
+      <mat-error *ngIf="form.dirty && !form.valid">Please fill out all required fields: {{invalidFields}}</mat-error>
     </mat-card-actions>
   </mat-card-footer>
 </mat-card>

@@ -98,7 +98,7 @@ export class AdminPaymentEditPageComponent extends BasePageComponent implements 
     this.form.patchValue({
       customer_email: payment.customer_email,
       customer_name: payment.customer_name,
-      is_unlimited_sails: payment.product_purchase.is_unlimited_sails,
+      is_unlimited_sails: payment.data.is_unlimited_sails,
       note: payment.data.note,
       number_of_guest_sails_included: payment.data.number_of_guest_sails_included || 0,
       number_of_guest_sails_used: payment.product_purchase?.number_of_guest_sails_used || 0,
@@ -110,6 +110,14 @@ export class AdminPaymentEditPageComponent extends BasePageComponent implements 
     });
     this.form.updateValueAndValidity();
     this.form.markAsPristine();
+  }
+
+  public get invalidFields(): string {
+    return Object
+      .entries(this.form.controls).filter(value => !value[1].valid)
+      .map(value => value[0])
+      .map(value => value.replace('_', ' '))
+      .join(', ');
   }
 
   public get shouldEnableSaveButton(): boolean {
@@ -149,9 +157,12 @@ export class AdminPaymentEditPageComponent extends BasePageComponent implements 
       paymentCapture.product_purchase.number_of_sails_used = formData.number_of_sails_used;
       paymentCapture.product_purchase.is_unlimited_sails = formData.is_unlimited_sails;
       paymentCapture.product_purchase.note = formData.note;
+    } else {
+      paymentCapture.product_purchase = null;
     }
 
     delete paymentCapture.profile;
+    delete paymentCapture.id;
 
     this.startLoading();
 

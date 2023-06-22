@@ -27,7 +27,7 @@
         mat-raised-button
         (click)="save()"
       >Update</button>
-      <label *ngIf="shouldDisableUpdateButton && !afterFormControls.dirty">Already saved.</label>
+      <label *ngIf="shouldDisableUpdateButton && !afterFormControls.dirty">Auto-saved.</label>
       <label *ngIf="!afterFormControls.valid">Please fill out all required field.</label>
     </mat-card-actions>
   </mat-card-footer>

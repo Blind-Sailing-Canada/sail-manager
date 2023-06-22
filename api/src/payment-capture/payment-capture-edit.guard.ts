@@ -25,7 +25,10 @@ export class PaymentCaptureEditGuard implements CanActivate {
       return false;
     }
 
-    const capture = await PaymentCaptureEntity.findOne({ where: { id: captureId, } });
+    const capture = await PaymentCaptureEntity.findOne({
+      where: { id: captureId, },
+      relations: ['product_purchase']
+    });
 
     if (!capture) {
       return false;

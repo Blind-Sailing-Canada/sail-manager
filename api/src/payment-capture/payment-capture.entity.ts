@@ -67,7 +67,7 @@ export class PaymentCaptureEntity extends BaseModelEntity implements PaymentCapt
   @DeleteDateColumn()
     deleted_at?: Date;
 
-  @OneToOne(() => ProductPurchaseEntity, undefined, { cascade: true })
+  @OneToOne(() => ProductPurchaseEntity, undefined, { nullable: true })
   @JoinColumn([
     {
       name: 'id',

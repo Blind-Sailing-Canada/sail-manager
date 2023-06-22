@@ -156,6 +156,7 @@
         *ngIf="shouldEnableSaveButton"
         title="Click to update payment"
       >Save</button>
+      <mat-error *ngIf="form.dirty && !form.valid">Please fill out all required fields: {{invalidFields}}.</mat-error>
     </mat-card-actions>
   </mat-card-footer>
 

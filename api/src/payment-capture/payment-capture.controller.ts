@@ -6,7 +6,8 @@ import {
   Param,
   Post,
   Delete,
-  UseGuards
+  UseGuards,
+  Patch
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
@@ -44,14 +45,10 @@ interface ProfileData {
       product_purchase: { eager: true }
     }
   },
-  routes: {
-    only: [
-      'getOneBase',
-      'getManyBase',
-      'updateOneBase',
-    ],
-    updateOneBase: { decorators: [UseGuards(PaymentCaptureEditGuard)], }
-  },
+  routes: { only: [
+    'getOneBase',
+    'getManyBase',
+  ] },
 })
 @Controller('payment-capture')
 @ApiTags('payment-capture')
@@ -64,8 +61,32 @@ export class PaymentCaptureController {
     this.logger = new Logger(PaymentCaptureController.name);
   }
 
-  @Delete('/:payment_id')
-  async deletePayment(@User() user: JwtObject, @Param('payment_id') payment_id: string) {
+  @Patch('/:id')
+  @UseGuards(PaymentCaptureEditGuard)
+  async updatePayment(@Param('id') payment_id: string, @Body() payment_data: Partial<PaymentCaptureEntity>) {
+    const updatedProduct = payment_data.product_purchase? ProductPurchaseEntity.create({ ...payment_data.product_purchase }): null;
+
+    delete payment_data.product_purchase;
+
+    payment_data.id = payment_id;
+
+    const updatedPayment = PaymentCaptureEntity.create(payment_data);
+
+    await PaymentCaptureEntity.getRepository().manager.transaction(async transactionalEntityManager => {
+      if (updatedProduct?.id){
+        await transactionalEntityManager.save(updatedProduct);
+      }
+      await transactionalEntityManager.save(updatedPayment);
+    });
+
+    return PaymentCaptureEntity.findOneOrFail({
+      where: { id: payment_id },
+      relations: ['product_purchase']
+    });
+  }
+
+  @Delete('/:id')
+  async deletePayment(@Param('id') payment_id: string) {
     const payment = await PaymentCaptureEntity.findOneOrFail({ where: { id: payment_id }, });
     const product = await ProductPurchaseEntity.findOne({ where: { payment_capture_id: payment.id } });
 
