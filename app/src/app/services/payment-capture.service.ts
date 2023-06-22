@@ -25,6 +25,10 @@ export class PaymentCaptureService {
     return this.http.patch<PaymentCapture>(`${this.API_URL}/${id}`, payment);
   }
 
+  deletePayment(id: string) {
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
+  }
+
   fetchPaymentCapture(payment_capture_id: string): Observable<PaymentCapture> {
     return this.http.get<PaymentCapture>(`${this.API_URL}/${payment_capture_id}`);
   }

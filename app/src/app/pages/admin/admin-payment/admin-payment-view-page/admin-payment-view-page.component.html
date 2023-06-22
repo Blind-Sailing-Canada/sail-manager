@@ -88,6 +88,12 @@
     *ngIf="payment?.payment_processor === 'manual'"
     [routerLink]="editPaymentRoute(payment.id)"
   >Edit</a>
+  <button
+    (click)="deletePayment()"
+    [disabled]="loading"
+    *ngIf="canDeletePayment"
+    mat-raised-button
+  >Delete</button>
 </ng-template>
 
 <ng-template #sailClaimsTable>

@@ -74,6 +74,28 @@ export class AdminPaymentViewPageComponent extends BasePageComponent implements 
 
   }
 
+  public get canDeletePayment(): boolean {
+    return !this.dataSource.data.length;
+  }
+
+  public async deletePayment(): Promise<void> {
+    if (!confirm('Are you sure you want to delete this payment? This cannot be undone.')) {
+      return;
+    }
+
+    this.startLoading();
+
+    try {
+      await firstValueFrom(this.paymentCaptureService.deletePayment(this.paymentId))
+        .finally(() => this.finishLoading());
+      this.dispatchMessage(`Deleted payment: ${this.paymentId}`);
+      this.router.navigate([`/${RootRoutes.ADMIN}/${SubRoutes.ADMIN_PAYMENT_DASHBOARD}`],{ replaceUrl: true });
+    } catch (error) {
+      this.dispatchError(`Failed to delete payment: ${error.message}`);
+      throw error;
+    }
+  }
+
   public showFindUserDialog(): void {
     const dialogData: FindUserDialogData = {
       complete: user => this.addUser(user),

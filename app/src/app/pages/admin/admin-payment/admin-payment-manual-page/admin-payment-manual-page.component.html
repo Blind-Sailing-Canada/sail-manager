@@ -8,6 +8,14 @@
       role="header"
       tabindex="0"
     >Admin Manual Payment Form</mat-card-title>
+    <mat-card-subtitle
+      aria-level="2"
+      role="header"
+      tabindex="0"
+    >
+      <mat-icon color="warn">priority_high</mat-icon>
+      Please triple-check correctness of the information before submitting.
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
     <ng-container [ngTemplateOutlet]="controls"></ng-container>
@@ -23,6 +31,7 @@
         *ngIf="shouldEnableSaveButton"
         title="Click to create manual payment capture"
       >Save</button>
+      <mat-error *ngIf="!shouldEnableSaveButton">Please fill out all required fields.</mat-error>
     </mat-card-actions>
   </mat-card-footer>
 </mat-card>
@@ -38,7 +47,7 @@
         id="payment-capture-customer-name"
         aria-hidden="true"
         tabindex="-1"
-      >Customer name</mat-label>
+      >Customer name (required field)</mat-label>
       <input
         aria-labelledby="payment-capture-customer-name"
         matInput
@@ -48,10 +57,10 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label
-        id="payment-capture-customer-email"
         aria-hidden="true"
+        id="payment-capture-customer-email"
         tabindex="-1"
-      >Customer email (must match profile email)</mat-label>
+      >Customer email (must match profile email) (required field)</mat-label>
       <input
         aria-labelledby="payment-capture-customer-email"
         matInput
@@ -64,7 +73,7 @@
         id="payment-capture-product-name"
         aria-hidden="true"
         tabindex="-1"
-      >Product name</mat-label>
+      >Product name (required field)</mat-label>
       <input
         aria-labelledby="payment-capture-product-name"
         matInput
@@ -77,7 +86,7 @@
         aria-hidden="true"
         tabindex="-1"
         id="payment-capture-product-type"
-      >Product type</mat-label>
+      >Product type (required field)</mat-label>
       <select
         matNativeControl
         formControlName="product_type"
@@ -142,7 +151,7 @@
         aria-hidden="true"
         tabindex="-1"
         id="payment-capture-note"
-      >Note</mat-label>
+      >Note (required field)</mat-label>
       <textarea
         formControlName="note"
         aria-labelledby="payment-capture-note"

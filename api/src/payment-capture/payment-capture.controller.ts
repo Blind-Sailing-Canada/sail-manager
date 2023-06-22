@@ -5,6 +5,7 @@ import {
   Logger,
   Param,
   Post,
+  Delete,
   UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -22,6 +23,7 @@ import { JwtObject } from '../types/token/jwt-object';
 import { ManualCredit } from '../types/payment-capture/manual-credit';
 import { ProfileEntity } from '../profile/profile.entity';
 import { PaymentCaptureEditGuard } from './payment-capture-edit.guard';
+import { ProductPurchaseEntity } from '../product-purchase/product-purchase.entity';
 
 interface ProfileData {
   profile_id: string
@@ -60,6 +62,19 @@ export class PaymentCaptureController {
 
   constructor(public service: PaymentCaptureService) {
     this.logger = new Logger(PaymentCaptureController.name);
+  }
+
+  @Delete('/:payment_id')
+  async deletePayment(@User() user: JwtObject, @Param('payment_id') payment_id: string) {
+    const payment = await PaymentCaptureEntity.findOneOrFail({ where: { id: payment_id }, });
+    const product = await ProductPurchaseEntity.findOne({ where: { payment_capture_id: payment.id } });
+
+    await PaymentCaptureEntity.getRepository().manager.transaction(async transactionalEntityManager => {
+      if (product){
+        await transactionalEntityManager.softRemove(product);
+      }
+      await transactionalEntityManager.softRemove(payment);
+    });
   }
 
   @Post('/manual_credit')

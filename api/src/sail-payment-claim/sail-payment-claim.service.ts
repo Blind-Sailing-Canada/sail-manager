@@ -29,7 +29,10 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
   }
 
   async linkAllClaimsToProfile() {
-    const claims = await SailPaymentClaimEntity.find({ where: { product_purchase_id: IsNull() } });
+    const claims = await SailPaymentClaimEntity.find({ where: {
+      product_purchase_id: IsNull(),
+      deleted_at: IsNull(),
+    } });
 
     for(const claim of claims) {
       try {
@@ -48,7 +51,10 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
     const product = await ProductPurchaseEntity
       .getRepository()
       .createQueryBuilder()
-      .where({ profile_id: claim.profile_id })
+      .where({
+        profile_id: claim.profile_id,
+        deleted_at: IsNull(),
+      })
       .andWhere('number_of_guest_sails_included > number_of_guest_sails_used')
       .andWhere('(valid_until IS NULL OR valid_until > current_date)')
       .cache(false)
@@ -75,7 +81,10 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
     const expiringPoduct = await ProductPurchaseEntity
       .getRepository()
       .createQueryBuilder()
-      .where({ profile_id: claim.profile_id })
+      .where({
+        profile_id: claim.profile_id,
+        deleted_at: IsNull(),
+      })
       .andWhere('number_of_sails_included > number_of_sails_used')
       .andWhere('valid_until IS NOT NULL AND valid_until > current_date')
       .orderBy('valid_until', 'ASC')
