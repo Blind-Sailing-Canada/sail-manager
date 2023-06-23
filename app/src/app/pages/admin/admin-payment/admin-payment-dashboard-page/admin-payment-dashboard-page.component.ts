@@ -29,8 +29,8 @@ export class AdminPaymentDashboardPageComponent extends BasePageComponent implem
   public createPurchaseRoute = createPurchaseRoute;
   public dataSource = new MatTableDataSource<PaymentCapture>([]);
   public displayedColumns: string[] = ['product_name', 'customer_name', 'profile.name', 'created_at', 'action'];
-  public displayedColumnsMobile: string[] = ['product_name'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,ASC' };
+  public displayedColumnsMobile: string[] = ['created_at'];
+  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
   public paginatedData: PaginatedPaymentCapture;
   public productType: ProductType | 'ANY' = 'ANY';
   public productTypeValues = { ...ProductType, ANY: 'ANY' };

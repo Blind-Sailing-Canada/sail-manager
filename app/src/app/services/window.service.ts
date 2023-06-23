@@ -18,7 +18,7 @@ export class WindowService {
       return WINDOW_WIDTH.LARGE;
     }
 
-    if (window.innerWidth > 500) {
+    if (window.innerWidth > 600) {
       return WINDOW_WIDTH.MEDIUM;
     }
 

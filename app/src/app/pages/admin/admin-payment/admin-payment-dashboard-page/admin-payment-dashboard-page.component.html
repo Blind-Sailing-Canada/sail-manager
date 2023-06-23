@@ -12,8 +12,11 @@
   <mat-card-actions>
     <ng-container [ngTemplateOutlet]="controls"></ng-container>
   </mat-card-actions>
-  <mat-card-content>
+  <mat-card-content *ngIf="!windowService.isSmallWidth">
     <ng-container [ngTemplateOutlet]="paymentsTable"></ng-container>
+  </mat-card-content>
+  <mat-card-content *ngIf="windowService.isSmallWidth">
+    <ng-container [ngTemplateOutlet]="paymentsTableMobile"></ng-container>
   </mat-card-content>
 </mat-card>
 
@@ -70,7 +73,7 @@
     <ng-container
       matSort
       matSortActive="created_at"
-      matSortDirection="asc"
+      matSortDirection="desc"
       tableColumns
     >
       <ng-container matColumnDef="product_name">
@@ -157,6 +160,109 @@
           >
             <mat-icon>visibility</mat-icon>
           </button> </td>
+      </ng-container>
+
+    </ng-container>
+  </app-material-table>
+</ng-template>
+
+<ng-template #paymentsTableMobile>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumnsMobile"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of payments"
+  >
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    >
+      <mat-form-field>
+        <mat-label>Product</mat-label>
+        <select
+          [(ngModel)]="productType"
+          [ngModelOptions]="{standalone: true}"
+          matNativeControl
+          (ngModelChange)="filterPayments()"
+          title="filter by product type"
+        >
+          <option
+            *ngFor="let type of productTypeValues | keyvalue"
+            [value]="type.value"
+          >{{type.key}}</option>
+        </select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Year</mat-label>
+        <input
+          type="number"
+          #purchaseYearInput
+          [(ngModel)]="purchaseYear"
+          [ngModelOptions]="{standalone: true}"
+          matNativeControl
+          title="filter by purchase year"
+        >
+      </mat-form-field>
+    </ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="created_at"
+      matSortDirection="desc"
+      tableColumns
+    >
+      <ng-container matColumnDef="created_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Product </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        >
+          <div class="mobile-payment-container">
+            <span
+              tabindex="0"
+              title="product name"
+            >{{element.product_name}}</span>
+            <span
+              tabindex="0"
+              title="customer name and email"
+            >{{element.customer_name}} ({{element.customer_email}})</span>
+            <span
+              tabindex="0"
+              title="assigned user"
+            >
+              <ng-container *ngIf="element.profile">
+                <a
+                  tabindex="0"
+                  [routerLink]="viewProfileRoute(element.profile.id)"
+                  title="Click to go to {{element.profile.name}}'s profile page"
+                >{{element.profile.name}}</a>
+              </ng-container>
+              <ng-container *ngIf="!element.profile">
+                Not assigned to existing user.
+              </ng-container>
+            </span>
+            <span
+              tabindex="0"
+              title="purchase date"
+            >{{element.created_at | humanDateWithTime}}</span>
+            <button
+              (click)="goToPaymentView(element.id)"
+              mat-raised-button
+              title="Click to go to payment view page {{element.name}}"
+            >
+              Details
+            </button>
+          </div>
+        </td>
       </ng-container>
 
     </ng-container>
