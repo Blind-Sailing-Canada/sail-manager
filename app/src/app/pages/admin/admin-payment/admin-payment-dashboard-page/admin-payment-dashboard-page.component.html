@@ -254,6 +254,18 @@
               tabindex="0"
               title="purchase date"
             >{{element.created_at | humanDateWithTime}}</span>
+            <span
+              *ngIf="isExpired(element)"
+              tabindex="0"
+              title="this purchase has expired"
+            >
+              Expired on {{getValidUntilDate(element) | humanDate}}</span>
+            <span
+              *ngIf="getValidUntilDate(element) && !isExpired(element)"
+              tabindex="0"
+              title="this purchase is valid until"
+            >
+              Valid until {{getValidUntilDate(element) | humanDate}}</span>
             <button
               (click)="goToPaymentView(element.id)"
               mat-raised-button

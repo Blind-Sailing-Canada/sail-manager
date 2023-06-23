@@ -81,6 +81,25 @@ export class AdminPaymentDashboardPageComponent extends BasePageComponent implem
     this.goTo([viewAdminPaymentRoute(payment_id)]);
   }
 
+  public getValidUntilDate(payment: PaymentCapture): Date | null {
+    const valid_until = payment.data?.valid_until || payment.product_purchase?.valid_until;
+
+    return valid_until ? new Date(valid_until) : null;
+  }
+
+  public isExpired(payment: PaymentCapture): boolean {
+    const valid_until = this.getValidUntilDate(payment);
+
+    if (!valid_until) {
+      return false;
+    }
+
+    const validUntil = valid_until.getTime();
+    const currentTime =  new Date().getTime();
+
+    return validUntil < currentTime;
+  }
+
   public async filterPayments(): Promise<void> {
     const { search, sort, pagination } = this.filterInfo;
 
