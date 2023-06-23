@@ -1,4 +1,4 @@
-<mat-card *ngIf="sail && user && checklist">
+<mat-card>
   <mat-card-header>
     <div mat-card-avatar>
       <mat-icon>playlist_add_check</mat-icon>
@@ -8,6 +8,13 @@
       role="heading"
       tabindex="0"
     >After Arrival Checklist Form</mat-card-title>
+    <mat-card-subtitle
+      *ngIf="sail.status === SailStatus.Started"
+      aria-level="2"
+      role="heading"
+      tabindex="0"
+    > <mat-icon color="warn">priority_high</mat-icon>You must end the sail by clicking the 'End' button on
+      the sail page and then complete the arrival checklist. </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
     <button
@@ -17,7 +24,7 @@
       Maintenance request
     </button>
   </mat-card-actions>
-  <mat-card-content>
+  <mat-card-content *ngIf="sail && user">
     <ng-container [ngTemplateOutlet]="arrivalFormContent"></ng-container>
   </mat-card-content>
   <mat-card-footer>
@@ -25,9 +32,8 @@
       <button
         *ngIf="!shouldDisableUpdateButton"
         mat-raised-button
-        (click)="save()"
-      >Update</button>
-      <label *ngIf="shouldDisableUpdateButton && !afterFormControls.dirty">Auto-saved.</label>
+        (click)="save(true, false)"
+      >Save</button>
       <label *ngIf="!afterFormControls.valid">Please fill out all required field.</label>
     </mat-card-actions>
   </mat-card-footer>

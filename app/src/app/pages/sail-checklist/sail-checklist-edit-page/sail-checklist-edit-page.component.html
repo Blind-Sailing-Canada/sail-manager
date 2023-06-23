@@ -18,7 +18,7 @@
         *ngIf="!shouldDisableUpdateButton"
         mat-raised-button
         [disabled]="shouldDisableUpdateButton"
-        (click)="save()"
+        (click)="save(true, false)"
       >Update</button>
     </mat-card-actions>
   </mat-card-footer>

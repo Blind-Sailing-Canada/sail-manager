@@ -1,4 +1,4 @@
-<mat-card *ngIf="sail && user && checklist">
+<mat-card *ngIf="sail && user">
   <mat-card-header>
     <div mat-card-avatar>
       <mat-icon>playlist_add_check</mat-icon>
@@ -40,9 +40,8 @@
         *ngIf="!shouldDisableUpdateButton"
         mat-raised-button
         [disabled]="shouldDisableUpdateButton"
-        (click)="save()"
-      >Update</button>
-      <label *ngIf="shouldDisableUpdateButton && !beforeFormControls.dirty">Auto-saved.</label>
+        (click)="save(true, false)"
+      >Save</button>
       <label *ngIf="!beforeFormControls.valid">Please fill out all required field.</label>
     </mat-card-actions>
   </mat-card-footer>

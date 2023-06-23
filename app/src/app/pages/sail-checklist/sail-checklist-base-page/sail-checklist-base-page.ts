@@ -28,8 +28,10 @@ import { BasePageComponent } from '../../base-page/base-page.component';
   template: ''
 })
 export class SailChecklistBasePageComponent extends BasePageComponent implements OnInit {
-  public checklistForm: UntypedFormGroup;
+  private autoSave = false;
   public checklist_type?: SailChecklistType;
+  public checklistForm: UntypedFormGroup;
+  public sail: Sail;
 
   constructor(
     store: Store<any>,
@@ -44,21 +46,20 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
   ngOnInit() {
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
-
       if (!this.sail) {
-        return;
+        this.sail = this.getSail(this.sail_id);
       }
 
-      if (this.fb) {
+      if (this.sail && this.fb && !this.autoSave) {
+        this.sail = this.getSail(this.sail_id);
+
         this.updateForm(this.sail);
       }
-
     });
+
+    this.sail = this.getSail(this.sail_id);
   }
 
-  public get sail(): Sail {
-    return this.getSail(this.sail_id);
-  }
 
   public get sail_id(): string {
     return this.route.snapshot.params.sail_id;
@@ -113,7 +114,9 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
     return !!should;
   }
 
-  public save(notify: boolean = true): void {
+  public save(notify: boolean = true, autoSave: boolean = false): void {
+    this.autoSave = autoSave;
+
     const formControls = this.checklistForm.controls;
     const formKeys = Object.keys(formControls);
     const changedValue = formKeys
@@ -184,7 +187,7 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
       .pipe(debounceTime(1000))
       .subscribe(() => {
         if (this.checklistForm.dirty && this.checklistForm.valid) {
-          this.save(false);
+          this.save(false, true);
         }
       });
 

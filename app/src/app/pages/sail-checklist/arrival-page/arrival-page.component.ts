@@ -9,6 +9,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
+import { SailStatus } from '../../../../../../api/src/types/sail/sail-status';
 import { createMaintenanceRoute } from '../../../routes/routes';
 import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail-checklist-base-page';
 
@@ -18,6 +19,7 @@ import { SailChecklistBasePageComponent } from '../sail-checklist-base-page/sail
   styleUrls: ['./arrival-page.component.scss']
 })
 export class ArrivalPageComponent extends SailChecklistBasePageComponent {
+  public SailStatus = SailStatus;
 
   constructor(
     @Inject(Store) store: Store<any>,
