@@ -64,7 +64,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
       return;
     }
 
-    this.repository.manager.transaction(async (transactionManager) => {
+    await this.repository.manager.transaction(async (transactionManager) => {
       product.number_of_guest_sails_used += 1;
 
       await transactionManager.save(product);
@@ -125,7 +125,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
       return;
     }
 
-    this.repository.manager.transaction(async (transactionManager) => {
+    await this.repository.manager.transaction(async (transactionManager) => {
       product.number_of_sails_used += 1;
 
       await transactionManager.save(product);
