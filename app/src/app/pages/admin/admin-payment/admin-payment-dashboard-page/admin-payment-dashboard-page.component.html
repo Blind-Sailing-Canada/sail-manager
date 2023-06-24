@@ -90,6 +90,20 @@
         > {{element.product_name}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="payment_processor">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Processor </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.payment_processor}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="customer_name">
         <th
           *matHeaderCellDef
@@ -253,7 +267,7 @@
             <span
               tabindex="0"
               title="purchase date"
-            >{{element.created_at | humanDateWithTime}}</span>
+            > {{element.created_at | humanDateWithTime}} via {{element.payment_processor}}</span>
             <span
               *ngIf="isExpired(element)"
               tabindex="0"

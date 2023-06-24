@@ -28,7 +28,7 @@ import { ProductType } from '../../../../../../../api/src/types/product-purchase
 export class AdminPaymentDashboardPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
   public createPurchaseRoute = createPurchaseRoute;
   public dataSource = new MatTableDataSource<PaymentCapture>([]);
-  public displayedColumns: string[] = ['product_name', 'customer_name', 'profile.name', 'created_at', 'action'];
+  public displayedColumns: string[] = ['product_name', 'payment_processor', 'customer_name', 'profile.name', 'created_at', 'action'];
   public displayedColumnsMobile: string[] = ['created_at'];
   public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
   public paginatedData: PaginatedPaymentCapture;
