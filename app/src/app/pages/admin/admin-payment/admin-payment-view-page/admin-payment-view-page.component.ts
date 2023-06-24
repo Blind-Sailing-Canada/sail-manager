@@ -23,6 +23,8 @@ import { FilterInfo } from '../../../../models/filter-into';
 import { DEFAULT_PAGINATION } from '../../../../models/default-pagination';
 import { PaginatedSailPaymentClaim } from '../../../../../../../api/src/types/sail-payment-claim/paginated-sail-payment-claim';
 import { SailPaymentClaimService } from '../../../../services/sail-payment-claim.service';
+import { ConfirmDialogComponent } from '../../../../components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '../../../../models/confirm-dialog-data';
 
 @Component({
   selector: 'app-admin-payment-view-page',
@@ -74,15 +76,29 @@ export class AdminPaymentViewPageComponent extends BasePageComponent implements 
 
   }
 
+  openConfirmPaymentCaptureDeletionDialog(): void {
+    const dialogData: ConfirmDialogData = {
+      title: 'Are you sure you want to delete this payment?',
+      message: 'This cannot be undone.'
+    };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'confirmed') {
+        this.deletePayment();
+      }
+    });
+  }
+
   public get canDeletePayment(): boolean {
     return !this.dataSource.data.length;
   }
 
   public async deletePayment(): Promise<void> {
-    if (!confirm('Are you sure you want to delete this payment? This cannot be undone.')) {
-      return;
-    }
-
     this.startLoading();
 
     try {

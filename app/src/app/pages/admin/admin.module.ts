@@ -23,6 +23,7 @@ import {
   AdminMissingSailPaymentsPageComponent,
 } from './admin-payment/admin-missing-sail-payments-page/admin-missing-sail-payments-page.component';
 import { AdminPaymentEditPageComponent } from './admin-payment/admin-payment-edit-page/admin-payment-edit-page.component';
+import { ConfirmDialogModule } from '../../components/confirm-dialog/confirm-dialog.module';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AdminPaymentEditPageComponent } from './admin-payment/admin-payment-edi
     AdminRoutingModule,
     AngularMaterialModule,
     BasePageModule,
+    ConfirmDialogModule,
     CommonModule,
     CreateUserDialogModule,
     FindUserDialogModule,

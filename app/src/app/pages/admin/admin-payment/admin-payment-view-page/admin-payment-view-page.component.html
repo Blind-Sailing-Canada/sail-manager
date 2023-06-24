@@ -87,12 +87,14 @@
     mat-raised-button
     *ngIf="payment?.payment_processor === 'manual'"
     [routerLink]="editPaymentRoute(payment.id)"
+    title="Click to edit this payment."
   >Edit</a>
   <button
-    (click)="deletePayment()"
+    (click)="openConfirmPaymentCaptureDeletionDialog()"
     [disabled]="loading"
     *ngIf="canDeletePayment"
     mat-raised-button
+    title="Click to delete this payment."
   >Delete</button>
 </ng-template>
 

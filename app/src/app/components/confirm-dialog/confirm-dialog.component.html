@@ -1,0 +1,19 @@
+<h1
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>{{data.title}}</h1>
+<mat-dialog-content>
+  <p tabindex="0">{{data.message}}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-raised-button
+    (click)="onNoClick()"
+  >{{data.negativeActionLabel || 'Cancel'}}</button>
+  <button
+    mat-raised-button
+    [mat-dialog-close]="'confirmed'"
+  >{{data.positiveActionLabel || 'Confirm'}}</button>
+</mat-dialog-actions>
