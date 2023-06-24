@@ -105,13 +105,8 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
     return errors;
   }
 
-  public get shouldDisableUpdateButton(): boolean {
-    const isFormValid = this.checklistForm.valid;
-    const should = !isFormValid
-      || !this.checklistForm
-      || !this.checklistForm.dirty;
-
-    return !!should;
+  public get shouldShowSaveButton(): boolean {
+    return this.checklistForm?.valid && this.checklistForm?.dirty;
   }
 
   public save(notify: boolean = true, autoSave: boolean = false): void {

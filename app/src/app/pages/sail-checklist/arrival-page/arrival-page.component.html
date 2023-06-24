@@ -30,8 +30,9 @@
   <mat-card-footer>
     <mat-card-actions>
       <button
-        *ngIf="!shouldDisableUpdateButton"
+        *ngIf="shouldShowSaveButton"
         mat-raised-button
+        [disabled]="loading"
         (click)="save(true, false)"
       >Save</button>
       <label *ngIf="!afterFormControls.valid">Please fill out all required field.</label>
