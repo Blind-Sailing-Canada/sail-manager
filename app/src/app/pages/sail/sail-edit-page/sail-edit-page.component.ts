@@ -146,8 +146,6 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       this.availableBoats = this.availableBoats.concat(this.getBoat(currentlySetBoatId));
     }
 
-    this.availableBoats = this.availableBoats.filter(boat => boat.id !== id);
-
     this.sailForm.controls.boat_id.setValue(id || null);
     this.sailForm.controls.boat_id.markAsDirty();
     this.sailForm.controls.boat_id.markAsTouched();
