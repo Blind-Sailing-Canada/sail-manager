@@ -73,7 +73,6 @@
 </ng-template>
 <ng-template #sailPayment>
   <h4
-    aria-hidden="true"
     class='form-section-header'
     id="step2"
     tabindex="-1"
@@ -81,8 +80,6 @@
   <form [formGroup]="sailForm">
     <mat-checkbox
       formControlName="is_payment_free"
-      aria-labelledby="step2"
-      aria-details="Select this if this sail is free of charge for the sailors."
       title="If selected, payments will not be collected."
     >Complimentary Sail</mat-checkbox>
   </form>
