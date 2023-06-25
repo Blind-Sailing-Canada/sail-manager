@@ -150,7 +150,7 @@
       <tr
         (click)="showProfileDialog(createdBy, createdBy?.roles)"
         (keyup.enter)="showProfileDialog(createdBy,  createdBy?.roles)"
-        *ngIf="user?.roles?.includes(ProfileRole.Admin) && sail.created_by_id"
+        *ngIf="showWhoCreatedSail"
         aria-label="Created by"
         class="clickable"
         role="listitem"

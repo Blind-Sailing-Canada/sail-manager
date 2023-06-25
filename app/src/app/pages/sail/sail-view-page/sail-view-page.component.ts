@@ -120,6 +120,11 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     });
   }
 
+  public get showWhoCreatedSail(): boolean {
+    return this.sail.created_by_id && this.user?.roles
+      .some(role => [ProfileRole.Admin, ProfileRole.Coordinator].includes(role));
+  }
+
   public get createdBy(): Profile {
     if (this.sail.created_by_id) {
       return this.getProfile(this.sail.created_by_id);
