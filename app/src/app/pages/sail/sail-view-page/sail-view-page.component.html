@@ -148,6 +148,24 @@
         >{{sail.entity_number}}</td>
       </tr>
       <tr
+        (click)="showProfileDialog(createdBy, createdBy?.roles)"
+        (keyup.enter)="showProfileDialog(createdBy,  createdBy?.roles)"
+        *ngIf="user?.roles?.includes(ProfileRole.Admin) && sail.created_by_id"
+        aria-label="Created by"
+        class="clickable"
+        role="listitem"
+        tabindex="0"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Created by</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        ><app-profile-bullet [profile]="createdBy"></app-profile-bullet></td>
+      </tr>
+      <tr
         aria-label="Sail category"
         title="{{sail.category}}"
         tabindex="0"

@@ -52,15 +52,16 @@ import { firstValueFrom } from 'rxjs';
 })
 export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
-  public sailorSpots: number[] = [];
+  private sail_id: string;
+  public boatMaintenanceCount = 0;
+  public ProfileRole = ProfileRole;
   public sail: Sail;
   public sailCrew: SailManifest[] = [];
   public sailNotificationDialogRef: MatDialogRef<SailNotificationDialogComponent>;
+  public sailorSpots: number[] = [];
   public sailSailors: SailManifest[] = [];
   public sailSkippers: SailManifest[] = [];
-  public boatMaintenanceCount = 0;
   public SailStatus = SailStatus;
-  private sail_id: string;
 
   constructor(
     @Inject(MatDialog) dialog: MatDialog,
@@ -79,6 +80,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
     this.sail_id = this.route.snapshot.params.id;
 
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS, () => {
       if (Number.isInteger(+this.sail_id)) {
         this.sail = this.getSailByNumber(+this.sail_id);
@@ -118,6 +120,13 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     });
   }
 
+  public get createdBy(): Profile {
+    if (this.sail.created_by_id) {
+      return this.getProfile(this.sail.created_by_id);
+    }
+
+    return null;
+  }
   public goToBoatMaintenance(): void {
     this.goTo(
       [maintenanceRoute],
