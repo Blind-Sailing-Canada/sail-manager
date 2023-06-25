@@ -10,6 +10,7 @@
         >{{formType}} Date</mat-label>
         <input
             formControlName="date"
+            attr.aria-label="{{formType}} date"
             matInput
             max={{31}}
             min={{1}}
@@ -45,6 +46,7 @@
             formControlName="year"
             matInput
             type="number"
+            attr.aria-label="{{formType}} year"
         />
     </mat-form-field>
     <mat-form-field required>
@@ -57,6 +59,7 @@
             matInput
             max={{23}}
             min={{0}}
+            attr.aria-label="{{formType}} hour"
             type="number"
         />
     </mat-form-field>
@@ -67,6 +70,7 @@
         >{{formType}} Minute</mat-label>
         <input
             formControlName="minute"
+            attr.aria-label="{{formType}} minute"
             matInput
             max={{59}}
             min={{0}}
