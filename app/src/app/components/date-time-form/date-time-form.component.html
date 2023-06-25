@@ -4,7 +4,10 @@
     ngClass="sail-date-time-form"
 >
     <mat-form-field required>
-        <mat-label tabindex="-1">{{formType}} Date</mat-label>
+        <mat-label
+            tabindex="-1"
+            aria-hidden="true"
+        >{{formType}} Date</mat-label>
         <input
             formControlName="date"
             matInput
@@ -17,7 +20,10 @@
         appearance="fill"
         appearance="standard"
     >
-        <mat-label tabindex="-1">{{formType}} Month</mat-label>
+        <mat-label
+            tabindex="-1"
+            aria-hidden="true"
+        >{{formType}} Month</mat-label>
         <mat-select
             required
             formControlName="month"
@@ -31,7 +37,10 @@
         </mat-select>
     </mat-form-field>
     <mat-form-field required>
-        <mat-label tabindex="-1">{{formType}} Year</mat-label>
+        <mat-label
+            tabindex="-1"
+            aria-hidden="true"
+        >{{formType}} Year</mat-label>
         <input
             formControlName="year"
             matInput
@@ -39,7 +48,10 @@
         />
     </mat-form-field>
     <mat-form-field required>
-        <mat-label tabindex="-1">{{formType}} Hour</mat-label>
+        <mat-label
+            tabindex="-1"
+            aria-hidden="true"
+        >{{formType}} Hour</mat-label>
         <input
             formControlName="hour"
             matInput
@@ -49,7 +61,10 @@
         />
     </mat-form-field>
     <mat-form-field required>
-        <mat-label tabindex="-1">{{formType}} Minute</mat-label>
+        <mat-label
+            tabindex="-1"
+            aria-hidden="true"
+        >{{formType}} Minute</mat-label>
         <input
             formControlName="minute"
             matInput
