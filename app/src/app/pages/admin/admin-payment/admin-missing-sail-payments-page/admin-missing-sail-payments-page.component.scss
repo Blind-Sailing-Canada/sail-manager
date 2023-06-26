@@ -14,3 +14,26 @@ section {
   padding: 16px;
   margin-bottom: 16px;
 }
+
+.mobile-table-row-info {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  gap: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  column-gap: 10px;
+
+  span {
+    text-align: left;
+    height: min-content;
+  }
+
+  a {
+    margin: 0 !important;
+  }
+
+  label {
+    text-align: left;
+    white-space: nowrap;
+  }
+}

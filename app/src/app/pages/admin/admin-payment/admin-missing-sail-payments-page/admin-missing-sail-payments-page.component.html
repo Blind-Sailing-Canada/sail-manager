@@ -13,8 +13,17 @@
     <ng-container [ngTemplateOutlet]="controls"></ng-container>
   </mat-card-actions>
   <mat-card-content>
-    <section class="mat-elevation-z8">
+    <section
+      class="mat-elevation-z8"
+      *ngIf="!windowService.isSmallWidth"
+    >
       <ng-container [ngTemplateOutlet]="sailClaimsTable"></ng-container>
+    </section>
+    <section
+      class="mat-elevation-z8"
+      *ngIf="windowService.isSmallWidth"
+    >
+      <ng-container [ngTemplateOutlet]="sailClaimsTableMobile"></ng-container>
     </section>
   </mat-card-content>
 </mat-card>
@@ -135,6 +144,84 @@
           >
             <mat-icon>visibility</mat-icon>
           </a> </td>
+      </ng-container>
+    </ng-container>
+  </app-material-table>
+</ng-template>
+
+<ng-template #sailClaimsTableMobile>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumnsMobile"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of claims"
+  >
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    ></ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="created_at"
+      matSortDirection="asc"
+      tableColumns
+    >
+      <ng-container matColumnDef="created_at">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-sort-header
+        > Sail </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="align-center"
+        >
+          <div class="mobile-table-row-info">
+            <label tabindex="0">Sail:</label>
+            <span>
+              <a
+                tabindex="0"
+                [routerLink]="viewSailRoute(element.sail?.id)"
+              >
+                {{element.sail.entity_number}} {{element.sail.name}}
+              </a>
+            </span>
+            <label tabindex="0">Member:</label>
+            <span>
+              <a
+                tabindex="0"
+                [routerLink]="viewProfileRoute(element.profile.id)"
+                aria-label="This claim is assigned to"
+                title="Click to go to their profile page"
+              >
+                <app-profile-bullet [profile]="element.profile"></app-profile-bullet>
+              </a>
+            </span>
+            <label
+              *ngIf="element.guest_name"
+              tabindex="0"
+            >Guest:</label>
+            <span
+              *ngIf="element.guest_name"
+              tabindex="0"
+            >{{element.guest_name}}</span>
+            <label tabindex="0">Created at:</label>
+            <span tabindex="0">{{element.created_at | humanDateWithTime:true}}</span>
+          </div>
+          <button
+            [routerLink]="outstandingPurchasesRoute(element.profile.id)"
+            mat-raised-button
+            title="Click to view all outstanding fees for {{element.profile.name}}"
+          >
+            Details
+          </button>
+        </td>
       </ng-container>
     </ng-container>
   </app-material-table>

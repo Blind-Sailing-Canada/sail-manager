@@ -35,7 +35,7 @@ export class AdminMissingSailPaymentsPageComponent extends BasePageComponent imp
     'created_at',
     'actions',
   ];
-  public displayedColumnsMobile: string[] = ['product'];
+  public displayedColumnsMobile: string[] = ['created_at'];
   public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,ASC' };
   public paginatedData: PaginatedSailPaymentClaim;
 
