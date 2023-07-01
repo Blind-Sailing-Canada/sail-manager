@@ -32,7 +32,11 @@ import { ApiTags } from '@nestjs/swagger';
 export class FirebaseAdminController {
 
   private readonly logger: Logger;
-  protected readonly logError = error => this.logger.error(error.message, error.stack);
+  protected readonly logError = (hint, error) => {
+    this.logger.error(hint);
+    this.logger.error(error);
+    this.logger.error(error.stack);
+  };
   protected readonly logInfo = message => this.logger.log(message);
 
   constructor(
@@ -74,7 +78,7 @@ export class FirebaseAdminController {
   private deleteLocalFile(pathToFile: string): void {
     fs.unlink(pathToFile, (error) => {
       if (error) {
-        this.logError(new Error(`error deleting file: ${pathToFile}; ${error.message}`));
+        this.logError(`error deleting file: ${pathToFile}`, error);
       } else {
         this.logInfo(`deleted file: ${pathToFile}`);
       }
@@ -121,6 +125,7 @@ export class FirebaseAdminController {
       .getFileUrl(scaledPath)
       .then(foundUrl => response.redirect(foundUrl))
       .catch((error) => {
+        this.logError(`Fetching firebase file status response ${error.status}`, error);
         if (error.status !== 404) {
           response.status(500).send('failed to get cdn file');
           return;
@@ -144,7 +149,7 @@ export class FirebaseAdminController {
                   originalFile.end();
                   this.resizeImage(tmpFilePath, query, tmpScaledPath)
                     .then((info) => {
-                      this.logInfo(info);
+                      this.logInfo(`resizeImage info = ${JSON.stringify(info || {}, null, 2)}`);
                       this.deleteLocalFile(tmpFilePath);
 
                       const stream = fs.readFileSync(tmpScaledPath);
@@ -157,28 +162,28 @@ export class FirebaseAdminController {
                             .getFileUrl(uploadedUrl)
                             .then(downloadUrl => response.redirect(downloadUrl))
                             .catch((scaledUrlError) => {
-                              this.logError(scaledUrlError);
+                              this.logError(`scaledUrlError = ${scaledUrlError}`, scaledUrlError);
                               response.status(500).send('failed to get url of scaled image');
                             });
                         })
                         .catch((uploadError) => {
-                          this.logError(uploadError);
+                          this.logError(`uploadError = ${uploadError}`, uploadError);
                           response.status(500).send('failed to upload scaled image');
                         });
                     })
                     .catch((resizeError) => {
-                      this.logError(resizeError);
+                      this.logError(`resizeError = ${resizeError}`, resizeError);
                       response.status(500).send('failed to resize image');
                     });
                 });
               })
               .on('error', (downloadError) => {
-                this.logError(downloadError);
+                this.logError(`downloadError = ${downloadError}`, downloadError);
                 response.status(500).send('failed to download original image');
               });
           })
           .catch((originalUrlError) => {
-            this.logError(originalUrlError);
+            this.logError(`originalUrlError = ${originalUrlError}`, originalUrlError);
             return response.status(404).send('failed to find original image url');
           });
       });
@@ -196,7 +201,7 @@ export class FirebaseAdminController {
         response.redirect(url);
       })
       .catch((error) => {
-        this.logError(error);
+        this.logError(`signed file url error = ${error}`, error);
         response.status(404).send('not found');
       });
   }

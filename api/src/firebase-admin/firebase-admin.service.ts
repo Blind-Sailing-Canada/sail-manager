@@ -122,10 +122,10 @@ export class FirebaseAdminService {
           metadata: { firebaseStorageDownloadTokens: uuid },
         },
       })
-      .then(() => this.logger.log('finished uploadFile....', destination, contentType))
+      .then(() => this.logger.log(`finished uploadFile.... ${destination} ${contentType}`))
       .then(() => destination)
       .catch((error) => {
-        this.logger.log('error uploading file', destination);
+        this.logger.log(`error uploading file to ${destination}`);
         this.logger.error(error);
         throw error;
       });
