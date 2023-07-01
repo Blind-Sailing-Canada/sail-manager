@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "exclude": [
+    "./app/**",
     "./node_modules/**",
     "../api/node_modules/**"
   ],
