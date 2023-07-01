@@ -139,6 +139,9 @@ async function bootstrap() {
   }
 
   console.log(`api server listening on port ${API_PORT}`);
+  console.log('ENV FILE_SIZE_UPLOAD as string', process.env.FILE_SIZE_UPLOAD);
+  console.log('ENV FILE_SIZE_UPLOAD as number', +process.env.FILE_SIZE_UPLOAD);
+  console.log('Finale file size', +process.env.FILE_SIZE_UPLOAD || 100 * 1024 * 1024);
 
   await app.listen(API_PORT);
 }

@@ -30,10 +30,6 @@ const fileUpload = require('express-fileupload');
 
 const { tmpdir } = require('os');
 
-console.log("ENV FILE_SIZE_UPLOAD as string", process.env.FILE_SIZE_UPLOAD);
-console.log("ENV FILE_SIZE_UPLOAD as number", +process.env.FILE_SIZE_UPLOAD);
-console.log("Finale file size", +process.env.FILE_SIZE_UPLOAD || 100 * 1024 * 1024)
-
 const sendFile = async (filepath, destination, authorizationHeader) => {
   console.log('sendFile...')
   const form = new FormData();
@@ -77,6 +73,9 @@ const app = express();
 app
   .use((request, _, next) => {
     console.log('new request', `[FE:SERVER] ${request.method} ${request.url}: ${request.headers['authorization']}`);
+    console.log("ENV FILE_SIZE_UPLOAD as string", process.env.FILE_SIZE_UPLOAD);
+    console.log("ENV FILE_SIZE_UPLOAD as number", +process.env.FILE_SIZE_UPLOAD);
+    console.log("Finale file size", +process.env.FILE_SIZE_UPLOAD || 100 * 1024 * 1024)
 
     return next()
   })
