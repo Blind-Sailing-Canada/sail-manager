@@ -1,11 +1,13 @@
 <fieldset class="app-file-select">
   <legend>{{title}}</legend>
+  <p>Max file size allowed: {{maxFileSizeBytes | filesize}}</p>
   <div *ngFor="let file of selectedFiles">
     <p>File size: {{file.size | filesize}}.</p>
     <p>File name: {{file.name}}</p>
   </div>
+  <mat-error *ngIf="selectedFileErrorMessage">{{selectedFileErrorMessage}}</mat-error>
   <mat-progress-bar
-    *ngIf="progress"
+    *ngIf="progress > 0"
     [value]="progress"
     aria-live="polite"
     attr.aria-label="{{actionName}}ed {{progress}}%"

@@ -71,6 +71,8 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
     this.subscribeToStoreSliceWithUser(STORE_SLICES.CDN, (cdn: ICDNState) => {
       if (this.fileToUpload) {
         const fileName = this.fileToUpload.name;
+        this.uploadProgress = cdn[fileName].progress;
+
         let mediaType: MediaType;
 
         if (this.fileToUpload.type.startsWith('video/')) {
@@ -81,23 +83,21 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
 
         if (cdn[fileName].state === CDN_ACTION_STATE.ERROR) {
           this.fileToUpload = null;
+          this.uploadProgress = -1;
 
           const fileInput = document.getElementById(this.sailPictureInput) as HTMLInputElement;
 
           if (fileInput) {
             fileInput.value = null;
+            fileInput.files = null;
           }
 
           this.fileToUpload = null;
         }
 
-        if (cdn[fileName].state === CDN_ACTION_STATE.UPLOADING) {
-          this.uploadProgress = cdn[fileName].progress;
-        }
-
         if (cdn[fileName].state === CDN_ACTION_STATE.UPLOADED) {
           const picturesForm = this.form.get('pictures') as UntypedFormArray;
-          this.uploadProgress = 0;
+          this.uploadProgress = -1;
 
           picturesForm
             .push(this.fb.group({
@@ -115,6 +115,7 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
 
           if (fileInput) {
             fileInput.value = null;
+            fileInput.files = null;
           }
 
           this.fileToUpload = null;

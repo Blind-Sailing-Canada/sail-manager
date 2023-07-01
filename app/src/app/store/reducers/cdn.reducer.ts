@@ -42,6 +42,7 @@ const reducerHandler = createReducer(
     const newValues = {
       [action.fileName]: {
         ...previousValue,
+        progress: -1,
         state: CDN_ACTION_STATE.UPLOADED,
         url: action.url,
       },
@@ -68,6 +69,7 @@ const reducerHandler = createReducer(
           [action.fileName]: {
             ...previousValue,
             state: CDN_ACTION_STATE.ERROR,
+            progress: -1,
             error: {
               error: action.error,
               message: action.message,
