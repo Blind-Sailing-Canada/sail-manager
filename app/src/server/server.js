@@ -17,8 +17,8 @@ const DIST_DIR = path.resolve('./app');
 const PORT = +process.env.PORT || +process.env.SAIL_MANAGER_FE_PORT || 8080;
 
 const SAIL_MANAGER_BE_PORT = +process.env.SAIL_MANAGER_BE_PORT || 8081;
-const SAIL_MANAGER_BE_URL = process.env.SAIL_MANAGER_BE_URL || 'http://localhost'
-const CDN_HOST_URL = process.env.CDN_HOST_URL || 'http://localhost'
+const SAIL_MANAGER_BE_URL = process.env.SAIL_MANAGER_BE_URL || 'localhost'
+const CDN_HOST_URL = process.env.CDN_HOST_URL || 'localhost'
 const CDN_HOST_PORT = +process.env.SAIL_MANAGER_BE_PORT || 8081;
 
 const API_HOST = `${SAIL_MANAGER_BE_URL}:${SAIL_MANAGER_BE_PORT}`;
@@ -73,48 +73,42 @@ const app = express();
 app
   .use((request, _, next) => {
     console.log('new request', `[FE:SERVER] ${request.method} ${request.url}: ${request.headers['authorization']}`);
-    console.log("ENV FILE_SIZE_UPLOAD as string", process.env.FILE_SIZE_UPLOAD);
-    console.log("ENV FILE_SIZE_UPLOAD as number", +process.env.FILE_SIZE_UPLOAD);
-    console.log("Finale file size", +process.env.FILE_SIZE_UPLOAD || 100 * 1024 * 1024)
 
     return next()
   })
   .use(Sentry.Handlers.requestHandler())
-
 
   if (process.env.NODE_ENV === 'prod') {
     app.use(sslRedirect.default())
   }
 
   app
-  // PROXY API CALLS
-  .use('/api', proxy(API_HOST, {
-    preserveHostHdr: true
-  }))
-  // PROXY CDN CALLS
-  .use('/cdn/*', proxy(CDN_HOST, {
-    preserveHostHdr: true,
-    proxyReqPathResolver: (req) => {
-      const redirect = req.originalUrl.substring(4);
-      return `/fba${redirect}`;
-    }
-  }))
   .use(compression())
-  .use(express.json())
-  .use(fileUpload({
-    // limits: { fileSize: +process.env.FILE_SIZE_UPLOAD || 100 * 1024 * 1024 },
+  .post('/cdn/upload/*', fileUpload({
+    limits: { fileSize: +process.env.FILE_SIZE_UPLOAD || 1 * 1024 * 1024 }, // 100 MB
+    limitHandler: (_, res) => res.status(413).send('File too large.'),
     debug: true,
   }))
   .post('/cdn/upload/*', jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }), async (req, res) => {
+    console.log('/cdn/upload/* req.files = ', req.files);
+
+    if (res.writableEnded) {
+      console.log('File upload response already sent!!!!');
+      return;
+    }
+
     if (req.user?.status !== 'APPROVED') {
       return res.status(401).send('Not authorized to upload files.');
     }
 
     if (!req.files || Object.keys(req.files).length === 0) {
+      console.log('File size beyond set limit:', req.files.file.size);
       return res.status(400).send('No files were uploaded.');
     }
 
-    console.log('req.files', req.files);
+    if (req.files.file.truncated) {
+      return res.status(413).send('File you tried to upload is too large.');
+    }
 
     let allowed = false;
 
@@ -141,7 +135,10 @@ app
       return res.status(400).send(`File type not allowed: req.files.file.mimetype.`);
     }
 
-    const destination = req.originalUrl.substring(12);
+    console.log('original url', req.originalUrl);
+
+    const skipPrefix = '/cdn/upload/'.length;
+    const destination = req.originalUrl.substring(skipPrefix);
     const authorizationHeader = req.headers['authorization'];
 
     const tmpfileLocation = `${tmpdir}/${req.files.file.name}`;
@@ -162,7 +159,7 @@ app
         console.log('GOT URL ', url);
 
         try {
-          const jsonUrl = typeof url === 'object' ? url : JSON.parse(url)
+          const jsonUrl = typeof url === 'object' ?  JSON.parse(url) : url;
 
           if (jsonUrl.message) {
             return res.status(500).send(jsonUrl.message)
@@ -181,6 +178,20 @@ app
         fs.unlink(tmpfileLocation, () => console.log(`deleted uploaded file ${tmpfileLocation}`));
       });
   })
+  // PROXY CDN CALLS
+  .use('/cdn/*', proxy(CDN_HOST, {
+    preserveHostHdr: true,
+    // limit: +process.env.FILE_SIZE_UPLOAD || 100 * 1024 * 1024,
+    proxyReqPathResolver: (req) => {
+      const redirect = req.originalUrl.substring(4);
+      return `/fba${redirect}`;
+    }
+  }))
+  // .use(express.json())
+  // PROXY API CALLS
+  .use('/api', proxy(API_HOST, {
+    preserveHostHdr: true
+  }))
   // Static content
   .use(express.static(DIST_DIR))
   // for everything else serve index.html
