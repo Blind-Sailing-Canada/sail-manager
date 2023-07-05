@@ -19,7 +19,8 @@ import { FilterInfo } from '../../../models/filter-into';
 import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { WindowService } from '../../../services/window.service';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
-import { viewPurchaseRoute } from '../../../routes/routes';
+import { createPurchaseRoute, viewPurchaseRoute } from '../../../routes/routes';
+import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 
 @Component({
   selector: 'app-purchase-list-page',
@@ -27,6 +28,7 @@ import { viewPurchaseRoute } from '../../../routes/routes';
   styleUrls: ['./purchase-list-page.component.scss']
 })
 export class PurchaseListPageComponent extends BasePageComponent implements OnInit {
+  public createPurchaseRoute = createPurchaseRoute;
   public dataSource = new MatTableDataSource<ProductPurchase>([]);
   public displayedColumns: string[] = [
     'product_name',
@@ -60,6 +62,10 @@ export class PurchaseListPageComponent extends BasePageComponent implements OnIn
 
   public get profile_id(): string {
     return this.route.snapshot.queryParams.profile_id;
+  }
+
+  public get showAddManualPayment(): boolean {
+    return this.user.roles.includes(ProfileRole.Admin);
   }
 
   public get profile(): Profile {

@@ -32,7 +32,19 @@
 </mat-card>
 
 <ng-template #controls>
-
+  <a
+    [queryParams]="{customer_name: profile?.name, customer_email: profile?.email}"
+    [routerLink]="createPurchaseRoute"
+    *ngIf="profile && showAddManualPayment"
+    mat-raised-button
+    title="Click to create a manual payment payment for {{profile?.name}}."
+  >Add manual payment</a>
+  <a
+    [routerLink]="createPurchaseRoute"
+    *ngIf="!profile && showAddManualPayment"
+    mat-raised-button
+    title="Click to create a manual payment payment."
+  >Add manual payment</a>
 </ng-template>
 
 <ng-template #purchaseTable>

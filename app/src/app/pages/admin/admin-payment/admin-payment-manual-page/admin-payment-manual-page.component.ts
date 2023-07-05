@@ -4,7 +4,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { BasePageComponent } from '../../../base-page/base-page.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,12 +30,13 @@ export class AdminPaymentManualPageComponent extends BasePageComponent implement
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(Router) router: Router,
+    @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(MatDialog) dialog: MatDialog,
     @Inject(WindowService) public windowService: WindowService,
     @Inject(PaymentCaptureService) private paymentCaptureService: PaymentCaptureService,
     @Inject(FormBuilder) private fb: FormBuilder,
   ) {
-    super(store, undefined, router, dialog);
+    super(store, route, router, dialog);
   }
 
   ngOnInit() {
@@ -44,7 +45,6 @@ export class AdminPaymentManualPageComponent extends BasePageComponent implement
     }
 
     this.buildForm();
-
   }
 
   public get invalidFields(): string {
@@ -59,8 +59,8 @@ export class AdminPaymentManualPageComponent extends BasePageComponent implement
     const date = new Date();
 
     this.form = this.fb.group<ManualCreditForm>({
-      customer_email: this.fb.control('', [Validators.required]),
-      customer_name: this.fb.control('', [Validators.required]),
+      customer_email: this.fb.control(this.route.snapshot.queryParams.customer_email || '', [Validators.required]),
+      customer_name: this.fb.control(this.route.snapshot.queryParams.customer_name || '', [Validators.required]),
       is_unlimited_sails: this.fb.control(false),
       note: this.fb.control('', [Validators.required]),
       number_of_guest_sails_included: this.fb.control(0),
