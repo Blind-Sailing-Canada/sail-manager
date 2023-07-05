@@ -41,6 +41,10 @@ export class SailChecklistEmail {
             <div>
               <label>Signed by crew: </label> <span>${sailChecklist.signed_by_crew}</span>
             </div>
+            <div>
+              <br/>
+              ${this.sailManifestTable(sailChecklist)}
+            </div>
             <br>
             <a href="${DOMAIN}/sails/view/${sail.id}">View sail</a>
           </body>
@@ -49,6 +53,24 @@ export class SailChecklistEmail {
     };
 
     return emailInfo;
+  }
+
+  private sailManifestTable(sailChecklist: SailChecklist): string {
+    const rows = sailChecklist
+      .sail
+      ?.manifest
+      ?.map(sailor => `<tr><td>${sailor.person_name}</td><td>${sailor.sailor_role}</td><td>${sailor.attended}</td></tr>`).join('');
+
+    return `
+      <table>
+        <caption>Manifest</caption>
+        <thead>
+          <tr><th>Sailor</th><td>Role</th><th>Attended</th></tr>
+          <tbody>
+            ${rows}
+          </tbody>
+      </table>
+    `;
   }
 
   private checklistTable(checklist: Map<string, string>, boatChecklist: BoatChecklistItem[]): string {

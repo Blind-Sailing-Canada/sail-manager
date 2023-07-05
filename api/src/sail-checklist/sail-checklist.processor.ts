@@ -26,6 +26,7 @@ export class SailChecklistProcessor extends BaseQueueProcessor {
         where: { id: job.data.sail_checklist_id },
         relations: [
           'sail',
+          'sail.manifest',
           'sail.boat',
           'sail.boat.checklist'
         ],
