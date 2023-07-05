@@ -36,7 +36,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
 
     for(const claim of claims) {
       try {
-        if (claim.guest_email) {
+        if (claim.guest_email || claim.guest_name) {
           await this.claimGuestSail(claim);
         } else {
           await this.claimMemberSail(claim);
