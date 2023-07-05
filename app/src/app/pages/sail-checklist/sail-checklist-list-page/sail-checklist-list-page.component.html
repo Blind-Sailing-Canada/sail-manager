@@ -4,16 +4,18 @@
       <mat-icon>playlist_add_check</mat-icon>
     </div>
     <mat-card-title
+      *ngIf="boat_id && boatName"
+      aria-level="1"
       id="pageTitle"
       role="heading"
       tabindex="0"
-      *ngIf="boat_id && boatName"
     >Checklists for {{boatName}}</mat-card-title>
     <mat-card-title
+      *ngIf="!boat_id && !boatName"
+      aria-level="1"
       id="pageTitle"
       role="heading"
       tabindex="0"
-      *ngIf="!boat_id && !boatName"
     >All Checklists</mat-card-title>
   </mat-card-header>
   <mat-card-content>

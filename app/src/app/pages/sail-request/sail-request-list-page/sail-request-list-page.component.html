@@ -4,11 +4,16 @@
       <mat-icon>cloud_upload</mat-icon>
     </div>
     <mat-card-title
+      aria-level="1"
       id="pageTitle"
       role="heading"
       tabindex="0"
     >Sail Requests</mat-card-title>
-    <mat-card-subtitle *ngIf="profile_id">Requested by {{user?.profile?.name}}</mat-card-subtitle>
+    <mat-card-subtitle
+      *ngIf="profile_id"
+      aria-level="2"
+      role="heading"
+    >Requested by {{user?.profile?.name}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
     <ng-container [ngTemplateOutlet]="CONTROLS"></ng-container>
@@ -158,23 +163,23 @@
         > {{element.status}} </td>
       </ng-container>
     </ng-container>
-    
+
     <ng-container matColumnDef="actions">
-        <th
-          *matHeaderCellDef
-          mat-header-cell
-        > </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-        >
-            <button
-              (click)="goToEntity('SailRequestEntity', element.id)"
-              mat-button
-              title="Click to view this request"
-            >View</button>
-        </td>
-      </ng-container>
+      <th
+        *matHeaderCellDef
+        mat-header-cell
+      > </th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+      >
+        <button
+          (click)="goToEntity('SailRequestEntity', element.id)"
+          mat-button
+          title="Click to view this request"
+        >View</button>
+      </td>
+    </ng-container>
 
   </app-material-table>
 

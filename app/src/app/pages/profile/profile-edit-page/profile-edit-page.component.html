@@ -5,18 +5,21 @@
     </div>
     <mat-card-title
       *ngIf="isNewRegistration"
+      aria-level="1"
       id="pageTitle"
       role="heading"
       tabindex="0"
     >Account Registration Form</mat-card-title>
     <mat-card-subtitle
       *ngIf="isNewRegistration"
+      aria-level="2"
       id="pageTitle"
       role="heading"
       tabindex="0"
     >You must submit this form within 1 hour or your account will be deleted.</mat-card-subtitle>
     <mat-card-title
       *ngIf="!isNewRegistration"
+      aria-level="1"
       id="pageTitle"
       role="heading"
       tabindex="0"

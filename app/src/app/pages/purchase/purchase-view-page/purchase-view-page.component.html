@@ -4,13 +4,14 @@
       <mat-icon>shoppingbag</mat-icon>
     </div>
     <mat-card-title
+      aria-level="1"
+      id="pageTitle"
       role="heading"
       tabindex="0"
-      id="pageTitle"
     >Purchase Details</mat-card-title>
     <mat-card-subtitle
+      aria-level="2"
       role="heading"
-      aria-level="3"
       tabindex="0"
     >{{purchase.product_name}} ({{purchase.profile?.name}} : {{purchase.profile.email}})</mat-card-subtitle>
   </mat-card-header>

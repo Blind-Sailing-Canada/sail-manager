@@ -10,10 +10,10 @@
       tabindex="0"
     > Before Departure Checklist Form </mat-card-title>
     <mat-card-subtitle
+      *ngIf="sail.status === SailStatus.Started"
       aria-level="2"
       role="heading"
       tabindex="0"
-      *ngIf="sail.status === SailStatus.Started"
     > <mat-icon color="warn">priority_high</mat-icon>Upon arrival you must end the sail by clicking the 'End' button on
       the sail page and complete the arrival checklist. </mat-card-subtitle>
   </mat-card-header>

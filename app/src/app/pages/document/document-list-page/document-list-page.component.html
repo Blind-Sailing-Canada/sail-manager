@@ -4,11 +4,16 @@
       <mat-icon>local_library</mat-icon>
     </div>
     <mat-card-title
+      aria-level="1"
       id="pageTitle"
-      tabindex="0"
       role="heading"
+      tabindex="0"
     >Documents</mat-card-title>
-    <mat-card-subtitle *ngIf="entity">
+    <mat-card-subtitle
+      *ngIf="entity"
+      aria-level="1"
+      role="heading"
+    >
       {{subheading}}
     </mat-card-subtitle>
   </mat-card-header>

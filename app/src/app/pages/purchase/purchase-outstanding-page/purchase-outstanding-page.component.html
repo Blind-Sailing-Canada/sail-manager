@@ -4,14 +4,15 @@
       <mat-icon>money_off</mat-icon>
     </div>
     <mat-card-title
+      aria-level="1"
+      id="pageTitle"
       role="heading"
       tabindex="0"
-      id="pageTitle"
     >{{profile ? 'User' : 'All'}} Outstanding Sail Fees</mat-card-title>
     <mat-card-subtitle
       *ngIf="profile"
+      aria-level="2"
       role="heading"
-      aria-level="3"
       tabindex="0"
     >{{profile.name}} ({{profile.email}})</mat-card-subtitle>
   </mat-card-header>

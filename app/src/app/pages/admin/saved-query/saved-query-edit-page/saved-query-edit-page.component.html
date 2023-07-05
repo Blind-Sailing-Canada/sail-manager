@@ -4,11 +4,16 @@
       <mat-icon>troubleshoot</mat-icon>
     </div>
     <mat-card-title
+      aria-level="1"
+      id="pageTitle"
       role="heading"
       tabindex="0"
-      id="pageTitle"
     >DB Query Runner</mat-card-title>
-    <mat-card-subtitle *ngIf="!!saved_query_id">{{queryForm.controls.name.value}}</mat-card-subtitle>
+    <mat-card-subtitle
+      *ngIf="!!saved_query_id"
+      aria-level="2"
+      role="heading"
+    >{{queryForm.controls.name.value}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
     <button
