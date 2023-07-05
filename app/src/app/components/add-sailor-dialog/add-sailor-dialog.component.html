@@ -19,6 +19,8 @@
     </div>
     <mat-list-item
       (click)="addAndClose(sailor)"
+      (keyup.enter)="addAndClose(sailor)"
+      (keyup.space)="addAndClose(sailor)"
       *ngFor="let sailor of data.availableSailors; let i = index"
       attr.aria-label="Sailor {{i + 1}} of {{data.availableSailors.length}} {{sailor.name}}. Click to add to sail."
       role="listitem"

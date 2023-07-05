@@ -50,21 +50,19 @@
       >{{checklist?.signed_by_skipper ? "Yes" : "No"}}</span>
     </div>
   </mat-list-item>
-  <mat-list-item>
-    <div
-      class="checklist-item-comments"
-      tabindex="0"
-      role="listitem"
-      attr.aria-label="Comments: {{checklist?.comments || 'none'}}"
-    >
-      <label
-        tabindex="-1"
-        aria-hidden="true"
-      >Comments</label>
-      <p
-        tabindex="-1"
-        aria-hidden="true"
-      >{{checklist?.comments || "Not provided."}}</p>
-    </div>
-  </mat-list-item>
+  <div
+    class="checklist-item-comments"
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Comments: {{checklist?.comments || 'none'}}"
+  >
+    <label
+      tabindex="-1"
+      aria-hidden="true"
+    >Comments</label>
+    <p
+      tabindex="-1"
+      aria-hidden="true"
+    >{{checklist?.comments || "Not provided."}}</p>
+  </div>
 </mat-list>

@@ -221,8 +221,8 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
     if (formManifest) {
       formManifest.clear();
 
-      sail.manifest.forEach(sailor => formManifest.push(this.fb.group({
-        guest_ofName: this.fb.control(sailor.guest_of?.name),
+      sail.manifest.sort((a, b) => a.person_name.localeCompare(b.person_name)).forEach(sailor => formManifest.push(this.fb.group({
+        guest_of_name: this.fb.control(sailor.guest_of?.name),
         person_name: this.fb.control(sailor.person_name),
         sailor_role: this.fb.control(sailor.sailor_role),
         attended: this.fb.control(sailor.attended || false),

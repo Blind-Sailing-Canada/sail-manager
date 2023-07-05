@@ -24,11 +24,14 @@
           {{item.value.sailor_role}}
           <span *ngIf="item.value.sailor_role === SAILOR_ROLE.Guest">
             <mat-label>of</mat-label>
-           {{item.value.guest_ofName}}
+            {{item.value.guest_of_name}}
           </span>
         </td>
         <td>
-          <mat-slide-toggle formControlName="attended">
+          <mat-slide-toggle
+            formControlName="attended"
+            title="Toggle to 'Yes' if the sailor is present on the sail. Current value {{item.value.attended ? 'present': 'not present'}}."
+          >
             Yes
           </mat-slide-toggle>
         </td>

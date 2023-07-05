@@ -28,7 +28,13 @@
   </mat-card-content>
 </mat-card>
 
-<ng-template #controls></ng-template>
+<ng-template #controls>
+  <a
+    [routerLink]="createPurchaseRoute"
+    mat-raised-button
+    title="Click to create a manual payment payment"
+  >Add manual payment</a>
+</ng-template>
 
 <ng-template #sailClaimsTable>
   <app-material-table

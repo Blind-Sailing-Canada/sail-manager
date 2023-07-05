@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { BasePageComponent } from '../../../base-page/base-page.component';
 import { WindowService } from '../../../../services/window.service';
 import { firstValueFrom } from 'rxjs';
-import { outstandingPurchasesRoute, viewProfileRoute, viewSailRoute } from '../../../../routes/routes';
+import { createPurchaseRoute, outstandingPurchasesRoute, viewProfileRoute, viewSailRoute } from '../../../../routes/routes';
 import { SailPaymentClaim } from '../../../../../../../api/src/types/sail-payment-claim/sail-payment-claim';
 import { MatTableDataSource } from '@angular/material/table';
 import { FilterInfo } from '../../../../models/filter-into';
@@ -23,6 +23,7 @@ import { SailPaymentClaimService } from '../../../../services/sail-payment-claim
   styleUrls: ['./admin-missing-sail-payments-page.component.scss']
 })
 export class AdminMissingSailPaymentsPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
+  public createPurchaseRoute = createPurchaseRoute;
   public viewProfileRoute = viewProfileRoute;
   public viewSailRoute = viewSailRoute;
   public outstandingPurchasesRoute = outstandingPurchasesRoute;
