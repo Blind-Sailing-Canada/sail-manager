@@ -139,7 +139,7 @@ export class SailManifestEditPageComponent extends BasePageComponent implements 
       person_name: this.fb.control(sailor.name, Validators.required),
       profile_id: this.fb.control(sailor.id),
       sail_id: this.fb.control(this.sail_id),
-      sailor_role: this.fb.control(role, Validators.required),
+      sailor_role: this.fb.control(sailor.roles?.includes(ProfileRole.Member) ? SailorRole.Member : role, Validators.required),
     }));
 
     this.manifestForm.updateValueAndValidity();

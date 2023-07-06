@@ -20,6 +20,13 @@
       when saved.
     </mat-card-subtitle>
   </mat-card-header>
+  <mat-card-actions>
+    <button
+      (click)="editManifest()"
+      *ngIf="!creatingNewSail && !sailForm.dirty"
+      mat-raised-button
+    >Edit Manifest</button>
+  </mat-card-actions>
   <mat-card-content>
     <form class='sail-edit-form'>
       <ng-container *ngTemplateOutlet="sailName"></ng-container>
@@ -202,7 +209,8 @@
     >List of Available Boats During This Time</h3>
     <mat-list-item
       (click)="setSailBoat(boat.id)"
-      (keydown)="setSailBoatOnKey($event, boat.id)"
+      (keyup.enter)="setSailBoat(boat.id)"
+      (keyup.space)="setSailBoat(boat.id)"
       *ngFor="let boat of availableBoats; let i = index"
       attr.aria-label="Boat {{i + 1}} of {{availableBoats.length}} {{boat.name}}{{boatNotInServiceWarning(boat.id)}}. Click to assign as sail's boat."
       role="listitem"

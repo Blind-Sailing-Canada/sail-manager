@@ -131,19 +131,14 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.goTo([editSailManifestRoute(this.sail_id)]);
   }
 
-  public setSailBoatOnKey(event, boat_id: string): void {
-    if (event.key !== 'Enter') {
-      return;
-    }
-
-    this.setSailBoat(boat_id);
-  }
-
   public setSailBoat(id?: string): void {
     const currentlySetBoatId = this.sailForm.controls.boat_id.value;
 
     if (currentlySetBoatId) {
-      this.availableBoats = this.availableBoats.concat(this.getBoat(currentlySetBoatId));
+      this.availableBoats = this.availableBoats
+        .filter(boat => boat.id !== currentlySetBoatId)
+        .concat(this.getBoat(currentlySetBoatId))
+        .sort((a, b) => a.name.localeCompare(b.name));
     }
 
     this.sailForm.controls.boat_id.setValue(id || null);
@@ -334,12 +329,17 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     const defaultMax = 6;
     const boat = this.getBoat(boat_id) as Boat;
 
-    if (!boat) {
+    if (!boat_id) {
       this.sailForm.controls.max_occupancy.patchValue(undefined);
       return;
     }
 
-    const boatMax = boat.max_occupancy || defaultMax;
+    if (!boat) {
+      return;
+    }
+
+    const currentMax = this.sailForm.controls.max_occupancy.value ?? defaultMax;
+    const boatMax = Math.min(boat.max_occupancy, currentMax);
 
     this.sailForm.controls.max_occupancy.patchValue(boatMax);
   }
@@ -363,6 +363,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.sailForm.controls.name.setValue(sail.name);
     this.sailForm.controls.description.setValue(sail.description);
     this.sailForm.controls.is_payment_free.setValue(sail.is_payment_free);
+    this.sailForm.controls.max_occupancy.setValue(sail.max_occupancy);
 
     const start = new Date(sail.start_at);
 

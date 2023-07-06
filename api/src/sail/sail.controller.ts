@@ -33,6 +33,7 @@ import { SailUpdateJob } from '../types/sail/sail-update-job';
 import { PaginatedSail } from '../types/sail/paginated-sail';
 import  { unflatten } from 'flat';
 import { UserAccessGuard } from '../guards/user-access.guard';
+import { ProfileRole } from '../types/profile/profile-role';
 
 @Crud({
   model: { type: SailEntity },
@@ -283,7 +284,7 @@ export class SailController {
           profile_id: sailor.profile_id,
           person_name: sailor.profile.name,
           sail_id: sail.id,
-          sailor_role: SailorRole.Member,
+          sailor_role: sailor.profile.roles.includes(ProfileRole.Member) ? SailorRole.Member : SailorRole.Sailor,
         }));
 
       await transactionalEntityManager.save(manifest);

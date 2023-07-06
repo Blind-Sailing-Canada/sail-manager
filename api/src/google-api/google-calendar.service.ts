@@ -397,7 +397,18 @@ export class GoogleCalendarService {
 
     const skipperNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Skipper).map(sailor => sailor.person_name);
     const crewNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Crew).map(sailor => sailor.person_name);
-    const sailorNames = sail.manifest.filter(sailor => sailor.sailor_role === SailorRole.Sailor).map(sailor => sailor.person_name);
+    const sailorNames = sail
+      .manifest
+      .filter(sailor => ![
+        SailorRole.Skipper,
+        SailorRole.Crew,
+        SailorRole.Guest,
+      ].includes(sailor.sailor_role))
+      .map(sailor => sailor.person_name);
+    const guestNames = sail
+      .manifest
+      .filter(sailor => SailorRole.Guest === sailor.sailor_role)
+      .map(sailor => `${sailor.person_name} (guest of ${sailor.guest_of.name})`);
 
     const event: calendar_v3.Schema$Event = {
       summary: `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entity_number}: ${sail.name}`,
@@ -417,6 +428,7 @@ export class GoogleCalendarService {
             <div><label>Skipper: </label>${skipperNames.join(', ') || 'None'}</div>
             <div><label>Crew: </label>${crewNames.join(', ') || 'None'}</div>
             <p><label>Sailors: </label> ${sailorNames.join(', ') || 'None'}</p>
+            <p><label>Guests: </label> ${guestNames.join(', ') || 'None'}</p>
             <div><a href="${DOMAIN}/sails/view/${sail.id}">View sail</a></div>
           </body>
         </html>

@@ -200,7 +200,7 @@ export class SailActionsController {
       sailor.person_name = sailorProfile.name;
       sailor.profile_id = user.profile_id;
       sailor.sail_id = sail.id;
-      sailor.sailor_role = SailorRole.Sailor;
+      sailor.sailor_role = sailorProfile.roles.includes(ProfileRole.Member) ? SailorRole.Member : SailorRole.Sailor;
 
       await transactionalEntityManager.save(sailor);
 
