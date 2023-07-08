@@ -86,18 +86,19 @@
             tabindex="-1"
           >Guest of</mat-label>
           <select
+            formControlName="guest_of_id"
             matNativeControl
             required
-            formControlName="guest_of_id"
           >
+            <option></option>
             <option
               *ngFor="let user of usersOnSail"
-              [value]="user.id"
+              [value]="user?.id"
             >{{user.name}}</option>
           </select>
         </mat-form-field>
         <mat-error *ngFor="let error of sailor.controls.guest_of_id.errors | keyvalue">{{error.key}}:
-          {{error.value}}</mat-error>
+          {{error.key === 'required' ? 'Guest must have a valid host present on the sail.' : error.value}}</mat-error>
       </ng-container>
       <ng-container *ngIf="isGuest(sailor.controls.sailor_role.value)">
         <mat-form-field [formGroup]="sailor">

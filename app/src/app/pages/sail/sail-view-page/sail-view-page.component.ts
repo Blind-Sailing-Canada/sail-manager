@@ -268,13 +268,13 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return false;
     }
 
-    if (this.isSailFull) {
-      return false;
-    }
-
     const sail = this.sail;
 
     if (sail.status !== SailStatus.New) {
+      return false;
+    }
+
+    if (this.isUserInSail(sail, this.user)) {
       return false;
     }
 
@@ -299,75 +299,27 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
   }
 
   public get canJoinCrew(): boolean {
-    if (this.isInPast) {
-      return false;
-    }
-
     const sail = this.sail;
-
-    if (sail.status !== SailStatus.New) {
-      return false;
-    }
 
     if (sail.manifest.some(sailor => sailor.sailor_role === SailorRole.Crew)) {
       return false;
     }
 
-    const user = this.user;
-
-    if (this.isUserInSail(sail, user)) {
-      return false;
-    }
-
-    const can = user.roles.includes(ProfileRole.Crew);
-
-    return can;
+    return this.user.roles.includes(ProfileRole.Crew);
   }
 
   public get canJoinSkipper(): boolean {
-    if (this.isInPast) {
-      return false;
-    }
-
     const sail = this.sail;
-
-    if (sail.status !== SailStatus.New) {
-      return false;
-    }
 
     if (sail.manifest.some(sailor => sailor.sailor_role === SailorRole.Skipper)) {
       return false;
     }
 
-    const user = this.user;
-
-    if (this.isUserInSail(sail, user)) {
-      return false;
-    }
-
-    const can = user.roles.includes(ProfileRole.Skipper);
-
-    return can;
+    return this.user.roles.includes(ProfileRole.Skipper);
   }
 
   public get canJoinAsSailor(): boolean {
-    if (this.isInPast) {
-      return false;
-    }
-
     if (!this.sailHasRoomForSailors) {
-      return false;
-    }
-
-    const sail = this.sail;
-
-    if (sail.status !== SailStatus.New) {
-      return false;
-    }
-
-    const user = this.user;
-
-    if (this.isUserInSail(sail, user)) {
       return false;
     }
 
@@ -376,12 +328,6 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
   public cancelSail(): void {
     this.goTo([cancelSailRoute(this.sail_id)]);
-  }
-
-  public get isSailFull(): boolean {
-    const sail = this.sail;
-
-    return sail.manifest.length >= sail.max_occupancy;
   }
 
   public get sailHasRoomForSailors(): boolean {
