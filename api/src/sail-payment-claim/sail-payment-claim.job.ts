@@ -30,7 +30,7 @@ export class SailPaymentClaimJob {
     await this.service.linkAllClaimsToProfile();
   }
 
-  @Cron('0 0 1-31/2 * *')
+  @Cron('0 0 1-31/2 * *') // Every second day at noon.
   async sendMissingPaymentsEmail() {
     const claims = await SailPaymentClaimEntity
       .find({

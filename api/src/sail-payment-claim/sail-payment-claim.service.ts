@@ -18,7 +18,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
   }
 
   public async exhaustSailProducts() {
-    await await ProductPurchaseEntity
+    await ProductPurchaseEntity
       .getRepository()
       .createQueryBuilder()
       .andWhere('number_of_guest_sails_included <= number_of_guest_sails_used')

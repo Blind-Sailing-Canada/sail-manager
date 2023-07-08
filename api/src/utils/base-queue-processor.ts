@@ -1,5 +1,5 @@
 import {
-  OnGlobalQueueError, OnQueueError, OnQueueFailed
+  OnGlobalQueueError, OnQueueActive, OnQueueError, OnQueueFailed
 } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
@@ -10,6 +10,11 @@ export class BaseQueueProcessor {
 
   constructor() {
     this.logger = new Logger(this.constructor.name);
+  }
+
+  @OnQueueActive()
+  onQueueActive(job: Job) {
+    this.logger.log(`Processing bull job: ${job.id} - ${job.name}: ${JSON.stringify(job.data, null, 2)}`);
   }
 
   @OnQueueError()

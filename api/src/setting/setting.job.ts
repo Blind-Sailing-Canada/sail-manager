@@ -93,7 +93,7 @@ export class SettingJob {
     await this.emailService.sendBccEmail(emailInfo);
   }
 
-  @Cron('0 0 1-31/2 * *')
+  @Cron('0 0 1-31/2 * *') // Every second day at noon.
   async everyOtherDayFutureSails() {
     const subscribers = (await SettingEntity
       .getRepository()
@@ -129,7 +129,7 @@ export class SettingJob {
     await this.emailService.sendBccEmail(emailInfo);
   }
 
-  @Cron('0 0 1-31/2 * *')
+  @Cron('0 0 1-31/2 * *') // Every second day at noon.
   async everyOtherDayFutureSocials() {
     const subscribers = (await SettingEntity
       .getRepository()

@@ -44,7 +44,8 @@ export class SailProcessor extends BaseQueueProcessor {
     try {
       const sail = await SailEntity.findOneOrFail({ where: { id: job.data.sail_id } });
 
-      await this.calendarService.updateSailEvent(sail, job.data.message);
+      const response = await this.calendarService.updateSailEvent(sail, job.data.message);
+      this.logger.log(`calendar sail update response ${response.status}: ${response.statusText}`);
     } catch (error) {
       this.logger.error(error);
       Sentry.captureException(error);

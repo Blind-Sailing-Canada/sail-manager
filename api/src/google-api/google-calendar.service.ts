@@ -447,6 +447,7 @@ export class GoogleCalendarService {
       reminders: { 'useDefault': true },
     };
 
+    this.logger.log(`sail event ${JSON.stringify(event, null, 2)}`);
     return event;
   }
 

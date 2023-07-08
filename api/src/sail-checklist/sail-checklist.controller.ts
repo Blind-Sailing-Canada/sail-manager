@@ -60,6 +60,7 @@ export class SailChecklistController {
         delay: 1000 * 60 * 60 // 1 hour delay due to form auto save to prevent spamming the emails
       });
     } catch(error) {
+      this.logger.log(`Failed to add sail-checklist job to the queue: ${error.message}`);
       this.logger.error(error); // don't care if queue fails
     }
   }
