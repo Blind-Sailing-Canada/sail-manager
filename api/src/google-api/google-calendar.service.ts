@@ -430,6 +430,13 @@ export class GoogleCalendarService {
             <p><label>Sailors: </label> ${sailorNames.join(', ') || 'None'}</p>
             <p><label>Guests: </label> ${guestNames.join(', ') || 'None'}</p>
             <div><a href="${DOMAIN}/sails/view/${sail.id}">View sail</a></div>
+            <br/>
+            <p>To cancel your reservation for this sail, you must go to the
+            <a href="${DOMAIN}/sails/view/${sail.id}">sail page</a> and click the 'Leave' button 
+            at least 24 hours before the start of the sail.</p>
+            <p>Cancelling/declining this calendar event will not remove you from the sail.</p>
+            <p>If your guest cannot make the sail, then you must contact the skipper or the sail coordinator 
+            and ask them to remove the guest from the sail.</p>
           </body>
         </html>
       `.trim().replace(/\n/g,''),
@@ -473,6 +480,10 @@ export class GoogleCalendarService {
             <div><label>Address: ${social.address || 'n/a'} </label></div>
             <p><label>Attendants: </label> ${attendantNames.join(', ') || '-'}</p>
             <div><a href="${DOMAIN}/socials/view/${social.id}">View social</a></div>
+            <br/>
+            <p>To cancel your reservation for this soicial event, you must go to the
+            <a href="${DOMAIN}/socials/view/${social.id}">social page</a> and click the 'Leave' button.</p>
+            <p>Cancelling/declining this calendar event will not remove you from the social event.</p>
           </body>
         </html>
       `.trim().replace(/\n/g,''),
