@@ -55,10 +55,12 @@ export class GoogleEmailService {
 
   async sendBccEmail(emailInfo: EmailInfo) {
     if (!emailInfo || !emailInfo.bcc || !emailInfo.bcc.length) {
+      this.logger.warn('!emailInfo || !emailInfo.bcc || !emailInfo.bcc.length');
       return Promise.resolve();
     }
 
     if (!this.connected) {
+      this.logger.warn('not connected.');
       await this.connect();
     }
 
