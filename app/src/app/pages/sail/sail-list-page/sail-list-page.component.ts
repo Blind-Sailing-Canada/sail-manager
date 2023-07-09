@@ -26,7 +26,6 @@ import { FilterInfo } from '../../../models/filter-into';
 import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { Boat } from '../../../../../../api/src/types/boat/boat';
 import { WindowService } from '../../../services/window.service';
-import { putSails } from '../../../store/actions/sail.actions';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -88,10 +87,6 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
     this.viewSail(id);
   }
 
-  public get canDownload(): boolean {
-    return this.user?.access[UserAccessFields.DownloadSails];
-  }
-
   public applyFilter(): void {
     this.filterInfo = {
       ...this.filterInfo,
@@ -112,7 +107,6 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
 
     const page = this.paginatedData;
 
-    this.dispatchAction(putSails({ sails: this.paginatedData.data }));
     this.dispatchMessage(`Displaying ${page.count} of ${page.total} sails on page #${page.page}.`);
   }
 

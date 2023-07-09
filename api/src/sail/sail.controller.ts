@@ -382,8 +382,9 @@ export class SailController {
       sails =  await SailEntity
         .find({
           order: unflatten(order),
-          relations: ['checklists',],
+          relations: ['boat'],
           where: { id: In(sail_ids) },
+          loadEagerRelations: false,
         });
     }
 

@@ -23,6 +23,7 @@ import { SailManifestEntity } from './sail-manifest.entity';
 import { SailManifestService } from './sail-manifest.service';
 import * as Sentry from '@sentry/node';
 import { SailManifestGuestMustSignReleaseFormJob } from '../types/sail-manifest/sail-manifest-guest-must-sign-release-form-job';
+import { SailService } from '../sail/sail.service';
 
 @Crud({
   model: { type: SailManifestEntity },
@@ -45,6 +46,7 @@ export class SailManifestController {
 
   constructor(
     public service: SailManifestService,
+    private sailService: SailService,
     @InjectQueue('sail') private readonly sailQueue: Queue,
     @InjectQueue('guest-release-form') private readonly guestReleaseFormQueue: Queue,
   ) { }
@@ -98,10 +100,7 @@ export class SailManifestController {
       }
     }
 
-    return SailEntity.findOne({
-      where: { id: sail_id },
-      relations: ['checklists'],
-    });
+    return this.sailService.getFullyResolvedSail(sail_id);
   }
 
   @Get('/available-sailors')

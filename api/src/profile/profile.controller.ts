@@ -40,11 +40,11 @@ import { ProfileApprovedJob } from '../types/profile/profile-approved-job';
     type: 'uuid',
     primary: true,
   } },
-  query: { alwaysPaginate: true },
-  routes: { only: [
-    'getOneBase',
-    'getManyBase',
-  ] },
+  query: {
+    alwaysPaginate: true,
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
+  },
+  routes: { only: ['getManyBase',] },
 })
 @Controller('profile')
 @ApiTags('profile')
@@ -66,6 +66,21 @@ export class ProfileController {
     if (count === 0) {
       await this.authService.createAdminUser();
     }
+  }
+
+  @Get('/count')
+  @UserRoles(ProfileRole.Admin)
+  @UseGuards(RolesGuard)
+  async count() {
+    return this.service.count();
+  }
+
+  @Get('/:id')
+  getProfileById(@Param('id') profile_id: string): Promise<Profile> {
+    return ProfileEntity.findOneOrFail({
+      where: { id: profile_id },
+      relations: ['achievements']
+    });
   }
 
   @Post('/create-user')
@@ -108,13 +123,6 @@ export class ProfileController {
         deleted_at: deleted_at,
       });
     });
-  }
-
-  @Get('/count')
-  @UserRoles(ProfileRole.Admin)
-  @UseGuards(RolesGuard)
-  async count() {
-    return this.service.count();
   }
 
   @Patch('/:id/review')

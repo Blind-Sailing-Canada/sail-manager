@@ -1,7 +1,11 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
   Body,
-  Controller,   Delete,   Param, Post, UseGuards
+  Controller,
+  Delete,
+  Param,
+  Post,
+  UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Queue } from 'bull';
@@ -15,13 +19,17 @@ import { JwtObject } from '../types/token/jwt-object';
 import { UserAccessFields } from '../types/user-access/user-access-fields';
 import { User } from '../user/user.decorator';
 import { SailEntity } from './sail.entity';
+import { SailService } from './sail.service';
 
 @Controller('sail')
 @ApiTags('sail')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard)
 export class SailCommentsController {
 
-  constructor(@InjectQueue('sail') private readonly sailQueue: Queue) { }
+  constructor(
+    private sailService: SailService,
+    @InjectQueue('sail') private readonly sailQueue: Queue,
+  ) { }
 
   @Post('/:id/comments')
   async postComment(@User() user: JwtObject, @Param('id') id: string, @Body() commentInfo: Partial<Comment>) {
@@ -40,10 +48,7 @@ export class SailCommentsController {
     };
     this.sailQueue.add('new-comment', job);
 
-    return SailEntity.findOne( {
-      where: { id },
-      relations: ['checklists'],
-    });
+    return this.sailService.getFullyResolvedSail(id);
   }
 
   @Delete('/:id/comments/:commentId')
@@ -62,10 +67,6 @@ export class SailCommentsController {
       });
     }
 
-    return SailEntity.findOne({
-      where: { id },
-      relations: ['checklists'],
-    });
-
+    return this.sailService.getFullyResolvedSail(id);
   }
 }

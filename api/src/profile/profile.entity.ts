@@ -88,28 +88,28 @@ export class ProfileEntity extends ExpiresBaseModelEntity implements Profile {
   @DeleteDateColumn()
     deleted_at: Date;
 
-  @OneToOne(() => UserAccessEntity, (access) => access.profile, { eager: true })
+  @OneToOne(() => UserAccessEntity, (access) => access.profile, { eager: false })
     access: UserAccessEntity;
 
-  @OneToMany(() => AchievementEntity, (achievements) => achievements.profile, { eager: true })
+  @OneToMany(() => AchievementEntity, (achievements) => achievements.profile, { eager: false })
     achievements: AchievementEntity[];
 
   @OneToMany(() => FormResponseEntity, (form_responses) => form_responses.profile, { eager: false })
     form_responses: FormResponseEntity[];
 
-  @OneToMany(() => SailManifestEntity, (sailManifest) => sailManifest.profile)
+  @OneToMany(() => SailManifestEntity, (sailManifest) => sailManifest.profile, { eager: false })
     sail_manifests: SailManifestEntity[];
 
-  @OneToMany(() => RequiredActionEntity, (requiredAction) => requiredAction.assigned_to)
+  @OneToMany(() => RequiredActionEntity, (requiredAction) => requiredAction.assigned_to, { eager: false })
     required_actions: RequiredActionEntity[];
 
-  @OneToMany(() => ClinicAttendanceEntity, (clinicAttendance) => clinicAttendance.attendant)
+  @OneToMany(() => ClinicAttendanceEntity, (clinicAttendance) => clinicAttendance.attendant, { eager: false })
     clinics_attendances: ClinicAttendanceEntity[];
 
-  @OneToMany(() => ChallengeParticipantEntity, (challenge) => challenge.participant)
+  @OneToMany(() => ChallengeParticipantEntity, (challenge) => challenge.participant, { eager: false })
     challenges: ChallengeParticipantEntity[];
 
-  @OneToMany(() => SailChecklistEntity, (checklist) => checklist.submitted_by)
+  @OneToMany(() => SailChecklistEntity, (checklist) => checklist.submitted_by, { eager: false })
     sail_checklists: SailChecklistEntity[];
 
   static coordinators(): Promise<ProfileEntity[]> {

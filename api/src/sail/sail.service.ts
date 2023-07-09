@@ -9,4 +9,14 @@ export class SailService extends BaseService<SailEntity> {
   constructor(@InjectRepository(SailEntity) repo: Repository<SailEntity>) {
     super(repo);
   }
+
+  getFullyResolvedSail(sail_id: string): Promise<SailEntity> {
+    return SailEntity.findOne({
+      where: { id: sail_id },
+      relations: [
+        'checklists',
+        'comments'
+      ],
+    });
+  }
 }

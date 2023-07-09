@@ -10,6 +10,7 @@ import { JwtGuard } from '../guards/jwt.guard';
 import { LoginGuard } from '../guards/login.guard';
 import { SailManifestEntity } from '../sail-manifest/sail-manifest.entity';
 import { SailEntity } from '../sail/sail.entity';
+import { SailService } from '../sail/sail.service';
 import { ProfileRole } from '../types/profile/profile-role';
 import { SailChecklistUpdateJob } from '../types/sail-checklist/sail-checklist-update-job';
 import { SailorRole } from '../types/sail-manifest/sailor-role';
@@ -47,6 +48,7 @@ export class SailChecklistController {
 
   constructor(
     public service: SailChecklistService,
+    private sailService: SailService,
     @InjectQueue('sail-checklist') private readonly sailChecklistQueue: Queue) { }
 
   private async queueSailChecklistUpdateJob(checklist_id: string) {
@@ -129,9 +131,6 @@ export class SailChecklistController {
       }
     }
 
-    return SailEntity.findOne({
-      where: { id: sail_id },
-      relations: ['checklists'],
-    });
+    return this.sailService.getFullyResolvedSail(sail_id);
   }
 }

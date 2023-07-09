@@ -77,24 +77,8 @@ export class SailService {
     return this.http.get<number>(`${this.API_URL}/count`);
   }
 
-  public fetchAll(query?: string): Observable<Sail[]> {
-    if (query) {
-      return this.http.get<Sail[]>(`${this.API_URL}${query}`);
-    }
-
-    return this.http.get<Sail[]>(`${this.API_URL}`);
-  }
-
-  public findByName(name: string): Observable<Sail[]> {
-    return this.http.get<Sail[]>(`${this.API_URL}/?substring=${name}&fields=name`);
-  }
-
   public searchPaginated(query: any): Observable<PaginatedSail> {
     return this.http.get<PaginatedSail>(`${this.API_URL}`, { params: query });
-  }
-
-  public download(query: any) {
-    return this.http.get(`${this.API_URL}/download`, { params: query, responseType: 'blob' });
   }
 
   public update(id: string, sail: Sail): Observable<Sail> {

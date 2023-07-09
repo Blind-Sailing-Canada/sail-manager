@@ -119,10 +119,7 @@ export class SailActionsController {
       this.sailQueue.add('join-sail', job);
     });
 
-    return SailEntity.findOne({
-      where: { id },
-      relations: ['checklists'],
-    });
+    return this.service.getFullyResolvedSail(id);
   }
 
   @Put(':id/join/crew')
@@ -167,10 +164,7 @@ export class SailActionsController {
       this.sailQueue.add('join-sail', job);
     });
 
-    return SailEntity.findOne({
-      where: { id },
-      relations: ['checklists'],
-    });
+    return this.service.getFullyResolvedSail(id);
   }
 
   @Put(':id/join/sailor')
@@ -216,10 +210,7 @@ export class SailActionsController {
       this.sailQueue.add('join-sail', job);
     });
 
-    return SailEntity.findOne({
-      where: { id },
-      relations: ['checklists'],
-    });
+    return this.service.getFullyResolvedSail(id);
   }
 
   @Delete(':id/leave')
@@ -240,10 +231,7 @@ export class SailActionsController {
 
     this.sailQueue.add('leave-sail', job);
 
-    return SailEntity.findOne({
-      where: { id },
-      relations: ['checklists'],
-    });
+    return this.service.getFullyResolvedSail(id);
   }
 
   @Patch(':id/start')
@@ -310,10 +298,7 @@ export class SailActionsController {
 
     });
 
-    return SailEntity.findOne({
-      where: { id },
-      relations: ['checklists'],
-    });
+    return this.service.getFullyResolvedSail(id);
   }
 
   @Patch(':id/complete')
@@ -387,10 +372,7 @@ export class SailActionsController {
         this.logger.error(error);
       });
 
-    return SailEntity.findOne({
-      where: { id },
-      relations: ['checklists'],
-    });
+    return this.service.getFullyResolvedSail(id);
   }
 
   @Patch(':id/cancel')
@@ -427,10 +409,7 @@ export class SailActionsController {
 
     this.sailQueue.add('cancel-sail', job);
 
-    return SailEntity.findOne( {
-      where: { id },
-      relations: ['checklists'],
-    });
+    return this.service.getFullyResolvedSail(id);
   }
 
 }

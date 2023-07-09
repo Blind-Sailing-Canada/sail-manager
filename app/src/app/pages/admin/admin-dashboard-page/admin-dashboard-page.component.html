@@ -18,7 +18,6 @@
       <ng-container [ngTemplateOutlet]="REVIEW_PROFILES_LIST"></ng-container>
     </section>
     <section role="search">
-      <h3>Total users in the system: {{totalProfileCount}}</h3>
       <ng-container
         [ngTemplateOutlet]="PROFILE_TABLE"
         *ngIf="!windowService.isSmallWidth"

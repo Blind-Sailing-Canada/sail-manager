@@ -81,7 +81,11 @@ export class UserSailController {
       take: Number.isInteger(+take) ? +take : 10,
       where,
       order: { start_at: 'ASC' },
-      relations: ['checklists'],
+      relations: [
+        'boat',
+        'manifest'
+      ],
+      loadEagerRelations: false,
     });
 
     return sails;
@@ -99,7 +103,11 @@ export class UserSailController {
       take: Number.isInteger(+take) ? +take : 5,
       where,
       order: { start_at: 'DESC' },
-      relations: ['checklists'],
+      relations: [
+        'boat',
+        'manifest'
+      ],
+      loadEagerRelations: false,
     });
 
     return sails;
@@ -122,7 +130,11 @@ export class UserSailController {
           take: Number.isInteger(+take) ? +take : 5,
           where,
           order: { start_at: 'ASC' },
-          relations: ['checklists'],
+          relations: [
+            'boat',
+            'manifest'
+          ],
+          loadEagerRelations: false,
         }
       );
 
@@ -172,7 +184,11 @@ export class UserSailController {
 
     const sails = await SailEntity.find({
       where: { id: In(sailIds) },
-      relations: ['checklists'],
+      relations: [
+        'boat',
+        'manifest'
+      ],
+      loadEagerRelations: false,
     });
 
     return sails;

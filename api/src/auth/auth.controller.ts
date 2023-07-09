@@ -127,7 +127,10 @@ export class AuthController {
       return null;
     }
 
-    const profile = await ProfileEntity.findOne({ where: { id: profile_id } });
+    const profile = await ProfileEntity.findOne({
+      where: { id: profile_id },
+      relations: ['access']
+    });
 
     return profile;
   }

@@ -54,9 +54,6 @@ export const joinSailAsSkipper = createAction(
   SAIL_ACTION_TYPES.JOIN_SKIPPER, props<{ sail_id: string; notify?: boolean }>());
 export const leaveSail = createAction(SAIL_ACTION_TYPES.LEAVE_SAIL, props<{ sail_id: string; notify?: boolean }>());
 export const putSail = createAction(SAIL_ACTION_TYPES.PUT_ONE, props<{ id: string; sail: Sail }>());
-export const putSails = createAction(SAIL_ACTION_TYPES.PUT_MANY, props<{ sails: Sail[] }>());
-export const putSailSearchResults = createAction(SAIL_ACTION_TYPES.PUT_SEARCH_RESULTS, props<{ sails: Sail[] }>());
-export const searchSails = createAction(SAIL_ACTION_TYPES.SEARCH, props<{ notify?: boolean; query?: any }>());
 export const resetSails = createAction(SAIL_ACTION_TYPES.RESET);
 export const updateSail = createAction(
   SAIL_ACTION_TYPES.UPDATE_ONE,

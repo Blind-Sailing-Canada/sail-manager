@@ -42,5 +42,6 @@ import { UserSailController } from './user-sail.controller';
     SailService,
     SailSubscriber,
   ],
+  exports: [SailService]
 })
 export class SailModule { }

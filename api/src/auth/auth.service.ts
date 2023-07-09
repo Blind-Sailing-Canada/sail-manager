@@ -146,7 +146,10 @@ export class AuthService {
 
     const existingUser = await UserEntity
       .findOne({
-        relations: ['profile'],
+        relations: [
+          'profile',
+          'profile.access'
+        ],
         where: { provider_user_id: providerUser.id },
       });
 

@@ -141,7 +141,7 @@ export class SailEntity extends CreatedByBaseModelEntity implements Sail {
   @OneToMany(() => CommentEntity, (comment) => comment.sail, {
     createForeignKeyConstraints: false,
     nullable: true,
-    eager: true,
+    eager: false,
   })
     comments: CommentEntity[];
 
@@ -165,7 +165,7 @@ export class SailEntity extends CreatedByBaseModelEntity implements Sail {
   @OneToMany(() => MediaEntity, (picture) => picture.sail, {
     createForeignKeyConstraints: false,
     nullable: true,
-    eager: true,
+    eager: false,
   })
     pictures: MediaEntity[];
 

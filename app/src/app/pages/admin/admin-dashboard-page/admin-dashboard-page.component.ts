@@ -9,17 +9,11 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { IProfileMap } from '../../../models/profile-state.interface';
 import {
   adminPaymentDashboardRoute,
   editProfilePrivilegesRoute, FullRoutes, listSailCategoriesRoute, missingSailPaymentsRoute,
 } from '../../../routes/routes';
 import { ProfileService } from '../../../services/profile.service';
-import {
-  fetchProfiles,
-  fetchTotalProfileCount,
-} from '../../../store/actions/profile.actions';
-import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
 import { ProfileStatus } from '../../../../../../api/src/types/profile/profile-status';
@@ -70,30 +64,21 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
       return;
     }
 
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES, () => {
-      const profiles = this.profiles || {} as IProfileMap;
-      const profile_ids = Object.keys(profiles);
-      this.pendingApproval = profile_ids
-        .filter(id => !!profiles[id])
-        .filter(id => profiles[id].status === ProfileStatus.PendingApproval)
-        .map(id => profiles[id]);
-    });
-
     this.fetchPendingProfiles();
-    this.dispatchAction(fetchTotalProfileCount());
     this.filterProfiles();
-  }
-
-  public get totalProfileCount(): number {
-    return this.store.profiles.totalCount;
   }
 
   public profileThumbnail(profile: Profile): string {
     return `${profile.photo || 'assets/icons/icon-person.png'}?width=200`;
   }
 
-  public fetchPendingProfiles(notify?: boolean): void {
-    this.dispatchAction(fetchProfiles({ notify, query: `status=${ProfileStatus.PendingApproval}&sort=name,ASC` }));
+  public fetchPendingProfiles(): void {
+    this.profileService
+      .fetchAllPaginated({ status:ProfileStatus.PendingApproval })
+      .subscribe((result) => {
+        this.pendingApproval = result.data;
+        this.pendingApproval.sort((a, b) => a.name.localeCompare(b.name));
+      });
   }
 
   public editProfilePrivileges(profile: Profile): void {
