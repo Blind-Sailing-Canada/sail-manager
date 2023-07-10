@@ -63,24 +63,27 @@
     <ng-container tableFilters>
       <mat-form-field>
         <mat-label>Status</mat-label>
-        <select
+        <mat-select
           [(ngModel)]="maintenanceStatus"
           [ngModelOptions]="{standalone: true}"
           matNativeControl
           (ngModelChange)="filterMaintenances()"
           title="filter by maintenance status"
+          multiple
         >
-          <option
+          <mat-option
             *ngFor="let status of maintenanceStatusValues | keyvalue"
             [value]="status.value"
-          >{{status.key}}</option>
-        </select>
+          >{{status.value | uppercase}}</mat-option>
+        </mat-select>
       </mat-form-field>
     </ng-container>
 
     <ng-container
       tableColumns
       matSort
+      matSortActive="created_at"
+      matSortDirection="desc"
     >
       <ng-container matColumnDef="request_details">
         <th

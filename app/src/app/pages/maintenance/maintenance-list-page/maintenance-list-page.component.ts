@@ -36,8 +36,8 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
   public displayedColumns: string[] = ['request_details', 'boat.name', 'created_at', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['request_details'];
   public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
-  public maintenanceStatus: BoatMaintenanceStatus | 'ANY' = BoatMaintenanceStatus.New;
-  public maintenanceStatusValues = { ...BoatMaintenanceStatus, ANY: 'ANY' };
+  public maintenanceStatus: BoatMaintenanceStatus[] = [BoatMaintenanceStatus.New, BoatMaintenanceStatus.InProgress];
+  public maintenanceStatusValues = BoatMaintenanceStatus;
   public paginatedData: PaginatedMaintenance;
 
   constructor(
@@ -98,8 +98,8 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
       ] });
     }
 
-    if (this.maintenanceStatus !== 'ANY') {
-      query.$and.push({ status: this.maintenanceStatus });
+    if (this.maintenanceStatus.length) {
+      query.$and.push({ status: { $in: this.maintenanceStatus } });
     }
 
     if(this.boat_id) {
