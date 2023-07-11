@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,  Get,  Param,  Patch,  Post,  Query, Res, UnauthorizedException, UseGuards
+  Controller,  Get,  Param,  Patch,  Post,  Query, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -20,7 +20,6 @@ import { SailRequestStatus } from '../types/sail-request/sail-request-status';
 import { Sail } from '../types/sail/sail';
 import { SailEntity } from './sail.entity';
 import { SailService } from './sail.service';
-import { Parser } from 'json2csv';
 import { ApprovedUserGuard } from '../guards/approved-profile.guard';
 import { JwtObject } from '../types/token/jwt-object';
 import { User } from '../user/user.decorator';
@@ -104,10 +103,7 @@ export class SailController {
 
   @Get('/number/:number')
   async getSailByNumber(@Param('number') sail_number: number) {
-    return SailEntity.findOneOrFail({
-      where: { entity_number: sail_number },
-      relations: ['checklists'],
-    });
+    return this.service.getFullyResolvedSail(`${sail_number}`);
   }
 
   @Patch('/:sail_id')
@@ -142,75 +138,27 @@ export class SailController {
 
     this.sailQueue.add('update-sail', job);
 
-    return SailEntity.findOne({
-      where: { id: sail_id },
-      relations: ['checklists'],
-    });
+    return this.service.getFullyResolvedSail(sail_id);
   }
 
   @Get('/available')
   async availableSails(@User() user: JwtObject ) {
     const futureSails = await SailEntity.find({
-      relations: ['checklists'],
+      relations: [
+        'boat',
+        'manifest'
+      ],
       where: {
         status: SailStatus.New,
         start_at: MoreThanOrEqual(new Date()),
       },
-      order: { start_at: 'ASC' }
+      order: { start_at: 'ASC' },
+      loadEagerRelations: false,
     });
 
     return futureSails
       .filter(sail => !sail.manifest.some(sailor => sailor.profile_id === user.profile_id))
       .filter(sail => sail.manifest.length < sail.max_occupancy);
-  }
-
-  @Get('/download')
-  @UserAccess(UserAccessFields.DownloadSails)
-  async download(@Query() query, @Res() response) {
-    const paginatedSails = await this.findSails(query, true);
-
-    const fields = [
-      '#',
-      'name',
-      'description',
-      'boat',
-      'start',
-      'end',
-      'sailors',
-      'guests',
-      'status',
-    ];
-
-    const opts = { fields };
-
-    const data = paginatedSails.data.map(sail => ({
-      '#': sail.entity_number,
-      name: sail.name,
-      description: sail.description,
-      boat: sail.boat.name,
-      start: sail.start_at,
-      end:sail.end_at,
-      sailors: sail
-        .manifest
-        .filter(manifest => !manifest.guest_of_id)
-        .map(manifest => `${manifest.person_name}(${manifest.sailor_role})`),
-      guests: sail
-        .manifest
-        .filter(manifest => !!manifest.guest_of_id)
-        .map(manifest => `${manifest.person_name}(${manifest.guest_of.name})`),
-      status: sail.status,
-    }));
-
-    const parser = new Parser(opts);
-    const csv = parser.parse(data);
-
-    response.header('Content-Type', 'text/csv');
-
-    const date = new Date();
-
-    response
-      .attachment(`COMPANY_NAME_SHORT_HEADER-sails-${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.csv`);
-    return response.send(csv);
   }
 
   @Get('/')
@@ -292,7 +240,7 @@ export class SailController {
       return sail.id;
     } );
 
-    return SailEntity.findOne({ where: { id: createdSailId } });
+    return this.service.getFullyResolvedSail(createdSailId);
   }
 
   private async findSails(query, isDownload = false): Promise<PaginatedSail> {

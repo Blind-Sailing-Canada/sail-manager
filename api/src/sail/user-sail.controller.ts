@@ -29,32 +29,12 @@ import { SailService } from './sail.service';
     exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
     join: {
       boat: { eager: true },
-      'boat.checklist': { eager: true },
-      'boat.instructions': { eager: true },
-      cancelled_by: { eager: true },
-      checklists: { eager: true },
       manifest: { eager: true },
       'manifest.profile': { eager: true },
       'manifest.guest_of': { eager: true },
-      comments: { eager: true },
-      'comments.author': {
-        eager: true,
-        alias: 'comment_author',
-      },
-      'comments.replies': {
-        eager: true,
-        alias: 'comment_replies',
-      },
-      'comments.replies.author': {
-        eager: true,
-        alias: 'comment_replies_author',
-      },
     },
   },
-  routes: { only: [
-    'getOneBase',
-    'getManyBase'
-  ] },
+  routes: { only: ['getManyBase'] },
 })
 @Controller('user_sails')
 @ApiTags('user_sails')
@@ -81,14 +61,23 @@ export class UserSailController {
       take: Number.isInteger(+take) ? +take : 10,
       where,
       order: { start_at: 'ASC' },
+      relations: ['manifest'],
+      loadEagerRelations: false,
+      select: [
+        'id',
+        'start_at'
+      ]
+    });
+
+    return SailEntity.find({
+      where: { id: In(sails.map(sail => sail.id)) },
+      order: { start_at: 'ASC' },
       relations: [
         'boat',
         'manifest'
       ],
       loadEagerRelations: false,
     });
-
-    return sails;
   }
 
   @Get('/past')
@@ -103,14 +92,23 @@ export class UserSailController {
       take: Number.isInteger(+take) ? +take : 5,
       where,
       order: { start_at: 'DESC' },
+      relations: ['manifest'],
+      loadEagerRelations: false,
+      select: [
+        'id',
+        'start_at'
+      ]
+    });
+
+    return SailEntity.find({
+      where: { id: In(sails.map(sail => sail.id)) },
+      order: { start_at: 'DESC' },
       relations: [
         'boat',
         'manifest'
       ],
       loadEagerRelations: false,
     });
-
-    return sails;
   }
 
   @Get('/future')
@@ -130,15 +128,24 @@ export class UserSailController {
           take: Number.isInteger(+take) ? +take : 5,
           where,
           order: { start_at: 'ASC' },
-          relations: [
-            'boat',
-            'manifest'
-          ],
+          relations: ['manifest'],
           loadEagerRelations: false,
+          select: [
+            'id',
+            'start_at'
+          ]
         }
       );
 
-    return sails;
+    return SailEntity.find({
+      where: { id: In(sails.map(sail => sail.id)) },
+      order: { start_at: 'ASC' },
+      relations: [
+        'boat',
+        'manifest'
+      ],
+      loadEagerRelations: false,
+    });
   }
 
   @Get('/today')

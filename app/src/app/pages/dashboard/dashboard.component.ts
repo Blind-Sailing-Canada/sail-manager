@@ -30,31 +30,17 @@ import {
   viewSailRoute,
   viewUserSailsRoute,
 } from '../../routes/routes';
-import {
-  fetchInProgressSailsForAll,
-  fetchInProgressSailsForUser,
-} from '../../store/actions/in-progress-sails.actions';
-import {
-  fetchPastSailsForAll,
-  fetchPastSailsForUser,
-} from '../../store/actions/past-sails.actions';
 import { dismissRequiredAction, fetchNewRequiredActionsForUser } from '../../store/actions/required-actions.actions';
-import {
-  fetchFutureSailsForAll,
-  fetchFutureSailsForUser,
-} from '../../store/actions/future-sails.actions';
 import { STORE_SLICES } from '../../store/store';
 import { BasePageComponent } from '../base-page/base-page.component';
-import { FutureSailsState } from '../../models/future-sails-state.interface';
-import { PastSailsState } from '../../models/past-sails-state.interface';
-import { InProgressSailsState } from '../../models/in-progress-sails-state';
-import { TodaySailsState } from '../../models/today-sails-state.interface';
-import { fetchTodaySailsForAll, fetchTodaySailsForUser } from '../../store/actions/today-sails.actions';
+import { fetchTodaySailsForAll } from '../../store/actions/today-sails.actions';
 import { RequiredActionStatus } from '../../../../../api/src/types/required-action/required-action-status';
 import { UserAccessFields } from '../../../../../api/src/types/user-access/user-access-fields';
 import { SailPaymentClaim } from '../../../../../api/src/types/sail-payment-claim/sail-payment-claim';
 import { SailPaymentClaimService } from '../../services/sail-payment-claim.service';
 import { firstValueFrom } from 'rxjs';
+import { SailService } from '../../services/sail.service';
+import { UserSailsService } from '../../services/user-sails.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -73,7 +59,6 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
   public createSailRequestRoute = createSailRequestRoute.toString();
 
   public allInProgressSails: Sail[] = [];
-  public allPastSails: Sail[] = [];
   public clinicsLink = listClinicsRoute;
   public documentsLink = listDocumentsRoute();
   public listChallengesLink = listChallengesRoute;
@@ -95,6 +80,8 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
     @Inject(Store) store: Store<any>,
     @Inject(Router) router: Router,
     @Inject(SailPaymentClaimService) private sailClaimService: SailPaymentClaimService,
+    @Inject(SailService) private sailService: SailService,
+    @Inject(UserSailsService) private userSailService: UserSailsService,
   ) {
     super(store, undefined, router);
   }
@@ -109,38 +96,18 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
         .filter(action => action.assigned_to_id === this.user.profile.id && action.status === RequiredActionStatus.New);
     });
 
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.FUTURE_SAILS, (sails: FutureSailsState) => {
-      this.availableSails = sails.all || [];
-      this.myFutureSails = sails[this.user.profile.id] || [];
-    });
-
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.PAST_SAILS, (sails: PastSailsState) => {
-      this.allPastSails = sails.all || [];
-      this.myPastSails = sails[this.user.profile.id] || [];
-    });
-
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.IN_PROGRESS_SAILS, (sails: InProgressSailsState) => {
-      this.allPastSails = sails.all || [];
-      this.myPastSails = sails[this.user.profile.id] || [];
-    });
-
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.TODAY_SAILS, (sails: TodaySailsState) => {
-      this.allTodaySails = sails.all || [];
-      this.myTodaySails = sails[this.user.profile.id] || [];
-    });
-
     this.fetchMyTodaySails();
     this.fetchAllTodaySails();
     this.fetchMyFutureSails();
     this.fetchMyInProgressSails();
+    this.fetchAvailableSails();
+    this.fetchMyPastSails();
+    this.fetchOtherPastSails();
 
     if (this.shouldDisplayAllInProgressSails) {
       this.fetchAllInProgressSails();
     }
 
-    this.fetchAvailableSails();
-    this.fetchMyPastSails();
-    this.fetchOtherPastSails();
     this.fetchNewRequiredActionsForUser();
     this.fetchOutstandingSailFees();
   }
@@ -163,35 +130,77 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
     this.dispatchAction(dismissRequiredAction({ action_id: requiredAction.id, notify: true }));
   }
 
-  public fetchMyPastSails(notify = false): void {
-    this.dispatchAction(fetchPastSailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=5' }));
+  public fetchMyPastSails(): void {
+    this.startLoading();
+
+    const fetcher = this.userSailService.fetchPastSailsForUser(this.user.profile.id, 'limit=5');
+    firstValueFrom(fetcher)
+      .then(sails => this.myPastSails = sails)
+      .finally(() => this.finishLoading());
   }
 
   public fetchOtherPastSails(notify = false): void {
-    this.dispatchAction(fetchPastSailsForAll({ notify, query: 'limit=5' }));
+    this.startLoading();
+
+    const fetcher = this.userSailService.fetchPastSailsForAll('limit=5');
+    firstValueFrom(fetcher)
+      .then(sails => this.otherPastSails = sails)
+      .finally(() => this.finishLoading());
   }
 
   public fetchMyFutureSails(notify = false): void {
-    this.dispatchAction(fetchFutureSailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=5' }));
+    this.startLoading();
+
+    const fetcher = this.userSailService.fetchFutureSailsForUser(this.user.profile.id, 'limit=5');
+    firstValueFrom(fetcher)
+      .then(sails => this.myFutureSails = sails)
+      .finally(() => this.finishLoading());
   }
 
   public fetchMyTodaySails(notify = false): void {
-    this.dispatchAction(fetchTodaySailsForUser({ notify, profile_id: this.user.profile.id, query: 'limit=5' }));
+    this.startLoading();
+
+    const fetcher = this.userSailService.fetchTodaySailsForUser(this.user.profile.id, 'limit=5');
+    firstValueFrom(fetcher)
+      .then(sails => this.myTodaySails = sails)
+      .finally(() => this.finishLoading());
   }
 
   public fetchAllTodaySails(notify = false): void {
     this.dispatchAction(fetchTodaySailsForAll({ notify }));
+    this.startLoading();
+
+    const fetcher = this.userSailService.fetchTodaySailsForAll('limit=5');
+    firstValueFrom(fetcher)
+      .then(sails => this.allTodaySails = sails)
+      .finally(() => this.finishLoading());
   }
+
   public async fetchMyInProgressSails(notify = false) {
-    this.dispatchAction(fetchInProgressSailsForUser({ notify, id: this.user.profile.id }));
+    this.startLoading();
+
+    const fetcher = this.userSailService.fetchInProgressSailsForUser(this.user.profile.id, 'limit=5');
+    firstValueFrom(fetcher)
+      .then(sails => this.myInProgressSails = sails)
+      .finally(() => this.finishLoading());
   }
 
   public fetchAllInProgressSails(notify = false): void {
-    this.dispatchAction(fetchInProgressSailsForAll({ notify }));
+    this.startLoading();
+
+    const fetcher = this.userSailService.fetchInProgressSailsForAll('limit=5');
+    firstValueFrom(fetcher)
+      .then(sails => this.availableSails = sails)
+      .finally(() => this.finishLoading());
   }
 
-  public fetchAvailableSails(notify = false): void {
-    this.dispatchAction(fetchFutureSailsForAll({ notify, query: 'limit=10' }));
+  public fetchAvailableSails(): void {
+    this.startLoading();
+
+    const fetcher = this.sailService.fetchAvailableSails('limit=5');
+    firstValueFrom(fetcher)
+      .then(sails => this.availableSails = sails)
+      .finally(() => this.finishLoading());
   }
 
   public viewSail(sail) {

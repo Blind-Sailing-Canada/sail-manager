@@ -1,4 +1,6 @@
-import { Repository } from 'typeorm';
+import {
+  FindOptionsWhere, Repository
+} from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SailEntity } from './sail.entity';
@@ -11,8 +13,16 @@ export class SailService extends BaseService<SailEntity> {
   }
 
   getFullyResolvedSail(sail_id: string): Promise<SailEntity> {
+    const where = {} as FindOptionsWhere<SailEntity>;
+
+    if (isNaN(Number(sail_id))) {
+      where.id = sail_id;
+    } else {
+      where.entity_number = +sail_id;
+    }
+
     return SailEntity.findOne({
-      where: { id: sail_id },
+      where,
       relations: [
         'checklists',
         'comments'
