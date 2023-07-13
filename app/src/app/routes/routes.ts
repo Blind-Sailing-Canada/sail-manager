@@ -30,6 +30,7 @@ export enum RootRoutes {
 
 export enum SubRoutes {
   ADMIN_PAYMENT_DASHBOARD = 'payment-dashboard',
+  ADMIN_SAIL_FEEDBACK = 'sail-feedback',
   ARRIVAL_SAIL_CHECKLIST = 'arrival',
   CANCEL_SAIL = 'cancel',
   CANCEL_SOCIAL = 'cancel',
@@ -45,6 +46,7 @@ export enum SubRoutes {
   CREATE_SAVED_QUERY = 'create',
   CREATE_SOCIAL = 'create',
   DEPARTURE_SAIL_CHECKLIST = 'departure',
+  EDIT_ADMIN_PAYMENT = 'edit-payment',
   EDIT_BOAT = 'edit',
   EDIT_BOAT_CHECKLIST = 'edit',
   EDIT_BOAT_INSTRUCTIONS = 'edit',
@@ -84,7 +86,6 @@ export enum SubRoutes {
   SAVED_QUERY = 'saved-db-query',
   SUBMIT_FEEDBACK = 'submit',
   VIEW_ADMIN_PAYMENT = 'view-payment',
-  EDIT_ADMIN_PAYMENT = 'edit-payment',
   VIEW_BOAT = 'view',
   VIEW_BOAT_INSTRUCTIONS = 'view',
   VIEW_CHALLENGE = 'view',
@@ -176,6 +177,7 @@ export enum FullRoutes {
   LIST_MEDIA = MEDIA + SEPARATOR + SubRoutes.LIST_MEDIA,
   LIST_SAIL_CATEGORIES = SAIL_CATEGORIES + SEPARATOR + SubRoutes.LIST_SAIL_CATEGORIES,
   ADMIN_PAYMENT_DASHBOARD = ADMIN + SEPARATOR + SubRoutes.ADMIN_PAYMENT_DASHBOARD,
+  ADMIN_SAIL_FEEDBACK = ADMIN + SEPARATOR + SubRoutes.ADMIN_SAIL_FEEDBACK,
   MISSING_SAIL_PAYMENTS = ADMIN_PAYMENT_DASHBOARD + SEPARATOR + SubRoutes.MISSING_SAIL_PAYMENTS,
   VIEW_ADMIN_PAYMENT = ADMIN + SEPARATOR + SubRoutes.VIEW_ADMIN_PAYMENT,
   LIST_SAIL_PATHS = SAIL_PATHS + SEPARATOR + SubRoutes.LIST_SAIL_PATHS,
@@ -254,6 +256,7 @@ export const listFeedbackRoute = (sail_id: string) => `${FullRoutes.LIST_FEEDBAC
 export const listMediaRoute = FullRoutes.LIST_MEDIA;
 export const listSailCategoriesRoute = FullRoutes.LIST_SAIL_CATEGORIES.toString();
 export const adminPaymentDashboardRoute = FullRoutes.ADMIN_PAYMENT_DASHBOARD.toString();
+export const adminSailFeedbackRoute = FullRoutes.ADMIN_SAIL_FEEDBACK.toString();
 export const viewAdminPaymentRoute = (id: string) => `${FullRoutes.VIEW_ADMIN_PAYMENT}/${id}`;
 export const listSailPathsRoute = (sail_id: string) => `${FullRoutes.LIST_SAIL_PATHS}/${sail_id}`;
 export const listSavedQueryRoute = () => `${FullRoutes.LIST_SAVED_QUERY}`;

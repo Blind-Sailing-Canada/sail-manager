@@ -15,6 +15,7 @@ import { AdminPaymentEditPageComponent } from './admin-payment/admin-payment-edi
 import { AdminPaymentManualPageComponent } from './admin-payment/admin-payment-manual-page/admin-payment-manual-page.component';
 import { AdminPaymentViewPageComponent } from './admin-payment/admin-payment-view-page/admin-payment-view-page.component';
 import { AdminSailCategoryPageComponent } from './admin-sail-category-page/admin-sail-category-page.component';
+import { AdminSailFeedbackPageComponent } from './admin-sail-feedback-page/admin-sail-feedback-page.component';
 import { AdminUserEditPageComponent } from './admin-user-edit-page/admin-user-edit-page.component';
 import { SavedQueryEditPageComponent } from './saved-query/saved-query-edit-page/saved-query-edit-page.component';
 import { SavedQueryListPageComponent } from './saved-query/saved-query-list-page/saved-query-list-page.component';
@@ -30,6 +31,11 @@ const routes: Routes = [
     path: `${SubRoutes.ADMIN_PAYMENT_DASHBOARD}`,
     canActivate: [AdminGuard],
     component: AdminPaymentDashboardPageComponent,
+  },
+  {
+    path: `${SubRoutes.ADMIN_SAIL_FEEDBACK}`,
+    canActivate: [AdminGuard],
+    component: AdminSailFeedbackPageComponent,
   },
   {
     path: `${RootRoutes.PURCHASES}/${SubRoutes.CREATE_PURCHASE}`,

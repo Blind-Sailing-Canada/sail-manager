@@ -22,7 +22,8 @@ import { SailFeedbackService } from './sail-feedback.service';
     primary: true,
   } },
   query: {
-    alwaysPaginate: false,
+    alwaysPaginate: true,
+    exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
     join: { sail: { eager: true } },
   },
 })

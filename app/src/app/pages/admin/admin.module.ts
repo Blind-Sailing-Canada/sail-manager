@@ -24,6 +24,7 @@ import {
 } from './admin-payment/admin-missing-sail-payments-page/admin-missing-sail-payments-page.component';
 import { AdminPaymentEditPageComponent } from './admin-payment/admin-payment-edit-page/admin-payment-edit-page.component';
 import { ConfirmDialogModule } from '../../components/confirm-dialog/confirm-dialog.module';
+import { AdminSailFeedbackPageComponent } from './admin-sail-feedback-page/admin-sail-feedback-page.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ConfirmDialogModule } from '../../components/confirm-dialog/confirm-dia
     AdminPaymentManualPageComponent,
     AdminPaymentViewPageComponent,
     AdminSailCategoryPageComponent,
+    AdminSailFeedbackPageComponent,
     AdminUserEditPageComponent,
     SavedQueryEditPageComponent,
     SavedQueryListPageComponent,

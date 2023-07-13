@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   adminPaymentDashboardRoute,
+  adminSailFeedbackRoute,
   editProfilePrivilegesRoute, FullRoutes, listSailCategoriesRoute, missingSailPaymentsRoute,
 } from '../../../routes/routes';
 import { ProfileService } from '../../../services/profile.service';
@@ -33,21 +34,22 @@ import { WindowService } from '../../../services/window.service';
 })
 export class AdminDashboardPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
 
+  public adminPaymentDashboardRoute = adminPaymentDashboardRoute;
+  public adminSailFeedbackRoute = adminSailFeedbackRoute;
   public createUserDialogRef: MatDialogRef<CreateUserDialogComponent>;
-  public pendingApproval: Profile[];
-  public dbQueryRoute = FullRoutes.SAVED_QUERY;
   public dataSource = new MatTableDataSource<Profile>([]);
+  public dbQueryRoute = FullRoutes.SAVED_QUERY;
   public displayedColumns: string[] = ['photo', 'name', 'roles', 'created_at', 'last_login', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['name'];
   public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'name,ASC' };
+  public listSailCategoriesRoute = listSailCategoriesRoute;
+  public missingSailPaymentsRoute = missingSailPaymentsRoute;
   public paginatedData: PaginatedProfile;
+  public pendingApproval: Profile[];
   public profile_id: string;
+  public profileLink = editProfilePrivilegesRoute;
   public profileStatus: ProfileStatus | 'ANY' = 'ANY';
   public profileStatusValues = { ...ProfileStatus, ANY: 'ANY' };
-  public profileLink = editProfilePrivilegesRoute;
-  public missingSailPaymentsRoute = missingSailPaymentsRoute;
-  public adminPaymentDashboardRoute = adminPaymentDashboardRoute;
-  public listSailCategoriesRoute = listSailCategoriesRoute;
 
   constructor(
     @Inject(Store) store: Store<any>,

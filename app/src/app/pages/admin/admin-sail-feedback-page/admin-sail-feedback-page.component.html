@@ -1,0 +1,220 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>stars</mat-icon>
+    </div>
+    <mat-card-title
+      aria-level="1"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Sail Feedback</mat-card-title>
+  </mat-card-header>
+  <mat-card-content *ngIf="!windowService.isSmallWidth">
+    <ng-container [ngTemplateOutlet]="feedbackTable"></ng-container>
+  </mat-card-content>
+  <mat-card-content *ngIf="windowService.isSmallWidth">
+    <ng-container [ngTemplateOutlet]="feedbackTableMobile"></ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #feedbackTable>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumns"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of feedback"
+  >
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    >
+    </ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="created_at"
+      matSortDirection="desc"
+      tableColumns
+    >
+      <ng-container matColumnDef="sail.entity_number">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Sail # </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.sail?.entity_number}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="feedback">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Feedback </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.feedback}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="rating">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Rating </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.rating}}/5</td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Created at </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.created_at | humanDateWithTime}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th
+          *matHeaderCellDef
+          mat-header-cell
+        > </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+        > <button
+            (click)="goToEntity('SailEntity', element.sail?.id)"
+            *ngIf="element.sail"
+            mat-flat-button
+            title="Click to go to sail view page {{element.sail?.name}}"
+          >
+            View Sail
+          </button> </td>
+      </ng-container>
+
+    </ng-container>
+  </app-material-table>
+</ng-template>
+
+<ng-template #feedbackTableMobile>
+  <app-material-table
+    (filterHandler)="filterHandler($event)"
+    [dataSource]="dataSource"
+    [defaultFilterInfo]="filterInfo"
+    [displayedColumns]="displayedColumnsMobile"
+    [loading]="loading"
+    [paginatedData]="paginatedData"
+    paginationLabel="Select page of feedback"
+  >
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    >
+    </ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="created_at"
+      matSortDirection="desc"
+      tableColumns
+    >
+      <ng-container matColumnDef="created_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Feedback </th>
+        <td
+          *matCellDef="let element"
+          class="align-center"
+          mat-cell
+          tabindex="0"
+        >
+          <div class="mobile-table-row-info">
+            <label tabindex="0">Sail #:</label>
+            <span>
+              <a
+                tabindex="0"
+                [routerLink]="viewSailRoute(element.sail?.id)"
+              >
+                {{element.sail.entity_number}} {{element.sail.name}}
+              </a>
+            </span>
+            <label tabindex="0">Feedback:</label>
+            <span>
+              {{element.feedback || 'none'}}
+            </span>
+            <label tabindex="0">Rating:</label>
+            <span tabindex="0">{{element.rating}}/5</span>
+            <label tabindex="0">Created at:</label>
+            <span tabindex="0">{{element.created_at | humanDateWithTime:true}}</span>
+          </div>
+          <button
+            [routerLink]="viewSailRoute(element.sail?.id)"
+            *ngIf="element.sail"
+            mat-raised-button
+            title="Click to go to sail view page {{element.sail?.name}}"
+          >
+            View Sail
+          </button>
+        </td>
+      </ng-container>
+
+    </ng-container>
+  </app-material-table>
+</ng-template>
+
+<ng-template #TABLE_FILTERS>
+  <mat-form-field>
+    <mat-label>Year</mat-label>
+    <input
+      type="number"
+      #feedbackYearInput
+      [(ngModel)]="feedbackYear"
+      [ngModelOptions]="{standalone: true}"
+      matNativeControl
+      title="filter by feedback year"
+    >
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Rating</mat-label>
+    <input
+      [(ngModel)]="feedbackRating"
+      [ngModelOptions]="{standalone: true}"
+      #feedbackRatingInput
+      matNativeControl
+      max="5"
+      min="1"
+      title="filter by feedback rating (1 to 5)"
+      type="number"
+    >
+  </mat-form-field>
+  <mat-checkbox
+    [(ngModel)]="hasFeedback"
+    (change)="filterSailFeedback()"
+    title="Select to show only feedback that has text."
+  >Has text</mat-checkbox>
+</ng-template>

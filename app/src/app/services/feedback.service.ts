@@ -5,6 +5,7 @@ import {
   Injectable,
 } from '@angular/core';
 import { SailFeedback } from '../../../../api/src/types/sail-feedback/sail-feedback';
+import { PaginatedSailFeedback } from '../../../../api/src/types/sail-feedback/paginated-sail-feedback';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,22 @@ export class FeedbackService {
 
   public fetchFeedback(id: string): Observable<SailFeedback> {
     return this.http.get<SailFeedback>(`${this.API_URL}/${id}`);
+  }
+
+  fetchAllPaginated(
+    query?: any,
+    page: number = 1,
+    per_page: number = 10,
+    sort: string = 'created_at,ASC'
+  ): Observable<PaginatedSailFeedback> {
+    return this.http
+      .get<PaginatedSailFeedback>(
+        `${this.API_URL}`,
+        { params: {
+          s: JSON.stringify(query || {}),
+          page,
+          per_page,
+          sort },
+        });
   }
 }

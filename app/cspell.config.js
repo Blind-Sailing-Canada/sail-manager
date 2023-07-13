@@ -4,16 +4,17 @@ module.exports = {
   // words - list of words to be always considered correct
   'words': [
     'Disenroll',
-    'Filesize',
-    'ICDN',
-    'PHRF',
-    'UNPATCHED',
     'disenroll',
+    'Filesize',
     'fileupload',
     'formatjs',
+    'ICDN',
     'keyvalue',
     'maxlength',
+    'notnull',
+    'PHRF',
     'relativetimeformat',
     'shoppingbag',
+    'UNPATCHED',
   ],
 };
