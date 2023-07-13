@@ -136,8 +136,8 @@ export class SailActionsController {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
     }
 
-    if (sail.max_occupancy <= sail.manifest.length) {
-      throw new BadRequestException('Sail is full.');
+    if (sail.manifest.find(sailor => sailor.sailor_role == SailorRole.Crew)) {
+      throw new BadRequestException('This sail already has a crew.');
     }
 
     const sailorProfile = await ProfileEntity.findOneOrFail({ where: { id: user.profile_id } });
