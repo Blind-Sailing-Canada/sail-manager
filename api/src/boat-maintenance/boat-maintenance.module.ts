@@ -7,6 +7,7 @@ import { FirebaseAdminModule } from '../firebase-admin/firebase-admin.module';
 import { GoogleApiModule } from '../google-api/google-api.module';
 import { BoatMaintenanceController } from './boat-maintenance.controller';
 import { BoatMaintenanceEntity } from './boat-maintenance.entity';
+import { BoatMaintenanceJob } from './boat-maintenance.job';
 import { BoatMaintenanceProcessor } from './boat-maintenance.processor';
 import { BoatMaintenanceService } from './boat-maintenance.service';
 import { BoatMaintenanceSubscriber } from './boat-maintenance.subscriber';
@@ -22,9 +23,10 @@ import { BoatMaintenanceSubscriber } from './boat-maintenance.subscriber';
   ],
   controllers: [BoatMaintenanceController],
   providers: [
+    BoatMaintenanceJob,
+    BoatMaintenanceProcessor,
     BoatMaintenanceService,
     BoatMaintenanceSubscriber,
-    BoatMaintenanceProcessor,
   ],
 })
 export class BoatMaintenanceModule { }

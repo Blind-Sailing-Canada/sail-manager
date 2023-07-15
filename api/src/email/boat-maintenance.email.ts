@@ -12,9 +12,38 @@ import { toLocalDate } from '../utils/date.util';
 @Injectable({ scope: Scope.DEFAULT })
 export class BoatMaintenanceEmail {
 
+  outstandingMaintenanceRequestEmail(requests: BoatMaintenance[]): EmailInfo {
+    const emailInfo: EmailInfo = {
+      subject: `[COMPANY_NAME_SHORT_HEADER] Outstanding boat maintenance requests as of ${toLocalDate(new Date())}`,
+      content: `
+        <html>
+          <body>
+            <h2>There are ${requests.length} maintenance request are older than 2 months.</h2>
+            <table>
+              <caption>Maintenance Requests</caption>
+              <thead>
+                <tr>
+                  <th>Request</th>
+                  <th>Boat</th>
+                  <th>Submitted on</th>
+                  <th>Days open</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${this.maintenanceTableRows(requests)}
+              </tbody>
+            </table>
+          </body>
+        </html>
+      `.trim(),
+    };
+
+    return emailInfo;
+  }
+
   newMaintenanceRequestEmail(report: BoatMaintenance): EmailInfo {
     const emailInfo: EmailInfo = {
-      subject: 'New boat maintenance request',
+      subject: '[COMPANY_NAME_SHORT_HEADER] New boat maintenance request',
       content: `
         <html>
           <body>
@@ -47,7 +76,7 @@ export class BoatMaintenanceEmail {
 
   updatedMaintenanceRequestEmail(report: BoatMaintenance): EmailInfo{
     const emailInfo: EmailInfo = {
-      subject: 'Boat maintenance request update',
+      subject: '[COMPANY_NAME_SHORT_HEADER] Boat maintenance request update',
       content: `
         <html>
           <body>
@@ -94,7 +123,7 @@ export class BoatMaintenanceEmail {
       .forEach(existingComment => sendTo.add(existingComment.author.email));
 
     const emailInfo: EmailInfo = {
-      subject: 'New comment on maintenance request',
+      subject: '[COMPANY_NAME_SHORT_HEADER] New comment on maintenance request',
       bcc: Array.from(sendTo),
       content: `
         <html>
@@ -135,6 +164,29 @@ export class BoatMaintenanceEmail {
       .filter(picture => picture.media_type === MediaType.Picture)
       .map(picture => `<img width="150px" height="200px" src="${DOMAIN}/${picture.url}" alt="${picture.title??''}">`)
       .join('');
+  }
+
+  private maintenanceTableRows(reports: BoatMaintenance[]): string {
+    return reports
+      .map((report) => {
+        return `
+          <tr>
+            <td>${report.request_details}</td>
+            <td>${report.boat?.name}</td>
+            <td>${toLocalDate(report.created_at)}</td>
+            <td>${this.numberOfDaysSince(report.created_at)}</td>
+            <td><a href="${DOMAIN}/maintenance/view/${report.id}">View request</a></td>
+          </tr>
+        `;
+      })
+      .join(' ');
+  }
+
+  private numberOfDaysSince(date: Date): number {
+    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    const now = new Date();
+
+    return Math.round(Math.abs((date.getTime() - now.getTime()) / oneDay));
   }
 
 }
