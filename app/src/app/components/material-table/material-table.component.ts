@@ -58,6 +58,7 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
 
   ngOnChanges(): void {
     this.pagination = this.defaultFilterInfo?.pagination || DEFAULT_PAGINATION;
+    this.search = this.defaultFilterInfo?.search;
   }
 
   ngOnDestroy(): void {

@@ -45,7 +45,7 @@
           [(ngModel)]="mediaType"
           [ngModelOptions]="{standalone: true}"
           matNativeControl
-          (ngModelChange)="filterMedia()"
+          (ngModelChange)="updateMediaUrl()"
         >
           <option
             *ngFor="let type of mediaTypeValues | keyvalue"
@@ -170,7 +170,7 @@
           [(ngModel)]="mediaType"
           [ngModelOptions]="{standalone: true}"
           matNativeControl
-          (ngModelChange)="filterMedia()"
+          (ngModelChange)="updateMediaUrl()"
         >
           <option
             *ngFor="let type of mediaTypeValues | keyvalue"

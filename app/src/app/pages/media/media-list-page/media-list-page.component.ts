@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { MediaService } from '../../../services/media.service';
 import { Media } from '../../../../../../api/src/types/media/media';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, takeWhile } from 'rxjs';
 import { STORE_SLICES } from '../../../store/store';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaType } from '../../../../../../api/src/types/media/media-type';
@@ -54,13 +54,57 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
   }
 
   ngOnInit() {
-    this.entities = (this.route.snapshot.queryParams.entity || '').split(',').filter(Boolean);
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
-    this.filterMedia();
+
+    this.route.queryParams
+      .pipe( takeWhile(() => this.active && !!this.user))
+      .subscribe((params) => {
+        if (params.page === undefined) {
+          return;
+        }
+        this.updateFilter(params);
+        this.filterMedia();
+      });
+
+    this.updateFilter(this.route.snapshot.queryParams);
+    this.updateMediaUrl();
   }
 
-  public async filterMedia(): Promise<void> {
-    const { search, sort, pagination } = this.filterInfo;
+  private updateFilter(params) {
+    this.entities = (params.entity || '').split(',').filter(Boolean);
+    this.mediaType = params.media_type ?? 'ANY';
+
+    const filterInfo = { ...this.filterInfo };
+
+    filterInfo.pagination.pageIndex = (params.page ?? 1) - 1;
+    filterInfo.pagination.pageSize = params.per_page ?? DEFAULT_PAGINATION.pageSize;
+    filterInfo.sort = params.sort ?? 'created_at,DESC';
+    filterInfo.search = params.search ?? '';
+
+    this.filterInfo = filterInfo;
+  }
+
+  public updateMediaUrl() {
+    const { pagination, sort } = this.filterInfo;
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: {
+          entity: this.entities.join(','),
+          media_type: this.mediaType,
+          page: pagination.pageIndex + 1,
+          per_page: pagination.pageSize,
+          search: this.filterInfo.search,
+          sort,
+        },
+        queryParamsHandling: 'merge',
+        replaceUrl: this.route.snapshot.queryParams.page === undefined,
+      });
+  }
+
+  private buildQuery() {
+    const { search } = this.filterInfo;
     const query = { $and: [] };
 
     if (this.entities.length) {
@@ -80,6 +124,13 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
       query.$and.push({ media_type: this.mediaType });
     }
 
+    return query;
+  }
+
+  private async filterMedia(): Promise<void> {
+    const query = this.buildQuery();
+    const { pagination, sort } = this.filterInfo;
+
     this.startLoading();
 
     const fetcher =  this.mediaService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
@@ -94,7 +145,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
   public filterHandler(event: FilterInfo): void {
     this.filterInfo = event;
 
-    this.filterMedia();
+    this.updateMediaUrl();
   }
 
 }
