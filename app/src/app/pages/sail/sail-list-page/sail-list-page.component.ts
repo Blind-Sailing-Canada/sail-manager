@@ -3,7 +3,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import {
@@ -18,7 +18,7 @@ import { ProfileRole } from '../../../../../../api/src/types/profile/profile-rol
 import { SailService } from '../../../services/sail.service';
 import { UserAccessFields } from '../../../../../../api/src/types/user-access/user-access-fields';
 import { STORE_SLICES } from '../../../store/store';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, takeWhile } from 'rxjs';
 import { PaginatedSail } from '../../../../../../api/src/types/sail/paginated-sail';
 import { Sail } from '../../../../../../api/src/types/sail/sail';
 import { MatTableDataSource } from '@angular/material/table';
@@ -52,26 +52,41 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
 
   constructor(
     @Inject(Router) router: Router,
+    @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Store) store: Store<any>,
     @Inject(SailService) private sailService: SailService,
     @Inject(WindowService) public windowService: WindowService,
     @Inject(MatDialog) dialog: MatDialog,
   ) {
-    super(store, undefined, router, dialog);
+    super(store, route, router, dialog);
   }
 
   ngOnInit() {
+    this.route.queryParams
+      .pipe( takeWhile(() => this.active && !!this.user))
+      .subscribe((params) => {
+        if (params.page === undefined) {
+          return;
+        }
+        this.updateFilter(params);
+        this.fetchSails();
+      });
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAILS);
 
-    const sailSearchData = JSON.parse(sessionStorage.getItem('sailSearchData') || '{}');
-    this.boatName = sailSearchData.boatName;
-    this.sailEnd = sailSearchData.sailEnd;
-    this.sailName = sailSearchData.sailName;
-    this.sailStart = sailSearchData.sailStart;
-    this.sailStatus = sailSearchData.sailStatus || 'ANY';
-    this.sailorName = sailSearchData.sailorName;
+    this.updateFilter(this.route.snapshot.queryParams);
+    this.updateSailsUrl();
+  }
 
-    this.fetchSails();
+  private updateFilter(params) {
+    this.boatName = params.boatName;
+    this.sailEnd = params.sailEnd?.split('T')[0];
+    this.sailName = params.sailName;
+    this.sailStart = params.sailStart?.split('T')[0];
+    this.sailStatus = params.sailStatus || 'ANY';
+    this.sailorName = params.sailorName;
+    this.filterInfo.pagination.pageIndex = (params.page ?? 1) - 1;
+    this.filterInfo.pagination.pageSize = params.per_page ?? DEFAULT_PAGINATION.pageSize;
+    this.filterInfo.sort = params.sort ?? 'start_at,DESC';
   }
 
   public resetFilter() {
@@ -93,10 +108,21 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
       pagination: DEFAULT_PAGINATION
     };
 
-    this.fetchSails();
+    this.updateSailsUrl();
   }
 
-  public async fetchSails() {
+  private updateSailsUrl() {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: this.buildQuery(),
+        queryParamsHandling: 'merge',
+        replaceUrl: this.route.snapshot.queryParams.page === undefined,
+      });
+  }
+
+  private async fetchSails() {
     const query = this.buildQuery();
 
     this.startLoading();
@@ -111,15 +137,6 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
   }
 
   private buildQuery() {
-    sessionStorage.setItem('sailSearchData', JSON.stringify({
-      boatName: this.boatName,
-      sailEnd: this.sailEnd,
-      sailName: this.sailName,
-      sailStart: this.sailStart,
-      sailStatus: this.sailStatus,
-      sailorName: this.sailorName,
-    }));
-
     const query = {} as any;
 
     if (this.sailName) {
@@ -127,11 +144,11 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
     }
 
     if (this.sailStart) {
-      query.sailStart = new Date(`${this.sailStart}T00:00:00`).toISOString();
+      query.sailStart = new Date(`${this.sailStart}T00:00:00Z`).toISOString();
     }
 
     if (this.sailEnd) {
-      query.sailEnd = new Date(`${this.sailEnd}T23:59:59`).toISOString();
+      query.sailEnd = new Date(`${this.sailEnd}T23:59:59Z`).toISOString();
     }
 
     if (this.boatName) {
@@ -172,7 +189,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
   public filterHandler(event: FilterInfo): void {
     this.filterInfo = event;
 
-    this.fetchSails();
+    this.updateSailsUrl();
   }
 
   public boatThumbnail(boat: Boat): string {
