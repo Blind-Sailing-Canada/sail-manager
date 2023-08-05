@@ -58,7 +58,7 @@ export class MomentService {
     const size = short ? 'short' : 'long';
     const digits = short ? '2-digit' : 'numeric';
 
-    return new Date(date).toLocaleTimeString([], { month: size, day: digits, year: digits, hour12: true });
+    return new Date(date).toLocaleTimeString([], { month: size, day: digits, year: digits, hour12: true, weekday: 'long' });
   }
 
   public time(date: string | Date): string {
