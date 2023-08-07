@@ -3,6 +3,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import {
   ActivatedRoute,
   Router,
@@ -27,8 +28,9 @@ export class BoatInstructionsBasePageComponent extends BasePageComponent impleme
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
+    @Inject(MatDialog) dialog: MatDialog,
   ) {
-    super(store, route, router);
+    super(store, route, router, dialog);
   }
 
   ngOnInit() {

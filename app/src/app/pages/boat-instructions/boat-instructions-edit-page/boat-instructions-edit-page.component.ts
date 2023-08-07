@@ -10,6 +10,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import {
   ActivatedRoute,
   Router,
@@ -41,8 +42,9 @@ export class BoatInstructionsEditPageComponent extends BoatInstructionsBasePageC
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
     @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
+    @Inject(MatDialog) dialog: MatDialog,
   ) {
-    super(store, route, router);
+    super(store, route, router, dialog);
     this.buildForm();
   }
 

@@ -6,6 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { BoatInstruction } from '../../../../../api/src/types/boat-instructions/boat-instruction';
+import { Media } from '../../../../../api/src/types/media/media';
 
 @Component({
   selector: 'app-instructions-list',
@@ -14,10 +15,11 @@ import { BoatInstruction } from '../../../../../api/src/types/boat-instructions/
 })
 export class InstructionsListComponent {
 
-  @Input() title: string;
-  @Input() instructions: BoatInstruction[] = [];
   @Input() canReorder: boolean;
+  @Input() instructions: BoatInstruction[] = [];
+  @Input() title: string;
   @Output() rearrange: EventEmitter<void> = new EventEmitter<void>();
+  @Output() showMediaDialog: EventEmitter<Media> = new EventEmitter<Media>();
 
   public drop(event: CdkDragDrop<string[]>) {
     if (!this.canReorder) {

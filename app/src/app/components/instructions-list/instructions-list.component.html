@@ -40,8 +40,9 @@
       tabindex="0"
     ></div>
     <app-image-list
-      *ngIf="!canReorder"
+      (showMediaDialog)="showMediaDialog.emit($event)"
       [pictures]="instruction.media"
+      *ngIf="!canReorder"
     ></app-image-list>
   </mat-expansion-panel>
 </mat-accordion>

@@ -32,16 +32,18 @@
   </mat-card-actions>
   <mat-card-content>
     <app-instructions-list
-      title="Departure Instructions"
-      [instructions]="departureInstructions"
-      [canReorder]="rearrange"
       (rearrange)="departureReordered()"
+      (showMediaDialog)="showMediaDialog($event)"
+      [canReorder]="rearrange"
+      [instructions]="departureInstructions"
+      title="Departure Instructions"
     ></app-instructions-list>
     <app-instructions-list
-      title="Arrival Instructions"
-      [instructions]="arrivalInstructions"
       (rearrange)="arrivalReordered()"
+      (showMediaDialog)="showMediaDialog($event)"
       [canReorder]="rearrange"
+      [instructions]="arrivalInstructions"
+      title="Arrival Instructions"
     ></app-instructions-list>
   </mat-card-content>
 </mat-card>

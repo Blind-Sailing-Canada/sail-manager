@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { InstructionsFormModule } from '../../components/instructions-form/instructions-form.module';
 import { InstructionsListModule } from '../../components/instructions-list/instructions-list.module';
+import { MediaDialogModule } from '../../components/media-dialog/media-dialog.module';
 import { BasePageModule } from '../base-page/base-page.module';
 import { BoatInstructionsBasePageComponent } from './boat-instructions-base-page/boat-instructions-base-page.component';
 import { BoatInstructionsEditPageComponent } from './boat-instructions-edit-page/boat-instructions-edit-page.component';
@@ -23,6 +24,7 @@ import { BoatInstructionsViewPageComponent } from './boat-instructions-view-page
     CommonModule,
     InstructionsFormModule,
     InstructionsListModule,
+    MediaDialogModule,
     ReactiveFormsModule,
   ]
 })
