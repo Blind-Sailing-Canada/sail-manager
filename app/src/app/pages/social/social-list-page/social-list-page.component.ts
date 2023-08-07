@@ -21,6 +21,7 @@ import { SocialStatus } from '../../../../../../api/src/types/social/social-stat
 import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { WindowService } from '../../../services/window.service';
 import { FilterInfo } from '../../../models/filter-into';
+import { MediaType } from '../../../../../../api/src/types/media/media-type';
 
 @Component({
   selector: 'app-social-list-page',
@@ -87,11 +88,13 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
   }
 
   public socialPicture(social: Social): string {
-    if (!social.pictures?.length) {
+    const picture = social.pictures?.find(media => media.media_type === MediaType.Picture);
+
+    if (!picture) {
       return '/assets/icons/local_bar_black_48dp.svg';
     }
 
-    return `${social.pictures[0].url}?height=300`;
+    return `${picture.url}?height=300`;
   }
 
   public async filterSocials(): Promise<void> {
