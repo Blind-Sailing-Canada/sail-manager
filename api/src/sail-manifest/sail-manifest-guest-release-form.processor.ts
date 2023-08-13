@@ -7,6 +7,7 @@ import { BaseQueueProcessor } from '../utils/base-queue-processor';
 import * as Sentry from '@sentry/node';
 import { SailManifestGuestMustSignReleaseFormJob } from '../types/sail-manifest/sail-manifest-guest-must-sign-release-form-job';
 import { ReleaseFormEmail } from '../email/release-form.email';
+import { SailEntity } from '../sail/sail.entity';
 
 @Processor('guest-release-form')
 export class SailManifestGuestRelaseFormProcessor extends BaseQueueProcessor {
@@ -20,7 +21,8 @@ export class SailManifestGuestRelaseFormProcessor extends BaseQueueProcessor {
   @Process('must-sign-form')
   async sendMustSignReleaseFormEmail(job: Job<SailManifestGuestMustSignReleaseFormJob>) {
     try {
-      const email = await this.releaseFormEmail.mustSignReleaseForm(job.data.email);
+      const sail = await SailEntity.findOneOrFail({ where: { id: job.data.sail_id } });
+      const email = await this.releaseFormEmail.mustSignReleaseForm(job.data.guest_name, job.data.email, sail);
       await this.emailService.sendToEmail(email);
     } catch (error) {
       this.logger.error(error);

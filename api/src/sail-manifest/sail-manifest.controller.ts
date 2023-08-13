@@ -91,9 +91,14 @@ export class SailManifestController {
       }
 
       try {
-        const releaseFormJob: SailManifestGuestMustSignReleaseFormJob = { email: guest.guest_email };
-        await this.guestReleaseFormQueue.removeJobs(guest.guest_email);
-        await this.guestReleaseFormQueue.add('must-sign-form', releaseFormJob, { jobId: guest.guest_email });
+        const releaseFormJob: SailManifestGuestMustSignReleaseFormJob = {
+          email: guest.guest_email,
+          guest_name: guest.person_name,
+          sail_id
+        };
+        const jobId = `${guest.guest_email}_${guest.person_name}`;
+        await this.guestReleaseFormQueue.removeJobs(jobId);
+        await this.guestReleaseFormQueue.add('must-sign-form', releaseFormJob, { jobId });
       } catch (error) {
         this.logger.error(`failed to create/remove guest release form job: ${error.message}`, error.stack);
         Sentry.captureException(error);
