@@ -1,4 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable, Logger
+} from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { BoatMaintenanceEmail } from '../email/boat-maintenance.email';
 import { GoogleEmailService } from '../google-api/google-email.service';
@@ -7,14 +9,19 @@ import { BoatMaintenanceEntity } from './boat-maintenance.entity';
 
 @Injectable()
 export class BoatMaintenanceJob {
+  private logger: Logger;
 
   constructor(
     private maintenanceEmail: BoatMaintenanceEmail,
     private emailService: GoogleEmailService
-  ) {}
+  ) {
+    this.logger = new Logger(BoatMaintenanceJob.name);
+  }
 
-  @Cron('0 0 1 2-11/2 *') // At 12:00am on the 1st from every 2nd month from February through November
+  @Cron('0 0 14 8,11,2,5 *') //At 00:00 on day-of-month 14 in August, November, February, and May.
   async outstandingMaintenanceRequest() {
+    this.logger.log('starting outstandingMaintenanceRequest job');
+
     const requests = await BoatMaintenanceEntity
       .getRepository()
       .createQueryBuilder('request')
@@ -32,6 +39,8 @@ export class BoatMaintenanceJob {
 
     const emailInfo = this.maintenanceEmail.outstandingMaintenanceRequestEmail(requests);
     emailInfo.bcc = Array.from(bccTo);
+
+    this.logger.log(`outstandingMaintenanceRequest email ${emailInfo}`);
 
     await this.emailService.sendToEmail(emailInfo);
   }
