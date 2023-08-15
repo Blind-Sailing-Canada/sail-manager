@@ -32,7 +32,7 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
     }
 
     const emailInfo = this.boatMaintenanceEmail.newMaintenanceRequestEmail(request);
-    emailInfo.to = fleetManagers.map(manager => manager.email);
+    emailInfo.bcc = fleetManagers.map(manager => manager.email);
 
     return this.emailService.sendToEmail(emailInfo);
   }
@@ -47,7 +47,7 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
     }
 
     const emailInfo = this.boatMaintenanceEmail.updatedMaintenanceRequestEmail(request);
-    emailInfo.to = fleetManagers.map(manager => manager.email);
+    emailInfo.bcc = fleetManagers.map(manager => manager.email);
 
     return this.emailService.sendToEmail(emailInfo);
   }
