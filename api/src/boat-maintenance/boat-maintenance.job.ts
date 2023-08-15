@@ -16,9 +16,10 @@ export class BoatMaintenanceJob {
     private emailService: GoogleEmailService
   ) {
     this.logger = new Logger(BoatMaintenanceJob.name);
+    this.logger.log(new Date());
   }
 
-  @Cron('0 0 14 8,11,2,5 *') //At 00:00 on day-of-month 14 in August, November, February, and May.
+  @Cron('0 12 15 AUG,OCT,JAN,MAR,JUN *')
   async outstandingMaintenanceRequest() {
     this.logger.log('starting outstandingMaintenanceRequest job');
 

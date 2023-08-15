@@ -18,7 +18,7 @@ export class BoatMaintenanceEmail {
       content: `
         <html>
           <body>
-            <h2>There are ${requests.length} maintenance request are older than 2 months.</h2>
+            <h2>There are ${requests.length} maintenance request submitted more than 2 months.</h2>
             <table>
               <caption>Maintenance Requests</caption>
               <thead>
