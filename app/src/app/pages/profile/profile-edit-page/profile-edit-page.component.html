@@ -130,12 +130,12 @@
     class='form-section-header'
     id="formStepPhone"
     tabindex="-1"
-  >{{totalFormSteps}}: Your Phone Number</h4>
+  >{{totalFormSteps}}: Your Phone Number (10 digits only)</h4>
   <mat-form-field [formGroup]="profileForm">
     <mat-label
       aria-hidden="true"
       tabindex="-1"
-    >Phone Number</mat-label>
+    >Phone Number (10 digits only)</mat-label>
     <input
       aria-labelledby="formStepPhone"
       formControlName="phone"
@@ -143,6 +143,10 @@
       type="tel"
     >
   </mat-form-field>
+  <mat-error
+    tabindex="0"
+    *ngFor="let error of (profileForm.pristine ? []: formErrors('phone'))"
+  >{{error}}</mat-error>
 </ng-template>
 <ng-template #profilePicture>
   <h4
@@ -202,6 +206,7 @@
       tabindex="-1"
     >Please indicate if you're a skipper, crew, member, or someone new.</mat-label>
     <textarea
+      [maxlength]="501"
       aria-labelledby="formStepBio"
       cdkAutosizeMaxRows="10"
       cdkAutosizeMinRows="1"

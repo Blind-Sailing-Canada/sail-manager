@@ -133,6 +133,10 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
     const errors = Object
       .keys(this.profileForm.controls[controlName].errors || {})
       .map((errorKey) => {
+        if (controlName === 'phone' && errorKey === 'pattern') {
+          return 'Invalid phone number: must be 10 digits only.';
+        }
+
         const error = this.profileForm.controls[controlName].errors[errorKey];
 
         if (errorKey === 'maxlength') {
@@ -199,6 +203,9 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
       .reduce(
         (red, key) => {
           red[key] = formControls[key].value ? formControls[key].value.trim() : null;
+          if (key === 'phone') {
+            red[key] = formControls[key].value.replace(/\+1/g, '').replace(/[^\d]/g,'').substring(0, 10);
+          }
           return red;
         },
         {}
@@ -232,7 +239,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
     this.profileForm = this.fb.group({
       name: new UntypedFormControl(null, [Validators.required, Validators.maxLength(100)]),
       email: new UntypedFormControl(null, [Validators.required, Validators.maxLength(150)]),
-      phone: new UntypedFormControl(null),
+      phone: new UntypedFormControl(null, [Validators.pattern(/^\d{0,10}$/)]),
       photo: new UntypedFormControl(null),
       bio: new UntypedFormControl(null, Validators.maxLength(500)),
     });
