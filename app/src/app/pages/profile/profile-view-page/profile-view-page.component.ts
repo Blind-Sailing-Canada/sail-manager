@@ -20,6 +20,7 @@ import {
   editProfilePrivilegesRoute,
   editProfileRoute,
   listPurchasesRoute,
+  outstandingPurchasesRoute,
   viewClinicRoute,
   viewUserSailsRoute,
 } from '../../../routes/routes';
@@ -39,6 +40,7 @@ import { ProfileRole } from '../../../../../../api/src/types/profile/profile-rol
 export class ProfileViewPageComponent extends BasePageComponent implements OnInit {
   public formResponses: FormResponse[] = [];
   public linkAccountsDialogRef: MatDialogRef<LinkAccountsDialogComponent>;
+  public outstandingPurchasesRoute = outstandingPurchasesRoute;
 
   constructor(
     @Inject(MatDialog) dialog: MatDialog,
@@ -105,6 +107,10 @@ export class ProfileViewPageComponent extends BasePageComponent implements OnIni
     const can = this.user.profile.id === this.profile_id || this.user.access[UserAccessFields.EditUserProfile];
 
     return !!can;
+  }
+
+  public get canViewOutstandingPurchases(): boolean {
+    return this.profile_id === this.user.profile.id || this.user.roles.includes(ProfileRole.Admin);
   }
 
   public editProfileInfoLink(profile_id: string): string {

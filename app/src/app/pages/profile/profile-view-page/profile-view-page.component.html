@@ -75,4 +75,12 @@
   >
     Purchases
   </a>
+  <a
+    *ngIf="canViewOutstandingPurchases"
+    [routerLink]="outstandingPurchasesRoute(profile_id)"
+    mat-flat-button
+    title="Click to view all outstanding fees"
+  >
+    Outstanding Payments
+  </a>
 </ng-template>

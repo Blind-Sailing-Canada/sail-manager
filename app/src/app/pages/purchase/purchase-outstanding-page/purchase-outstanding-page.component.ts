@@ -16,10 +16,11 @@ import { FilterInfo } from '../../../models/filter-into';
 import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { WindowService } from '../../../services/window.service';
 import { Profile } from '../../../../../../api/src/types/profile/profile';
-import { listPurchasesRoute, viewProfileRoute, viewSailRoute } from '../../../routes/routes';
+import { createPurchaseRoute, listPurchasesRoute, viewProfileRoute, viewSailRoute } from '../../../routes/routes';
 import { SailPaymentClaim } from '../../../../../../api/src/types/sail-payment-claim/sail-payment-claim';
 import { PaginatedSailPaymentClaim } from '../../../../../../api/src/types/sail-payment-claim/paginated-sail-payment-claim';
 import { SailPaymentClaimService } from '../../../services/sail-payment-claim.service';
+import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 
 @Component({
   selector: 'app-purchase-outstanding-page',
@@ -27,6 +28,7 @@ import { SailPaymentClaimService } from '../../../services/sail-payment-claim.se
   styleUrls: ['./purchase-outstanding-page.component.scss']
 })
 export class PurchaseOutstandingPageComponent extends BasePageComponent implements OnInit {
+  public createPurchaseRoute = createPurchaseRoute;
   public dataSource = new MatTableDataSource<SailPaymentClaim>([]);
   public displayedColumns: string[] = [
     'sail.entity_number',
@@ -100,6 +102,10 @@ export class PurchaseOutstandingPageComponent extends BasePageComponent implemen
     this.filterInfo = event;
 
     this.filterSailClaims();
+  }
+
+  public get showAddManualPayment(): boolean {
+    return this.user.roles.includes(ProfileRole.Admin);
   }
 
 }
