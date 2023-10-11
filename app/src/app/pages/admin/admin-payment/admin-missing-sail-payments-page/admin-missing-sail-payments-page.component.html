@@ -102,7 +102,7 @@
         >
           <a
             [routerLink]="viewProfileRoute(element.profile.id)"
-            aria-label="This claim is assigned to"
+            attr.aria-label="This claim is assigned to {{element.profile?.name || 'no one'}}"
             title="Click to go to their profile page"
           >
             <app-profile-bullet [profile]="element.profile"></app-profile-bullet>
@@ -204,7 +204,7 @@
               <a
                 tabindex="0"
                 [routerLink]="viewProfileRoute(element.profile.id)"
-                aria-label="This claim is assigned to"
+                attr.aria-label="This claim is assigned to {{element.profile?.name || 'no one'}}"
                 title="Click to go to their profile page"
               >
                 <app-profile-bullet [profile]="element.profile"></app-profile-bullet>
