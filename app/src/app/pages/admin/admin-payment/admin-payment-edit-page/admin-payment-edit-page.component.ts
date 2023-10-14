@@ -10,10 +10,15 @@ import { BasePageComponent } from '../../../base-page/base-page.component';
 import { MatDialog } from '@angular/material/dialog';
 import { WindowService } from '../../../../services/window.service';
 import { PaymentCaptureService } from '../../../../services/payment-capture.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, takeWhile } from 'rxjs';
 import { viewProfileRoute } from '../../../../routes/routes';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProductType } from '../../../../../../../api/src/types/product-purchase/product-type';
+import {
+  ProductType,
+  product_names,
+  product_types,
+  product_type_name
+} from '../../../../../../../api/src/types/product-purchase/product-type';
 import { PaymentCapture } from '../../../../../../../api/src/types/payment-capture/payment-capture';
 
 interface PaymentEditForm {
@@ -37,7 +42,9 @@ interface PaymentEditForm {
 })
 export class AdminPaymentEditPageComponent extends BasePageComponent implements OnInit, AfterViewInit {
   public form: FormGroup<PaymentEditForm>;
-  public product_types = Object.values(ProductType);
+  public product_types = product_types;
+  public product_names = product_names;
+  public product_type_name = product_type_name;
   public payment: PaymentCapture;
   public paymentId: string;
   public viewProfileRoute = viewProfileRoute;
@@ -91,6 +98,10 @@ export class AdminPaymentEditPageComponent extends BasePageComponent implements 
       product_name: this.fb.control('', [Validators.required]),
       product_type: this.fb.control('', [Validators.required]),
       valid_until: this.fb.control(null),
+    });
+
+    this.form.controls.product_type.valueChanges.pipe(takeWhile(() => this.active)).subscribe((change) => {
+      this.form.controls.product_name.patchValue(this.product_type_name[change] || '');
     });
   }
 

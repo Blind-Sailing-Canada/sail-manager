@@ -51,19 +51,6 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label
-            id="payment-product-name"
-            aria-hidden="true"
-            tabindex="-1"
-          >Product name</mat-label>
-          <input
-            aria-labelledby="payment-product-name"
-            matInput
-            type="text"
-            formControlName="product_name"
-          >
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label
             aria-hidden="true"
             tabindex="-1"
             id="payment-capture-product-type"
@@ -80,6 +67,19 @@
               [value]="product_type"
             >{{product_type}}</option>
           </select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            id="payment-product-name"
+            aria-hidden="true"
+            tabindex="-1"
+          >Product name</mat-label>
+          <input
+            aria-labelledby="payment-product-name"
+            matInput
+            type="text"
+            formControlName="product_name"
+          >
         </mat-form-field>
         <mat-form-field>
           <mat-label
