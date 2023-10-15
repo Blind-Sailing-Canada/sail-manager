@@ -231,6 +231,11 @@
             >
               View {{EntityLabels[element.media_for_type]}}
             </button>
+            <button
+              [routerLink]="editMediaRoute(element.id)"
+              *ngIf="canEditMedia(element)"
+              mat-flat-button
+            >Edit</button>
           </div>
         </td>
       </ng-container>
