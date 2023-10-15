@@ -4,6 +4,7 @@ import {
   Routes,
 } from '@angular/router';
 import { MediaDialogModule } from '../../components/media-dialog/media-dialog.module';
+import { MediaEditPageComponent } from './media-edit-page/media-edit-page.component';
 import { MediaListPageComponent } from './media-list-page/media-list-page.component';
 
 const routes: Routes = [
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'list',
     component: MediaListPageComponent,
+  },
+  {
+    path: 'edit/:id',
+    component: MediaEditPageComponent,
   },
 ];
 

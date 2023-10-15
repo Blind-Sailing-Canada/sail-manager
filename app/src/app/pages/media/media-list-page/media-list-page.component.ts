@@ -18,6 +18,8 @@ import { PaginatedMedia } from '../../../../../../api/src/types/media/paginated-
 import { WindowService } from '../../../services/window.service';
 import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { FilterInfo } from '../../../models/filter-into';
+import { editMediaRoute, listMediaRoute } from '../../../routes/routes';
+import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 
 @Component({
   selector: 'app-media-list-page',
@@ -41,6 +43,8 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     SocialEntity: 'social',
   };
   public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
+  public listMediaRoute = listMediaRoute.toString();
+  public editMediaRoute = editMediaRoute;
 
   constructor(
     @Inject(Router) router: Router,
@@ -84,6 +88,18 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     this.filterInfo = filterInfo;
   }
 
+  public get posted_by_id() {
+    return this.route.snapshot.queryParamMap.get('posted_by_id') || undefined;
+  }
+
+  public canEditMedia(media: Media): boolean {
+    if (this.user.roles.includes(ProfileRole.Admin)) {
+      return true;
+    }
+
+    return media.posted_by_id === this.user.profile.id;
+  }
+
   public updateMediaUrl() {
     const { pagination, sort } = this.filterInfo;
     this.router.navigate(
@@ -96,6 +112,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
           page: pagination.pageIndex + 1,
           per_page: pagination.pageSize,
           search: this.filterInfo.search,
+          posted_by_id: this.posted_by_id,
           sort,
         },
         queryParamsHandling: 'merge',
@@ -109,6 +126,9 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
 
     if (this.entities.length) {
       query.$and.push({ media_for_type: { $in:  this.entities } });
+    }
+    if (this.posted_by_id) {
+      query.$and.push({ posted_by_id: this.posted_by_id });
     }
 
     if (search) {

@@ -1,0 +1,112 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>mms</mat-icon>
+    </div>
+    <mat-card-title
+      aria-level="1"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Edit Media</mat-card-title>
+    <mat-card-subtitle
+      aria-level="2"
+      role="heading"
+      tabindex="0"
+      *ngIf="isUserAdmin"
+    >
+      <mat-icon
+        color="warn"
+        mat-list-icon
+      >warning</mat-icon>
+      You are editing as admin.
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container
+      [ngTemplateOutlet]="mediaView"
+      *ngIf="media"
+    ></ng-container>
+    <ng-container
+      [ngTemplateOutlet]="mediaEditForm"
+      *ngIf="media"
+    ></ng-container>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        *ngIf="form.dirty && form.valid"
+        (click)="saveForm()"
+      >Save</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #controls>
+  <button
+    mat-raised-button
+    (click)="deleteMedia()"
+  >Delete</button>
+</ng-template>
+
+<ng-template #mediaEditForm>
+  <app-image-form
+    [allowDelete]="false"
+    [allowDescription]="true"
+    [allowEditUrl]="false"
+    [allowTitle]="true"
+    [form]="form"
+    [showPreview]="false"
+    controlArrayName="pictures"
+  ></app-image-form>
+</ng-template>
+
+<ng-template #mediaView>
+  <button
+    *ngIf="media?.url"
+    (click)="showMediaDialog(media)"
+    mat-flat-button
+    [ngSwitch]="media.media_type"
+    target="_blank"
+    style="margin: 10px; display: inline-block; width: 100%"
+    title="click to open media dialog"
+  >
+    <img
+      *ngSwitchCase="MediaTypes.Picture"
+      [height]="height"
+      [width]="width"
+      async
+      style="object-fit: cover;"
+      title="picture. description: {{media.title || ''}} {{media.description || ''}}"
+      src="{{media.url}}?width={{width+100}}"
+    >
+    <div
+      *ngSwitchCase="MediaTypes.Video"
+      class="video-container"
+      style="width: min-content; display: inline-block;"
+    >
+      <mat-icon>play_circle</mat-icon>
+      <video
+        [height]="height"
+        [width]="width"
+        preload="none"
+        async
+        title="video. description: {{media.title || ''}} {{media.description || ''}}"
+        src="{{media.url}}"
+      ></video>
+    </div>
+
+    <img
+      *ngSwitchDefault
+      [height]="height"
+      [width]="width"
+      async
+      title="picture. comment: {{media.title || ''}} {{media.description || ''}}"
+      src="{{media.url}}?width={{width}}"
+    >
+  </button>
+</ng-template>

@@ -112,6 +112,14 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     return this._router;
   }
 
+  public get isUserAdmin(): boolean {
+    if (!this.user) {
+      return false;
+    }
+
+    return this.user.roles.includes(ProfileRole.Admin);
+  }
+
   ngOnDestroy(): void {
     this.active = false;
   }

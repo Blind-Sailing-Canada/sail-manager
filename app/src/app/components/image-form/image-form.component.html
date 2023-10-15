@@ -7,13 +7,13 @@
     >
       <div class="image-form-image">
         <img
-          *ngIf="imageControl.value.url && imageControl.value.media_type === MediaTypes.Picture"
+          *ngIf="showPreview && imageControl.value.url && imageControl.value.media_type === MediaTypes.Picture"
           alt="Image {{i+1}} of {{controlsArray.length}}"
           async
           src="{{imageControl.value.url}}?width=100"
         >
         <video
-          *ngIf="imageControl.value.url && imageControl.value.media_type === MediaTypes.Video"
+          *ngIf="showPreview && imageControl.value.url && imageControl.value.media_type === MediaTypes.Video"
           controls="true"
           height="100px"
           src="{{imageControl.value.url}}"
@@ -21,7 +21,7 @@
         ></video>
       </div>
       <div class="image-form-inputs">
-        <mat-form-field>
+        <mat-form-field *ngIf="allowEditUrl">
           <mat-label
             aria-hidden="true"
             tabindex="-1"
@@ -29,6 +29,7 @@
           <input
             attr.aria-label="Url for {{imageControl.value.media_type}} {{i+1}} of {{controlsArray.length}}"
             formControlName="url"
+            [disabled]="!allowEditUrl"
             matInput
             type="text"
           >

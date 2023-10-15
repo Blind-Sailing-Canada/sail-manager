@@ -55,6 +55,7 @@ export enum SubRoutes {
   EDIT_CLINIC_ENROLLMENT = 'edit-enrollment',
   EDIT_DOCUMENT = 'edit',
   EDIT_MAINTENANCE = 'edit',
+  EDIT_MEDIA = 'edit',
   EDIT_PROFILE = 'edit',
   EDIT_PROFILE_PRIVILEGES = 'edit-privileges',
   EDIT_PURCHASE = 'edit',
@@ -137,6 +138,8 @@ export enum FullRoutes {
   SAVED_QUERY = ADMIN + SEPARATOR + SubRoutes.SAVED_QUERY,
   SOCIALS = ROOT + RootRoutes.SOCIALS,
   // ^ KEEP THESE SECOND^
+  ADMIN_PAYMENT_DASHBOARD = ADMIN + SEPARATOR + SubRoutes.ADMIN_PAYMENT_DASHBOARD,
+  ADMIN_SAIL_FEEDBACK = ADMIN + SEPARATOR + SubRoutes.ADMIN_SAIL_FEEDBACK,
   ARRIVAL_SAIL_CHECKLIST = SAIL_CHECKLISTS + SEPARATOR + SubRoutes.ARRIVAL_SAIL_CHECKLIST,
   CANCEL_SAIL = SAILS + SEPARATOR + SubRoutes.CANCEL_SAIL,
   CANCEL_SOCIAL = SOCIALS + SEPARATOR + SubRoutes.CANCEL_SOCIAL,
@@ -145,8 +148,8 @@ export enum FullRoutes {
   CREATE_CLINIC = CLINICS + SEPARATOR + SubRoutes.CREATE_CLINIC,
   CREATE_DOCUMENT = DOCUMENTS + SEPARATOR + SubRoutes.CREATE_DOCUMENT,
   CREATE_MAINTENANCE = MAINTENANCE + SEPARATOR + SubRoutes.CREATE_MAINTENANCE,
-  CREATE_SAIL = SAILS + SEPARATOR + SubRoutes.CREATE_SAIL,
   CREATE_PURCHASE = ADMIN + PURCHASES + SEPARATOR + SubRoutes.CREATE_PURCHASE,
+  CREATE_SAIL = SAILS + SEPARATOR + SubRoutes.CREATE_SAIL,
   CREATE_SAIL_REQUEST = SAIL_REQUESTS + SEPARATOR + SubRoutes.CREATE_SAIL_REQUEST,
   CREATE_SAVED_QUERY = SAVED_QUERY + SEPARATOR + SubRoutes.CREATE_SAVED_QUERY,
   CREATE_SOCIAL = SOCIALS + SEPARATOR + SubRoutes.CREATE_SOCIAL,
@@ -159,6 +162,7 @@ export enum FullRoutes {
   EDIT_CLINIC_ENROLLMENT = CLINICS + SEPARATOR + SubRoutes.EDIT_CLINIC_ENROLLMENT,
   EDIT_DOCUMENT = DOCUMENTS + SEPARATOR + SubRoutes.EDIT_DOCUMENT,
   EDIT_MAINTENANCE = MAINTENANCE + SEPARATOR + SubRoutes.EDIT_MAINTENANCE,
+  EDIT_MEDIA = MEDIA + SEPARATOR + SubRoutes.EDIT_MEDIA,
   EDIT_PROFILE = PROFILE + SEPARATOR + SubRoutes.EDIT_PROFILE,
   EDIT_PROFILE_PRIVILEGES = ADMIN + SEPARATOR + SubRoutes.EDIT_PROFILE_PRIVILEGES,
   EDIT_SAIL = SAILS + SEPARATOR + SubRoutes.EDIT_SAIL,
@@ -175,21 +179,19 @@ export enum FullRoutes {
   LIST_DOCUMENTS = DOCUMENTS + SEPARATOR + SubRoutes.LIST_DOCUMENTS,
   LIST_FEEDBACK = FEEDBACK + SEPARATOR + SubRoutes.LIST_FEEDBACK,
   LIST_MEDIA = MEDIA + SEPARATOR + SubRoutes.LIST_MEDIA,
+  LIST_PURCHASES = PURCHASES + SEPARATOR + SubRoutes.LIST_PURCHASES,
   LIST_SAIL_CATEGORIES = SAIL_CATEGORIES + SEPARATOR + SubRoutes.LIST_SAIL_CATEGORIES,
-  ADMIN_PAYMENT_DASHBOARD = ADMIN + SEPARATOR + SubRoutes.ADMIN_PAYMENT_DASHBOARD,
-  ADMIN_SAIL_FEEDBACK = ADMIN + SEPARATOR + SubRoutes.ADMIN_SAIL_FEEDBACK,
-  MISSING_SAIL_PAYMENTS = ADMIN_PAYMENT_DASHBOARD + SEPARATOR + SubRoutes.MISSING_SAIL_PAYMENTS,
-  VIEW_ADMIN_PAYMENT = ADMIN + SEPARATOR + SubRoutes.VIEW_ADMIN_PAYMENT,
   LIST_SAIL_PATHS = SAIL_PATHS + SEPARATOR + SubRoutes.LIST_SAIL_PATHS,
   LIST_SAVED_QUERY = SAVED_QUERY + SEPARATOR + SubRoutes.LIST_SAVED_QUERY,
   LIST_SOCIALS = SOCIALS + SEPARATOR + SubRoutes.LIST_SOCIALS,
-  LIST_PURCHASES = PURCHASES + SEPARATOR + SubRoutes.LIST_PURCHASES,
+  MISSING_SAIL_PAYMENTS = ADMIN_PAYMENT_DASHBOARD + SEPARATOR + SubRoutes.MISSING_SAIL_PAYMENTS,
   OUTSTANDING_PURCHASES = PURCHASES + SEPARATOR + SubRoutes.OUTSTANDING_PURCHASES,
   PROFILE_SETTINGS = PROFILE + SEPARATOR + SubRoutes.PROFILE_SETTINGS,
   RECORD_SAIL_PATH = SAIL_PATHS + SEPARATOR + SubRoutes.RECORD_SAIL_PATH,
   RESET_PASSWORD = LOGIN + SEPARATOR + SubRoutes.RESET_PASSWORD,
   RESOLVE_MAINTENANCE = MAINTENANCE + SEPARATOR + SubRoutes.RESOLVE_MAINTENANCE,
   SUBMIT_FEEDBACK = FEEDBACK + SEPARATOR + SubRoutes.SUBMIT_FEEDBACK,
+  VIEW_ADMIN_PAYMENT = ADMIN + SEPARATOR + SubRoutes.VIEW_ADMIN_PAYMENT,
   VIEW_BOAT = BOATS + SEPARATOR + SubRoutes.VIEW_BOAT,
   VIEW_BOAT_INSTRUCTIONS = BOAT_INSTRUCTIONS + SEPARATOR + SubRoutes.VIEW_BOAT_INSTRUCTIONS,
   VIEW_CHALLENGE = CHALLENGES + SEPARATOR + SubRoutes.VIEW_CHALLENGE,
@@ -211,7 +213,9 @@ export enum FullRoutes {
   VIEW_SOCIAL_PICTURES = SOCIALS + SEPARATOR + SubRoutes.VIEW_SOCIAL_PICTURES,
 }
 
+export const adminPaymentDashboardRoute = FullRoutes.ADMIN_PAYMENT_DASHBOARD.toString();
 export const adminRoute = FullRoutes.ADMIN;
+export const adminSailFeedbackRoute = FullRoutes.ADMIN_SAIL_FEEDBACK.toString();
 export const arrivalSailChecklistRoute = (id: string) => `${FullRoutes.ARRIVAL_SAIL_CHECKLIST}/${id}`;
 export const boatsRoute = FullRoutes.BOATS;
 export const cancelSailRoute = (sail_id: string) => `${FullRoutes.CANCEL_SAIL}/${sail_id}`;
@@ -223,12 +227,12 @@ export const createChallengeRoute = FullRoutes.CREATE_CHALLENGE;
 export const createClinicRoute = FullRoutes.CREATE_CLINIC;
 export const createDocumentRoute = FullRoutes.CREATE_DOCUMENT;
 export const createMaintenanceRoute = FullRoutes.CREATE_MAINTENANCE;
+export const createPurchaseRoute = FullRoutes.CREATE_PURCHASE.toString();
 export const createSailFromRequestRoute = (sail_request_id: string) => `${FullRoutes.CREATE_SAIL}/${sail_request_id}`;
 export const createSailRequestRoute = FullRoutes.CREATE_SAIL_REQUEST;
 export const createSailRoute = FullRoutes.CREATE_SAIL;
 export const createSavedQueryRoute = FullRoutes.CREATE_SAVED_QUERY;
 export const createSocialRoute = FullRoutes.CREATE_SOCIAL;
-export const createPurchaseRoute = FullRoutes.CREATE_PURCHASE.toString();
 export const departureSailChecklistRoute = (id: string) => `${FullRoutes.DEPARTURE_SAIL_CHECKLIST}/${id}`;
 export const editBoatChecklistRoute = (boat_id: string) => `${FullRoutes.EDIT_BOAT_CHECKLIST}/${boat_id}`;
 export const editBoatInstructionsRoute = (boat_id: string) => `${FullRoutes.EDIT_BOAT_INSTRUCTIONS}/${boat_id}`;
@@ -238,6 +242,7 @@ export const editClinicEnrollmentRoute = (clinic_id: string) => `${FullRoutes.ED
 export const editClinicRoute = (clinic_id: string) => `${FullRoutes.EDIT_CLINIC}/${clinic_id}`;
 export const editDocumentRoute = (document_id: string) => `${FullRoutes.EDIT_DOCUMENT}/${document_id}`;
 export const editMaintenanceRoute = (boat_maintenance_id: string) => `${FullRoutes.EDIT_MAINTENANCE}/${boat_maintenance_id}`;
+export const editMediaRoute = (media_id: string) => `${FullRoutes.EDIT_MEDIA}/${media_id}`;
 export const editProfilePrivilegesRoute = (profile_id: string) => `${FullRoutes.EDIT_PROFILE_PRIVILEGES}/${profile_id}`;
 export const editProfileRoute = (profile_id: string) => `${FullRoutes.EDIT_PROFILE}/${profile_id}`;
 export const editSailChecklistRoute = (id: string) => `${FullRoutes.EDIT_SAIL_CHECKLIST}/${id}`;
@@ -254,17 +259,15 @@ export const listClinicsRoute = () => `${FullRoutes.LIST_CLINICS}`;
 export const listDocumentsRoute = () => `${FullRoutes.LIST_DOCUMENTS}`;
 export const listFeedbackRoute = (sail_id: string) => `${FullRoutes.LIST_FEEDBACK}/${sail_id}`;
 export const listMediaRoute = FullRoutes.LIST_MEDIA;
+export const listPurchasesRoute = () => `${FullRoutes.LIST_PURCHASES}`;
 export const listSailCategoriesRoute = FullRoutes.LIST_SAIL_CATEGORIES.toString();
-export const adminPaymentDashboardRoute = FullRoutes.ADMIN_PAYMENT_DASHBOARD.toString();
-export const adminSailFeedbackRoute = FullRoutes.ADMIN_SAIL_FEEDBACK.toString();
-export const viewAdminPaymentRoute = (id: string) => `${FullRoutes.VIEW_ADMIN_PAYMENT}/${id}`;
 export const listSailPathsRoute = (sail_id: string) => `${FullRoutes.LIST_SAIL_PATHS}/${sail_id}`;
 export const listSavedQueryRoute = () => `${FullRoutes.LIST_SAVED_QUERY}`;
 export const listSocialsRoute = () => `${FullRoutes.LIST_SOCIALS}`;
-export const listPurchasesRoute = () => `${FullRoutes.LIST_PURCHASES}`;
-export const outstandingPurchasesRoute = (profile_id: string) => `${FullRoutes.OUTSTANDING_PURCHASES}/${profile_id}`;
 export const loginWithEmailAndPassword = FullRoutes.EMAIL_AND_PASSWORD;
 export const maintenanceRoute = FullRoutes.MAINTENANCE;
+export const missingSailPaymentsRoute = FullRoutes.MISSING_SAIL_PAYMENTS.toString();
+export const outstandingPurchasesRoute = (profile_id: string) => `${FullRoutes.OUTSTANDING_PURCHASES}/${profile_id}`;
 export const profileSettingsRoute = FullRoutes.PROFILE_SETTINGS;
 export const recordSailPathRoute = (sailPathId: string) => `${FullRoutes.RECORD_SAIL_PATH}/${sailPathId}`;
 export const resetPassword = FullRoutes.RESET_PASSWORD;
@@ -274,6 +277,7 @@ export const sailRequestsRoute = FullRoutes.SAIL_REQUESTS;
 export const sailsRoute = FullRoutes.SAILS;
 export const socialsRoute = FullRoutes.SOCIALS;
 export const submitFeedbackRoute = (sail_id: string) => `${FullRoutes.SUBMIT_FEEDBACK}/${sail_id}`;
+export const viewAdminPaymentRoute = (id: string) => `${FullRoutes.VIEW_ADMIN_PAYMENT}/${id}`;
 export const viewBoatInstructionsRoute = (boat_id: string) => `${FullRoutes.VIEW_BOAT_INSTRUCTIONS}/${boat_id}`;
 export const viewBoatRoute = (boat_id: string) => `${FullRoutes.VIEW_BOAT}/${boat_id}`;
 export const viewChallengeRoute = (challenge_id: string) => `${FullRoutes.VIEW_CHALLENGE}/${challenge_id}`;
@@ -282,6 +286,7 @@ export const viewDocumentRoute = (document_id: string) => `${FullRoutes.VIEW_DOC
 export const viewFeedbackRoute = (feedback_id: string) => `${FullRoutes.VIEW_FEEDBACK}/${feedback_id}`;
 export const viewMaintenanceRoute = (boat_maintenance_id: string) => `${FullRoutes.VIEW_MAINTENANCE}/${boat_maintenance_id}`;
 export const viewProfileRoute = (profile_id: string) => `${FullRoutes.VIEW_PROFILE}/${profile_id}`;
+export const viewPurchaseRoute = (purchase_id: string) => `${FullRoutes.VIEW_PURCHASE}/${purchase_id}`;
 export const viewRequiredActionRoute = (required_action_id: string) => `${FullRoutes.VIEW_REQUIRED_ACTION}/${required_action_id}`;
 export const viewSailChecklistRoute = (sail_id: string) => `${FullRoutes.VIEW_SAIL_CHECKLIST}/${sail_id}`;
 export const viewSailPathRoute = (sailPathId: string) => `${FullRoutes.VIEW_SAIL_PATH}/${sailPathId}`;
@@ -292,5 +297,3 @@ export const viewSavedQueryRoute = (id: string) => `${FullRoutes.VIEW_SAVED_QUER
 export const viewSocialPicturesRoute = (social_id: string) => `${FullRoutes.VIEW_SOCIAL_PICTURES}/${social_id}`;
 export const viewSocialRoute = (social_id: string) => `${FullRoutes.VIEW_SOCIAL}/${social_id}`;
 export const viewUserSailsRoute = (profile_id: string) => `${FullRoutes.VIEW_SAIL_PER_PERSON}/${profile_id}`;
-export const viewPurchaseRoute = (purchase_id: string) => `${FullRoutes.VIEW_PURCHASE}/${purchase_id}`;
-export const missingSailPaymentsRoute = FullRoutes.MISSING_SAIL_PAYMENTS.toString();

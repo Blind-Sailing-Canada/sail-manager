@@ -23,6 +23,8 @@ export class ImageFormComponent {
   @Input() controlArrayName: string;
   @Input() form: UntypedFormGroup | AbstractControl;
   @Input() allowDelete = false;
+  @Input() showPreview = true;
+  @Input() allowEditUrl = true;
   @Output() deleteClick: EventEmitter<number> = new EventEmitter<number>();
   public MediaTypes = MediaType;
 

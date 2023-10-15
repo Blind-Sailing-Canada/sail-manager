@@ -26,6 +26,16 @@
 </mat-card>
 
 <ng-template #controls>
+  <a
+    mat-raised-button
+    [routerLink]="listMediaRoute"
+    [queryParams]="{posted_by_id: user.profile.id, page: 0}"
+  >My Media</a>
+  <a
+    mat-raised-button
+    [routerLink]="listMediaRoute"
+    [queryParams]="{page: 0}"
+  >All Media</a>
 </ng-template>
 
 <ng-template #MEDIA_TABLE_FULL>
@@ -145,7 +155,13 @@
             (click)="goToEntity(element.media_for_type, element.media_for_id)"
           >
             View {{EntityLabels[element.media_for_type]}}
-          </button> </td>
+          </button>
+          <button
+            [routerLink]="editMediaRoute(element.id)"
+            *ngIf="canEditMedia(element)"
+            mat-flat-button
+          >Edit</button>
+        </td>
       </ng-container>
     </ng-container>
   </app-material-table>
