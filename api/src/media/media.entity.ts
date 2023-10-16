@@ -3,11 +3,13 @@ import {
   Entity,
   Index,
   JoinColumn,
-  ManyToOne
+  ManyToOne,
+  OneToMany
 } from 'typeorm';
 import { BaseModelEntity } from '../base/base.entity';
 import { BoatMaintenanceEntity } from '../boat-maintenance/boat-maintenance.entity';
 import { ChallengeEntity } from '../challenge/challenge.entity';
+import { MediaTagEntity } from '../media-tags/media-tag.entity';
 import { ProfileEntity } from '../profile/profile.entity';
 import { SailEntity } from '../sail/sail.entity';
 import { SocialEntity } from '../social/social.entity';
@@ -48,6 +50,9 @@ export class MediaEntity extends BaseModelEntity implements Media {
 
   @ManyToOne(() => ProfileEntity, { eager: true })
     posted_by: ProfileEntity;
+
+  @OneToMany(() => MediaTagEntity, (media_tag) => media_tag.media)
+    tags: MediaTagEntity[];
 
   @ManyToOne(() => BoatMaintenanceEntity, () => null, { createForeignKeyConstraints: false })
   @JoinColumn([

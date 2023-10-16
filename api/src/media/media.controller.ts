@@ -1,7 +1,7 @@
 import {
   BadRequestException,
   Body,
-  Controller, Delete, Param, Patch, UseGuards
+  Controller, Delete, Get, Param, Patch, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
@@ -19,10 +19,7 @@ import { MediaService } from './media.service';
 
 @Crud({
   model: { type: MediaEntity },
-  routes: { only: [
-    'getManyBase',
-    'getOneBase'
-  ], },
+  routes: { only: ['getManyBase',], },
   params: { id: {
     field: 'id',
     type: 'uuid',
@@ -31,7 +28,10 @@ import { MediaService } from './media.service';
   query: {
     alwaysPaginate: true,
     exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
-    join: { posted_by: { eager: true }, },
+    join: {
+      posted_by: {},
+      tags: {}
+    },
     sort: [
       {
         field: 'created_at',
@@ -94,6 +94,17 @@ export class MediaController {
       update_data
     );
 
-    return MediaEntity.findOneOrFail({ where: { id: media_id } });
+    return MediaEntity.findOneOrFail({
+      where: { id: media_id },
+      relations: ['tags']
+    });
+  }
+
+  @Get('/:media_id')
+  async get(@Param('media_id') media_id) {
+    return MediaEntity.findOneOrFail({
+      where: { id: media_id },
+      relations: ['tags',]
+    });
   }
 }
