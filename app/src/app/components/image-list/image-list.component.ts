@@ -9,9 +9,11 @@ import {
 import { Media } from '../../../../../api/src/types/media/media';
 import { MediaType } from '../../../../../api/src/types/media/media-type';
 import { Profile } from '../../../../../api/src/types/profile/profile';
+import { ProfileRole } from '../../../../../api/src/types/profile/profile-role';
 import { UserAccessFields } from '../../../../../api/src/types/user-access/user-access-fields';
 import { IProfileMap } from '../../models/profile-state.interface';
 import { User } from '../../models/user.interface';
+import { editMediaRoute } from '../../routes/routes';
 
 @Component({
   selector: 'app-image-list',
@@ -33,6 +35,7 @@ export class ImageListComponent implements OnChanges {
   @Output() showMediaDialog: EventEmitter<Media> = new EventEmitter<Media>();
   @Output() goToEntity: EventEmitter<{ id: string; type: string }> = new EventEmitter();
 
+  public editMediaRoute = editMediaRoute;
   public MediaTypes = MediaType;
   public picturesArray: Media[] = [];
   public EntityLabels = {
@@ -44,6 +47,14 @@ export class ImageListComponent implements OnChanges {
     if (changes.pictures && changes.pictures.previousValue !== changes.pictures.currentValue) {
       this.picturesArray = this.constructPicturesArray();
     }
+  }
+
+  public canEdit(picture: Media): boolean {
+    if (!this.user) {
+      return false;
+    }
+
+    return this.user.profile.id === picture.posted_by_id || this.user.roles.includes(ProfileRole.Admin);
   }
 
   public canDelete(picture: Media): boolean {

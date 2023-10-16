@@ -20,10 +20,12 @@ export class MediaService {
     page: number = 1,
     per_page: number = 10,
     sort: string = 'created_at,DESC',
+    joins: string[] = [],
   ): Observable<PaginatedMedia> {
 
     return this.http
-      .get<PaginatedMedia>(`${this.API_URL}?s=${JSON.stringify(query || {})}&page=${page}&per_page=${per_page}&sort=${sort}`);
+      .get<PaginatedMedia>(
+        `${this.API_URL}?s=${JSON.stringify(query || {})}&page=${page}&per_page=${per_page}&sort=${sort}&join=${joins.join('&join=')}`);
   }
 
   public fetchOne(media_id: string): Observable<Media> {

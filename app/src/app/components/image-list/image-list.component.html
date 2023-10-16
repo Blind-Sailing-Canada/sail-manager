@@ -49,6 +49,13 @@
         mat-raised-button
       >Delete</button>
     </div>
+    <div *ngIf="canEdit(picture)">
+      <a
+        [routerLink]="editMediaRoute(picture.id)"
+        aria-label="Click to edit this picture"
+        mat-raised-button
+      >Edit</a>
+    </div>
     <div
       (click)="goToProfile.emit(picture.posted_by)"
       *ngIf="showAuthor"

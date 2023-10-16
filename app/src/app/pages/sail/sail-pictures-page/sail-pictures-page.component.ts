@@ -29,6 +29,8 @@ import { BasePageComponent } from '../../base-page/base-page.component';
 import { Sail } from '../../../../../../api/src/types/sail/sail';
 import { Media } from '../../../../../../api/src/types/media/media';
 import { MediaType } from '../../../../../../api/src/types/media/media-type';
+import { MediaService } from '../../../services/media.service';
+import { MediaTagService } from '../../../services/media-tag.service';
 
 @Component({
   selector: 'app-sail-pictures-page',
@@ -54,8 +56,10 @@ export class SailPicturesPageComponent extends BasePageComponent implements OnIn
     @Inject(UntypedFormBuilder) private fb: UntypedFormBuilder,
     @Inject(SailPicturesService) private picturesService: SailPicturesService,
     @Inject(MatDialog) dialog: MatDialog,
+    @Inject(MediaService) mediaService: MediaService,
+    @Inject(MediaTagService) mediaTagService: MediaTagService,
   ) {
-    super(store, route, router, dialog);
+    super(store, route, router, dialog, mediaService, mediaTagService);
     this.buildForm();
   }
 

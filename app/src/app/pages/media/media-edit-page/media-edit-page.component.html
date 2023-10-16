@@ -34,6 +34,10 @@
       [ngTemplateOutlet]="mediaEditForm"
       *ngIf="media"
     ></ng-container>
+    <ng-container
+      [ngTemplateOutlet]="taggedProfiles"
+      *ngIf="media"
+    ></ng-container>
   </mat-card-content>
   <mat-card-footer>
     <mat-card-actions>
@@ -51,6 +55,54 @@
     mat-raised-button
     (click)="deleteMedia()"
   >Delete</button>
+  <button
+    mat-raised-button
+    (click)="tagSelf()"
+  >Tag me</button>
+  <button
+    mat-raised-button
+    (click)="untagSelf()"
+  >Untag me</button>
+  <button
+    title="Tag a profile to this media."
+    mat-raised-button
+    (click)="showFindUserDialog()"
+  >Tag profile</button>
+</ng-template>
+
+<ng-template #taggedProfiles>
+  <div class="tagged-profile-header">
+    <h3>Tagged profiles</h3>
+    <button
+      title="Tag a profile to this media."
+      mat-icon-button
+      class="clickable"
+      (click)="showFindUserDialog()"
+    ><mat-icon>add</mat-icon></button>
+  </div>
+
+  <mat-list>
+    <mat-list-item *ngFor="let tag of media.tags">
+      <div style="width: 100%; display: flex; justify-content: space-between;">
+        <button
+          mat-flat-button
+          (click)="showProfileDialog(tag.profile)"
+          title="Click to view profile dialog"
+        >
+          <app-profile-bullet [profile]="tag.profile"></app-profile-bullet>
+        </button>
+        <button
+          class="delete-comment"
+          color="accent"
+          mat-icon-button
+          title="Untag {{tag.profile.name}}"
+          (click)="untagProfile(tag.profile.id)"
+        >
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
 </ng-template>
 
 <ng-template #mediaEditForm>

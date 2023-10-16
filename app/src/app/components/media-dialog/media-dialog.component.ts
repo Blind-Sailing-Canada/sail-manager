@@ -24,4 +24,12 @@ export class MediaDialogComponent {
     this.dialogRef.close();
   }
 
+  public tag_me(): void {
+    this.data.tag_me();
+  }
+
+  public untag_me(): void {
+    this.data.untag_me();
+  }
+
 }

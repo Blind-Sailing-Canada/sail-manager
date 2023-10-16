@@ -6,12 +6,13 @@
     <mat-icon>search</mat-icon>{{label}}
   </mat-label>
   <input
-    #listFilterInput
     [attr.aria-controls]="controls"
     [attr.aria-label]="ariaLabel"
     [id]="id"
     [title]="tooltip"
+    #listFilterInput
     matInput
     type="text"
+    autocomplete="off"
   >
 </mat-form-field>

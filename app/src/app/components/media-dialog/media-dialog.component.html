@@ -26,6 +26,18 @@
     title="Open in new window"
   >FULL VIEW</a>
   <button
+    mat-raised-button
+    *ngIf="data.tag_me"
+    title="Tag me in this post."
+    (click)="tag_me()"
+  >TAG ME</button>
+  <button
+    mat-raised-button
+    *ngIf="data.untag_me"
+    title="Untag me from this post."
+    (click)="untag_me()"
+  >UNTAG ME</button>
+  <button
     [mat-dialog-close]="data"
     mat-raised-button
     title="Close media dialog"

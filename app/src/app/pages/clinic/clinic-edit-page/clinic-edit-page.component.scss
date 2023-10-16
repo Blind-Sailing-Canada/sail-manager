@@ -8,6 +8,6 @@ mat-list-option {
   width: unset !important;
 }
 
-::ng-deep .mat-list-text {
+:host ::ng-deep .mat-list-text {
   padding: unset !important;
 }

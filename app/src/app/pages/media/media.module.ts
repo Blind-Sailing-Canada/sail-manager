@@ -10,6 +10,7 @@ import { MediaRoutingModule } from './media-routing.module';
 import { NgModule } from '@angular/core';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ProfileBulletModule } from '../../components/profile-bullet/profile-bullet.module';
+import { FindUserDialogModule } from '../../components/find-user-dialog/find-user-dialog.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ProfileBulletModule } from '../../components/profile-bullet/profile-bul
   imports: [
     AngularMaterialModule,
     CommonModule,
+    FindUserDialogModule,
     FormsModule,
     ImageFormModule,
     ImageListModule,

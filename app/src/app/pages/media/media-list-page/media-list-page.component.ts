@@ -20,6 +20,7 @@ import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { FilterInfo } from '../../../models/filter-into';
 import { editMediaRoute, listMediaRoute } from '../../../routes/routes';
 import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
+import { MediaTagService } from '../../../services/media-tag.service';
 
 @Component({
   selector: 'app-media-list-page',
@@ -45,16 +46,18 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
   public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
   public listMediaRoute = listMediaRoute.toString();
   public editMediaRoute = editMediaRoute;
+  public tag_me = (media_id: string) => this._tag_me(media_id);
 
   constructor(
     @Inject(Router) router: Router,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Store) store: Store<any>,
-    @Inject(MediaService) private mediaService: MediaService,
+    @Inject(MediaService) mediaService: MediaService,
+    @Inject(MediaTagService) mediaTagService: MediaTagService,
     @Inject(MatDialog) dialog: MatDialog,
     @Inject(WindowService) public windowService: WindowService,
   ) {
-    super(store, route, router, dialog);
+    super(store, route, router, dialog, mediaService, mediaTagService);
   }
 
   ngOnInit() {
@@ -92,6 +95,14 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     return this.route.snapshot.queryParamMap.get('posted_by_id') || undefined;
   }
 
+  private async _tag_me(media_id: string) {
+    await this.tagProfile(this.user.profile.id, media_id);
+  }
+
+  public get tagged_profile_id() {
+    return this.route.snapshot.queryParamMap.get('tagged_profile_id') || undefined;
+  }
+
   public canEditMedia(media: Media): boolean {
     if (this.user.roles.includes(ProfileRole.Admin)) {
       return true;
@@ -113,6 +124,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
           per_page: pagination.pageSize,
           search: this.filterInfo.search,
           posted_by_id: this.posted_by_id,
+          tagged_profile_id: this.tagged_profile_id,
           sort,
         },
         queryParamsHandling: 'merge',
@@ -127,8 +139,13 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     if (this.entities.length) {
       query.$and.push({ media_for_type: { $in:  this.entities } });
     }
+
     if (this.posted_by_id) {
       query.$and.push({ posted_by_id: this.posted_by_id });
+    }
+
+    if (this.tagged_profile_id) {
+      query.$and.push({ 'tags.profile_id': this.tagged_profile_id });
     }
 
     if (search) {
@@ -144,16 +161,24 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
       query.$and.push({ media_type: this.mediaType });
     }
 
-    return query;
+    const joins = [];
+
+    joins.push('posted_by');
+
+    if (this.tagged_profile_id) {
+      joins.push('tags');
+    }
+
+    return { query, joins };
   }
 
   private async filterMedia(): Promise<void> {
-    const query = this.buildQuery();
+    const { query, joins } = this.buildQuery();
     const { pagination, sort } = this.filterInfo;
 
     this.startLoading();
 
-    const fetcher =  this.mediaService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher =  this.mediaService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort, joins);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

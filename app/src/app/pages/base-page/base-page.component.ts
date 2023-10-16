@@ -87,6 +87,9 @@ import { fetchSocial } from '../../store/actions/social.actions';
 import { Media } from '../../../../../api/src/types/media/media';
 import { MediaDialogData } from '../../models/media-dialog-data.interface';
 import { MediaDialogComponent } from '../../components/media-dialog/media-dialog.component';
+import { MediaService } from '../../services/media.service';
+import { MediaTagService } from '../../services/media-tag.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   template: ''
@@ -103,6 +106,8 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     private activeRoute?: ActivatedRoute,
     private _router?: Router,
     public dialog?: MatDialog,
+    public mediaService?: MediaService,
+    public mediaTagService?: MediaTagService,
   ) {
     this.subscribeToStoreSlice(STORE_SLICES.APP);
     this.subscribeToStoreSlice(STORE_SLICES.LOGIN);
@@ -457,6 +462,8 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     const dialogData: MediaDialogData = {
       media,
       type,
+      tag_me: this.mediaService ? () => this.tagProfile(this.user.profile.id, media.id) : null,
+      untag_me: this.mediaService ? () => this.untagProfile(this.user.profile.id, media.id) : null,
     };
 
     this.dialog
@@ -679,6 +686,55 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
         this.setFontSizeRecursively(element, fontSize);
       });
+  }
+
+  public async tagProfile(profile_id: string, media_id: string): Promise<boolean>{
+    const media: Media = await firstValueFrom(this.mediaService.fetchOne(media_id)).catch((error) => {
+      this.dispatchMessage(error.error?.message || 'Failed to tag.');
+      return null;
+    });
+
+    if (media?.tags.some(tag => tag.profile_id === profile_id)) {
+      this.dispatchMessage('Already tagged.');
+      return;
+    }
+
+    this.startLoading();
+
+    const fetcher = this.mediaTagService.createOne({ media_id, profile_id });
+    const createdTag = await firstValueFrom(fetcher)
+      .catch((error) => this.dispatchError(`Failed to tag: ${error.message}`))
+      .finally(() => this.finishLoading());
+
+    if (createdTag) {
+      this.dispatchMessage('Media tagged.');
+    }
+
+    return !!createdTag;
+  }
+
+  public async untagProfile(profile_id: string, media_id: string): Promise<boolean> {
+    const media = await firstValueFrom(this.mediaService.fetchOne(media_id));
+    const media_tag = media.tags.find((tag) => tag.profile_id === profile_id);
+
+    if (!media_tag) {
+      this.dispatchMessage('Already untagged.');
+      return true;
+    }
+
+    this.startLoading();
+
+    const fetcher = this.mediaTagService.delete(media_tag.id);
+    const deleted = await firstValueFrom(fetcher)
+      .then(() => true)
+      .catch((error) => this.dispatchError(`Failed to delete tag: ${error.message}`))
+      .finally(() => this.finishLoading());
+
+    if (deleted) {
+      this.dispatchMessage('Deleted tag.');
+    }
+
+    return !!deleted;
   }
 
 }

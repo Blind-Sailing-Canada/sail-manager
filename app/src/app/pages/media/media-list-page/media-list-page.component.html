@@ -34,6 +34,11 @@
   <a
     mat-raised-button
     [routerLink]="listMediaRoute"
+    [queryParams]="{tagged_profile_id: user.profile.id, page: 0}"
+  >Media of me</a>
+  <a
+    mat-raised-button
+    [routerLink]="listMediaRoute"
     [queryParams]="{page: 0}"
   >All Media</a>
 </ng-template>

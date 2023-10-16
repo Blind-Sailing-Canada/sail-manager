@@ -1,0 +1,13 @@
+.tagged-profile-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+:host ::ng-deep .mat-list-item-content {
+  padding: 0 !important;
+  button {
+    padding: 0
+  }
+}
