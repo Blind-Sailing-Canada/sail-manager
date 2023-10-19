@@ -71,7 +71,7 @@ export class AdminPaymentManualPageComponent extends BasePageComponent implement
       is_unlimited_sails: this.fb.control(false),
       note: this.fb.control('', [Validators.required]),
       number_of_guest_sails_included: this.fb.control(0),
-      number_of_sails_included: this.fb.control(0),
+      number_of_sails_included: this.fb.control(1),
       product_type: this.fb.control(ProductType.SINGLE_SAIL, [Validators.required]),
       product_name: this.fb.control(this.product_type_name[ProductType.SINGLE_SAIL], [Validators.required]),
       valid_until: this.fb.control(`${date.getFullYear()}-12-30`),
@@ -79,6 +79,13 @@ export class AdminPaymentManualPageComponent extends BasePageComponent implement
 
     this.form.controls.product_type.valueChanges.pipe(takeWhile(() => this.active)).subscribe((change) => {
       this.form.controls.product_name.patchValue(this.product_type_name[change] || '');
+      if (change === ProductType.GUEST_SAIL) {
+        this.form.controls.number_of_sails_included.patchValue(0);
+        this.form.controls.number_of_guest_sails_included.patchValue(1);
+      } else if (change === ProductType.SINGLE_SAIL) {
+        this.form.controls.number_of_sails_included.patchValue(1);
+        this.form.controls.number_of_guest_sails_included.patchValue(0);
+      }
     });
   }
 
