@@ -6,6 +6,7 @@ import { MoreThan } from 'typeorm';
 import { SailEmail } from '../email/sail.email';
 import { SocialEmail } from '../email/social.email';
 import { GoogleEmailService } from '../google-api/google-email.service';
+import { ProfileEntity } from '../profile/profile.entity';
 import { SailEntity } from '../sail/sail.entity';
 import { SocialEntity } from '../social/social.entity';
 import { ProfileStatus } from '../types/profile/profile-status';
@@ -21,6 +22,60 @@ export class SettingJob {
     private emailService: GoogleEmailService,
   ) {}
 
+  private async get_future_non_full_socials(): Promise<SocialEntity[]> {
+    return SocialEntity.find({
+      where: { start_at: MoreThan(new Date()) },
+      order: { start_at: 'ASC' },
+      take: 10,
+    }).then(socials => socials.filter(social => social.max_attendants === -1 || social.manifest.length < social.max_attendants));
+  }
+
+  private async send_future_socials_email(subscribers: ProfileEntity[]): Promise<void> {
+    if (!subscribers.length) {
+      return;
+    }
+
+    const futureSocials = await this.get_future_non_full_socials();
+
+    if (!futureSocials.length) {
+      return;
+    }
+
+    const emailInfo = this.socialEmail.futureSocials(futureSocials);
+
+    const emailTo = subscribers.map(subscriber => subscriber.email);
+    emailInfo.bcc = emailTo;
+
+    await this.emailService.sendBccEmail(emailInfo);
+  }
+
+  private async get_future_non_full_sails(): Promise<SailEntity[]> {
+    return SailEntity.find({
+      where: { start_at: MoreThan(new Date()) },
+      order: { start_at: 'ASC' },
+      take: 10,
+    }).then((sails) => sails.filter(sail => sail.max_occupancy === -1 || sail.manifest.length < sail.max_occupancy));
+  }
+
+  private async send_future_sails_email(subscribers: ProfileEntity[]): Promise<void> {
+    if (!subscribers.length) {
+      return;
+    }
+
+    const futureSails = await this.get_future_non_full_sails();
+
+    if (!futureSails.length) {
+      return;
+    }
+
+    const emailInfo = this.sailEmail.futureSails(futureSails);
+
+    const emailTo = subscribers.map(subscriber => subscriber.email);
+    emailInfo.bcc = emailTo;
+
+    await this.emailService.sendBccEmail(emailInfo);
+  }
+
   @Cron(CronExpression.EVERY_DAY_AT_NOON)
   async dailyFutureSails() {
     const subscribers = (await SettingEntity
@@ -35,26 +90,7 @@ export class SettingJob {
       )
       .getMany()).map(setting => setting.profile).filter(Boolean);
 
-    if (!subscribers.length) {
-      return;
-    }
-
-    const futureSails = await SailEntity.find({
-      where: { start_at: MoreThan(new Date()) },
-      order: { start_at: 'ASC' },
-      take: 10,
-    });
-
-    if (!futureSails.length) {
-      return;
-    }
-
-    const emailInfo = this.sailEmail.futureSails(futureSails);
-
-    const emailTo = subscribers.map(subscriber => subscriber.email);
-    emailInfo.bcc = emailTo;
-
-    await this.emailService.sendBccEmail(emailInfo);
+    await this.send_future_sails_email(subscribers);
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_NOON)
@@ -71,26 +107,7 @@ export class SettingJob {
       )
       .getMany()).map(setting => setting.profile).filter(Boolean);
 
-    if (!subscribers.length) {
-      return;
-    }
-
-    const futureSocials = await SocialEntity.find({
-      where: { start_at: MoreThan(new Date()) },
-      order: { start_at: 'ASC' },
-      take: 10,
-    });
-
-    if (!futureSocials.length) {
-      return;
-    }
-
-    const emailInfo = this.socialEmail.futureSocials(futureSocials);
-
-    const emailTo = subscribers.map(subscriber => subscriber.email);
-    emailInfo.bcc = emailTo;
-
-    await this.emailService.sendBccEmail(emailInfo);
+    await this.send_future_socials_email(subscribers);
   }
 
   @Cron('0 0 1-31/2 * *') // Every second day at noon.
@@ -107,26 +124,7 @@ export class SettingJob {
       )
       .getMany()).map(setting => setting.profile).filter(Boolean);
 
-    if (!subscribers.length) {
-      return;
-    }
-
-    const futureSails = await SailEntity.find({
-      where: { start_at: MoreThan(new Date()) },
-      order: { start_at: 'ASC' },
-      take: 10,
-    });
-
-    if (!futureSails.length) {
-      return;
-    }
-
-    const emailInfo = this.sailEmail.futureSails(futureSails);
-
-    const emailTo = subscribers.map(subscriber => subscriber.email);
-    emailInfo.bcc = emailTo;
-
-    await this.emailService.sendBccEmail(emailInfo);
+    await this.send_future_sails_email(subscribers);
   }
 
   @Cron('0 0 1-31/2 * *') // Every second day at noon.
@@ -143,26 +141,7 @@ export class SettingJob {
       )
       .getMany()).map(setting => setting.profile).filter(Boolean);
 
-    if (!subscribers.length) {
-      return;
-    }
-
-    const futureSocials = await SocialEntity.find({
-      where: { start_at: MoreThan(new Date()) },
-      order: { start_at: 'ASC' },
-      take: 10,
-    });
-
-    if (!futureSocials.length) {
-      return;
-    }
-
-    const emailInfo = this.socialEmail.futureSocials(futureSocials);
-
-    const emailTo = subscribers.map(subscriber => subscriber.email);
-    emailInfo.bcc = emailTo;
-
-    await this.emailService.sendBccEmail(emailInfo);
+    await this.send_future_socials_email(subscribers);
   }
 
   @Cron('0 8 * * SUN')
@@ -179,26 +158,7 @@ export class SettingJob {
       )
       .getMany()).map(setting => setting.profile).filter(Boolean);
 
-    if (!subscribers.length) {
-      return;
-    }
-
-    const futureSails = await SailEntity.find({
-      where: { start_at: MoreThan(new Date()) },
-      order: { start_at: 'ASC' },
-      take: 10,
-    });
-
-    if (!futureSails.length) {
-      return;
-    }
-
-    const emailInfo = this.sailEmail.futureSails(futureSails);
-
-    const emailTo = subscribers.map(subscriber => subscriber.email);
-    emailInfo.bcc = emailTo;
-
-    await this.emailService.sendBccEmail(emailInfo);
+    await this.send_future_sails_email(subscribers);
   }
 
   @Cron('0 8 * * SUN')
@@ -215,25 +175,6 @@ export class SettingJob {
       )
       .getMany()).map(setting => setting.profile).filter(Boolean);
 
-    if (!subscribers.length) {
-      return;
-    }
-
-    const futureSocials = await SocialEntity.find({
-      where: { start_at: MoreThan(new Date()) },
-      order: { start_at: 'ASC' },
-      take: 10,
-    });
-
-    if (!futureSocials.length) {
-      return;
-    }
-
-    const emailInfo = this.socialEmail.futureSocials(futureSocials);
-
-    const emailTo = subscribers.map(subscriber => subscriber.email);
-    emailInfo.bcc = emailTo;
-
-    await this.emailService.sendBccEmail(emailInfo);
+    await this.send_future_socials_email(subscribers);
   }
 }
