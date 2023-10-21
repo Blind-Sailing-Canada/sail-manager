@@ -85,7 +85,7 @@ export class MomentService {
     const date2 = new Date(finish);
 
     const duration = date2.valueOf() - date1.valueOf();
-    const hourDiff = (duration / 1000) / 3600;
+    const hourDiff = ((duration / 1000) / 3600).toFixed(1);
 
     return `${hourDiff} hours.`;
   }
