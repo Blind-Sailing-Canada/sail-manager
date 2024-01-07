@@ -69,7 +69,7 @@ export class AdminPaymentManualPageComponent extends BasePageComponent implement
       customer_email: this.fb.control(this.route.snapshot.queryParams.customer_email || '', [Validators.required]),
       customer_name: this.fb.control(this.route.snapshot.queryParams.customer_name || '', [Validators.required]),
       is_unlimited_sails: this.fb.control(false),
-      note: this.fb.control('', [Validators.required]),
+      note: this.fb.control(''),
       number_of_guest_sails_included: this.fb.control(0),
       number_of_sails_included: this.fb.control(1),
       product_type: this.fb.control(ProductType.SINGLE_SAIL, [Validators.required]),
