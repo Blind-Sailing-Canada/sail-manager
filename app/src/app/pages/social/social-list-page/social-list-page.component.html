@@ -236,6 +236,7 @@
       [ngModelOptions]="{standalone: true}"
       matNativeControl
       (ngModelChange)="statusHandler()"
+      title="Filter socials by status"
     >
       <option
         *ngFor="let status of socialStatusValues | keyvalue"
