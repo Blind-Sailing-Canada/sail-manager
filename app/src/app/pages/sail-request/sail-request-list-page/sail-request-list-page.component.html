@@ -204,6 +204,7 @@
           [ngModelOptions]="{standalone: true}"
           matNativeControl
           (ngModelChange)="filterSailRequests()"
+          title="Filter requests by category."
         >
           <option
             *ngFor="let category of requestCategoryValues"
@@ -218,6 +219,7 @@
           [ngModelOptions]="{standalone: true}"
           matNativeControl
           (ngModelChange)="filterSailRequests()"
+          title="Filter requests by status."
         >
           <option
             *ngFor="let status of requestStatusValues | keyvalue"
