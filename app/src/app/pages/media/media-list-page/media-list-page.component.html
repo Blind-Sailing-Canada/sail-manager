@@ -230,6 +230,7 @@
               class="clickable"
               (click)="showProfileDialog(element.posted_by)"
               [profile]="element.posted_by"
+              title="Posted by {{element.posted_by?.name}}"
             ></app-profile-bullet>
             <button
               mat-flat-button
