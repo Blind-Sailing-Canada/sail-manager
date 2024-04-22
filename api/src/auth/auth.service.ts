@@ -104,7 +104,10 @@ export class AuthService {
       `,
     });
 
-    return createdUser;
+    return UserEntity.findOne({
+      where: { id: createdUser.id },
+      relations: ['profile']
+    });
   }
 
   public getCachedToken(user_id: string): CachedToken {
