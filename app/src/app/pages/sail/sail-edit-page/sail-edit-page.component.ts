@@ -363,6 +363,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.sailForm.controls.name.setValue(sail.name);
     this.sailForm.controls.description.setValue(sail.description);
     this.sailForm.controls.is_payment_free.setValue(sail.is_payment_free);
+    this.sailForm.controls.is_private.setValue(sail.is_private);
     this.sailForm.controls.max_occupancy.setValue(sail.max_occupancy);
 
     const start = new Date(sail.start_at);
