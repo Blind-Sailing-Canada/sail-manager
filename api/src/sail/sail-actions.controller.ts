@@ -91,6 +91,10 @@ export class SailActionsController {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
     }
 
+    if (sail.is_private) {
+      throw new UnauthorizedException('This sail is private.');
+    }
+
     if (sail.manifest.find(sailor => sailor.sailor_role == SailorRole.Skipper)) {
       throw new BadRequestException('This sail already has a skipper.');
     }
@@ -136,6 +140,10 @@ export class SailActionsController {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
     }
 
+    if (sail.is_private) {
+      throw new UnauthorizedException('This sail is private.');
+    }
+
     if (sail.manifest.find(sailor => sailor.sailor_role == SailorRole.Crew)) {
       throw new BadRequestException('This sail already has a crew.');
     }
@@ -173,6 +181,10 @@ export class SailActionsController {
 
     if (!sail) {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
+    }
+
+    if (sail.is_private) {
+      throw new UnauthorizedException('This sail is private.');
     }
 
     const skipperAndCrewCount = sail.manifest?.filter(sailor => [

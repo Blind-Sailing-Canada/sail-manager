@@ -31,6 +31,7 @@
     <form class='sail-edit-form'>
       <ng-container *ngTemplateOutlet="sailName"></ng-container>
       <ng-container *ngTemplateOutlet="sailPayment"></ng-container>
+      <ng-container *ngTemplateOutlet="sailPrivacy"></ng-container>
       <ng-container *ngTemplateOutlet="sailCategory"></ng-container>
       <ng-container *ngTemplateOutlet="sailDescription"></ng-container>
       <ng-container *ngTemplateOutlet="sailStart"></ng-container>
@@ -92,6 +93,19 @@
       formControlName="is_payment_free"
       title="If selected, payments will not be collected."
     >Complimentary Sail</mat-checkbox>
+  </form>
+</ng-template>
+<ng-template #sailPrivacy>
+  <h4
+    class='form-section-header'
+    id="step2"
+    tabindex="-1"
+  >{{totalFormSteps}}: Sail Openness</h4>
+  <form [formGroup]="sailForm">
+    <mat-checkbox
+      formControlName="is_private"
+      title="If selected, sailors will not be able to join this sail on their own."
+    >Private Sail</mat-checkbox>
   </form>
 </ng-template>
 <ng-template #sailCategory>

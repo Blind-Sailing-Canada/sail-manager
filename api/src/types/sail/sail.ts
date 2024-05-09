@@ -10,14 +10,14 @@ import { Media } from '../media/media';
 import { CreatedByBase } from '../base/created-by-base';
 
 export interface Sail extends CreatedByBase {
-  boat: Boat;
   boat_id: string;
+  boat: Boat;
   calendar_id: string;
   calendar_link: string;
   cancel_reason: string;
   cancelled_at: Date;
-  cancelled_by: Profile;
   cancelled_by_id: string;
+  cancelled_by: Profile;
   category: string;
   checklists: SailChecklist[];
   comments: Comment[];
@@ -27,12 +27,13 @@ export interface Sail extends CreatedByBase {
   entity_type: string;
   feedback: SailFeedback[];
   is_payment_free: boolean;
+  is_private: boolean;
   manifest: SailManifest[];
   max_occupancy: number;
   name: string;
   pictures: Media[];
-  sail_request: SailRequest;
   sail_request_id: string;
+  sail_request: SailRequest;
   start_at: Date;
   status: SailStatus;
 }

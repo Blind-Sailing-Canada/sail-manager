@@ -278,6 +278,10 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       return false;
     }
 
+    if (sail.is_private) {
+      return false;
+    }
+
     return true;
   }
 

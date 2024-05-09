@@ -550,6 +550,15 @@
           </mat-error>
         </td>
       </tr>
+      <tr *ngIf="sail?.is_private">
+        <td
+          class="warning"
+          colspan="2"
+        >
+          <mat-error><b>This sail is invite-only.</b>
+          </mat-error>
+        </td>
+      </tr>
     </tfoot>
   </app-table>
 </ng-template>

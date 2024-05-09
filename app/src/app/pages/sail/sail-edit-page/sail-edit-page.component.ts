@@ -66,7 +66,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   public sail_request_id: string;
   public sailStartDateTimeForm: UntypedFormGroup;
   public sailCategories: SailCategory[] = [];
-  public totalFormSteps = 11;
+  public totalFormSteps = 12;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -441,6 +441,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.sailForm = this.fb.group({
       category: this.fb.control(''),
       is_payment_free: this.fb.control(false),
+      is_private: this.fb.control(false),
       name: new UntypedFormControl('', [
         (control) => {
           const name = control.value.trim();

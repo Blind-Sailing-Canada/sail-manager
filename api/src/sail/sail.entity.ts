@@ -128,6 +128,12 @@ export class SailEntity extends CreatedByBaseModelEntity implements Sail {
   })
     cancelled_at: Date;
 
+  @Column({
+    nullable: true,
+    default: false
+  })
+    is_private: boolean;
+
   @Column({ type: 'uuid' })
   @Index()
     boat_id: string;
