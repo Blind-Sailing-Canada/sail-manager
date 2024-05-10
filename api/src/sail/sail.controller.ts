@@ -151,6 +151,7 @@ export class SailController {
       where: {
         status: SailStatus.New,
         start_at: MoreThanOrEqual(new Date()),
+        is_private: Not<true>(true)
       },
       order: { start_at: 'ASC' },
       loadEagerRelations: false,
