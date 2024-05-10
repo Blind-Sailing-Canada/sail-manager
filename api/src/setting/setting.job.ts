@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import {
   Cron, CronExpression
 } from '@nestjs/schedule';
-import { MoreThan } from 'typeorm';
+import {
+  MoreThan, Not
+} from 'typeorm';
 import { SailEmail } from '../email/sail.email';
 import { SocialEmail } from '../email/social.email';
 import { GoogleEmailService } from '../google-api/google-email.service';
@@ -51,7 +53,10 @@ export class SettingJob {
 
   private async get_future_non_full_sails(): Promise<SailEntity[]> {
     return SailEntity.find({
-      where: { start_at: MoreThan(new Date()) },
+      where: {
+        start_at: MoreThan(new Date()),
+        is_private: Not<true>(true)
+      },
       order: { start_at: 'ASC' },
       take: 10,
     }).then((sails) => sails.filter(sail => sail.max_occupancy === -1 || sail.manifest.length < sail.max_occupancy));
