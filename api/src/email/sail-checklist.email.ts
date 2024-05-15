@@ -30,6 +30,9 @@ export class SailChecklistEmail {
               <label>Sail weather: </label> <span>${sailChecklist.weather || 'Not provided.'}</span>
             </div>
             <div>
+              <label>Boat: </label> <span>${sail.boat?.name || 'Not provided.'}</span>
+            </div>
+            <div>
               <label>Checklist: </label> <div>${this.checklistTable(sailChecklist.checklist, sail.boat.checklist.items)}</div>
             </div>
             <div>
