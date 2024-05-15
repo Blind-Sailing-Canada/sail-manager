@@ -41,6 +41,11 @@ import { UserAccessFields } from '../types/user-access/user-access-fields';
 import { User } from '../user/user.decorator';
 import { SailEntity } from './sail.entity';
 import { SailService } from './sail.service';
+import { SettingEntity } from '../setting/setting.entity';
+import { In } from 'typeorm';
+import {
+  RateSailSubscription, RateSailSubscriptionSetting
+} from '../types/settings/rate-sail-subscription';
 
 @Controller('sail')
 @ApiTags('sail')
@@ -340,9 +345,24 @@ export class SailActionsController {
 
       due_date.setDate(due_date.getDate() + 2);
 
+      const sailor_profile_ids = sail.manifest.map(sailor => sailor.profile_id).filter(Boolean);
+
+      const sailor_settings = await SettingEntity
+        .find({ where: { profile_id: In(sailor_profile_ids) } });
+
       const required_actions = sail
         .manifest
         .filter(sailor => !!sailor.profile_id)
+        .filter(sailor => {
+          const setting = sailor_settings.find(s => s.profile_id == sailor.profile_id);
+          if (!setting) {
+            return true;
+          }
+          if (setting?.settings[RateSailSubscriptionSetting] === undefined) {
+            return true;
+          }
+          return setting?.settings[RateSailSubscriptionSetting] === RateSailSubscription.Subscribed;
+        })
         .map(sailor => RequiredActionEntity.create({
           due_date,
           actionable_id: id,

@@ -78,6 +78,7 @@ export class ProfileSettingsPageComponent extends BasePageComponent implements O
     this.form = this.fb.group({
       futureSails: this.fb.control(-1, Validators.required),
       futureSocials: this.fb.control(-1, Validators.required),
+      rateSailRequest: this.fb.control(-1, Validators.required),
     });
   }
 

@@ -85,6 +85,17 @@
               aria-label="Receive an email notification once a week"
             ><span tabindex="-1">Once a week</span></mat-radio-button>
           </mat-radio-group>
+          <h3 tabindex="0">Rate Your Sail Notifications</h3>
+          <mat-radio-group formControlName="rateSailRequest">
+            <mat-radio-button
+              value="unsubscribed"
+              aria-label="Unsubscribe from 'Rate your sail' notifications"
+            ><span tabindex="-1">Unsubscribe</span></mat-radio-button>
+            <mat-radio-button
+              value="subscribed"
+              aria-label="Receive notifications to rate your sail"
+            ><span tabindex="-1">Every day</span></mat-radio-button>
+          </mat-radio-group>
         </form>
         <mat-action-row>
           <button
