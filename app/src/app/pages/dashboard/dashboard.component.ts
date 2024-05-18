@@ -249,7 +249,9 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
 
     const query = { product_purchase_id: null, profile_id: this.user.profile.id };
 
-    this.outstandingSailFees = await firstValueFrom(this.sailClaimService.fetchAllPaginated(query))
+    this.outstandingSailFees = await firstValueFrom(
+      this.sailClaimService.fetchAllPaginated(query, 1, 1, 'created_at,ASC', true)
+    )
       .then((results) => results.data)
       .finally(() => this.finishLoading());
   }

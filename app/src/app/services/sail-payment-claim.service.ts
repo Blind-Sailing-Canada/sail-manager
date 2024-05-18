@@ -24,7 +24,8 @@ export class SailPaymentClaimService {
     query?: any,
     page: number = 1,
     per_page: number = 10,
-    sort: string = 'created_at,ASC'
+    sort: string = 'created_at,ASC',
+    dashboard: boolean = false,
   ): Observable<PaginatedSailPaymentClaim> {
     return this.http
       .get<PaginatedSailPaymentClaim>(
@@ -33,6 +34,7 @@ export class SailPaymentClaimService {
           s: JSON.stringify(query || {}),
           page,
           per_page,
+          dashboard,
           sort },
         });
   }

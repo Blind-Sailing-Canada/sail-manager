@@ -1,5 +1,6 @@
 import {
   Controller,
+  Req,
   UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -15,6 +16,7 @@ import { JwtObject } from '../types/token/jwt-object';
 import { User } from '../user/user.decorator';
 import { SailPaymentClaimEntity } from './sail-payment-claim.entity';
 import { SailPaymentClaimService } from './sail-payment-claim.service';
+import { Request } from 'express';
 
 @Crud({
   model: { type: SailPaymentClaimEntity },
@@ -48,7 +50,11 @@ export class SailPaymentClaimController implements CrudController<SailPaymentCla
   }
 
   @Override()
-  getMany(@ParsedRequest() req: CrudRequest, @User() user: JwtObject) {
+  getMany(@ParsedRequest() req: CrudRequest, @User() user: JwtObject, @Req() request: Request) {
+    if (request?.query?.dashboard == 'true' && process.env.SHOW_OUTSTANDING_FEES_ON_DASHBOARD == 'false') {
+      return { data: [] };
+    }
+
     if (!user.roles.includes(ProfileRole.Admin)){
       req.parsed.search.$and.push({ profile_id: user.profile_id });
     }
