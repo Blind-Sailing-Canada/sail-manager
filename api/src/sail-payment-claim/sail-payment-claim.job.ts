@@ -32,6 +32,9 @@ export class SailPaymentClaimJob {
 
   @Cron('0 0 1-31/2 * *') // Every second day at noon.
   async sendMissingPaymentsEmail() {
+    if (process.env.sendMissingPaymentsEmail == 'false') {
+      return;
+    }
     const claims = await SailPaymentClaimEntity
       .find({
         relations: ['sail'],
