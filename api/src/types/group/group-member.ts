@@ -1,9 +1,19 @@
 import { PaginatedBase } from '../base/paginated-base';
 import { Profile } from '../profile/profile';
-import { admin_directory_v1 } from 'googleapis';
+
+interface GroupMemberSchema {
+  delivery_settings?: string | null;
+  email?: string | null;
+  etag?: string | null;
+  id?: string | null;
+  kind?: string | null;
+  role?: string | null;
+  status?: string | null;
+  type?: string | null;
+}
 
 export interface GroupMember {
-  member: admin_directory_v1.Schema$Member;
+  member: GroupMemberSchema;
   profile?: Profile
 }
 
