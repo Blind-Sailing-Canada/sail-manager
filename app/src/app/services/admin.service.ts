@@ -1,9 +1,9 @@
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {
   Inject,
   Injectable,
 } from '@angular/core';
+import { GroupMember } from '../../../../api/src/types/group/group-member';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +14,39 @@ export class AdminService {
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
-  runQuery(query: string): Observable<any> {
-    return this.http.post<any>(`${this.API_URL}/query`, { query });
+  listCrewGroupMembers() {
+    return this.http.get<GroupMember[]>(`${this.API_URL}/crew-group-members`);
   }
 
-  downloadQuery(query: string) {
-    return this.http.post(`${this.API_URL}/query/download`, { query }, { responseType: 'blob' });
+  listSkipperGroupMembers() {
+    return this.http.get<GroupMember[]>(`${this.API_URL}/skipper-group-members`);
+  }
+
+  listMemberGroupMembers() {
+    return this.http.get<GroupMember[]>(`${this.API_URL}/member-group-members`);
+  }
+
+  deleteCrewGroupMember(email: string) {
+    return this.http.patch(`${this.API_URL}/crew-group-members`, { email });
+  }
+
+  deleteSkipperGroupMember(email: string) {
+    return this.http.patch(`${this.API_URL}/skipper-group-members`, { email });
+  }
+
+  deleteMemberGroupMember(email: string) {
+    return this.http.patch(`${this.API_URL}/member-group-members`, { email });
+  }
+
+  addCrewGroupMember(email: string) {
+    return this.http.put(`${this.API_URL}/crew-group-members`, { email });
+  }
+
+  addSkipperGroupMember(email: string) {
+    return this.http.put(`${this.API_URL}/skipper-group-members`, { email });
+  }
+
+  addMemberGroupMember(email: string) {
+    return this.http.put(`${this.API_URL}/member-group-members`, { email });
   }
 }

@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import {
   adminPaymentDashboardRoute,
   adminSailFeedbackRoute,
-  editProfilePrivilegesRoute, FullRoutes, listSailCategoriesRoute, missingSailPaymentsRoute,
+  editProfilePrivilegesRoute, FullRoutes, listSailCategoriesRoute, missingSailPaymentsRoute, viewGroupMembersRoute,
 } from '../../../routes/routes';
 import { ProfileService } from '../../../services/profile.service';
 import { BasePageComponent } from '../../base-page/base-page.component';
@@ -50,6 +50,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
   public profileLink = editProfilePrivilegesRoute;
   public profileStatus: ProfileStatus | 'ANY' = 'ANY';
   public profileStatusValues = { ...ProfileStatus, ANY: 'ANY' };
+  public viewGroupMembersRoute = viewGroupMembersRoute;
 
   constructor(
     @Inject(Store) store: Store<any>,

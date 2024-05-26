@@ -25,10 +25,13 @@ import {
 import { AdminPaymentEditPageComponent } from './admin-payment/admin-payment-edit-page/admin-payment-edit-page.component';
 import { ConfirmDialogModule } from '../../components/confirm-dialog/confirm-dialog.module';
 import { AdminSailFeedbackPageComponent } from './admin-sail-feedback-page/admin-sail-feedback-page.component';
+import { AdminGroupMembersPageComponent } from './admin-group-members-page/admin-group-members-page.component';
+import { AddGroupMemberDialogModule } from '../../components/add-group-member-dialog/add-group-member-dialog.module';
 
 @NgModule({
   declarations: [
     AdminDashboardPageComponent,
+    AdminGroupMembersPageComponent,
     AdminMissingSailPaymentsPageComponent,
     AdminPaymentDashboardPageComponent,
     AdminPaymentEditPageComponent,
@@ -41,11 +44,12 @@ import { AdminSailFeedbackPageComponent } from './admin-sail-feedback-page/admin
     SavedQueryListPageComponent,
   ],
   imports: [
+    AddGroupMemberDialogModule,
     AdminRoutingModule,
     AngularMaterialModule,
     BasePageModule,
-    ConfirmDialogModule,
     CommonModule,
+    ConfirmDialogModule,
     CreateUserDialogModule,
     FindUserDialogModule,
     FormsModule,

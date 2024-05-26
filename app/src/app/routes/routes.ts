@@ -85,6 +85,7 @@ export enum SubRoutes {
   RESET_PASSWORD = 'reset-password',
   RESOLVE_MAINTENANCE = 'resolve',
   SAVED_QUERY = 'saved-db-query',
+  GROUP_MEMBERS = 'group-members',
   SUBMIT_FEEDBACK = 'submit',
   VIEW_ADMIN_PAYMENT = 'view-payment',
   VIEW_BOAT = 'view',
@@ -136,6 +137,7 @@ export enum FullRoutes {
   SAIL_PATHS = ROOT + RootRoutes.SAIL_PATHS,
   SAIL_REQUESTS = ROOT + RootRoutes.SAIL_REQUESTS,
   SAVED_QUERY = ADMIN + SEPARATOR + SubRoutes.SAVED_QUERY,
+  GROUP_MEMBERS = ADMIN + SEPARATOR + SubRoutes.GROUP_MEMBERS,
   SOCIALS = ROOT + RootRoutes.SOCIALS,
   // ^ KEEP THESE SECOND^
   ADMIN_PAYMENT_DASHBOARD = ADMIN + SEPARATOR + SubRoutes.ADMIN_PAYMENT_DASHBOARD,
@@ -297,3 +299,4 @@ export const viewSavedQueryRoute = (id: string) => `${FullRoutes.VIEW_SAVED_QUER
 export const viewSocialPicturesRoute = (social_id: string) => `${FullRoutes.VIEW_SOCIAL_PICTURES}/${social_id}`;
 export const viewSocialRoute = (social_id: string) => `${FullRoutes.VIEW_SOCIAL}/${social_id}`;
 export const viewUserSailsRoute = (profile_id: string) => `${FullRoutes.VIEW_SAIL_PER_PERSON}/${profile_id}`;
+export const viewGroupMembersRoute = (group: string) => `${FullRoutes.GROUP_MEMBERS}/${group}`;

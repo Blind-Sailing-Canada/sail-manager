@@ -60,6 +60,21 @@
     [routerLink]="dbQueryRoute.toString()"
     title="Click to go to db query page."
   >DB Query</a>
+  <a
+    mat-raised-button
+    [routerLink]="viewGroupMembersRoute('Skippers')"
+    title="Click to go to Skippers group page."
+  >Skippers Group</a>
+  <a
+    mat-raised-button
+    [routerLink]="viewGroupMembersRoute('Crew')"
+    title="Click to go to Crew group page."
+  >Crew Group</a>
+  <a
+    mat-raised-button
+    [routerLink]="viewGroupMembersRoute('Members')"
+    title="Click to go to Members group page."
+  >Members Group</a>
 </ng-template>
 
 <ng-template #REVIEW_PROFILES_LIST>

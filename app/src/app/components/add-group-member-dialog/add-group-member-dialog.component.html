@@ -1,0 +1,40 @@
+<h1
+  attr.aria-label="Add new member to {{data.group}} group"
+  cdkFocusInitial
+  mat-dialog-title
+  tabIndex="0"
+>Add Group Member Dialog</h1>
+<mat-dialog-content>
+  <mat-form-field
+    [(ngModel)]="data.memberEmail"
+    ngDefaultControl
+  >
+    <mat-label
+      id="labelName"
+      aria-hidden="true"
+      tabindex="-1"
+    >Member email</mat-label>
+    <input
+      aria-labelledby="labelName"
+      aria-required="true"
+      matInput
+      required
+      type="email"
+    >
+  </mat-form-field>
+  <mat-error *ngIf="!isFormValid">Please fill out all required fields.</mat-error>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button
+    (click)="addAndClose()"
+    mat-raised-button
+    title="Add member to {{data.group}}"
+    [disabled]="!isFormValid"
+  >ADD</button>
+  <button
+    [mat-dialog-close]="data"
+    mat-raised-button
+    title="Close dialog"
+  >CLOSE</button>
+</div>
