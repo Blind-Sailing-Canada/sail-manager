@@ -18,6 +18,7 @@ import { JwtObject } from '../types/token/jwt-object';
 import { User } from '../user/user.decorator';
 import { SailChecklistEntity } from './sail-checklist.entity';
 import { SailChecklistService } from './sail-checklist.service';
+import { IsNull } from 'typeorm';
 
 @Crud({
   model: { type: SailChecklistEntity },
@@ -51,9 +52,12 @@ export class SailChecklistController {
     private sailService: SailService,
     @InjectQueue('sail-checklist') private readonly sailChecklistQueue: Queue) { }
 
-  private async queueSailChecklistUpdateJob(checklist_id: string) {
+  private async queueSailChecklistUpdateJob(checklist_id: string, updated_by_username: string) {
     try {
-      const job: SailChecklistUpdateJob = { sail_checklist_id: checklist_id, };
+      const job: SailChecklistUpdateJob = {
+        sail_checklist_id: checklist_id,
+        updated_by_username: updated_by_username
+      };
       const jobId = `sail-checklist-${checklist_id}`;
 
       await this.sailChecklistQueue.removeJobs(jobId); // remove old job to prevent spamming
@@ -90,11 +94,11 @@ export class SailChecklistController {
     if (before) {
       await SailChecklistEntity.update(before.id, before);
 
-      await this.queueSailChecklistUpdateJob(before.id);
+      await this.queueSailChecklistUpdateJob(before.id, user.username);
 
       await SailChecklistEntity.update({
         id: before.id,
-        submitted_by_id: null,
+        submitted_by_id: IsNull(),
       }, { submitted_by_id: user.profile_id });
     }
 
@@ -103,11 +107,11 @@ export class SailChecklistController {
     if (after) {
       await SailChecklistEntity.update(after.id, after);
 
-      await this.queueSailChecklistUpdateJob(after.id);
+      await this.queueSailChecklistUpdateJob(after.id, user.username);
 
       await SailChecklistEntity.update({
         id: after.id,
-        submitted_by_id: null,
+        submitted_by_id: IsNull(),
       }, { submitted_by_id: user.profile_id });
     }
 

@@ -8,7 +8,12 @@ import { SailChecklist } from '../types/sail-checklist/sail-checklist';
 @Injectable()
 export class SailChecklistEmail {
 
-  checklistUpdateEmail(sailChecklist: SailChecklist, fleetManagers: Profile[], coordinators: Profile[]): EmailInfo {
+  checklistUpdateEmail(
+    sailChecklist: SailChecklist,
+    updated_by_username: string,
+    fleetManagers: Profile[],
+    coordinators: Profile[]
+  ): EmailInfo {
     const sendTo: Set<string> = new Set<string>();
 
     coordinators.forEach(coordinator => sendTo.add(coordinator.email));
@@ -22,12 +27,15 @@ export class SailChecklistEmail {
       content: `
         <html>
           <body>
-            <h2>Sail "${sail.name}" (#${sail.entity_number}) "${sailChecklist.checklist_type}" checklist was update.</h2>
+            <h2>Sail "${sail.name}" (#${sail.entity_number}) "${sailChecklist.checklist_type}" checklist was updated.</h2>
             <div>
               <label>Sail destination: </label> <span>${sailChecklist.sail_destination || 'Not provided.'}</span>
             </div>
             <div>
               <label>Sail weather: </label> <span>${sailChecklist.weather || 'Not provided.'}</span>
+            </div>
+            <div>
+              <label>Sail status: </label> <span>${sail.status}</span>
             </div>
             <div>
               <label>Boat: </label> <span>${sail.boat?.name || 'Not provided.'}</span>
@@ -43,6 +51,9 @@ export class SailChecklistEmail {
             </div>
             <div>
               <label>Signed by crew: </label> <span>${sailChecklist.signed_by_crew}</span>
+            </div>
+            <div>
+              <label>Updated by: </label> <span>${updated_by_username}</span>
             </div>
             <div>
               <br/>
@@ -68,7 +79,7 @@ export class SailChecklistEmail {
       <table>
         <caption>Manifest</caption>
         <thead>
-          <tr><th>Sailor</th><td>Role</th><th>Attended</th></tr>
+          <tr><th>Sailor</th><th>Role</th><th>Attended</th></tr>
           <tbody>
             ${rows}
           </tbody>
