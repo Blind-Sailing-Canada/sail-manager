@@ -60,7 +60,7 @@ export class EmailPasswordComponent extends BasePageComponent implements OnInit 
       .toPromise()
       .then((existing) => {
         if (existing) {
-          throw new Error('Email is already in use.');
+          throw new Error(`Email ${email} is already in use.`);
         }
 
         return this.firebaseService.createUserWithEmailAndPassword(email, password);
