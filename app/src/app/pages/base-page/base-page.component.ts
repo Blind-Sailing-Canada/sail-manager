@@ -90,6 +90,7 @@ import { MediaDialogComponent } from '../../components/media-dialog/media-dialog
 import { MediaService } from '../../services/media.service';
 import { MediaTagService } from '../../services/media-tag.service';
 import { firstValueFrom } from 'rxjs';
+import * as Sentry from '@sentry/browser';
 
 @Component({
   template: ''
@@ -153,6 +154,7 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
   public dispatchError(message: string): void {
     this.dispatchAction(putSnack({ snack: { message, type: SnackType.ERROR } }));
+    Sentry.captureException(message);
   }
 
   public goToEntity(entityType: string, entityId: string): void {
