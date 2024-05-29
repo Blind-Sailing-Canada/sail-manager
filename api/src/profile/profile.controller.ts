@@ -176,6 +176,7 @@ export class ProfileController {
               actionable_id: profile_id,
               id: Not(review.required_action_id),
               required_action_type: RequiredActionType.ReviewNewUser,
+              status: RequiredActionStatus.New,
             },
             { status: RequiredActionStatus.Dismissed }
           );
