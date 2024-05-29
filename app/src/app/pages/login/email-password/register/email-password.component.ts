@@ -67,7 +67,7 @@ export class EmailPasswordComponent extends BasePageComponent implements OnInit 
       })
       .then(() => this.login())
       .catch((error) => {
-        this.dispatchError(error.message);
+        this.dispatchError(`${error.message} (${email})`);
         console.error(error);
       });
   }
@@ -93,11 +93,11 @@ export class EmailPasswordComponent extends BasePageComponent implements OnInit 
         .then(() => this.firebaseService.currentUser.getIdToken())
         .then(token => window.location.href = `/api/auth/login-firebase/${token}`)
         .catch((error) => {
-          this.dispatchMessage(`Failed to login: ${error.message}`);
+          this.dispatchMessage(`Failed to login: ${error.message} (${email})`);
           console.error(error);
         });
     } catch (error) {
-      this.dispatchMessage('Failed to login: authentication not set up.');
+      this.dispatchMessage(`Failed to login: (${email}) ${error}`);
     }
   }
 
