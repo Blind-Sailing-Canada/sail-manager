@@ -32,7 +32,6 @@ import { ProfileEntity } from './profile.entity';
 import { ProfileService } from './profile.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ProfileApprovedJob } from '../types/profile/profile-approved-job';
-import { Not } from 'typeorm';
 import { RequiredActionType } from '../types/required-action/required-action-type';
 
 @Crud({
@@ -169,18 +168,18 @@ export class ProfileController {
             { id: review.required_action_id },
             { status: RequiredActionStatus.Completed }
           );
-        await transactionalEntityManager
-          .update(
-            RequiredActionEntity,
-            {
-              actionable_id: profile_id,
-              id: Not(review.required_action_id),
-              required_action_type: RequiredActionType.ReviewNewUser,
-              status: RequiredActionStatus.New,
-            },
-            { status: RequiredActionStatus.Dismissed }
-          );
       }
+
+      await transactionalEntityManager
+        .update(
+          RequiredActionEntity,
+          {
+            actionable_id: profile_id,
+            required_action_type: RequiredActionType.ReviewNewUser,
+            status: RequiredActionStatus.New,
+          },
+          { status: RequiredActionStatus.Dismissed }
+        );
 
       if (review.status === ProfileStatus.Approved && profile.status !== ProfileStatus.Approved) {
         const job: ProfileApprovedJob = { profile_id };
