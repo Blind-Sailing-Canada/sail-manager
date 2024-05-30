@@ -70,8 +70,10 @@ async function bootstrap() {
     }
 
     const user: JwtObject = (req.user || req.original_user) as JwtObject;
+    const username = user.username?.split(' ')[0] || user.provider_user.email;
+    const userid = user.profile_id || user.user_id || user.provider_user.id;
 
-    return `${user.profile_id}:${user.username?.split(' ')[0]}`;
+    return `${userid}:${username}`;
   });
 
   app.use(morgan('combined'));
