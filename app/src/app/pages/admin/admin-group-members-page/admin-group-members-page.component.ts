@@ -18,6 +18,11 @@ import { DEFAULT_PAGINATION } from '../../../models/default-pagination';
 import { AddGroupMemberDialogData } from '../../../models/add-group-member-dialog-data';
 import { AddGroupMemberDialogComponent } from '../../../components/add-group-member-dialog/add-group-member-dialog.component';
 
+enum Group {
+  Skipper = 'Skipper',
+  Crew = 'Crew',
+  Members = 'Members'
+}
 
 @Component({
   selector: 'app-admin-group-members-page',
@@ -53,16 +58,16 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
   }
 
   public async fetchGroupMembers(withDelay = false) {
-    let fetcher:  Observable<GroupMember[]> = null;
-    switch(this.groupName) {
-      case 'Crew':
-        fetcher =  this.adminService.listCrewGroupMembers();
+    let fetcher: Observable<GroupMember[]> = null;
+    switch (this.groupName) {
+      case Group.Crew:
+        fetcher = this.adminService.listCrewGroupMembers();
         break;
-      case 'Skippers':
-        fetcher =  this.adminService.listSkipperGroupMembers();
+      case Group.Skipper:
+        fetcher = this.adminService.listSkipperGroupMembers();
         break;
-      case 'Members':
-        fetcher =  this.adminService.listMemberGroupMembers();
+      case Group.Members:
+        fetcher = this.adminService.listMemberGroupMembers();
         break;
       default:
         this.dispatchError(`Unknown group ${this.groupName}`);
@@ -70,7 +75,7 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
     }
 
 
-    const delayedFetcher = of({}).pipe(delay(withDelay ? 2000: 0), switchMap(() => fetcher));
+    const delayedFetcher = of({}).pipe(delay(withDelay ? 2000 : 0), switchMap(() => fetcher));
     this.startLoading();
     try {
       const data = await firstValueFrom(delayedFetcher).finally(() => this.finishLoading());
@@ -99,8 +104,8 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
     const filteredData = this.data
       .filter((member) => member.member.email
         .includes(event.search)
-          || member.profile?.email.includes(event.search)
-          || member.profile?.name.includes(event.search));
+        || member.profile?.email.includes(event.search)
+        || member.profile?.name.includes(event.search));
 
     const sortedData = filteredData.sort((a, b) => {
       if (sortField === 'email') {
@@ -126,15 +131,15 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
   public async deleteMember(email: string) {
     let fetcher = null;
 
-    switch(this.groupName) {
-      case 'Crew':
-        fetcher =  this.adminService.deleteCrewGroupMember(email);
+    switch (this.groupName) {
+      case Group.Crew:
+        fetcher = this.adminService.deleteCrewGroupMember(email);
         break;
-      case 'Skippers':
-        fetcher =  this.adminService.deleteSkipperGroupMember(email);
+      case Group.Skipper:
+        fetcher = this.adminService.deleteSkipperGroupMember(email);
         break;
-      case 'Members':
-        fetcher =  this.adminService.deleteMemberGroupMember(email);
+      case Group.Members:
+        fetcher = this.adminService.deleteMemberGroupMember(email);
         break;
       default:
         this.dispatchError(`Unknown group ${this.groupName}`);
@@ -146,7 +151,7 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
       await firstValueFrom(fetcher).finally(() => this.finishLoading());
       this.dispatchMessage(`Removed ${email} member from ${this.groupName} group.`);
       this.fetchGroupMembers(true);
-    } catch(error) {
+    } catch (error) {
       this.dispatchError(error.error?.message || error.message || 'Failed to remove member.');
       this.finishLoading();
     }
@@ -154,15 +159,15 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
 
   private async addGroupMember(memberEmail: string) {
     let fetcher = null;
-    switch(this.groupName) {
-      case 'Crew':
-        fetcher =  this.adminService.addCrewGroupMember(memberEmail);
+    switch (this.groupName) {
+      case Group.Crew:
+        fetcher = this.adminService.addCrewGroupMember(memberEmail);
         break;
-      case 'Skippers':
-        fetcher =  this.adminService.addSkipperGroupMember(memberEmail);
+      case Group.Skipper:
+        fetcher = this.adminService.addSkipperGroupMember(memberEmail);
         break;
-      case 'Members':
-        fetcher =  this.adminService.addMemberGroupMember(memberEmail);
+      case Group.Members:
+        fetcher = this.adminService.addMemberGroupMember(memberEmail);
         break;
       default:
         this.dispatchError(`Unknown group ${this.groupName}`);
@@ -174,7 +179,7 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
       await firstValueFrom(fetcher).finally(() => this.finishLoading());
       this.dispatchMessage(`Added ${memberEmail} member to ${this.groupName} group.`);
       this.fetchGroupMembers(true);
-    } catch(error) {
+    } catch (error) {
       this.dispatchError(error.error?.message || error.message || 'Failed to add member.');
       this.finishLoading();
     }
@@ -193,6 +198,16 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
         maxWidth: 500,
         data: dialogData,
       });
+  }
+
+  public get groupEmail(): string {
+    const emails = {
+      [Group.Skipper]: 'SKIPPER_GROUP_EMAIL',
+      [Group.Crew]: 'CREW_GROUP_EMAIL',
+      [Group.Members]: 'MEMBERS_GROUP_EMAIL'
+    };
+
+    return emails[this.groupName] || '';
   }
 
 }

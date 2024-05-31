@@ -31,6 +31,18 @@ sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./app/*.js
 sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./app/*.js.map
 sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./app/*.html
 
+sed -i "s|SKIPPER_GROUP_EMAIL|${GOOGLE_GROUP_SKIPPERS}|g" ./app/*.js
+sed -i "s|SKIPPER_GROUP_EMAIL|${GOOGLE_GROUP_SKIPPERS}|g" ./app/*.js.map
+sed -i "s|SKIPPER_GROUP_EMAIL|${GOOGLE_GROUP_SKIPPERS}|g" ./app/*.html
+
+sed -i "s|MEMBERS_GROUP_EMAIL|${GOOGLE_GROUP_MEMBERS}|g" ./app/*.js
+sed -i "s|MEMBERS_GROUP_EMAIL|${GOOGLE_GROUP_MEMBERS}|g" ./app/*.js.map
+sed -i "s|MEMBERS_GROUP_EMAIL|${GOOGLE_GROUP_MEMBERS}|g" ./app/*.html
+
+sed -i "s|CREW_GROUP_EMAIL|${GOOGLE_GROUP_CREW}|g" ./app/*.js
+sed -i "s|CREW_GROUP_EMAIL|${GOOGLE_GROUP_CREW}|g" ./app/*.js.map
+sed -i "s|CREW_GROUP_EMAIL|${GOOGLE_GROUP_CREW}|g" ./app/*.html
+
 sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./api/**/*.js
 sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./api/**/*.js.map
 
@@ -40,7 +52,7 @@ sed -i "s|CONTACT_US_EMAIL|${CONTACT_US_EMAIL}|g" ./app/*.html
 
 chmod +x ./start-api-server.sh
 chmod +x ./start-app-server.sh
- 
+
 # redis-server 2>&1&
 redis-server --daemonize yes
 
