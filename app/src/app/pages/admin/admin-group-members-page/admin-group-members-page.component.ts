@@ -19,7 +19,7 @@ import { AddGroupMemberDialogData } from '../../../models/add-group-member-dialo
 import { AddGroupMemberDialogComponent } from '../../../components/add-group-member-dialog/add-group-member-dialog.component';
 
 enum Group {
-  Skipper = 'Skipper',
+  Skippers = 'Skippers',
   Crew = 'Crew',
   Members = 'Members'
 }
@@ -63,7 +63,7 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
       case Group.Crew:
         fetcher = this.adminService.listCrewGroupMembers();
         break;
-      case Group.Skipper:
+      case Group.Skippers:
         fetcher = this.adminService.listSkipperGroupMembers();
         break;
       case Group.Members:
@@ -135,7 +135,7 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
       case Group.Crew:
         fetcher = this.adminService.deleteCrewGroupMember(email);
         break;
-      case Group.Skipper:
+      case Group.Skippers:
         fetcher = this.adminService.deleteSkipperGroupMember(email);
         break;
       case Group.Members:
@@ -163,7 +163,7 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
       case Group.Crew:
         fetcher = this.adminService.addCrewGroupMember(memberEmail);
         break;
-      case Group.Skipper:
+      case Group.Skippers:
         fetcher = this.adminService.addSkipperGroupMember(memberEmail);
         break;
       case Group.Members:
@@ -202,7 +202,7 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
 
   public get groupEmail(): string {
     const emails = {
-      [Group.Skipper]: 'SKIPPER_GROUP_EMAIL',
+      [Group.Skippers]: 'SKIPPER_GROUP_EMAIL',
       [Group.Crew]: 'CREW_GROUP_EMAIL',
       [Group.Members]: 'MEMBERS_GROUP_EMAIL'
     };
