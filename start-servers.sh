@@ -11,44 +11,22 @@ ls app
 
 echo "SENTRY_DSN: ${SENTRY_DSN}"
 
-sed -i "s|SENTRY_DSN|${SENTRY_DSN}|g" ./app/*.js
-sed -i "s|SENTRY_DSN|${SENTRY_DSN}|g" ./app/*.js.map
-sed -i "s|SENTRY_DSN|${SENTRY_DSN}|g" ./app/*.html
+apps=('app' 'api')
 
-sed -i "s|COMPANY_NAME_COPYRIGHT|${COMPANY_NAME_COPYRIGHT}|g" ./app/*.js
-sed -i "s|COMPANY_NAME_COPYRIGHT|${COMPANY_NAME_COPYRIGHT}|g" ./app/*.js.map
-sed -i "s|COMPANY_NAME_COPYRIGHT|${COMPANY_NAME_COPYRIGHT}|g" ./app/*.html
+for app in "${apps[@]}"
+do
+  echo "replacing ${app}"
 
-sed -i "s|WEBSITE_TITLE|${WEBSITE_TITLE}|g" ./app/*.js
-sed -i "s|WEBSITE_TITLE|${WEBSITE_TITLE}|g" ./app/*.js.map
-sed -i "s|WEBSITE_TITLE|${WEBSITE_TITLE}|g" ./app/*.html
-
-sed -i "s|COMPANY_NAME_HEADER|${COMPANY_NAME_HEADER}|g" ./app/*.js
-sed -i "s|COMPANY_NAME_HEADER|${COMPANY_NAME_HEADER}|g" ./app/*.js.map
-sed -i "s|COMPANY_NAME_HEADER|${COMPANY_NAME_HEADER}|g" ./app/*.html
-
-sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./app/*.js
-sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./app/*.js.map
-sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./app/*.html
-
-sed -i "s|SKIPPER_GROUP_EMAIL|${GOOGLE_GROUP_SKIPPERS}|g" ./app/*.js
-sed -i "s|SKIPPER_GROUP_EMAIL|${GOOGLE_GROUP_SKIPPERS}|g" ./app/*.js.map
-sed -i "s|SKIPPER_GROUP_EMAIL|${GOOGLE_GROUP_SKIPPERS}|g" ./app/*.html
-
-sed -i "s|MEMBERS_GROUP_EMAIL|${GOOGLE_GROUP_MEMBERS}|g" ./app/*.js
-sed -i "s|MEMBERS_GROUP_EMAIL|${GOOGLE_GROUP_MEMBERS}|g" ./app/*.js.map
-sed -i "s|MEMBERS_GROUP_EMAIL|${GOOGLE_GROUP_MEMBERS}|g" ./app/*.html
-
-sed -i "s|CREW_GROUP_EMAIL|${GOOGLE_GROUP_CREW}|g" ./app/*.js
-sed -i "s|CREW_GROUP_EMAIL|${GOOGLE_GROUP_CREW}|g" ./app/*.js.map
-sed -i "s|CREW_GROUP_EMAIL|${GOOGLE_GROUP_CREW}|g" ./app/*.html
-
-sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./api/**/*.js
-sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g" ./api/**/*.js.map
-
-sed -i "s|CONTACT_US_EMAIL|${CONTACT_US_EMAIL}|g" ./app/*.js
-sed -i "s|CONTACT_US_EMAIL|${CONTACT_US_EMAIL}|g" ./app/*.js.map
-sed -i "s|CONTACT_US_EMAIL|${CONTACT_US_EMAIL}|g" ./app/*.html
+  find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|SENTRY_DSN|${SENTRY_DSN}|g"
+  find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js" -o -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|COMPANY_NAME_COPYRIGHT|${COMPANY_NAME_COPYRIGHT}|g"
+  find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js" -o -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|WEBSITE_TITLE|${WEBSITE_TITLE}|g"
+  find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js" -o -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|COMPANY_NAME_HEADER|${COMPANY_NAME_HEADER}|g"
+  find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js" -o -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|COMPANY_NAME_SHORT_HEADER|${COMPANY_NAME_SHORT_HEADER}|g"
+  find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js" -o -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|SKIPPER_GROUP_EMAIL|${GOOGLE_GROUP_SKIPPERS}|g"
+  find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js" -o -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|MEMBERS_GROUP_EMAIL|${GOOGLE_GROUP_MEMBERS}|g"
+  find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js" -o -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|CREW_GROUP_EMAIL|${GOOGLE_GROUP_CREW}|g"
+  find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js" -o -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|CONTACT_US_EMAIL|${CONTACT_US_EMAIL}|g"
+done
 
 chmod +x ./start-api-server.sh
 chmod +x ./start-app-server.sh
