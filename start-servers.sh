@@ -1,20 +1,24 @@
-node --version
-
-echo "ls"
-ls
-
-echo "ls api"
-ls api
-
-echo "ls app"
-ls app
-
+echo "node version $(node --version)"
 echo "SENTRY_DSN: ${SENTRY_DSN}"
 
-apps=('app' 'api')
+echo
+echo
 
-for app in "${apps[@]}"
+echo "ls root dir"
+ls -a -l
+
+apps="app api"
+
+for app in $apps
 do
+  echo
+  echo
+
+  echo "ls $app"
+  ls $app -a -l
+
+  echo
+  echo
   echo "replacing ${app}"
 
   find ./${app} -type f -not \( -path '*/node_modules/*' -o -path '*/src/*' \) \( -name "*.js.map" -o -name "*.html" \) -print0 | xargs -0 sed -i "s|SENTRY_DSN|${SENTRY_DSN}|g"
