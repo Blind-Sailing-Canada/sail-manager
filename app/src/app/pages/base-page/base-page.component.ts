@@ -153,8 +153,8 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
   }
 
   public dispatchError(message: string): void {
-    this.dispatchAction(putSnack({ snack: { message, type: SnackType.ERROR } }));
     Sentry.captureException(message);
+    this.dispatchAction(putSnack({ snack: { message, type: SnackType.ERROR } }));
   }
 
   public goToEntity(entityType: string, entityId: string): void {
@@ -692,12 +692,12 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
   public async tagProfile(profile_id: string, media_id: string): Promise<boolean>{
     const media: Media = await firstValueFrom(this.mediaService.fetchOne(media_id)).catch((error) => {
-      this.dispatchMessage(error.error?.message || 'Failed to tag.');
+      this.dispatchError(error.error?.message || 'Failed to tag.');
       return null;
     });
 
     if (media?.tags.some(tag => tag.profile_id === profile_id)) {
-      this.dispatchMessage('Already tagged.');
+      this.dispatchError('Already tagged.');
       return;
     }
 
@@ -720,7 +720,7 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     const media_tag = media.tags.find((tag) => tag.profile_id === profile_id);
 
     if (!media_tag) {
-      this.dispatchMessage('Already untagged.');
+      this.dispatchError('Already untagged.');
       return true;
     }
 

@@ -180,7 +180,7 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
       this.dispatchMessage(`Added ${memberEmail} member to ${this.groupName} group.`);
       this.fetchGroupMembers(true);
     } catch (error) {
-      this.dispatchError(error.error?.message || error.message || 'Failed to add member.');
+      this.dispatchError(`Failed to add member ${memberEmail} to ${this.groupName} group: ${error.error?.message || error.message}`);
       this.finishLoading();
     }
   }

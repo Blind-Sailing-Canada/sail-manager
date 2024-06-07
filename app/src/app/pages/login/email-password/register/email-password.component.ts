@@ -93,11 +93,10 @@ export class EmailPasswordComponent extends BasePageComponent implements OnInit 
         .then(() => this.firebaseService.currentUser.getIdToken())
         .then(token => window.location.href = `/api/auth/login-firebase/${token}`)
         .catch((error) => {
-          this.dispatchMessage(`Failed to login: ${error.message} (${email})`);
-          console.error(error);
+          this.dispatchError(`Failed to login: ${error.message} (${email})`);
         });
     } catch (error) {
-      this.dispatchMessage(`Failed to login: (${email}) ${error}`);
+      this.dispatchError(`Failed to login: (${email}) ${error}`);
     }
   }
 
