@@ -22,6 +22,7 @@ import { SailChecklistListPageComponent } from './sail-checklist-list-page/sail-
 import { SailChecklistRoutingModule } from './sail-checklist-routing.module';
 import { SailChecklistViewPageComponent } from './sail-checklist-view-page/sail-checklist-view-page.component';
 import { TableModule } from '../../components/table/table.module';
+import { PendingChangesGuard } from '../../auth/pending-change.guard';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { TableModule } from '../../components/table/table.module';
     ReactiveFormsModule,
     SailChecklistRoutingModule,
     TableModule,
-  ]
+  ],
+  providers: [PendingChangesGuard],
 })
 export class SailChecklistModule { }

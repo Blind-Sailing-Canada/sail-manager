@@ -19,6 +19,8 @@ import { User } from '../user/user.decorator';
 import { SailChecklistEntity } from './sail-checklist.entity';
 import { SailChecklistService } from './sail-checklist.service';
 import { IsNull } from 'typeorm';
+import { SailChecklist } from '../types/sail-checklist/sail-checklist';
+import { SailManifest } from '../types/sail-manifest/sail-manifest';
 
 @Crud({
   model: { type: SailChecklistEntity },
@@ -52,13 +54,9 @@ export class SailChecklistController {
     private sailService: SailService,
     @InjectQueue('sail-checklist') private readonly sailChecklistQueue: Queue) { }
 
-  private async queueSailChecklistUpdateJob(checklist_id: string, updated_by_username: string) {
+  private async queueSailChecklistUpdateJob(job: SailChecklistUpdateJob) {
     try {
-      const job: SailChecklistUpdateJob = {
-        sail_checklist_id: checklist_id,
-        updated_by_username: updated_by_username
-      };
-      const jobId = `sail-checklist-${checklist_id}`;
+      const jobId = `sail-checklist-${job.sail_checklist_id}`;
 
       await this.sailChecklistQueue.removeJobs(jobId); // remove old job to prevent spamming
       await this.sailChecklistQueue.add('sail-checklist-update', job, {
@@ -73,9 +71,12 @@ export class SailChecklistController {
 
   @Patch('/sail/:sail_id/update')
   async updateSailChecklist(@User() user: JwtObject, @Param('sail_id') sail_id: string, @Body() checklistInfo) {
-    const before = checklistInfo.before;
+    const before: Partial<SailChecklist> | undefined = checklistInfo.before;
 
-    const sail = await SailEntity.findOne({ where: { id: sail_id } });
+    const sail = await SailEntity.findOneOrFail({
+      where: { id: sail_id },
+      relations: ['checklists']
+    });
 
     const allowedToUpdate = user.roles.some(role => role === ProfileRole.Coordinator || role === ProfileRole.Admin)
       || sail.manifest
@@ -91,31 +92,7 @@ export class SailChecklistController {
       throw new UnauthorizedException('You are not allowed to update this checklist.');
     }
 
-    if (before) {
-      await SailChecklistEntity.update(before.id, before);
-
-      await this.queueSailChecklistUpdateJob(before.id, user.username);
-
-      await SailChecklistEntity.update({
-        id: before.id,
-        submitted_by_id: IsNull(),
-      }, { submitted_by_id: user.profile_id });
-    }
-
-    const after = checklistInfo.after;
-
-    if (after) {
-      await SailChecklistEntity.update(after.id, after);
-
-      await this.queueSailChecklistUpdateJob(after.id, user.username);
-
-      await SailChecklistEntity.update({
-        id: after.id,
-        submitted_by_id: IsNull(),
-      }, { submitted_by_id: user.profile_id });
-    }
-
-    const manifest = checklistInfo.peopleManifest;
+    const manifest: SailManifest[] = checklistInfo.peopleManifest;
 
     if (manifest) {
       const manifestEntities = manifest
@@ -133,6 +110,46 @@ export class SailChecklistController {
       if (manifestEntities.length) {
         await SailManifestEntity.save(manifestEntities);
       }
+    }
+
+    if (before) {
+      const currentBeforeChecklist = await SailChecklistEntity.findOneOrFail({ where: { id: before.id } });
+      await SailChecklistEntity.update(before.id, before);
+
+      await this.queueSailChecklistUpdateJob({
+        sail: sail,
+        sail_checklist_id: before.id,
+        updated_by_username: user.username,
+        current_checklist: currentBeforeChecklist,
+        updated_checklist: before,
+        updated_manifest: manifest,
+      });
+
+      await SailChecklistEntity.update({
+        id: before.id,
+        submitted_by_id: IsNull(),
+      }, { submitted_by_id: user.profile_id });
+    }
+
+    const after: Partial<SailChecklist> | undefined = checklistInfo.after;
+
+    if (after) {
+      const currentAfterChecklist = await SailChecklistEntity.findOneOrFail({ where: { id: after.id } });
+      await SailChecklistEntity.update(after.id, after);
+
+      await this.queueSailChecklistUpdateJob({
+        sail: sail,
+        sail_checklist_id: after.id,
+        updated_by_username: user.username,
+        current_checklist: currentAfterChecklist,
+        updated_checklist: after,
+        updated_manifest: manifest,
+      });
+
+      await SailChecklistEntity.update({
+        id: after.id,
+        submitted_by_id: IsNull(),
+      }, { submitted_by_id: user.profile_id });
     }
 
     return this.sailService.getFullyResolvedSail(sail_id);

@@ -9,6 +9,7 @@ import { DeparturePageComponent } from './departure-page/departure-page.componen
 import { SailChecklistEditPageComponent } from './sail-checklist-edit-page/sail-checklist-edit-page.component';
 import { SailChecklistListPageComponent } from './sail-checklist-list-page/sail-checklist-list-page.component';
 import { SailChecklistViewPageComponent } from './sail-checklist-view-page/sail-checklist-view-page.component';
+import { PendingChangesGuard } from '../../auth/pending-change.guard';
 
 const routes: Routes = [
   {
@@ -23,14 +24,17 @@ const routes: Routes = [
   {
     path: `${SubRoutes.EDIT_SAIL_CHECKLIST}/:sail_id`,
     component: SailChecklistEditPageComponent,
+    canDeactivate: [PendingChangesGuard],
   },
   {
     path: `${SubRoutes.DEPARTURE_SAIL_CHECKLIST}/:sail_id`,
     component: DeparturePageComponent,
+    canDeactivate: [PendingChangesGuard],
   },
   {
     path: `${SubRoutes.ARRIVAL_SAIL_CHECKLIST}/:sail_id`,
     component: ArrivalPageComponent,
+    canDeactivate: [PendingChangesGuard],
   },
 ];
 

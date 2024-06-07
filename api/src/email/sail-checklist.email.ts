@@ -3,14 +3,16 @@ import { DOMAIN } from '../auth/constants';
 import { BoatChecklistItem } from '../types/boat-checklist/boat-checklist-item';
 import { EmailInfo } from '../types/email/email-info';
 import { Profile } from '../types/profile/profile';
-import { SailChecklist } from '../types/sail-checklist/sail-checklist';
+import { SailChecklistUpdateJob } from '../types/sail-checklist/sail-checklist-update-job';
+import { diff } from 'json-diff';
+import { SailManifest } from '../types/sail-manifest/sail-manifest';
+import { SailChecklistType } from '../types/sail-checklist/sail-checklist-type';
 
 @Injectable()
 export class SailChecklistEmail {
 
   checklistUpdateEmail(
-    sailChecklist: SailChecklist,
-    updated_by_username: string,
+    data: SailChecklistUpdateJob,
     fleetManagers: Profile[],
     coordinators: Profile[]
   ): EmailInfo {
@@ -19,20 +21,35 @@ export class SailChecklistEmail {
     coordinators.forEach(coordinator => sendTo.add(coordinator.email));
     fleetManagers.forEach(manager => sendTo.add(manager.email));
 
-    const sail = sailChecklist.sail;
+    const checklistDiff = diff(data.current_checklist, data.updated_checklist, { full: true });
+
+    console.log('checklistDiff', checklistDiff);
+
+    const sail = data.sail;
+    const beforeChecklist = data.current_checklist.checklist_type === SailChecklistType.Before
+      ? null
+      : sail.checklists?.find(checklist => checklist.checklist_type === SailChecklistType.Before);
+    const checklist_type = data.current_checklist.checklist_type;
+    const sail_destination = this.diffString(checklistDiff.sail_destination || beforeChecklist?.sail_destination);
+    const weather = this.diffString(checklistDiff.weather || beforeChecklist?.weather);
+    const checklist = checklistDiff.checklist;
+    const comments = this.diffString(checklistDiff.comments);
+    const signed_by_skipper = this.diffString(checklistDiff.signed_by_skipper);
+    const signed_by_crew = this.diffString(checklistDiff.signed_by_crew);
+    const updated_by_username = data.updated_by_username;
 
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
-      subject: `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entity_number} has updated checklist (${sailChecklist.checklist_type})`,
+      subject: `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entity_number} has updated checklist (${checklist_type})`,
       content: `
         <html>
           <body>
-            <h2>Sail "${sail.name}" (#${sail.entity_number}) "${sailChecklist.checklist_type}" checklist was updated.</h2>
+            <h2>Sail "${sail.name}" (#${sail.entity_number}) "${checklist_type}" checklist was updated.</h2>
             <div>
-              <label>Sail destination: </label> <span>${sailChecklist.sail_destination || 'Not provided.'}</span>
+              <label>Sail destination: </label> <span>${sail_destination || 'Not provided.'}</span>
             </div>
             <div>
-              <label>Sail weather: </label> <span>${sailChecklist.weather || 'Not provided.'}</span>
+              <label>Sail weather: </label> <span>${weather || 'Not provided.'}</span>
             </div>
             <div>
               <label>Sail status: </label> <span>${sail.status}</span>
@@ -41,23 +58,23 @@ export class SailChecklistEmail {
               <label>Boat: </label> <span>${sail.boat?.name || 'Not provided.'}</span>
             </div>
             <div>
-              <label>Checklist: </label> <div>${this.checklistTable(sailChecklist.checklist, sail.boat.checklist.items)}</div>
+              <label>Checklist: </label> <div>${this.checklistTable(checklist, sail.boat.checklist.items)}</div>
             </div>
             <div>
-              <label>Checklist comments: </label> <span>${sailChecklist.comments || 'Not provided.'}</span>
+              <label>Checklist comments: </label> <span>${comments || 'Not provided.'}</span>
             </div>
             <div>
-              <label>Signed by skipper: </label> <span>${sailChecklist.signed_by_skipper}</span>
+              <label>Signed by skipper: </label> <span>${signed_by_skipper}</span>
             </div>
             <div>
-              <label>Signed by crew: </label> <span>${sailChecklist.signed_by_crew}</span>
+              <label>Signed by crew: </label> <span>${signed_by_crew}</span>
             </div>
             <div>
               <label>Updated by: </label> <span>${updated_by_username}</span>
             </div>
             <div>
               <br/>
-              ${this.sailManifestTable(sailChecklist)}
+              ${this.sailManifestTable(data.sail.manifest, data.updated_manifest)}
             </div>
             <br>
             <a href="${DOMAIN}/sails/view/${sail.id}">View sail</a>
@@ -69,11 +86,29 @@ export class SailChecklistEmail {
     return emailInfo;
   }
 
-  private sailManifestTable(sailChecklist: SailChecklist): string {
-    const rows = sailChecklist
-      .sail
-      ?.manifest
-      ?.map(sailor => `<tr><td>${sailor.person_name}</td><td>${sailor.sailor_role}</td><td>${sailor.attended}</td></tr>`).join('');
+  private diffString(value: any) {
+    if (typeof value == 'object' && typeof value.__old !== 'undefined') {
+      return `<s style="color:red">${value.__old || ''}</s>&nbsp;<b style="color:green">${value.__new}</b>`;
+    }
+
+    return value;
+  }
+
+  private sailManifestTable(sailManifest: SailManifest[], updatedManifest: SailManifest[]): string {
+    const manifestDiff = diff(sailManifest || [], updatedManifest || sailManifest || [], { full: true });
+
+    console.log('manifestDiff', manifestDiff);
+
+    const rows = manifestDiff
+      ?.map(sailor_diff => Array.isArray(sailor_diff) ? sailor_diff[1] : sailor_diff)
+      ?.map(sailor => `
+      <tr>
+        <td>${this.diffString(sailor.person_name)}</td>
+        <td>${this.diffString(sailor.sailor_role)}</td>
+        <td>${this.diffString(sailor.attended)}</td>
+      </tr>
+      `.trim())
+      .join('');
 
     return `
       <table>
@@ -93,9 +128,17 @@ export class SailChecklistEmail {
       return red;
     }, {});
 
+    const normalized_checklist = {};
+
     const rows = Object
       .keys(checklist)
-      .map(key => `<tr><td>${keyToLabelMap[key] || key}</td><td>${checklist[key]}</td></tr>`)
+      .map(key => {
+        const new_key = key.replace(/__added$/, '');
+        normalized_checklist[new_key] = checklist[key];
+        return new_key;
+      })
+      .filter(key => !key.endsWith('__deleted'))
+      .map(key => `<tr><td>${keyToLabelMap[key] || key}</td><td>${this.diffString(normalized_checklist[key])}</td></tr>`)
       .join('');
 
     return `

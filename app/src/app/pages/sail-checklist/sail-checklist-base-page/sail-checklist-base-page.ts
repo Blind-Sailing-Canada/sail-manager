@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  HostListener,
 } from '@angular/core';
 import {
   UntypedFormArray,
@@ -15,7 +16,7 @@ import {
   Router,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { debounceTime, takeWhile } from 'rxjs';
+import { Observable, debounceTime, takeWhile } from 'rxjs';
 import { BoatInstruction } from '../../../../../../api/src/types/boat-instructions/boat-instruction';
 import { BoatInstructionType } from '../../../../../../api/src/types/boat-instructions/boat-instruction-type';
 import { SailChecklistType } from '../../../../../../api/src/types/sail-checklist/sail-checklist-type';
@@ -41,6 +42,11 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
     dialog?: MatDialog,
   ) {
     super(store, route, router, dialog);
+  }
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    return !this.checklistForm.dirty;
   }
 
   ngOnInit() {
@@ -110,6 +116,11 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
   }
 
   public save(notify: boolean = true, autoSave: boolean = false): void {
+    if (!this.checklistForm.dirty) {
+      console.log('checklist form is clean');
+      return;
+    }
+
     this.autoSave = autoSave;
 
     const formControls = this.checklistForm.controls;
@@ -179,7 +190,7 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
     this.checklistForm
       .valueChanges
       .pipe(takeWhile(() => this.active))
-      .pipe(debounceTime(1000))
+      .pipe(debounceTime(1000 * 60 * 30))
       .subscribe(() => {
         if (this.checklistForm.dirty && this.checklistForm.valid) {
           this.save(false, true);
@@ -189,7 +200,6 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
   }
 
   private updateForm(sail: Sail): void {
-
     if (this.checklist_type === SailChecklistType.Before || this.checklist_type === SailChecklistType.Both) {
       const boatChecklistBefore = this.fb.group((this.sail?.boat?.checklist?.items || [])
         .reduce((accumulator, item) => {
@@ -233,7 +243,6 @@ export class SailChecklistBasePageComponent extends BasePageComponent implements
 
     this.checklistForm.markAsUntouched();
     this.checklistForm.markAsPristine();
-
   }
 
 }
