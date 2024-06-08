@@ -95,6 +95,9 @@ export class SailChecklistEmail {
   }
 
   private sailManifestTable(sailManifest: SailManifest[], updatedManifest: SailManifest[]): string {
+    sailManifest?.sort((a, b) => a.person_name.localeCompare(b.person_name));
+    updatedManifest?.sort((a, b) => a.person_name.localeCompare(b.person_name));
+
     const manifestDiff = diff(sailManifest || [], updatedManifest || sailManifest || [], { full: true });
 
     console.log('manifestDiff', manifestDiff);
