@@ -13,13 +13,13 @@ export class SailEmail {
 
   pastSailsWithoutChecklistForSKipper(sails: Sail[], skipperName: string): EmailInfo {
     const emailInfo: EmailInfo = {
-      subject: `COMPANY_NAME_SHORT_HEADER: Your sail is missing a checklist [${toLocalDate(new Date())}]`,
+      subject: `COMPANY_NAME_SHORT_HEADER: Your past sail has not ended [${toLocalDate(new Date())}]`,
       content: `
       <html>
         <body>
-        <h2>${skipperName}, some of your past sails do not have a checklist.</h2>
+        <h2>${skipperName}, some of your past sails do not have a correct status.</h2>
         <table>
-          <caption>Here are your sails that do not have a submitted checklist.</caption>
+          <caption>Here are your past sails that have not been marked as completed.</caption>
           <thead>
             <tr>
               <th>Sail #</th>
@@ -35,6 +35,7 @@ export class SailEmail {
           </tbody>
         </table>
         <p><strong>These sails should be update with correct state in order to have accurate sail statistics.</strong></p>
+        <p><strong>Please make sure to submit a sail checklist for each of the sails that were completed.</strong></p>
         </body>
       </html>
     `
@@ -56,12 +57,12 @@ export class SailEmail {
 
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
-      subject: `COMPANY_NAME_SHORT_HEADER: Past sails without checklists as of ${toLocalDate(new Date())}`,
+      subject: `COMPANY_NAME_SHORT_HEADER: Past sails that have not been marked as completed ${toLocalDate(new Date())}`,
       content: `
         <html>
           <body>
           <table>
-            <caption>Past sails without submitted checklist</caption>
+            <caption>Past sails that have not been marked as completed</caption>
             <thead>
               <tr>
                 <th>Sail #</th>
