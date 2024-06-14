@@ -15,7 +15,7 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AllExceptionFilter } from './utils/all-exception.filter';
 import { JwtObject } from './types/token/jwt-object';
-// import { LoggingInterceptor } from './utils/logging.interceptor';
+import { LoggingInterceptor } from './utils/logging.interceptor';
 
 // console.log('process.env', process.env);
 
@@ -63,7 +63,7 @@ async function bootstrap() {
 
   app.use(Sentry.Handlers.requestHandler());
   app.use(Sentry.Handlers.tracingHandler());
-
+  app.useGlobalInterceptors(new LoggingInterceptor());
   morgan.token('remote-user', (req) => {
     if (!req.user && !req.original_user) {
       return '-';
