@@ -9,4 +9,5 @@ export interface SailChecklistUpdateJob {
   current_checklist: SailChecklist,
   updated_checklist: Partial<SailChecklist>,
   updated_manifest: SailManifest[],
+  updated_at: string,
 }

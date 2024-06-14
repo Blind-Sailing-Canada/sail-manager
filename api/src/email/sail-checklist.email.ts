@@ -73,6 +73,9 @@ export class SailChecklistEmail {
               <label>Updated by: </label> <span>${updated_by_username}</span>
             </div>
             <div>
+              <label>First submitted: </label> <span>${data.updated_at}</span>
+            </div>
+            <div>
               <br/>
               ${this.sailManifestTable(data.sail.manifest, data.updated_manifest)}
             </div>

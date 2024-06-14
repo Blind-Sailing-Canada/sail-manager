@@ -70,8 +70,8 @@ async function bootstrap() {
     }
 
     const user: JwtObject = (req.user || req.original_user) as JwtObject;
-    const username = user.username?.split(' ')[0] || user.provider_user.email;
-    const userid = user.profile_id || user.user_id || user.provider_user.id;
+    const username = user.username?.split(' ')[0] || user.provider_user?.email || '-';
+    const userid = user.profile_id || user.sub || user.user_id || user.provider_user?.id || '-';
 
     return `${userid}:${username}`;
   });

@@ -24,8 +24,7 @@ export class SailChecklistProcessor extends BaseQueueProcessor {
       const fleetManagers = await ProfileEntity.fleetManagers();
       const coordinators = await ProfileEntity.coordinators();
 
-      const email = this.sailChecklistEmail
-        .checklistUpdateEmail(job.data, fleetManagers, coordinators);
+      const email = this.sailChecklistEmail.checklistUpdateEmail(job.data, fleetManagers, coordinators);
       await this.emailService.sendBccEmail(email);
 
     } catch (error) {

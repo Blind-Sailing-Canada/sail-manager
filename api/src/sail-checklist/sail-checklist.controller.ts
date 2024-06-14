@@ -21,6 +21,7 @@ import { SailChecklistService } from './sail-checklist.service';
 import { IsNull } from 'typeorm';
 import { SailChecklist } from '../types/sail-checklist/sail-checklist';
 import { SailManifest } from '../types/sail-manifest/sail-manifest';
+import { toLocalDate } from '../utils/date.util';
 
 @Crud({
   model: { type: SailChecklistEntity },
@@ -52,11 +53,16 @@ export class SailChecklistController {
   constructor(
     public service: SailChecklistService,
     private sailService: SailService,
-    @InjectQueue('sail-checklist') private readonly sailChecklistQueue: Queue) { }
+    @InjectQueue('sail-checklist') private readonly sailChecklistQueue: Queue<SailChecklistUpdateJob>) { }
 
   private async queueSailChecklistUpdateJob(job: SailChecklistUpdateJob) {
     try {
       const jobId = `sail-checklist-${job.sail_checklist_id}`;
+
+      const existingJob = await this.sailChecklistQueue.getJob(jobId);
+      const originalUpdateTime = existingJob.data.updated_at || job.updated_at;
+
+      job.updated_at = originalUpdateTime;
 
       await this.sailChecklistQueue.removeJobs(jobId); // remove old job to prevent spamming
       await this.sailChecklistQueue.add('sail-checklist-update', job, {
@@ -123,6 +129,7 @@ export class SailChecklistController {
         current_checklist: currentBeforeChecklist,
         updated_checklist: before,
         updated_manifest: manifest,
+        updated_at: toLocalDate(new Date()),
       });
 
       await SailChecklistEntity.update({
@@ -144,6 +151,7 @@ export class SailChecklistController {
         current_checklist: currentAfterChecklist,
         updated_checklist: after,
         updated_manifest: manifest,
+        updated_at: toLocalDate(new Date()),
       });
 
       await SailChecklistEntity.update({

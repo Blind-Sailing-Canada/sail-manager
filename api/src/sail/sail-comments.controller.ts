@@ -20,6 +20,7 @@ import { UserAccessFields } from '../types/user-access/user-access-fields';
 import { User } from '../user/user.decorator';
 import { SailEntity } from './sail.entity';
 import { SailService } from './sail.service';
+import { DeleteResult } from 'typeorm';
 
 @Controller('sail')
 @ApiTags('sail')
@@ -46,25 +47,30 @@ export class SailCommentsController {
       sail_id: id,
       comment_id: savedComment.id,
     };
-    this.sailQueue.add('new-comment', job);
+    this.sailQueue.add('new-comment', job, { jobId: `comment_${savedComment.id}` });
 
     return this.sailService.getFullyResolvedSail(id);
   }
 
   @Delete('/:id/comments/:commentId')
   async deleteComment(@User() user: JwtObject, @Param('id') id: string, @Param('commentId') commentId: string) {
+    let result: DeleteResult;
     if (
       user.roles.includes(ProfileRole.Admin) ||
       user.access[UserAccessFields.CreateSail] ||
       user.access[UserAccessFields.EditSail]
     ) {
-      await CommentEntity.delete(commentId);
+      result = await CommentEntity.delete(commentId);
     } else {
-      await CommentEntity.delete({
+      result = await CommentEntity.delete({
         author_id: user.profile_id,
         commentable_id: id,
         id: commentId,
       });
+    }
+
+    if (result?.affected > 0) {
+      this.sailQueue.removeJobs(`comment_${commentId}`);
     }
 
     return this.sailService.getFullyResolvedSail(id);
