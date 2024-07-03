@@ -559,6 +559,13 @@
           </mat-error>
         </td>
       </tr>
+      <tr *ngIf="!sailHasRoomForSailors">
+        <td
+          class="warning"
+          colspan="2">
+          <mat-error><b>This sail is full.</b></mat-error>
+        </td>
+      </tr>
     </tfoot>
   </app-table>
 </ng-template>
