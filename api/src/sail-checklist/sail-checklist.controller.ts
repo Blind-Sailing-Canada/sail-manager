@@ -60,7 +60,7 @@ export class SailChecklistController {
       const jobId = `sail-checklist-${job.sail_checklist_id}`;
 
       const existingJob = await this.sailChecklistQueue.getJob(jobId);
-      const originalUpdateTime = existingJob.data.updated_at || job.updated_at;
+      const originalUpdateTime = existingJob?.data?.updated_at || job.updated_at;
 
       job.updated_at = originalUpdateTime;
 
