@@ -132,7 +132,7 @@
       [height]="height"
       [width]="width"
       async
-      style="object-fit: cover;"
+      style="object-fit: contain;"
       title="picture. description: {{media.title || ''}} {{media.description || ''}}"
       src="{{media.url}}?width={{width+100}}"
     >
@@ -157,6 +157,7 @@
       [height]="height"
       [width]="width"
       async
+      style="object-fit: contain;"
       title="picture. comment: {{media.title || ''}} {{media.description || ''}}"
       src="{{media.url}}?width={{width}}"
     >
