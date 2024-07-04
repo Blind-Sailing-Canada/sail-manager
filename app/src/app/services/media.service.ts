@@ -11,7 +11,7 @@ import { Media } from '../../../../api/src/types/media/media';
   providedIn: 'root'
 })
 export class MediaService {
-  private readonly API_URL = '/api/media/';
+  private readonly API_URL = '/api/media';
 
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
@@ -37,7 +37,7 @@ export class MediaService {
   }
 
   public delete(media_id: string): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}${media_id}`);
+    return this.http.delete<void>(`${this.API_URL}/${media_id}`);
   }
 
 }
