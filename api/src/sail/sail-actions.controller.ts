@@ -96,7 +96,7 @@ export class SailActionsController {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
     }
 
-    if (sail.is_private) {
+    if (sail.is_private && sail.created_by_id !== user.profile_id) {
       throw new UnauthorizedException('This sail is private.');
     }
 
@@ -145,7 +145,7 @@ export class SailActionsController {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
     }
 
-    if (sail.is_private) {
+    if (sail.is_private && sail.created_by_id !== user.profile_id) {
       throw new UnauthorizedException('This sail is private.');
     }
 
@@ -188,7 +188,7 @@ export class SailActionsController {
       throw new NotFoundException(`Cannot find sail with id = ${id}`);
     }
 
-    if (sail.is_private) {
+    if (sail.is_private && sail.created_by_id !== user.profile_id) {
       throw new UnauthorizedException('This sail is private.');
     }
 

@@ -240,8 +240,9 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
     const user = this.user;
     const roles: string[] = user.roles || [];
     const isSkipper = roles.includes(ProfileRole.Skipper) && this.isUserSailSkipper;
+    const isCreator = this.sail?.created_by_id === this.user?.profile?.id;
 
-    return isSkipper || this.user.access[UserAccessFields.EditSail];
+    return isCreator || isSkipper || this.user.access[UserAccessFields.EditSail];
   }
 
   public get canCancelSail(): boolean {
@@ -276,6 +277,10 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
     if (this.isUserInSail(sail, this.user)) {
       return false;
+    }
+
+    if (sail.created_by_id === this.user?.profile?.id) {
+      return true;
     }
 
     if (sail.is_private) {
