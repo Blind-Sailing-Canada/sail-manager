@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import {
   HttpEvent,
   HttpHandler,
@@ -39,7 +39,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
     if (path !== '/api/auth/logout' && token && expired) {
       this.store.dispatch(logOut({ message: 'Your session has expired.' }));
-      return next.handle(null);
+      return throwError(() => new Error(
+        `Your session has expired (${this.tokenService.tokenData.username}:${this.tokenService.tokenData?.profile_id}).`
+      ));
     }
 
     return next.handle(newRequest);
