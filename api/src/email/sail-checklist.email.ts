@@ -58,7 +58,7 @@ export class SailChecklistEmail {
               <label>Boat: </label> <span>${sail.boat?.name || 'Not provided.'}</span>
             </div>
             <div>
-              <label>Checklist: </label> <div>${this.checklistTable(checklist, sail.boat.checklist.items)}</div>
+              <label>Checklist: </label> <div>${this.checklistTable(checklist, sail.boat?.checklist.items)}</div>
             </div>
             <div>
               <label>Checklist comments: </label> <span>${comments || 'Not provided.'}</span>
@@ -129,7 +129,7 @@ export class SailChecklistEmail {
   }
 
   private checklistTable(checklist: Map<string, string>, boatChecklist: BoatChecklistItem[]): string {
-    const keyToLabelMap: Record<string, string> = boatChecklist.reduce((red, item) => {
+    const keyToLabelMap: Record<string, string> = (boatChecklist || []).reduce((red, item) => {
       red[item.key] = item.label;
       return red;
     }, {});

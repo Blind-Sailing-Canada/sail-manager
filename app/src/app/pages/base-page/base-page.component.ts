@@ -236,7 +236,7 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
 
 
   public get boatsArray(): Boat[] {
-    return Object.values(this.boats);
+    return Object.values(this.boats).filter(Boolean);
   }
 
   public get sailRequests(): ISailRequestState {

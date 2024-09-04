@@ -39,7 +39,7 @@ export class ArrivalPageComponent extends SailChecklistBasePageComponent {
     this.goTo(
       [createMaintenanceRoute],
       {
-        queryParams: { boat_id: this.sail.boat.id },
+        queryParams: { boat_id: this.sail.boat?.id },
       }
     );
   }

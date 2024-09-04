@@ -125,7 +125,7 @@
       >
         There {{boatMaintenanceCount > 1 ? 'are' : 'is'}} {{boatMaintenanceCount}} maintenance
         {{boatMaintenanceCount > 1 ? 'requests' : 'request'}} open for
-        {{sail.boat.name}}.
+        {{sail.boat?.name}}.
       </h3>
       <p matLine>Please review before using the boat.</p>
       <mat-icon title="go to maintenance page">navigate_next</mat-icon>
@@ -562,7 +562,8 @@
       <tr *ngIf="!sailHasRoomForSailors">
         <td
           class="warning"
-          colspan="2">
+          colspan="2"
+        >
           <mat-error><b>This sail is full.</b></mat-error>
         </td>
       </tr>

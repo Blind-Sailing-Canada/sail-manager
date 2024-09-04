@@ -21,6 +21,10 @@ import {
 } from '../../../routes/routes';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
+import { deleteBoat } from '../../../store/actions/boat.actions';
+import { ConfirmDialogData } from '../../../models/confirm-dialog-data';
+import { ConfirmDialogComponent } from '../../../components/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-boat-view-page',
@@ -31,10 +35,11 @@ export class BoatViewPageComponent extends BasePageComponent implements OnInit {
 
   constructor(
     @Inject(Store) store: Store<any>,
+    @Inject(MatDialog) dialog: MatDialog,
     @Inject(ActivatedRoute) route: ActivatedRoute,
     @Inject(Router) router: Router,
   ) {
-    super(store, route, router);
+    super(store, route, router, dialog);
   }
 
   ngOnInit() {
@@ -49,7 +54,7 @@ export class BoatViewPageComponent extends BasePageComponent implements OnInit {
     this.goTo(
       [sailChecklistsRoute],
       {
-        queryParams: { boat_id: this.boat_id, boatName: this.boat.name },
+        queryParams: { boat_id: this.boat_id, boatName: this.boat?.name },
       }
     );
   }
@@ -75,11 +80,15 @@ export class BoatViewPageComponent extends BasePageComponent implements OnInit {
     return !!this.user.access[UserAccessFields.EditBoat];
   }
 
-  public editBoat(id): string {
-    return editBoatRoute(id);
+  public editBoat(boat_id: string): string {
+    return editBoatRoute(boat_id);
   }
 
-  public editBoatChecklist(boat_id): string {
+  private deleteBoat(): void {
+    this.dispatchAction(deleteBoat({ boat_id: this.boat_id }));
+  }
+
+  public editBoatChecklist(boat_id: string): string {
     return editBoatChecklistRoute(boat_id);
   }
 
@@ -88,5 +97,23 @@ export class BoatViewPageComponent extends BasePageComponent implements OnInit {
       [maintenanceRoute],
       { queryParams: { boat_id: this.boat_id } },
     );
+  }
+
+  openConfirmBoatDeletionDialog(): void {
+    const dialogData: ConfirmDialogData = {
+      title: `Are you sure you want to delete ${this.boat?.name}?`,
+      message: 'This cannot be undone.'
+    };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'confirmed') {
+        this.deleteBoat();
+      }
+    });
   }
 }

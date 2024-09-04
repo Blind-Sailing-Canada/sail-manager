@@ -16,7 +16,7 @@ import {
 } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SnackType } from '../../models/snack-state.interface';
-import { editBoatRoute } from '../../routes/routes';
+import { boatsRoute, editBoatRoute } from '../../routes/routes';
 import { BoatService } from '../../services/boat.service';
 import { errorCatcher } from '../../utils/error-catcher';
 import {
@@ -26,6 +26,7 @@ import {
 } from '../actions/app.actions';
 import {
   createBoat,
+  deleteBoat,
   fetchBoat,
   fetchBoats,
   putBoat,
@@ -107,6 +108,24 @@ export class BoatEffects {
           .pipe(
             map(boat => putBoat({ boat, boat_id: action.boat_id })),
             catchError(errorCatcher(`Failed to fetch boat: ${action.boat_id}`))
+          )),
+      tap(() => this.store.dispatch(finishLoading())),
+    ),
+  );
+
+  deleteBoat$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(deleteBoat),
+      tap(() => this.store.dispatch(startLoading())),
+      mergeMap(
+        action => this.boatService.deleteOne(action.boat_id)
+          .pipe(
+            mergeMap(boat => of(
+              putBoat({ boat: null, boat_id: action.boat_id }),
+              putSnack({ snack: { type: SnackType.INFO, message: 'Boat deleted.' } }),
+              goTo({ route: boatsRoute.toString() }),
+            )),
+            catchError(errorCatcher('Failed to delete boat.'))
           )),
       tap(() => this.store.dispatch(finishLoading())),
     ),

@@ -48,7 +48,7 @@ export class DeparturePageComponent extends SailChecklistBasePageComponent {
     this.goTo(
       [maintenanceRoute],
       {
-        queryParams: { boat_id: this.sail.boat.id },
+        queryParams: { boat_id: this.sail.boat?.id },
       }
     );
   }
@@ -58,8 +58,8 @@ export class DeparturePageComponent extends SailChecklistBasePageComponent {
       [sailChecklistsRoute],
       {
         queryParams: {
-          boat_id: this.sail.boat.id,
-          boatName: this.sail.boat.name,
+          boat_id: this.sail.boat?.id,
+          boatName: this.sail.boat?.name,
           excludeSailId: this.sail_id
         },
       }

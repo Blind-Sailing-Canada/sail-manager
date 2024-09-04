@@ -1,6 +1,7 @@
 import {
   AfterInsert,
   Column,
+  DeleteDateColumn,
   Entity,
   Index,
   OneToMany,
@@ -90,6 +91,9 @@ export class BoatEntity extends BaseModelEntity implements Boat {
   })
   @Index()
     entity_type: string;
+
+  @DeleteDateColumn()
+    deleted_at: Date;
 
   @OneToMany(() => SailEntity, sail => sail.boat, { eager: false })
     sails: SailEntity[];

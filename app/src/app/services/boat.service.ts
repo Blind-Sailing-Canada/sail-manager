@@ -19,6 +19,10 @@ export class BoatService {
     return this.http.get<Boat>(`${this.API_URL}/${id}`);
   }
 
+  deleteOne(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
+  }
+
   fetchAll(): Observable<Boat[]> {
     return this.http.get<Boat[]>(this.API_URL);
   }

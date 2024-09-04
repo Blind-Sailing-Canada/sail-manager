@@ -9,6 +9,7 @@ export interface Boat extends Base {
   beam: string;
   calendar_resource_id: string;
   checklist: BoatChecklist;
+  deleted_at: Date;
   draft: string;
   hull_type: string;
   instructions: BoatInstructions[];

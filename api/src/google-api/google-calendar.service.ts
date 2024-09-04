@@ -389,8 +389,8 @@ export class GoogleCalendarService {
 
     if (sail.boat?.calendar_resource_id) {
       attendees.push({
-        displayName: sail.boat.name,
-        email: sail.boat.calendar_resource_id,
+        displayName: sail.boat?.name,
+        email: sail.boat?.calendar_resource_id,
         resource: true,
       });
     }
@@ -424,7 +424,7 @@ export class GoogleCalendarService {
             <div><label>Description: </label>${sail.description || 'n/a'}</div>
             <div><label>Start: </label>${toLocalDate(sail.start_at)}</div>
             <div><label>End: </label>${toLocalDate(sail.end_at)}</div>
-            <div><label>Boat: ${sail.boat.name} </label></div>
+            <div><label>Boat: ${sail.boat?.name || 'n/a'} </label></div>
             <div><label>Skipper: </label>${skipperNames.join(', ') || 'None'}</div>
             <div><label>Crew: </label>${crewNames.join(', ') || 'None'}</div>
             <p><label>Sailors: </label> ${sailorNames.join(', ') || 'None'}</p>
@@ -432,10 +432,10 @@ export class GoogleCalendarService {
             <div><a href="${DOMAIN}/sails/view/${sail.id}">View sail</a></div>
             <br/>
             <p>To cancel your reservation for this sail, you must go to the
-            <a href="${DOMAIN}/sails/view/${sail.id}">sail page</a> and click the 'Leave' button 
+            <a href="${DOMAIN}/sails/view/${sail.id}">sail page</a> and click the 'Leave' button
             at least 24 hours before the start of the sail.</p>
             <p>Cancelling/declining this calendar event will not remove you from the sail.</p>
-            <p>If your guest cannot make the sail, then you must contact the skipper or the sail coordinator 
+            <p>If your guest cannot make the sail, then you must contact the skipper or the sail coordinator
             and ask them to remove the guest from the sail.</p>
           </body>
         </html>

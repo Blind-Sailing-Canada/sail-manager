@@ -123,7 +123,7 @@
 <ng-template #checklist>
   <h4 tabindex="0">Step 5 of 5: Departure Checklist</h4>
   <app-checklist-form
-    [boatChecklist]="sail.boat.checklist"
+    [boatChecklist]="sail.boat?.checklist"
     [form]="beforeFormControls"
     when="Before"
   ></app-checklist-form>

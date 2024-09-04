@@ -21,12 +21,17 @@ import { BoatService } from './boat.service';
       'getManyBase',
       'getOneBase',
       'updateOneBase',
+      'deleteOneBase'
     ],
     createOneBase: { decorators: [
       UserAccess(UserAccessFields.CreateBoat),
       UseGuards(UserAccessGuard),
     ] },
     updateOneBase: { decorators: [
+      UserAccess(UserAccessFields.CreateBoat, UserAccessFields.EditBoat),
+      UseGuards(SomeUserAccessGuard),
+    ] },
+    deleteOneBase: { decorators: [
       UserAccess(UserAccessFields.CreateBoat, UserAccessFields.EditBoat),
       UseGuards(SomeUserAccessGuard),
     ] },
@@ -38,6 +43,7 @@ import { BoatService } from './boat.service';
   } },
   query: {
     alwaysPaginate: false,
+    softDelete: true,
     join: {
       checklist: { eager: true },
       instructions: { eager: true },

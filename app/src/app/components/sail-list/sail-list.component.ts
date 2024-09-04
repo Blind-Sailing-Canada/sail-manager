@@ -32,7 +32,7 @@ export class SailListComponent {
 
     const description = `
     Sail details:
-    ${name}: ${duration} sail on board of ${sail.boat.name} on ${start}.
+    ${name}: ${duration} sail on board of ${sail.boat?.name} on ${start}.
     Click to go to this sail.`;
 
     return description;

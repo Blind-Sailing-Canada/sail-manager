@@ -47,12 +47,6 @@ export class BoatListPageComponent extends BasePageComponent implements OnInit {
     this.fetchBoats(notify);
   }
 
-  public get boatsArray(): Boat[] {
-    return Object
-      .keys(this.boats || {})
-      .map(id => this.boats[id]);
-  }
-
   public clickedBoat(boat: Boat): void {
     this.goTo([viewBoatRoute(boat.id)]);
   }

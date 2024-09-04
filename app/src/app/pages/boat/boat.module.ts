@@ -15,6 +15,7 @@ import { BoatEditPageComponent } from './boat-edit-page/boat-edit-page.component
 import { BoatListPageComponent } from './boat-list-page/boat-list-page.component';
 import { BoatRoutingModule } from './boat-routing.module';
 import { BoatViewPageComponent } from './boat-view-page/boat-view-page.component';
+import { ConfirmDialogModule } from '../../components/confirm-dialog/confirm-dialog.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { BoatViewPageComponent } from './boat-view-page/boat-view-page.component
     BoatRoutingModule,
     BoatTableModule,
     CommonModule,
+    ConfirmDialogModule,
     FieldsetModule,
     FileSelectModule,
     ImageFormModule,

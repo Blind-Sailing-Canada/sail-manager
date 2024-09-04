@@ -2,7 +2,7 @@
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Boat name {{boat.name}}"
+    attr.aria-label="Boat name {{boat?.name}}"
   >
     <th
       tabindex="-1"
@@ -11,12 +11,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.name}}</td>
+    >{{boat?.name}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Boat status {{boat.status}}"
+    attr.aria-label="Boat status {{boat?.status}}"
   >
     <th
       tabindex="-1"
@@ -25,12 +25,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.status}}</td>
+    >{{boat?.status}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Boat max occupancy {{boat.max_occupancy}}"
+    attr.aria-label="Boat max occupancy {{boat?.max_occupancy}}"
   >
     <th
       tabindex="-1"
@@ -39,12 +39,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.max_occupancy}}</td>
+    >{{boat?.max_occupancy}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Boat wiki page {{boat.wiki}}"
+    attr.aria-label="Boat wiki page {{boat?.wiki}}"
   >
     <th
       tabindex="-1"
@@ -55,11 +55,11 @@
       aria-hidden="true"
     >
       <a
-        *ngIf="boat.wiki"
+        *ngIf="boat?.wiki"
         target="_blank"
-        href={{boat.wiki}}
-      >{{boat.wiki}}</a>
-      {{!boat.wiki ? "Not provided": ""}}
+        href={{boat?.wiki}}
+      >{{boat?.wiki}}</a>
+      {{!boat?.wiki ? "Not provided": ""}}
     </td>
   </tr>
   <tr
@@ -71,7 +71,7 @@
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Hull type {{boat.hull_type}}"
+    attr.aria-label="Hull type {{boat?.hull_type}}"
   >
     <th
       tabindex="-1"
@@ -80,12 +80,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.hull_type}}</td>
+    >{{boat?.hull_type}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Hull draft {{boat.draft}}"
+    attr.aria-label="Hull draft {{boat?.draft}}"
   >
     <th
       tabindex="-1"
@@ -94,12 +94,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.draft}}</td>
+    >{{boat?.draft}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Hull beam {{boat.beam}}"
+    attr.aria-label="Hull beam {{boat?.beam}}"
   >
     <th
       tabindex="-1"
@@ -108,12 +108,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.beam}}</td>
+    >{{boat?.beam}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Hull length overall {{boat.loa}}"
+    attr.aria-label="Hull length overall {{boat?.loa}}"
   >
     <th
       tabindex="-1"
@@ -122,12 +122,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.loa}}</td>
+    >{{boat?.loa}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Hull length waterline {{boat.lwl}}"
+    attr.aria-label="Hull length waterline {{boat?.lwl}}"
   >
     <th
       tabindex="-1"
@@ -136,12 +136,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.lwl}}</td>
+    >{{boat?.lwl}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Ballast {{boat.lwl}}"
+    attr.aria-label="Ballast {{boat?.lwl}}"
   >
     <th
       tabindex="-1"
@@ -150,12 +150,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.ballast}}</td>
+    >{{boat?.ballast}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Jib sail area {{boat.jib_sail_area}}"
+    attr.aria-label="Jib sail area {{boat?.jib_sail_area}}"
   >
     <th
       tabindex="-1"
@@ -164,12 +164,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.jib_sail_area}}</td>
+    >{{boat?.jib_sail_area}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Main sail area {{boat.main_sail_area}}"
+    attr.aria-label="Main sail area {{boat?.main_sail_area}}"
   >
     <th
       tabindex="-1"
@@ -178,12 +178,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.main_sail_area}}</td>
+    >{{boat?.main_sail_area}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="PHRF {{boat.phrf}}"
+    attr.aria-label="PHRF {{boat?.phrf}}"
   >
     <th
       tabindex="-1"
@@ -192,12 +192,12 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.phrf}}</td>
+    >{{boat?.phrf}}</td>
   </tr>
   <tr
     tabindex="0"
     role="listitem"
-    attr.aria-label="Hull material {{boat.material}}"
+    attr.aria-label="Hull material {{boat?.material}}"
   >
     <th
       tabindex="-1"
@@ -206,29 +206,29 @@
     <td
       tabindex="-1"
       aria-hidden="true"
-    >{{boat.material}}</td>
+    >{{boat?.material}}</td>
   </tr>
   <tr
-  tabindex="0"
-  role="listitem"
-  attr.aria-label="Rig {{boat.rig}}"
->
-  <th
-    tabindex="-1"
-    aria-hidden="true"
-  >Rig</th>
-  <td
-    tabindex="-1"
-    aria-hidden="true"
-  >{{boat.rig}}</td>
-</tr>
+    tabindex="0"
+    role="listitem"
+    attr.aria-label="Rig {{boat?.rig}}"
+  >
+    <th
+      tabindex="-1"
+      aria-hidden="true"
+    >Rig</th>
+    <td
+      tabindex="-1"
+      aria-hidden="true"
+    >{{boat?.rig}}</td>
+  </tr>
   <tr
-    *ngIf="showPictures && boat.pictures && boat.pictures.length"
+    *ngIf="showPictures && boat?.pictures && boat?.pictures.length"
     tabindex="-1"
     aria-hidden="true"
   >
     <td colspan="2">
-      <app-image-list [pictures]="boat.pictures"></app-image-list>
+      <app-image-list [pictures]="boat?.pictures"></app-image-list>
     </td>
   </tr>
 </app-table>

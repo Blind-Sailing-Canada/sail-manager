@@ -1,3 +1,4 @@
+<mat-card *ngIf="boat===null">Looks like this boat does not exists.</mat-card>
 <mat-card *ngIf="!!boat">
   <mat-card-header>
     <div mat-card-avatar>
@@ -17,6 +18,12 @@
       mat-raised-button
       title="Click to edit this boat."
     >Edit</a>
+    <a
+      *ngIf="shouldShowEditBoat"
+      (click)="openConfirmBoatDeletionDialog()"
+      mat-raised-button
+      title="Click to delete this boat."
+    >Delete</a>
     <a
       *ngIf="shouldShowEditBoat"
       [routerLink]="editBoatChecklist(boat_id)"

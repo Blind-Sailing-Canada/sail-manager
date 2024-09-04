@@ -199,7 +199,7 @@ export class SailEmail {
     return sails.reduce((red, sail) => {
       return `
       ${red}
-      <li><a href="${DOMAIN}/sails/view/${sail.id}">${toLocalDate(sail.start_at)} - ${sail.name} on ${sail.boat.name}</a></li>
+      <li><a href="${DOMAIN}/sails/view/${sail.id}">${toLocalDate(sail.start_at)} - ${sail.name} on ${sail.boat?.name}</a></li>
       `.trim();
     }, '');
   }
