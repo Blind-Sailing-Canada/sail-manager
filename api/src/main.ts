@@ -109,20 +109,17 @@ async function bootstrap() {
 
     return csurfValidation(req,res, next);
   });
+  app.use(function (err, _, res, next) {
+    if (err.code !== 'EBADCSRFTOKEN') return next(err)
 
+    res.status(403)
+    res.send('Invalid session. Please log in again.')
+  });
   app.use((req, res, next) => {
-    if (req.method === 'GET' && req.originalUrl === '/csrfToken') {
-      return res.send({ csrfToken: req.csrfToken() });
+    if (req.csrfToken) {
+      res.cookie('XSRF-TOKEN',  req.csrfToken());
     }
     next();
-  });
-
-  app.use((req, res, next) => {
-    if (req.originalUrl.startsWith('/time')){
-      return res.send(new Date());
-    }
-
-    return next();
   });
 
   const API_PORT = +process.env.API_PORT || +process.env.SAIL_MANAGER_BE_PORT || 8081;

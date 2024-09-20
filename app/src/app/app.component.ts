@@ -25,7 +25,6 @@ import {
 } from './store/actions/snack.actions';
 import { STORE_SLICES } from './store/store';
 import { Profile } from '../../../api/src/types/profile/profile';
-import { HttpClient } from '@angular/common/http';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
@@ -49,7 +48,6 @@ export class AppComponent extends BasePageComponent implements OnInit, AfterView
   constructor(
     @Inject(MatSnackBar) private snackBar: MatSnackBar,
     @Inject(Store) store: Store<any>,
-    @Inject(HttpClient) private httpClient: HttpClient,
     private overlay: OverlayContainer,
     private changeDetector: ChangeDetectorRef,
     private renderer: Renderer2
@@ -62,17 +60,6 @@ export class AppComponent extends BasePageComponent implements OnInit, AfterView
   }
 
   async ngOnInit(): Promise<void> {
-    const csrfToken = await this.httpClient
-      .get<{ csrfToken: string }>('/api/csrfToken')
-      .toPromise()
-      .catch((error) => {
-        console.error(error);
-        this.dispatchError('Failed to secure connection');
-        return { csrfToken: null };
-      });
-
-    localStorage.setItem('csrfToken', csrfToken.csrfToken);
-
     this.subscribeToStoreSlice(STORE_SLICES.APP, (appState: AppState) => {
       if (appState.loading) {
         this.startLoadingTimer();
@@ -126,7 +113,7 @@ export class AppComponent extends BasePageComponent implements OnInit, AfterView
   }
 
   public toggleDarkTheme(isDark: boolean): void {
-    this.dispatchAction(setAppTheme({ theme: isDark? 'dark': 'light' }));
+    this.dispatchAction(setAppTheme({ theme: isDark ? 'dark' : 'light' }));
   }
 
   public changeFontSize(size: string): void {
