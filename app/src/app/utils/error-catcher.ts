@@ -10,20 +10,20 @@ export const errorCatcher = (
   actionsToDispatch: Action[] = [],
   actionsToDispatchWithError: any = null,
   notify: boolean = true) => (error) => {
-    console.error('Error catcher caught and error: VVV ERROR BELOW VVV');
-    console.dir(error);
+  console.error('Error catcher caught and error: VVV ERROR BELOW VVV');
+  console.dir(error);
 
-    Sentry.captureException(error, {
-      extra: {
-        userFriendlyMessage,
-      }
-    });
+  Sentry.captureException(error, {
+    extra: {
+      userFriendlyMessage,
+    }
+  });
 
-    return of(
-      ...(actionsToDispatch || []),
-      ...(actionsToDispatchWithError ? actionsToDispatchWithError(error) : []),
-      finishLoading(),
-      notify && putSnack({ snack: { type: SnackType.ERROR, message: userFriendlyMessage } }),
-      notify && putSnack({ snack: { type: SnackType.ERROR, message: error.error?.message || error.error || error.message } }),
-    );
-  };
+  return of(
+    ...(actionsToDispatch || []),
+    ...(actionsToDispatchWithError ? actionsToDispatchWithError(error) : []),
+    finishLoading(),
+    notify && putSnack({ snack: { type: SnackType.ERROR, message: userFriendlyMessage } }),
+    notify && putSnack({ snack: { type: SnackType.ERROR, message: error.error?.message || error.error || error.message } }),
+  );
+};

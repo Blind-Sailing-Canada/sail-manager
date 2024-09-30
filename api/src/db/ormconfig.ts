@@ -11,7 +11,7 @@ const devConfig: PostgresConnectionOptions = {
   migrationsTableName: 'migrations',
   namingStrategy: new SnakeNamingStrategy(),
   type: 'postgres',
-  url: process.env.DB_CONNECTION_STRING,
+  url: process.env.DATABASE_URL,
 };
 
 const prodConfig: PostgresConnectionOptions = {
@@ -21,7 +21,7 @@ const prodConfig: PostgresConnectionOptions = {
   namingStrategy: new SnakeNamingStrategy(),
   ssl: true,
   type: 'postgres',
-  url: process.env.DB_CONNECTION_STRING,
+  url: process.env.DATABASE_URL,
 };
 
 const config = process.env.NODE_ENV === 'prod' ? prodConfig : devConfig;

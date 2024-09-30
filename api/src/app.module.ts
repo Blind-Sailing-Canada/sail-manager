@@ -58,7 +58,7 @@ if (process.env.DB_SSL === 'true') {
 
 const DB_CONNECTION_META: ConnectionOptions = {
   type: process.env.DB_TYPE as any,
-  url: process.env.DB_CONNECTION_STRING.replace(/\\n/gm, '\n'),
+  url: process.env.DATABASE_URL.replace(/\\n/gm, '\n'),
   logging: DB_LOGGING,
   entities: [
     // '**/*.entity.ts', // when debugging
