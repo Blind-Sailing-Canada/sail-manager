@@ -172,6 +172,9 @@ export class SailEmail {
               ${this.sailList(sails)}
               </ol>
             </div>
+            <div>
+              <p>You can change your notifications settings from the <a href="${DOMAIN}/profiles/settings">settings page</a>.
+            </div>
           </body>
         </html>
       `.trim(),

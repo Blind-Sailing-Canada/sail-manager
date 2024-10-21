@@ -96,6 +96,9 @@ export class SocialEmail {
               ${this.socialList(socials)}
               </ol>
             </div>
+            <div>
+              <p>You can change your notifications settings from the <a href="${DOMAIN}/profiles/settings">settings page</a>.
+            </div>
           </body>
         </html>
       `.trim(),
