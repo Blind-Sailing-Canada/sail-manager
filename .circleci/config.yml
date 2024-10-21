@@ -17,7 +17,7 @@ jobs:
       - checkout
       - heroku/install
       - setup_remote_docker:
-          version: 19.03.13
+          version: docker24
       - run: docker --version
       - run: chmod +x ./build-docker.sh
       - run: 
