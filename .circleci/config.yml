@@ -9,7 +9,7 @@ orbs:
 jobs:
   "Build and deploy":
     docker:
-      - image: cimg/node:14.17.3
+      - image: cimg/node:23.0.0
         auth:
           username: $DOCKER_USER
           password: $DOCKER_PASSWORD
