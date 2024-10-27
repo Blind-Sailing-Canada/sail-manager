@@ -12,6 +12,7 @@ import { SailorRole } from '../types/sail-manifest/sailor-role';
 import { SailStatus } from '../types/sail/sail-status';
 import { SailEntity } from './sail.entity';
 import * as RSS from 'rss';
+import { toLocalDate } from '../utils/date.util';
 const fs = require('node:fs/promises');
 
 type UserSailMap = Record<string, SailEntity[]>
@@ -157,7 +158,7 @@ export class SailJob {
 
       feed.item({
         title: sail.name,
-        description: `Skipper: ${skipperCount}, Crew: ${crewCount}, Sailors: ${sailorCount}/${sailorCapacity}`,
+        description: `Starts at ${toLocalDate(sail.start_at)}. Ends at ${toLocalDate(sail.end_at)}. Skipper: ${skipperCount}, Crew: ${crewCount}, Sailors: ${sailorCount}/${sailorCapacity}`,
         url: `${process.env.DOMAIN}/sails/${sail.id}`,
         guid: sail.id,
         categories: [sail.category || 'general sail'],
