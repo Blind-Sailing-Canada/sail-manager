@@ -122,18 +122,7 @@ export class SailJob {
 
   @Cron(CronExpression.EVERY_MINUTE)
   async generateFutureSailsRss() {
-    const sails = await SailEntity.find(
-      {
-        where: {
-          start_at: LessThan(new Date()),
-          is_private: false,
-          status: SailStatus.New,
-        },
-        relations: ['manifest', 'boat'],
-        take: 10,
-        order: { start_at: 'ASC' }
-      }
-    );
+
 
     const feed = new RSS({
       title: 'COMPANY_NAME_SHORT_HEADER Upcoming Sails',
@@ -149,6 +138,20 @@ export class SailJob {
       ttl: 60 * 23,
       hub: `${process.env.DOMAIN}/feed/upcoming_sails.rss`,
     });
+
+    const sails = await SailEntity.find(
+      {
+        where: {
+          start_at: LessThan(new Date()),
+          is_private: false,
+          // status: SailStatus.New,
+        },
+        relations: ['manifest', 'boat'],
+        take: 10,
+        order: { start_at: 'ASC' }
+      }
+    );
+
 
     sails.forEach(sail => {
       const skipperCount = sail.manifest.filter((sailor => sailor.sailor_role === SailorRole.Sailor)).length;
