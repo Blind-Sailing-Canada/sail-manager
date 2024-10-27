@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression, } from '@nestjs/schedule';
 import {
-  In, LessThan, MoreThan, MoreThanOrEqual
+  In, LessThan, MoreThan,
 } from 'typeorm';
 import { SailEmail } from '../email/sail.email';
 import { GoogleEmailService } from '../google-api/google-email.service';
@@ -124,25 +124,26 @@ export class SailJob {
     const sails = await SailEntity.find(
       {
         where: {
-          start_at: MoreThanOrEqual(new Date()),
+          start_at: LessThan(new Date()),
           is_private: false,
           status: SailStatus.New,
         },
         relations: ['manifest', 'boat'],
         take: 10,
+        order: { start_at: 'ASC' }
       }
     );
 
     const feed = new RSS({
-      title: `${process.env.COMPANY_NAME_SHORT_HEADER} Upcoming Sails`,
+      title: 'COMPANY_NAME_SHORT_HEADER Upcoming Sails',
       description: 'A list of upcoming sails. Updated daily',
-      generator: `${process.env.COMPANY_NAME_SHORT_HEADER} System`,
+      generator: 'COMPANY_NAME_SHORT_HEADER System',
       feed_url: `${process.env.DOMAIN}/feed/upcoming_sails.rss`,
       site_url: `${process.env.DOMAIN}`,
       image_url: `${process.env.DOMAIN}/favicon.ico`,
       copyright: `${process.env.COPYRIGHT || 'Copyright 2024'}`,
       language: 'en-us',
-      categories: ['Sails', process.env.COMPANY_NAME_SHORT_HEADER],
+      categories: ['Sails', 'COMPANY_NAME_SHORT_HEADER'],
       pubDate: new Date().toISOString(),
       ttl: 60 * 23,
       hub: `${process.env.DOMAIN}/feed/upcoming_sails.rss`,
