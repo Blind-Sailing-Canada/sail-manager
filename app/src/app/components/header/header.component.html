@@ -26,6 +26,14 @@
     >
       <mat-icon>{{ isDarkTheme ? "dark_mode" : "light_mode" }}</mat-icon>
     </button>
+    <a
+      class="mat-button"
+      title="upcoming sails rss feed"
+      aria-label="upcoming sails rss feed"
+      href="/feed/upcoming_sails.rss"
+    >
+      <mat-icon>rss_feed</mat-icon>
+    </a>
   </div>
   <div
     *ngIf="userProfile"
@@ -64,6 +72,14 @@
     >
       <mat-icon>{{ isDarkTheme ? "dark_mode" : "light_mode" }}</mat-icon>
     </button>
+    <a
+      class="mat-button"
+      title="upcoming sails rss feed"
+      aria-label="upcoming sails rss feed"
+      href="/feed/upcoming_sails.rss"
+    >
+      <mat-icon>rss_feed</mat-icon>
+    </a>
     <button
       (click)="logout()"
       aria-label="log out"
