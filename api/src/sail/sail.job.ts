@@ -166,6 +166,7 @@ export class SailJob {
     });
 
     const rssXml = feed.xml();
+    console.log('__dirname====', __dirname);
     await fs.writeFile('../app/feed/upcoming_sails.rss', rssXml);
   }
 

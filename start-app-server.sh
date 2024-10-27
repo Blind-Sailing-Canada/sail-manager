@@ -2,6 +2,7 @@ startAPP() {
   echo "starting app..."
   echo 'CURRENT WORKING DIRECTORY'
   pwd
+  mkdir ./app/feed
   ls -a -l
   ls -a -l ./app
   return $(node ./app/server/server.js)
