@@ -167,7 +167,8 @@ export class SailJob {
 
     const rssXml = feed.xml();
     console.log('__dirname====', __dirname);
-    await fs.writeFile('../app/feed/upcoming_sails.rss', rssXml);
+    console.log('process.cwd()', process.cwd());
+    await fs.writeFile('../app/feed/upcoming_sails.rss', rssXml).catch(error => console.log('failed to write rss file', error));
   }
 
 }

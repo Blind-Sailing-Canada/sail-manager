@@ -35,6 +35,11 @@ done
 chmod +x ./start-api-server.sh
 chmod +x ./start-app-server.sh
 
+echo "making app/feed dir"
+mkdir ./app/feed
+chmod +r ./app/feed
+chmod +w ./app/feed
+
 # redis-server 2>&1&
 redis-server --daemonize yes
 
