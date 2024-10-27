@@ -57,7 +57,7 @@ const sendFile = async (filepath, destination, authorizationHeader) => {
 
           let createdUrl = '';
 
-          res.on('data', (data) => createdUrl+= data);
+          res.on('data', (data) => createdUrl += data);
           res.on('end', () => resolve(createdUrl));
           res.on('error', (error) => reject(error));
         });
@@ -78,11 +78,11 @@ app
   })
   .use(Sentry.Handlers.requestHandler())
 
-  if (process.env.NODE_ENV === 'prod') {
-    app.use(sslRedirect.default())
-  }
+if (process.env.NODE_ENV === 'prod') {
+  app.use(sslRedirect.default())
+}
 
-  app
+app
   .use(compression())
   .post('/cdn/upload/*', fileUpload({
     limits: { fileSize: +process.env.FILE_SIZE_UPLOAD || 1 * 1024 * 1024 }, // 100 MB
@@ -112,7 +112,7 @@ app
 
     let allowed = false;
 
-    switch(req.files.file.mimetype) {
+    switch (req.files.file.mimetype) {
       case 'application/octet-stream': // word docx
       case 'application/pdf':
       case 'application/rtf':
@@ -145,7 +145,7 @@ app
 
     console.log('tmpfileLocation', tmpfileLocation)
 
-    await req.files.file.mv(tmpfileLocation).catch((error) =>{
+    await req.files.file.mv(tmpfileLocation).catch((error) => {
       console.error(error);
       res.status(500).send('failed to save file')
     });
@@ -159,7 +159,7 @@ app
         console.log('GOT URL ', url);
 
         try {
-          const jsonUrl = typeof url === 'object' ?  JSON.parse(url) : url;
+          const jsonUrl = typeof url === 'object' ? JSON.parse(url) : url;
 
           if (jsonUrl.message) {
             return res.status(500).send(jsonUrl.message)
@@ -193,6 +193,12 @@ app
     preserveHostHdr: true
   }))
   // Static content
+  .use((req, res, next) => {
+    if (req.url === '/feed/upcoming_sails.rss') {
+      res.set('Content-Type', 'application/rss+xml')
+    }
+    next();
+  })
   .use(express.static(DIST_DIR))
   // for everything else serve index.html
   .use((_req, res) => {

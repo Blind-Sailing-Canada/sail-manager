@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Cron, } from '@nestjs/schedule';
+import { Cron, CronExpression, } from '@nestjs/schedule';
 import {
-  In, LessThan, MoreThan
+  In, LessThan, MoreThan, MoreThanOrEqual
 } from 'typeorm';
 import { SailEmail } from '../email/sail.email';
 import { GoogleEmailService } from '../google-api/google-email.service';
@@ -11,6 +11,8 @@ import { ProfileStatus } from '../types/profile/profile-status';
 import { SailorRole } from '../types/sail-manifest/sailor-role';
 import { SailStatus } from '../types/sail/sail-status';
 import { SailEntity } from './sail.entity';
+import * as RSS from 'rss';
+const fs = require('node:fs/promises');
 
 type UserSailMap = Record<string, SailEntity[]>
 
@@ -20,7 +22,7 @@ export class SailJob {
   constructor(
     private sailEmail: SailEmail,
     private emailService: GoogleEmailService
-  ) {}
+  ) { }
 
   @Cron('0 0 1-31/2 * *') // Every second day at noon.
   async pastSailThisYearWithoutChecklists() {
@@ -115,6 +117,56 @@ export class SailJob {
     const emailInfo = await this.sailEmail.pastSailsWithoutChecklists(sails);
 
     await this.emailService.sendBccEmail(emailInfo);
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async generateFutureSailsRss() {
+    const sails = await SailEntity.find(
+      {
+        where: {
+          start_at: MoreThanOrEqual(new Date()),
+          is_private: false,
+          status: SailStatus.New,
+        },
+        relations: ['manifest', 'boat'],
+        take: 10,
+      }
+    );
+
+    const feed = new RSS({
+      title: `${process.env.COMPANY_NAME_SHORT_HEADER} Upcoming Sails`,
+      description: 'A list of upcoming sails. Updated daily',
+      generator: `${process.env.COMPANY_NAME_SHORT_HEADER} System`,
+      feed_url: `${process.env.DOMAIN}/feed/upcoming_sails.rss`,
+      site_url: `${process.env.DOMAIN}`,
+      image_url: `${process.env.DOMAIN}/favicon.ico`,
+      copyright: `${process.env.COPYRIGHT || 'Copyright 2024'}`,
+      language: 'en-us',
+      categories: ['Sails', process.env.COMPANY_NAME_SHORT_HEADER],
+      pubDate: new Date().toISOString(),
+      ttl: 60 * 23,
+      hub: `${process.env.DOMAIN}/feed/upcoming_sails.rss`,
+    });
+
+    sails.forEach(sail => {
+      const skipperCount = sail.manifest.filter((sailor => sailor.sailor_role === SailorRole.Sailor)).length;
+      const crewCount = sail.manifest.filter((sailor => sailor.sailor_role === SailorRole.Crew)).length
+      const sailorCount = sail.manifest.filter((sailor => [SailorRole.Guest, SailorRole.Member, SailorRole.Sailor].includes(sailor.sailor_role))).length
+      const sailorCapacity = sail.max_occupancy - Math.max(2, skipperCount + crewCount);
+
+      feed.item({
+        title: sail.name,
+        description: `Skipper: ${skipperCount}, Crew: ${crewCount}, Sailors: ${sailorCount}/${sailorCapacity}`,
+        url: `${process.env.DOMAIN}/sails/${sail.id}`,
+        guid: sail.id,
+        categories: [sail.category || 'general sail'],
+        author: 'system',
+        date: sail.updated_at,
+      })
+    });
+
+    const rssXml = feed.xml(/*indent=*/true);
+    await fs.writeFile('../app/feed/upcoming_sails.rss', rssXml);
   }
 
 }

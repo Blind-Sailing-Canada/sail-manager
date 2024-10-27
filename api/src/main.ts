@@ -83,23 +83,23 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(session(sess));
   app.use((req, res, next) => {
-    if (req.method === 'POST' && req.originalUrl.startsWith('/form-response')){
+    if (req.method === 'POST' && req.originalUrl.startsWith('/form-response')) {
       return next();
     }
 
-    if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/images/')){
+    if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/images/')) {
       return next();
     }
 
-    if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/videos/')){
+    if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/videos/')) {
       return next();
     }
 
-    if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/documents/')){
+    if (req.method === 'POST' && req.originalUrl.startsWith('/fba/upload/documents/')) {
       return next();
     }
 
-    if (req.originalUrl.startsWith('/stripe/webhook')){
+    if (req.originalUrl.startsWith('/stripe/webhook')) {
       return next();
     }
 
@@ -107,7 +107,7 @@ async function bootstrap() {
       return next();
     }
 
-    return csurfValidation(req,res, next);
+    return csurfValidation(req, res, next);
   });
   app.use(function (err, _, res, next) {
     if (err.code !== 'EBADCSRFTOKEN') return next(err)
@@ -117,7 +117,7 @@ async function bootstrap() {
   });
   app.use((req, res, next) => {
     if (req.csrfToken) {
-      res.cookie('XSRF-TOKEN',  req.csrfToken());
+      res.cookie('XSRF-TOKEN', req.csrfToken());
     }
     next();
   });

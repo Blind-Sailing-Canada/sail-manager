@@ -32,4 +32,5 @@ sed -i "s|CONTACT_US_EMAIL|${CONTACT_US_EMAIL}|g" ./app/*.js
 sed -i "s|CONTACT_US_EMAIL|${CONTACT_US_EMAIL}|g" ./app/*.js.map
 sed -i "s|CONTACT_US_EMAIL|${CONTACT_US_EMAIL}|g" ./app/*.html
 
+mkdir ./feed/
 node ./app/server/server.js
