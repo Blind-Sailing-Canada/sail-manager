@@ -165,10 +165,12 @@ export class SailJob {
       })
     });
 
-    const rssXml = feed.xml();
+    const rssXml = feed.xml({ indent: true });
     console.log('__dirname====', __dirname);
     console.log('process.cwd()', process.cwd());
-    await fs.writeFile('../app/feed/upcoming_sails.rss', rssXml).catch(error => console.log('failed to write rss file', error));
+
+    await fs.mkdir('./app/feed', { recursive: true });
+    await fs.writeFile('./app/feed/upcoming_sails.rss', rssXml).catch(error => console.log('failed to write rss file', error));
   }
 
 }
