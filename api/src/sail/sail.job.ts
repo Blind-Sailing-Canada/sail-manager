@@ -142,12 +142,12 @@ export class SailJob {
     const sails = await SailEntity.find(
       {
         where: {
-          start_at: LessThan(new Date()),
+          start_at: MoreThan(new Date()),
           is_private: false,
-          // status: SailStatus.New,
+          status: SailStatus.New,
         },
         relations: ['manifest', 'boat'],
-        take: 10,
+        take: 20,
         order: { start_at: 'ASC' }
       }
     );
