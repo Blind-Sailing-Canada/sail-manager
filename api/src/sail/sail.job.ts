@@ -122,8 +122,6 @@ export class SailJob {
 
   @Cron(CronExpression.EVERY_HOUR)
   async generateFutureSailsRss() {
-
-
     const feed = new RSS({
       title: 'COMPANY_NAME_SHORT_HEADER Upcoming Sails',
       description: 'A list of upcoming sails. Updated daily',
