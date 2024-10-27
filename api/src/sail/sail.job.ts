@@ -120,7 +120,7 @@ export class SailJob {
     await this.emailService.sendBccEmail(emailInfo);
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_HOUR)
   async generateFutureSailsRss() {
 
 
