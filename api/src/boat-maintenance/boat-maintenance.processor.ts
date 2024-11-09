@@ -25,7 +25,7 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
   @Process('new-request')
   async sendNewMaintenanceEmail(job: Job<BoatMaintenanceNewJob>) {
     const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenance_id } });
-    const fleetManagers =  await ProfileEntity.fleetManagers();
+    const fleetManagers = await ProfileEntity.fleetManagers();
 
     if (!fleetManagers.length) {
       return;
@@ -39,14 +39,13 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
 
   @Process('update-request')
   async sendUpdateMaintenanceEmail(job: Job<BoatMaintenanceUpdateJob>) {
-    const request = await BoatMaintenanceEntity.findOneOrFail({ where: { id: job.data.maintenance_id } });
-    const fleetManagers =  await ProfileEntity.fleetManagers();
+    const fleetManagers = await ProfileEntity.fleetManagers();
 
     if (!fleetManagers.length) {
       return;
     }
 
-    const emailInfo = this.boatMaintenanceEmail.updatedMaintenanceRequestEmail(request);
+    const emailInfo = this.boatMaintenanceEmail.updatedMaintenanceRequestEmail(job.data);
     emailInfo.bcc = fleetManagers.map(manager => manager.email);
 
     return this.emailService.sendToEmail(emailInfo);
@@ -56,7 +55,7 @@ export class BoatMaintenanceProcessor extends BaseQueueProcessor {
   async sendNewCommentEmail(job: Job<BoatMaintenanceNewCommentJob>) {
     const request = await BoatMaintenanceEntity.findOne({ where: { id: job.data.maintenance_id } });
     const comment = await CommentEntity.findOne({ where: { id: job.data.comment_id } });
-    const fleetManagers =  await ProfileEntity.fleetManagers();
+    const fleetManagers = await ProfileEntity.fleetManagers();
 
     if (!fleetManagers.length) {
       return;

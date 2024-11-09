@@ -7,6 +7,7 @@ import { SailChecklistUpdateJob } from '../types/sail-checklist/sail-checklist-u
 import { diff } from 'json-diff';
 import { SailManifest } from '../types/sail-manifest/sail-manifest';
 import { SailChecklistType } from '../types/sail-checklist/sail-checklist-type';
+import { diffStringHtml } from '../utils/strings';
 
 @Injectable()
 export class SailChecklistEmail {
@@ -90,11 +91,7 @@ export class SailChecklistEmail {
   }
 
   private diffString(value: any) {
-    if (typeof value == 'object' && typeof value.__old !== 'undefined') {
-      return `<s style="color:red">${value.__old || ''}</s>&nbsp;<b style="color:green">${value.__new}</b>`;
-    }
-
-    return value;
+    return diffStringHtml(value);
   }
 
   private sailManifestTable(sailManifest: SailManifest[], updatedManifest: SailManifest[]): string {

@@ -8,6 +8,9 @@ import { EmailInfo } from '../types/email/email-info';
 import { Media } from '../types/media/media';
 import { MediaType } from '../types/media/media-type';
 import { toLocalDate } from '../utils/date.util';
+import { diff } from 'json-diff';
+import { BoatMaintenanceUpdateJob } from '../types/boat-maintenance/boat-maintenance-update-request-job';
+import { diffStringHtml } from '../utils/strings';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class BoatMaintenanceEmail {
@@ -74,31 +77,55 @@ export class BoatMaintenanceEmail {
     return emailInfo;
   }
 
-  updatedMaintenanceRequestEmail(report: BoatMaintenance): EmailInfo{
+  updatedMaintenanceRequestEmail(report: BoatMaintenanceUpdateJob): EmailInfo {
+    const updateDiff = diff(report.current_maintenance, report.updated_maintenance, { full: true });
     const emailInfo: EmailInfo = {
       subject: '[COMPANY_NAME_SHORT_HEADER] Boat maintenance request update',
       content: `
         <html>
           <body>
             <h2>Maintenance request was updated</h2>
-            <div>
-              <label>Boat: </label> <span>${report.boat.name}</span>
-            </div>
-            <div>
-              <label>Requested by: </label> <span>${report.requested_by.name}</span>
-            </div>
-            <div>
-              <label>Requested on: </label> <span>${toLocalDate(report.created_at)}</span>
-            </div>
-            <div>
-              <label>Request details: </label>
-              <pre>${report.request_details}</pre>
-            </div>
+            <table style="text-align: left;">
+              <tr>
+                <th>Boat</th>
+                <td>${diffStringHtml(updateDiff.boat?.name)}</td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td>${diffStringHtml(updateDiff.status)}</td>
+              </tr>
+              <tr>
+                <th>Submitted by</th>
+                <td>${updateDiff.requested_by?.name}</td>
+              </tr>
+              <tr>
+                <th>Submitted on</th>
+                <td>${toLocalDate(report.current_maintenance.created_at)}</td>
+              </tr>
+              <tr>
+                <th>Request details</th>
+                <td>${diffStringHtml(updateDiff.request_details)}</td>
+              </tr>
+              <tr>
+                <th>Service details</th>
+                <td>${diffStringHtml(updateDiff.service_details || 'none')}</td>
+              </tr>
+              <tr>
+                <th>Updated on</th>
+                <td>${report.updated_at}</td>
+              </tr>
+              <tr>
+                <th>Updated by</th>
+                <td>${report.updated_by_username}</td>
+              </tr>
+            </table>
+
             <br/>
-            <div>${this.picturesHTML(report.pictures)}</div>
+            <div>${this.picturesHTML(report.updated_maintenance?.pictures || [])}</div>
             <br/>
             <br/>
-            <a href="${DOMAIN}/maintenance/view/${report.id}">View request</a>
+
+            <a href="${DOMAIN}/maintenance/view/${report.maintenance_id}">View request</a>
           </body>
         </html>
       `,
@@ -162,7 +189,7 @@ export class BoatMaintenanceEmail {
   private picturesHTML(pictures: Media[]): string {
     return pictures
       .filter(picture => picture.media_type === MediaType.Picture)
-      .map(picture => `<img width="150px" height="200px" src="${DOMAIN}/${picture.url}" alt="${picture.title??''}">`)
+      .map(picture => `<img width="150px" height="200px" src="${DOMAIN}/${picture.url}" alt="${picture.title ?? ''}">`)
       .join('');
   }
 

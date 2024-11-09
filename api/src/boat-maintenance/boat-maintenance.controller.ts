@@ -25,19 +25,24 @@ import { User } from '../user/user.decorator';
 import { BoatMaintenanceEntity } from './boat-maintenance.entity';
 import { BoatMaintenanceService } from './boat-maintenance.service';
 import { MaintenanceUpdateSanitizer } from './pipes/maintenance-update.sanitizer';
+import { toLocalDate } from '../utils/date.util';
 
 @Crud({
   model: { type: BoatMaintenanceEntity },
-  params: { id: {
-    field: 'id',
-    type: 'uuid',
-    primary: true,
-  } },
-  routes: { only: [
-    'createOneBase',
-    'getManyBase',
-    'getOneBase',
-  ] },
+  params: {
+    id: {
+      field: 'id',
+      type: 'uuid',
+      primary: true,
+    }
+  },
+  routes: {
+    only: [
+      'createOneBase',
+      'getManyBase',
+      'getOneBase',
+    ]
+  },
   query: {
     alwaysPaginate: true,
     exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
@@ -99,7 +104,7 @@ export class BoatMaintenanceController {
 
   @Patch('/:id')
   async update(
-  @User() user: JwtObject,
+    @User() user: JwtObject,
     @Param('id') id: string,
     @Body(new MaintenanceUpdateSanitizer()) updateInfo: Partial<BoatMaintenance>) {
     let shouldUpdate = false;
@@ -117,14 +122,22 @@ export class BoatMaintenanceController {
       throw new UnauthorizedException();
     }
 
-    const updated = await BoatMaintenanceEntity.update({ id }, updateInfo);
+    const current_maintenance = await BoatMaintenanceEntity.findOneBy({ id });
+    const update = await BoatMaintenanceEntity.update({ id }, updateInfo);
+    const updatedEntity = await BoatMaintenanceEntity.findOne({ where: { id } })
 
-    if (updated.affected) {
-      const job: BoatMaintenanceUpdateJob = { maintenance_id: id };
+    if (update.affected) {
+      const job: BoatMaintenanceUpdateJob = {
+        current_maintenance,
+        maintenance_id: id,
+        updated_maintenance: updatedEntity,
+        updated_at: toLocalDate(new Date()),
+        updated_by_username: user.username
+      };
       this.boatMaintenanceQueue.add('update-request', job);
     }
 
-    return BoatMaintenanceEntity.findOne({ where: { id } });
+    return updatedEntity;
   }
 
   @Delete('/:id/pictures/:pictureId')
