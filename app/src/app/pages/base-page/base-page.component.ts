@@ -157,8 +157,14 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
     this.dispatchAction(putSnack({ snack: { message, type: SnackType.ERROR } }));
   }
 
+  public dispatchErrorEvent(error: any): void {
+    console.error(error);
+    Sentry.captureException(error);
+    this.dispatchAction(putSnack({ snack: { message: error.error?.message || error.message, type: SnackType.ERROR } }));
+  }
+
   public goToEntity(entityType: string, entityId: string): void {
-    switch(entityType) {
+    switch (entityType) {
       case 'SailEntity':
         this.viewSail(entityId);
         break;
@@ -690,7 +696,7 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
       });
   }
 
-  public async tagProfile(profile_id: string, media_id: string): Promise<boolean>{
+  public async tagProfile(profile_id: string, media_id: string): Promise<boolean> {
     const media: Media = await firstValueFrom(this.mediaService.fetchOne(media_id)).catch((error) => {
       this.dispatchError(error.error?.message || 'Failed to tag.');
       return null;

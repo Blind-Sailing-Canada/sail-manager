@@ -10,6 +10,7 @@ import { SocialListPageComponent } from './social-list-page/social-list-page.com
 import { SocialManifestEditPageComponent } from './social-manifest-edit-page/social-manifest-edit-page.component';
 import { SocialPicturesPageComponent } from './social-pictures-page/social-pictures-page.component';
 import { SocialViewPageComponent } from './social-view-page/social-view-page.component';
+import { SocialCreateManyPageComponent } from './social-create-many-page/social-create-many-page.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: SubRoutes.CREATE_SOCIAL,
     component: SocialEditPageComponent,
+  },
+  {
+    path: `${SubRoutes.CREATE_SOCIALS}`,
+    component: SocialCreateManyPageComponent,
   },
   {
     path: `${SubRoutes.VIEW_SOCIAL}/:id`,

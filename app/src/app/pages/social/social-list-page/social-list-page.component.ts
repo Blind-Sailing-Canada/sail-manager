@@ -6,7 +6,7 @@ import {
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
-  createSocialRoute, listMediaRoute, viewSocialPicturesRoute,
+  createSocialRoute, createSocialsRoute, listMediaRoute, viewSocialPicturesRoute,
 } from '../../../routes/routes';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { Access } from '../../../../../../api/src/types/user-access/access';
@@ -28,8 +28,9 @@ import { MediaType } from '../../../../../../api/src/types/media/media-type';
   styleUrls: ['./social-list-page.component.scss'],
   templateUrl: './social-list-page.component.html',
 })
-export class SocialListPageComponent extends BasePageComponent implements OnInit  {
+export class SocialListPageComponent extends BasePageComponent implements OnInit {
   public CREATE_SOCIAL_ROUTE = createSocialRoute.toString();
+  public CREATE_SOCIALS_ROUTE = createSocialsRoute.toString();
   public dataSource = new MatTableDataSource<Social>([]);
   public displayedColumns: string[] = ['entity_number', 'name', 'start_at', 'end_at', 'manifest', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['name'];
@@ -103,11 +104,13 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { name: { $contL: search } },
-        { description: { $contL: search } },
-        { 'manifest.profile.name': { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { name: { $contL: search } },
+          { description: { $contL: search } },
+          { 'manifest.profile.name': { $contL: search } },
+        ]
+      });
     }
 
     if (this.socialStatus !== 'ANY') {
@@ -116,7 +119,7 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
 
     this.startLoading();
 
-    const fetcher =  this.socialService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.socialService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

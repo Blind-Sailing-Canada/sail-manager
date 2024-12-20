@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,  Get,  Param,  Patch, Post, UseGuards
+  Controller, Get, Param, Patch, Post, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
@@ -17,14 +17,19 @@ import { Social } from '../types/social/social';
 import { UserAccess } from '../user-access/user-access.decorator';
 import { UserAccessFields } from '../types/user-access/user-access-fields';
 import { UserAccessGuard } from '../guards/user-access.guard';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { SocialNewJob } from '../types/social/social-new-job';
 
 @Crud({
   model: { type: SocialEntity },
-  params: { id: {
-    field: 'id',
-    type: 'uuid',
-    primary: true,
-  } },
+  params: {
+    id: {
+      field: 'id',
+      type: 'uuid',
+      primary: true,
+    }
+  },
   query: {
     alwaysPaginate: true,
     exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
@@ -50,17 +55,19 @@ import { UserAccessGuard } from '../guards/user-access.guard';
       },
     },
   },
-  routes: { only: [
-    'getOneBase',
-    'getManyBase'
-  ] },
+  routes: {
+    only: [
+      'getOneBase',
+      'getManyBase'
+    ]
+  },
 })
 @Controller('social')
 @ApiTags('social')
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard, UserAccessGuard)
 export class SocialController {
 
-  constructor(public service: SocialService) { }
+  constructor(public service: SocialService, @InjectQueue('social') private readonly socialQueue: Queue) { }
 
   @Post('/')
   @UserAccess(UserAccessFields.CreateSocial)
@@ -71,6 +78,40 @@ export class SocialController {
     }));
 
     return SocialEntity.findOne({ where: { id: social.id } });
+  }
+
+  @Post('/create_many')
+  @UserAccess(UserAccessFields.CreateSocial)
+  async createSocials(@User() user: JwtObject, @Body() socials: Partial<Social>[]) {
+    const result = await SocialEntity.getRepository().manager.transaction(async transactionalEntityManager => {
+      const tableName = `${SocialEntity.getRepository().metadata.tableName}`;
+      let entityNumber = await SocialEntity
+        .getRepository()
+        .createQueryBuilder(tableName)
+        .select(`MAX(${tableName}.entity_number)`, 'max')
+        .getRawOne();
+      entityNumber = entityNumber.max || 0;
+      const socialEntities = socials.map(social => SocialEntity.create({
+        ...social,
+        entity_number: ++entityNumber,
+        created_by_id: user.profile_id,
+      }));
+      const savedEntities = await transactionalEntityManager.save(socialEntities);
+
+      return savedEntities;
+    });
+
+    result.forEach(social => {
+      const job: SocialNewJob = {
+        message: social.name,
+        social_id: social.id,
+      };
+
+      this.socialQueue.add('new-social', job);
+    })
+
+
+    return result;
   }
 
   @Patch('/:social_id')
@@ -86,11 +127,13 @@ export class SocialController {
   }
 
   @Get('/available')
-  async availableSocials(@User() user: JwtObject ) {
-    const futureSocials = await SocialEntity.find({ where: {
-      status: SocialStatus.New,
-      start_at: MoreThanOrEqual(new Date()),
-    } });
+  async availableSocials(@User() user: JwtObject) {
+    const futureSocials = await SocialEntity.find({
+      where: {
+        status: SocialStatus.New,
+        start_at: MoreThanOrEqual(new Date()),
+      }
+    });
 
     return futureSocials
       .filter(social => !social.manifest.some(attendant => attendant.profile_id === user.profile_id))

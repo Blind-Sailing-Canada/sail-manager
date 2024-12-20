@@ -45,6 +45,7 @@ export enum SubRoutes {
   CREATE_SAIL_REQUEST = 'create',
   CREATE_SAVED_QUERY = 'create',
   CREATE_SOCIAL = 'create',
+  CREATE_SOCIALS = 'create_many',
   DEPARTURE_SAIL_CHECKLIST = 'departure',
   EDIT_ADMIN_PAYMENT = 'edit-payment',
   EDIT_BOAT = 'edit',
@@ -155,6 +156,7 @@ export enum FullRoutes {
   CREATE_SAIL_REQUEST = SAIL_REQUESTS + SEPARATOR + SubRoutes.CREATE_SAIL_REQUEST,
   CREATE_SAVED_QUERY = SAVED_QUERY + SEPARATOR + SubRoutes.CREATE_SAVED_QUERY,
   CREATE_SOCIAL = SOCIALS + SEPARATOR + SubRoutes.CREATE_SOCIAL,
+  CREATE_SOCIALS = SOCIALS + SEPARATOR + SubRoutes.CREATE_SOCIALS,
   DEPARTURE_SAIL_CHECKLIST = SAIL_CHECKLISTS + SEPARATOR + SubRoutes.DEPARTURE_SAIL_CHECKLIST,
   EDIT_BOAT = BOATS + SEPARATOR + SubRoutes.EDIT_BOAT,
   EDIT_BOAT_CHECKLIST = BOAT_CHECKLISTS + SEPARATOR + SubRoutes.EDIT_BOAT_CHECKLIST,
@@ -235,6 +237,7 @@ export const createSailRequestRoute = FullRoutes.CREATE_SAIL_REQUEST;
 export const createSailRoute = FullRoutes.CREATE_SAIL;
 export const createSavedQueryRoute = FullRoutes.CREATE_SAVED_QUERY;
 export const createSocialRoute = FullRoutes.CREATE_SOCIAL;
+export const createSocialsRoute = FullRoutes.CREATE_SOCIALS;
 export const departureSailChecklistRoute = (id: string) => `${FullRoutes.DEPARTURE_SAIL_CHECKLIST}/${id}`;
 export const editBoatChecklistRoute = (boat_id: string) => `${FullRoutes.EDIT_BOAT_CHECKLIST}/${boat_id}`;
 export const editBoatInstructionsRoute = (boat_id: string) => `${FullRoutes.EDIT_BOAT_INSTRUCTIONS}/${boat_id}`;

@@ -74,6 +74,10 @@ export class SocialService {
     return this.http.post<Social>(`${this.API_URL}`, social);
   }
 
+  public createMany(socials: Social[]): Observable<Social[]> {
+    return this.http.post<Social[]>(`${this.API_URL}/create_many`, socials);
+  }
+
   public leaveSocial(social_id: string): Observable<Social> {
     return this.http.delete<Social>(`${this.API_URL}/${social_id}/leave`);
   }

@@ -32,6 +32,12 @@
     mat-raised-button
     title="Click to create a new social."
   >New</a>
+  <a
+    *ngIf="allowCreation"
+    [routerLink]="CREATE_SOCIALS_ROUTE"
+    mat-raised-button
+    title="Click to create a many socials."
+  >Create many</a>
   <button
     (click)="goToSocialsPictures()"
     mat-raised-button

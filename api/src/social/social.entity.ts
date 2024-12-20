@@ -26,14 +26,14 @@ export class SocialEntity extends CreatedByBaseModelEntity implements Social {
     nullable: true,
     unique: true,
   })
-    entity_number: number;
+  entity_number: number;
 
   @Column({
     default: '',
     length: 100,
   })
   @Index()
-    name: string;
+  name: string;
 
   @Column({
     default: '',
@@ -41,25 +41,25 @@ export class SocialEntity extends CreatedByBaseModelEntity implements Social {
     nullable: true,
   })
   @Index()
-    address: string;
+  address: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-    calendar_id: string;
+  calendar_id: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-    calendar_link: string;
+  calendar_link: string;
 
   @Column({
     length: 500,
     nullable: true,
   })
-    description: string;
+  description: string;
 
   @Column({
     default: SocialStatus.New,
@@ -68,40 +68,40 @@ export class SocialEntity extends CreatedByBaseModelEntity implements Social {
     nullable: false,
   })
   @Index()
-    status: SocialStatus;
+  status: SocialStatus;
 
   @Column({
     nullable: false,
     type: 'timestamptz',
   })
   @Index()
-    start_at: Date;
+  start_at: Date;
 
   @Column({
     nullable: false,
     type: 'timestamptz',
   })
   @Index()
-    end_at: Date;
+  end_at: Date;
 
   @Column({ default: -1 })
-    max_attendants: number;
+  max_attendants: number;
 
   @Column({ nullable: true })
-    cancel_reason: string;
+  cancel_reason: string;
 
   @Column({
     nullable: true,
     type: 'uuid'
   })
-    cancelled_by_id: string;
+  cancelled_by_id: string;
 
   @Column({
     default: SocialEntity.name,
     nullable: false,
   })
   @Index()
-    entity_type: string;
+  entity_type: string;
 
   @ManyToOne(() => ProfileEntity, undefined, {
     nullable: true,
@@ -111,47 +111,46 @@ export class SocialEntity extends CreatedByBaseModelEntity implements Social {
     name: 'cancelled_by_id',
     referencedColumnName: 'id',
   })
-    cancelled_by: ProfileEntity;
+  cancelled_by: ProfileEntity;
 
   @Column({
     nullable: true,
     type: 'timestamptz',
   })
-    cancelled_at: Date;
+  cancelled_at: Date;
 
   @OneToMany(() => SocialManifestEntity, manifest => manifest.social, { eager: true })
-    manifest: SocialManifestEntity[];
+  manifest: SocialManifestEntity[];
 
   @OneToMany(() => CommentEntity, comment => comment.social, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
   })
-    comments: CommentEntity[];
+  comments: CommentEntity[];
 
   @OneToMany(() => MediaEntity, (media) => media.social, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: false,
   })
-    pictures: MediaEntity[];
+  pictures: MediaEntity[];
 
   @BeforeInsert()
   async addEntityNumber() {
     const tableName = `${SocialEntity.getRepository().metadata.tableName}`;
-
-    const entity_number = await SocialEntity
-      .getRepository()
-      .createQueryBuilder(tableName)
-      .select(`MAX(${tableName}.entity_number)`, 'max')
-      .getRawOne();
-
-    const sailNumber = entity_number.max + 1;
-
-    this.entity_number = sailNumber;
+    if (this.entity_number === undefined || this.entity_number === null) {
+      const entity_number = await SocialEntity
+        .getRepository()
+        .createQueryBuilder(tableName)
+        .select(`MAX(${tableName}.entity_number)`, 'max')
+        .getRawOne();
+      const socialNumber = (entity_number.max || 0) + 1;
+      this.entity_number = socialNumber;
+    }
 
     if (!`${this.name || ''}`.trim()) {
-      this.name = `Social #${sailNumber}`;
+      this.name = `Social #${this.entity_number}`;
     }
   }
 }

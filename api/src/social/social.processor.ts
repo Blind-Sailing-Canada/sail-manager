@@ -33,6 +33,7 @@ export class SocialProcessor extends BaseQueueProcessor {
 
       await this.calendarService.createSocialEvent(social, job.data.message);
     } catch (error) {
+      this.logger.error(`failed to create calendar event for social ${job.data.social_id}:${job.data.message}`);
       this.logger.error(error);
     }
   }
@@ -44,6 +45,7 @@ export class SocialProcessor extends BaseQueueProcessor {
 
       await this.calendarService.updateSocialEvent(social, job.data.message);
     } catch (error) {
+      this.logger.error(`failed to update calendar event for social ${job.data.social_id}:${job.data.message}`);
       this.logger.error(error);
     }
   }
@@ -56,6 +58,7 @@ export class SocialProcessor extends BaseQueueProcessor {
 
       await this.calendarService.joinSocialEvent(social, profile);
     } catch (error) {
+      this.logger.error(`failed to join calendar event for social ${job.data.social_id}:${job.data.profile_id}`);
       this.logger.error(error);
     }
   }
@@ -68,6 +71,7 @@ export class SocialProcessor extends BaseQueueProcessor {
 
       await this.calendarService.leaveSocialEvent(social, profile);
     } catch (error) {
+      this.logger.error(`failed to leave calendar event for social ${job.data.social_id}:${job.data.profile_id}`);
       this.logger.error(error);
     }
   }
@@ -94,6 +98,7 @@ export class SocialProcessor extends BaseQueueProcessor {
 
       await this.emailService.sendBccEmail(emailInfo);
     } catch (error) {
+      this.logger.error(`failed to send social comment email for social ${job.data.social_id}:${job.data.comment_id}`);
       this.logger.error(error);
     }
   }

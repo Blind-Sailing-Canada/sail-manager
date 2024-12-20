@@ -75,11 +75,6 @@ export class GoogleCalendarService {
 
     this.logger.log('event' + JSON.stringify(event, null, 2));
 
-    if (!event.attendees?.length) {
-      this.logger.log(`no attendants for social ${social.id}`);
-      return Promise.resolve();
-    }
-
     const createdEvent = await this.calendar
       .events
       .insert({
@@ -439,9 +434,9 @@ export class GoogleCalendarService {
             and ask them to remove the guest from the sail.</p>
           </body>
         </html>
-      `.trim().replace(/\n/g,''),
+      `.trim().replace(/\n/g, ''),
       start: { 'dateTime': sail.start_at.toISOString() },
-      end: { 'dateTime':sail.end_at.toISOString() },
+      end: { 'dateTime': sail.end_at.toISOString() },
       attendees: attendees,
       guestsCanSeeOtherGuests: false,
       reminders: { 'useDefault': true },
@@ -487,7 +482,7 @@ export class GoogleCalendarService {
             <p>Cancelling/declining this calendar event will not remove you from the social event.</p>
           </body>
         </html>
-      `.trim().replace(/\n/g,''),
+      `.trim().replace(/\n/g, ''),
       start: { 'dateTime': social.start_at.toISOString() },
       end: { 'dateTime': social.end_at.toISOString() },
       attendees: attendees,

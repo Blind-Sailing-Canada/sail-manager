@@ -1,0 +1,65 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>local_bar</mat-icon>
+    </div>
+    <mat-card-title
+      aria-level="1"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Create socials in a batch</mat-card-title>
+    <mat-card-subtitle
+      aria-level="1"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >
+      <mat-icon color="warn">warning</mat-icon>
+      This is an advanced feature. It accepts a JSON list of Social objects. Only use this if
+      you know what you are
+      doing.
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <ng-container [ngTemplateOutlet]="controls"></ng-container>
+  </mat-card-actions>
+  <mat-card-content>
+    <form
+      class="social-edit-form"
+      [formGroup]="socialForm"
+    >
+      <ng-container *ngTemplateOutlet="socialsBatchData"></ng-container>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <button
+        (click)="createSocials()"
+        *ngIf="shouldEnableCreateButton"
+        id="createButton"
+        mat-raised-button
+        mtTooltip="Create new socials"
+      >Create</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+<ng-template #socialsBatchData>
+  <h4
+    aria-hidden="true"
+    class='form-section-header'
+    id="formSocialsBatchData"
+    tabindex="-1"
+  >Socials batch data (required)</h4>
+  <mat-form-field [formGroup]="socialForm">
+    <textarea
+      aria-labelledby="formSocialsBatchData"
+      cdkAutosizeMaxRows="10"
+      cdkAutosizeMinRows="5"
+      cdkTextareaAutosize
+      formControlName="socialsBatchData"
+      matInput
+      title="Socials batch data."
+    ></textarea>
+  </mat-form-field>
+</ng-template>

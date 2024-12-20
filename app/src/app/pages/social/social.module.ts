@@ -31,11 +31,13 @@ import { SocialManifestEditPageComponent } from './social-manifest-edit-page/soc
 import { SocialPicturesPageComponent } from './social-pictures-page/social-pictures-page.component';
 import { SocialRoutingModule } from './social-routing.module';
 import { SocialViewPageComponent } from './social-view-page/social-view-page.component';
+import { SocialCreateManyPageComponent } from './social-create-many-page/social-create-many-page.component';
 
 @NgModule({
   declarations: [
     SocialCancelPageComponent,
     SocialEditPageComponent,
+    SocialCreateManyPageComponent,
     SocialListPageComponent,
     SocialManifestEditPageComponent,
     SocialPicturesPageComponent,
