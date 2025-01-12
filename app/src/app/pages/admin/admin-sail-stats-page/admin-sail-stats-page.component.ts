@@ -15,6 +15,7 @@ import { FilterInfo } from '../../../models/filter-into';
 import { viewProfileRoute } from '../../../routes/routes';
 import { BasePageComponent } from '../../base-page/base-page.component';
 import { SailStatsService } from '../../../services/sail-stats.service';
+import { compare } from '../../../utils/compare';
 
 @Component({
   selector: 'app-admin-sail-stats-page',
@@ -154,23 +155,11 @@ export class AdminSailStatsPageComponent extends BasePageComponent implements On
 
     const sortedData = filteredData.sort((a, b) => {
       if (sortField === 'email') {
-        if (sortDirection === 'DESC') {
-          return b.email.localeCompare(a.email);
-        } else {
-          return a.email.localeCompare(b.email);
-        }
+        return compare(a.email, b.email, sortDirection, 'string');
       } else if (sortField === 'name') {
-        if (sortDirection === 'DESC') {
-          return b.name.localeCompare(a.name);
-        } else {
-          return a.name.localeCompare(b.name);
-        }
+        return compare(a.name, b.name, sortDirection, 'string');
       } else if (sortField === 'sails') {
-        if (sortDirection === 'DESC') {
-          return b.sails.localeCompare(a.sails);
-        } else {
-          return a.sails.localeCompare(b.sails);
-        }
+        return compare(a.sails, b.sails, sortDirection, 'number');
       }
       return 0;
     });
@@ -187,17 +176,9 @@ export class AdminSailStatsPageComponent extends BasePageComponent implements On
 
     const sortedData = filteredData.sort((a, b) => {
       if (sortField === 'boat_name') {
-        if (sortDirection === 'DESC') {
-          return b.boat_name.localeCompare(a.boat_name);
-        } else {
-          return a.boat_name.localeCompare(b.boat_name);
-        }
+        return compare(a.boat_name, b.boat_name, sortDirection, 'string');
       } else if (sortField === 'sails') {
-        if (sortDirection === 'DESC') {
-          return b.sails.localeCompare(a.sails);
-        } else {
-          return a.sails.localeCompare(b.sails);
-        }
+        return compare(a.sails, b.sails, sortDirection, 'number');
       }
       return 0;
     });
@@ -216,41 +197,17 @@ export class AdminSailStatsPageComponent extends BasePageComponent implements On
 
     const sortedData = filteredData.sort((a, b) => {
       if (sortField === 'name') {
-        if (sortDirection === 'DESC') {
-          return b.name.localeCompare(a.name);
-        } else {
-          return a.name.localeCompare(b.name);
-        }
+        return compare(a.name, b.name, sortDirection, 'string');
       } else if (sortField === 'start_at') {
-        if (sortDirection === 'DESC') {
-          return b.start_at.localeCompare(a.start_at);
-        } else {
-          return a.start_at.localeCompare(b.start_at);
-        }
+        return compare(a.start_at, b.start_at, sortDirection, 'date');
       } else if (sortField === 'end_at') {
-        if (sortDirection === 'DESC') {
-          return b.end_at.localeCompare(a.end_at);
-        } else {
-          return a.end_at.localeCompare(b.end_at);
-        }
+        return compare(a.end_at, b.end_at, sortDirection, 'date');
       } else if (sortField === 'cancel_reason') {
-        if (sortDirection === 'DESC') {
-          return b.cancel_reason.localeCompare(a.cancel_reason);
-        } else {
-          return a.cancel_reason.localeCompare(b.cancel_reason);
-        }
+        return compare(a.cancel_reason, b.cancel_reason, sortDirection, 'string');
       } else if (sortField === 'cancelled_by') {
-        if (sortDirection === 'DESC') {
-          return b.cancelled_by.localeCompare(a.cancelled_by);
-        } else {
-          return a.cancelled_by.localeCompare(b.cancelled_by);
-        }
+        return compare(a.cancelled_by, b.cancelled_by, sortDirection, 'string');
       } else if (sortField === 'cancelled_at') {
-        if (sortDirection === 'DESC') {
-          return b.cancelled_at.localeCompare(a.cancelled_at);
-        } else {
-          return a.cancelled_at.localeCompare(b.cancelled_at);
-        }
+        return compare(a.cancelled_at, b.cancelled_at, sortDirection, 'date');
       }
 
       return 0;
