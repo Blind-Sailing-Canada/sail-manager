@@ -86,6 +86,7 @@ export enum SubRoutes {
   RESET_PASSWORD = 'reset-password',
   RESOLVE_MAINTENANCE = 'resolve',
   SAVED_QUERY = 'saved-db-query',
+  SAIL_STATS = 'sail-stats',
   GROUP_MEMBERS = 'group-members',
   SUBMIT_FEEDBACK = 'submit',
   VIEW_ADMIN_PAYMENT = 'view-payment',
@@ -143,6 +144,7 @@ export enum FullRoutes {
   // ^ KEEP THESE SECOND^
   ADMIN_PAYMENT_DASHBOARD = ADMIN + SEPARATOR + SubRoutes.ADMIN_PAYMENT_DASHBOARD,
   ADMIN_SAIL_FEEDBACK = ADMIN + SEPARATOR + SubRoutes.ADMIN_SAIL_FEEDBACK,
+  ADMIN_SAIL_STATS = ADMIN + SEPARATOR + SubRoutes.SAIL_STATS,
   ARRIVAL_SAIL_CHECKLIST = SAIL_CHECKLISTS + SEPARATOR + SubRoutes.ARRIVAL_SAIL_CHECKLIST,
   CANCEL_SAIL = SAILS + SEPARATOR + SubRoutes.CANCEL_SAIL,
   CANCEL_SOCIAL = SOCIALS + SEPARATOR + SubRoutes.CANCEL_SOCIAL,
@@ -220,6 +222,7 @@ export enum FullRoutes {
 export const adminPaymentDashboardRoute = FullRoutes.ADMIN_PAYMENT_DASHBOARD.toString();
 export const adminRoute = FullRoutes.ADMIN;
 export const adminSailFeedbackRoute = FullRoutes.ADMIN_SAIL_FEEDBACK.toString();
+export const adminSailStatsRoute = FullRoutes.ADMIN_SAIL_STATS.toString();
 export const arrivalSailChecklistRoute = (id: string) => `${FullRoutes.ARRIVAL_SAIL_CHECKLIST}/${id}`;
 export const boatsRoute = FullRoutes.BOATS;
 export const cancelSailRoute = (sail_id: string) => `${FullRoutes.CANCEL_SAIL}/${sail_id}`;

@@ -35,7 +35,7 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
   public dataSource = new MatTableDataSource<Document>([]);
   public displayedColumns: string[] = ['title', 'documentable_type', 'created_at', 'download'];
   public displayedColumnsMobile: string[] = ['title'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'title,ASC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'title,ASC' };
   public paginatedData: PaginatedDocument;
 
   constructor(
@@ -101,11 +101,13 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { title: { $contL: search } },
-        { description: { $contL: search } },
-        { 'author.name': { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { title: { $contL: search } },
+          { description: { $contL: search } },
+          { 'author.name': { $contL: search } },
+        ]
+      });
     }
 
     if (this.entity_type && this.entity_id) {
@@ -115,7 +117,7 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
 
     this.startLoading();
 
-    const fetcher =  this.documentSErvice.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.documentSErvice.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
@@ -125,7 +127,7 @@ export class DocumentListPageComponent extends DocumentBasePageComponent impleme
   }
 
   public getEntityLabel(entityName: string): string {
-    return entityName ? entityName.replace('Entity', ''): '';
+    return entityName ? entityName.replace('Entity', '') : '';
   }
 
   public filterHandler(event: FilterInfo): void {

@@ -30,7 +30,7 @@ export class AdminPaymentDashboardPageComponent extends BasePageComponent implem
   public dataSource = new MatTableDataSource<PaymentCapture>([]);
   public displayedColumns: string[] = ['product_name', 'payment_processor', 'customer_name', 'profile.name', 'created_at', 'action'];
   public displayedColumnsMobile: string[] = ['created_at'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,DESC' };
   public paginatedData: PaginatedPaymentCapture;
   public productType: ProductType | 'ANY' = 'ANY';
   public productTypeValues = { ...ProductType, ANY: 'ANY' };
@@ -95,7 +95,7 @@ export class AdminPaymentDashboardPageComponent extends BasePageComponent implem
     }
 
     const validUntil = valid_until.getTime();
-    const currentTime =  new Date().getTime();
+    const currentTime = new Date().getTime();
 
     return validUntil < currentTime;
   }
@@ -106,13 +106,15 @@ export class AdminPaymentDashboardPageComponent extends BasePageComponent implem
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { customer_name: { $contL: search } },
-        { customer_email: { $contL: search } },
-        { product_name: { $contL: search } },
-        { 'profile.name': { $contL: search } },
-        { 'profile.email': { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { customer_name: { $contL: search } },
+          { customer_email: { $contL: search } },
+          { product_name: { $contL: search } },
+          { 'profile.name': { $contL: search } },
+          { 'profile.email': { $contL: search } },
+        ]
+      });
     }
 
     if (this.productType && this.productType !== 'ANY') {
@@ -122,7 +124,7 @@ export class AdminPaymentDashboardPageComponent extends BasePageComponent implem
     if (this.purchaseYear) {
 
       const startYear = new Date(this.purchaseYear, 0, 1, 0, 0, 0);
-      const endYear = new Date(this.purchaseYear, 11, 31, 23, 59,59);
+      const endYear = new Date(this.purchaseYear, 11, 31, 23, 59, 59);
 
       query.$and.push({ created_at: { $gte: startYear } });
       query.$and.push({ created_at: { $lte: endYear } });
@@ -130,7 +132,7 @@ export class AdminPaymentDashboardPageComponent extends BasePageComponent implem
 
     this.startLoading();
 
-    const fetcher =  this.paymentCaptureService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.paymentCaptureService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

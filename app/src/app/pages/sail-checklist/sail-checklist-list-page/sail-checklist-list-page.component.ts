@@ -33,7 +33,7 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
 
   public dataSource = new MatTableDataSource<SailChecklist>([]);
   public displayedColumns: string[] = ['sail.entity_number', 'created_at', 'sail.name', 'sail.boat.name', 'checklist_type', 'action'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,DESC' };
   public paginatedData: PaginatedSailChecklist;
   public viewSailChecklistRoute = viewSailChecklistRoute;
   public viewSailRoute = viewSailRoute;
@@ -66,13 +66,15 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { 'sail.name': { $contL: search } },
-        { 'sail.boat.name': { $contL: search } },
-        { comments: { $contL: search } },
-        { weather: { $contL: search } },
-        { sail_destination: { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { 'sail.name': { $contL: search } },
+          { 'sail.boat.name': { $contL: search } },
+          { comments: { $contL: search } },
+          { weather: { $contL: search } },
+          { sail_destination: { $contL: search } },
+        ]
+      });
     }
 
     if (this.excludeSailId) {
@@ -90,7 +92,7 @@ export class SailChecklistListPageComponent extends BasePageComponent implements
 
     this.startLoading();
 
-    const fetcher =  this.sailChecklistService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.sailChecklistService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

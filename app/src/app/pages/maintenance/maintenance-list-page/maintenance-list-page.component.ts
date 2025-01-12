@@ -35,7 +35,7 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
   public dataSource = new MatTableDataSource<BoatMaintenance>([]);
   public displayedColumns: string[] = ['request_details', 'boat.name', 'created_at', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['request_details'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,DESC' };
   public maintenanceStatus: BoatMaintenanceStatus[] = [BoatMaintenanceStatus.New, BoatMaintenanceStatus.InProgress];
   public maintenanceStatusValues = BoatMaintenanceStatus;
   public paginatedData: PaginatedMaintenance;
@@ -87,28 +87,30 @@ export class MaintenanceListPageComponent extends BasePageComponent implements O
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { 'boat.name': { $contL: search } },
-        { 'comments.comment': { $contL: search } },
-        { 'requested_by.name': { $contL: search } },
-        { 'requested_by.name': { $contL: search } },
-        { request_details: { $contL: search } },
-        { resolution_details: { $contL: search } },
-        { service_details: { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { 'boat.name': { $contL: search } },
+          { 'comments.comment': { $contL: search } },
+          { 'requested_by.name': { $contL: search } },
+          { 'requested_by.name': { $contL: search } },
+          { request_details: { $contL: search } },
+          { resolution_details: { $contL: search } },
+          { service_details: { $contL: search } },
+        ]
+      });
     }
 
     if (this.maintenanceStatus.length) {
       query.$and.push({ status: { $in: this.maintenanceStatus } });
     }
 
-    if(this.boat_id) {
+    if (this.boat_id) {
       query.$and.push({ boat_id: this.boat_id });
     }
 
     this.startLoading();
 
-    const fetcher =  this.maintenanceService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.maintenanceService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

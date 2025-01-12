@@ -43,7 +43,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     SailEntity: 'sail',
     SocialEntity: 'social',
   };
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,DESC' };
   public listMediaRoute = listMediaRoute.toString();
   public editMediaRoute = editMediaRoute;
   public tag_me = (media_id: string) => this._tag_me(media_id);
@@ -64,7 +64,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
 
     this.route.queryParams
-      .pipe( takeWhile(() => this.active && !!this.user))
+      .pipe(takeWhile(() => this.active && !!this.user))
       .subscribe((params) => {
         if (params.page === undefined) {
           return;
@@ -137,7 +137,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     const query = { $and: [] };
 
     if (this.entities.length) {
-      query.$and.push({ media_for_type: { $in:  this.entities } });
+      query.$and.push({ media_for_type: { $in: this.entities } });
     }
 
     if (this.posted_by_id) {
@@ -149,12 +149,14 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
     }
 
     if (search) {
-      query.$and.push({ $or: [
-        { url: { $contL: search } },
-        { title: { $contL: search } },
-        { description: { $contL: search } },
-        { 'posted_by.name': { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { url: { $contL: search } },
+          { title: { $contL: search } },
+          { description: { $contL: search } },
+          { 'posted_by.name': { $contL: search } },
+        ]
+      });
     }
 
     if (this.mediaType !== 'ANY') {
@@ -178,7 +180,7 @@ export class MediaListPageComponent extends BasePageComponent implements OnInit,
 
     this.startLoading();
 
-    const fetcher =  this.mediaService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort, joins);
+    const fetcher = this.mediaService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort, joins);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

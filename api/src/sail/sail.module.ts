@@ -17,6 +17,7 @@ import { SailProcessor } from './sail.processor';
 import { SailService } from './sail.service';
 import { SailSubscriber } from './sail.subscriber';
 import { UserSailController } from './user-sail.controller';
+import { SailStatsController } from './sail-stats.controller';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { UserSailController } from './user-sail.controller';
     SailController,
     SailPicturesController,
     UserSailController,
+    SailStatsController,
   ],
   providers: [
     SailJob,

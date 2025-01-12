@@ -35,7 +35,7 @@ export class AdminGroupMembersPageComponent extends BasePageComponent implements
   private data: GroupMember[] = [];
   public dataSource = new MatTableDataSource<GroupMember>([]);
   public displayedColumns: string[] = ['email', 'role', 'profile', 'roles', 'action'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'email,ASC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'email,ASC' };
 
   constructor(
     @Inject(Store) store: Store<any>,

@@ -27,6 +27,7 @@ import { ConfirmDialogModule } from '../../components/confirm-dialog/confirm-dia
 import { AdminSailFeedbackPageComponent } from './admin-sail-feedback-page/admin-sail-feedback-page.component';
 import { AdminGroupMembersPageComponent } from './admin-group-members-page/admin-group-members-page.component';
 import { AddGroupMemberDialogModule } from '../../components/add-group-member-dialog/add-group-member-dialog.module';
+import { AdminSailStatsPageComponent } from './admin-sail-stats-page/admin-sail-stats-page.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { AddGroupMemberDialogModule } from '../../components/add-group-member-di
     AdminPaymentViewPageComponent,
     AdminSailCategoryPageComponent,
     AdminSailFeedbackPageComponent,
+    AdminSailStatsPageComponent,
     AdminUserEditPageComponent,
     SavedQueryEditPageComponent,
     SavedQueryListPageComponent,

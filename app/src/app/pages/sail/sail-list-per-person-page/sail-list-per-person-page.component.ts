@@ -36,7 +36,7 @@ export class SailListPerPersonPageComponent extends BasePageComponent implements
   public dataSource = new MatTableDataSource<Sail>([]);
   public displayedColumns: string[] = ['entity_number', 'name', 'start_at', 'boat.name', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['entity_number'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'start_at,DESC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'start_at,DESC' };
   public listSailRequestRoute = sailRequestsRoute.toString();
   public paginatedData: PaginatedSail;
   public profile: Profile;
@@ -78,12 +78,14 @@ export class SailListPerPersonPageComponent extends BasePageComponent implements
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { 'boat.name': { $contL: search } },
-        { category: { $contL: search } },
-        { description: { $contL: search } },
-        { name: { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { 'boat.name': { $contL: search } },
+          { category: { $contL: search } },
+          { description: { $contL: search } },
+          { name: { $contL: search } },
+        ]
+      });
     }
 
     if (this.sailStatus !== 'ANY') {
@@ -93,7 +95,7 @@ export class SailListPerPersonPageComponent extends BasePageComponent implements
     query.$and.push({ 'manifest.profile_id': this.profile_id });
     this.startLoading();
 
-    const fetcher =  this.userSailsService.fetchUserSailsPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.userSailsService.fetchUserSailsPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

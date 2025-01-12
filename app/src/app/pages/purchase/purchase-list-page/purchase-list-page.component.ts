@@ -41,7 +41,7 @@ export class PurchaseListPageComponent extends BasePageComponent implements OnIn
     'action',
   ];
   public displayedColumnsMobile: string[] = ['created_at'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,DESC' };
   public paginatedData: PaginatedProductPurchase;
   public viewPurchaseRoute = viewPurchaseRoute;
 
@@ -82,16 +82,18 @@ export class PurchaseListPageComponent extends BasePageComponent implements OnIn
     }
 
     if (search) {
-      query.$and.push({ $or: [
-        { product_name: { $contL: search } },
-        { 'profile.name': { $contL: search } },
-        { 'profile.email': { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { product_name: { $contL: search } },
+          { 'profile.name': { $contL: search } },
+          { 'profile.email': { $contL: search } },
+        ]
+      });
     }
 
     this.startLoading();
 
-    const fetcher =  this.productPurchaseService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.productPurchaseService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

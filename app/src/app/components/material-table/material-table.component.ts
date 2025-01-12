@@ -35,6 +35,7 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
   @Input() public loading: boolean;
   @Input() public paginatedData: PaginatedData<T>;
   @Input() public paginationLabel: string;
+  @Input() public tableTitle = '';
   @Input() public searchTitle = 'Search';
   @Input() public showPaginator = true;
   @Input() public showSearchInput = true;
@@ -42,7 +43,7 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
 
   @ViewChild('filterInput', { static: false }) private filterInput;
 
-  public pagination: PageEvent = DEFAULT_PAGINATION;
+  public pagination: PageEvent = { ...DEFAULT_PAGINATION };
   public sort: string;
   public search: string;
   private active: boolean;
@@ -57,7 +58,7 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnChanges(): void {
-    this.pagination = this.defaultFilterInfo?.pagination || DEFAULT_PAGINATION;
+    this.pagination = this.defaultFilterInfo?.pagination || { ...DEFAULT_PAGINATION };
     this.search = this.defaultFilterInfo?.search;
   }
 
@@ -69,7 +70,7 @@ export class MaterialTableComponent<T> implements OnInit, AfterViewInit, OnDestr
     this.active = true;
     this.search = this.defaultFilterInfo?.search;
     this.sort = this.defaultFilterInfo?.sort;
-    this.pagination = this.defaultFilterInfo?.pagination || DEFAULT_PAGINATION;
+    this.pagination = this.defaultFilterInfo?.pagination || { ...DEFAULT_PAGINATION };
   }
 
   ngAfterViewInit(): void {

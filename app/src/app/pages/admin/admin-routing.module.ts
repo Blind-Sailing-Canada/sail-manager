@@ -20,6 +20,7 @@ import { AdminUserEditPageComponent } from './admin-user-edit-page/admin-user-ed
 import { SavedQueryEditPageComponent } from './saved-query/saved-query-edit-page/saved-query-edit-page.component';
 import { SavedQueryListPageComponent } from './saved-query/saved-query-list-page/saved-query-list-page.component';
 import { AdminGroupMembersPageComponent } from './admin-group-members-page/admin-group-members-page.component';
+import { AdminSailStatsPageComponent } from './admin-sail-stats-page/admin-sail-stats-page.component';
 
 const routes: Routes = [
   {
@@ -97,6 +98,11 @@ const routes: Routes = [
     path: `${SubRoutes.GROUP_MEMBERS}/:groupName`,
     canActivate: [AdminGuard],
     component: AdminGroupMembersPageComponent,
+  },
+  {
+    path: `${SubRoutes.SAIL_STATS}`,
+    canActivate: [AdminGuard],
+    component: AdminSailStatsPageComponent,
   },
 ];
 

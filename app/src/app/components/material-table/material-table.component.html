@@ -1,16 +1,22 @@
 <div class="mat-elevation-z2">
-  <div class="table-filters">
-    <mat-form-field *ngIf="showSearchInput">
-      <mat-label>Search</mat-label>
-      <mat-icon matPrefix>search</mat-icon>
-      <input
-        #filterInput
-        [value]="search"
-        [title]="searchTitle"
-        matInput
-      >
-    </mat-form-field>
-    <ng-content select="[tableFilters]"></ng-content>
+  <div class="table-header-container">
+    <h2
+      class="table-header"
+      *ngIf="tableTitle"
+    >{{tableTitle}}</h2>
+    <div class="table-filters">
+      <mat-form-field *ngIf="showSearchInput">
+        <mat-label>Search</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          #filterInput
+          [value]="search"
+          [title]="searchTitle"
+          matInput
+        >
+      </mat-form-field>
+      <ng-content select="[tableFilters]"></ng-content>
+    </div>
   </div>
 
   <table

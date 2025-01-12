@@ -41,7 +41,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
   public dataSource = new MatTableDataSource<Sail>([]);
   public displayedColumns: string[] = ['entity_number', 'name', 'start_at', 'boat.name', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['entity_number'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'start_at,DESC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'start_at,DESC' };
   public paginatedData: PaginatedSail;
   public sailEnd: string;
   public sailName: string;
@@ -63,7 +63,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams
-      .pipe( takeWhile(() => this.active && !!this.user))
+      .pipe(takeWhile(() => this.active && !!this.user))
       .subscribe((params) => {
         if (params.page === undefined) {
           return;
@@ -105,7 +105,7 @@ export class SailListPageComponent extends BasePageComponent implements OnInit {
   public applyFilter(): void {
     this.filterInfo = {
       ...this.filterInfo,
-      pagination: DEFAULT_PAGINATION
+      pagination: { ...DEFAULT_PAGINATION }
     };
 
     this.updateSailsUrl();

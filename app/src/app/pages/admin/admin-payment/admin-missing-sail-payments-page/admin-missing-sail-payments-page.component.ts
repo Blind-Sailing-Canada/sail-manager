@@ -37,7 +37,7 @@ export class AdminMissingSailPaymentsPageComponent extends BasePageComponent imp
     'actions',
   ];
   public displayedColumnsMobile: string[] = ['created_at'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,ASC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,ASC' };
   public paginatedData: PaginatedSailPaymentClaim;
 
   constructor(
@@ -65,17 +65,19 @@ export class AdminMissingSailPaymentsPageComponent extends BasePageComponent imp
     const query: any = { $and: [], product_purchase_id: null };
 
     if (search) {
-      query.$and.push({ $or: [
-        { 'sail.name': { $contL: search } },
-        Number.isInteger(+search) ? { 'sail.entity_number': +search } : undefined,
-        { guest_name: { $contL: search } },
-        { guest_email: { $contL: search } },
-      ].filter(Boolean) });
+      query.$and.push({
+        $or: [
+          { 'sail.name': { $contL: search } },
+          Number.isInteger(+search) ? { 'sail.entity_number': +search } : undefined,
+          { guest_name: { $contL: search } },
+          { guest_email: { $contL: search } },
+        ].filter(Boolean)
+      });
     }
 
     this.startLoading();
 
-    const fetcher =  this.sailPaymentClaimService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.sailPaymentClaimService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

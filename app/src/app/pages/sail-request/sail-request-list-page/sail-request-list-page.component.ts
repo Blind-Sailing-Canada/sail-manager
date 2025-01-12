@@ -37,7 +37,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
   public dataSource = new MatTableDataSource<SailRequest>([]);
   public displayedColumns: string[] = ['entity_number', 'details', 'requested_by', 'category', 'created_at', 'status', 'actions'];
   public displayedColumnsMobile: string[] = ['entity_number'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,ASC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,ASC' };
   public paginatedData: PaginatedSailRequest;
   public profile_id: string;
   public requestCategory: string | 'ANY' = 'ANY';
@@ -84,11 +84,13 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { details: { $contL: search } },
-        { 'requested_by.name': { $contL: search } },
-        { 'interest.profile.name': { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { details: { $contL: search } },
+          { 'requested_by.name': { $contL: search } },
+          { 'interest.profile.name': { $contL: search } },
+        ]
+      });
     }
 
     if (this.requestStatus !== 'ANY') {
@@ -105,7 +107,7 @@ export class SailRequestListPageComponent extends SailRequestBasePageComponent i
 
     this.startLoading();
 
-    const fetcher =  this.sailRequestService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.sailRequestService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

@@ -20,7 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./saved-query-list-page.component.scss']
 })
 export class SavedQueryListPageComponent extends BasePageComponent implements OnInit {
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,DESC' };
   public displayedColumns: string[] = ['name', 'created_at', 'created_by', 'action'];
   public paginatedData: PaginatedSavedQuery;
   public dataSource = new MatTableDataSource([]);
@@ -51,15 +51,17 @@ export class SavedQueryListPageComponent extends BasePageComponent implements On
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { name: { $contL: search } },
-        { 'created_by.name': { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { name: { $contL: search } },
+          { 'created_by.name': { $contL: search } },
+        ]
+      });
     }
 
     this.startLoading();
 
-    const fetcher =  this.savedQueryService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.savedQueryService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

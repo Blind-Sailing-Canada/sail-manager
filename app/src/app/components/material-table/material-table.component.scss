@@ -11,11 +11,23 @@ table {
   align-items: center;
 }
 
+.table-header-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.table-header {
+  margin: 0;
+  padding-left: 10px;
+}
+
 :host ::ng-deep .table-row-controls {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
 }
 
 @media screen and (max-width: 670px) {

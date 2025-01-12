@@ -34,7 +34,7 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
   public dataSource = new MatTableDataSource<Social>([]);
   public displayedColumns: string[] = ['entity_number', 'name', 'start_at', 'end_at', 'manifest', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['name'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'start_at,ASC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'start_at,ASC' };
   public paginatedData: PaginatedSocial;
   public socialStatus: SocialStatus | 'ANY' = SocialStatus.New;
   public socialStatusValues = { ...SocialStatus, ANY: 'ANY' };

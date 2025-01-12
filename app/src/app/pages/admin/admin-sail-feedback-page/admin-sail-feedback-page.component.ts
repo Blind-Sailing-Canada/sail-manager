@@ -31,7 +31,7 @@ export class AdminSailFeedbackPageComponent extends BasePageComponent implements
   public displayedColumnsMobile: string[] = ['created_at'];
   public feedbackRating: number;
   public feedbackYear: number = new Date().getFullYear();
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,DESC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,DESC' };
   public hasFeedback = true;
   public paginatedData: PaginatedSailFeedback;
   public viewSailRoute = viewSailRoute;
@@ -98,15 +98,17 @@ export class AdminSailFeedbackPageComponent extends BasePageComponent implements
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { feedback: { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { feedback: { $contL: search } },
+        ]
+      });
     }
 
 
     if (this.feedbackYear) {
       const startYear = new Date(this.feedbackYear, 0, 1, 0, 0, 0);
-      const endYear = new Date(this.feedbackYear, 11, 31, 23, 59,59);
+      const endYear = new Date(this.feedbackYear, 11, 31, 23, 59, 59);
 
       query.$and.push({ created_at: { $gte: startYear } });
       query.$and.push({ created_at: { $lte: endYear } });
@@ -122,7 +124,7 @@ export class AdminSailFeedbackPageComponent extends BasePageComponent implements
 
     this.startLoading();
 
-    const fetcher =  this.feedbackService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.feedbackService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

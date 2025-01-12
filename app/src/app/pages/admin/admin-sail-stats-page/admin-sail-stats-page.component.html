@@ -1,0 +1,281 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>analytics</mat-icon>
+    </div>
+    <mat-card-title
+      aria-level="1"
+      id="pageTitle"
+      role="heading"
+      tabindex="0"
+    >Sail Stats</mat-card-title>
+    <mat-card-subtitle
+      aria-level="2"
+      role="heading"
+      tabindex="0"
+    >Showing sail stats for year {{sailYear}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      (click)="get_previous_year()"
+      title="Click to show status for year {{sailYear - 1}}"
+    >Previous year {{sailYear - 1}}</button>
+    <button
+      mat-raised-button
+      *ngIf="show_next_year()"
+      (click)="get_next_year()"
+      title="Click to show status for year {{sailYear + 1}}"
+    >Next year {{sailYear + 1}}</button>
+  </mat-card-actions>
+  <mat-card-content>
+    <ng-container [ngTemplateOutlet]="userSailsTable"></ng-container>
+    <ng-container [ngTemplateOutlet]="cancelledSailsTable"></ng-container>
+    <ng-container [ngTemplateOutlet]="boatSailsTable"></ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #userSailsTable>
+  <app-material-table
+    tableTitle="Sails per sailor"
+    (filterHandler)="filterUserSailsHandler($event)"
+    [dataSource]="userSailsDataSource"
+    [defaultFilterInfo]="userSailsFilterInfo"
+    [displayedColumns]="userSailsDisplayedColumns"
+    [loading]="loading"
+    [paginatedData]="userSailsPaginatedData"
+    paginationLabel="Select page of user sails"
+  >
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    >
+    </ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="name"
+      matSortDirection="asc"
+      tableColumns
+    >
+      <ng-container matColumnDef="name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Sailor's name </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Email </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sails">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+          arrowPosition="before"
+          class="th-right"
+        > # of sails </th>
+        <td
+          mat-cell
+          tabindex="0"
+          class="td-right"
+          *matCellDef="let element"
+        > {{element.sails}}</td>
+      </ng-container>
+
+    </ng-container>
+  </app-material-table>
+</ng-template>
+
+<ng-template #cancelledSailsTable>
+  <app-material-table
+    tableTitle="Cancelled sails"
+    (filterHandler)="filterCancelledSailsHandler($event)"
+    [dataSource]="cancelledSailsDataSource"
+    [defaultFilterInfo]="cancelledSailsFilterInfo"
+    [displayedColumns]="cancelledSailsDisplayedColumns"
+    [loading]="loading"
+    [paginatedData]="cancelledSailsPaginatedData"
+    paginationLabel="Select page of cancelled sails"
+  >
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    >
+    </ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="name"
+      matSortDirection="asc"
+      tableColumns
+    >
+      <ng-container matColumnDef="name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Sail name </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="start_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Start </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.start_at | humanDate: true}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="end_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > End </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.end_at | humanDate: true}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cancelled_at">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Cancelled on </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.cancelled_at | humanDate: true}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cancelled_by">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Cancelled by </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.cancelled_by}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cancel_reason">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+          arrowPosition="before"
+        > Cancel reason </th>
+        <td
+          mat-cell
+          tabindex="0"
+          class="td-right"
+          *matCellDef="let element"
+        > {{element.cancel_reason}}</td>
+      </ng-container>
+
+    </ng-container>
+  </app-material-table>
+</ng-template>
+
+<ng-template #boatSailsTable>
+  <app-material-table
+    tableTitle="Sails per boat"
+    (filterHandler)="filterBoatSailsHandler($event)"
+    [dataSource]="boatSailsDataSource"
+    [defaultFilterInfo]="boatSailsFilterInfo"
+    [displayedColumns]="boatSailsDisplayedColumns"
+    [loading]="loading"
+    [paginatedData]="boatSailsPaginatedData"
+    paginationLabel="Select page of boat sails"
+  >
+    <ng-container
+      [ngTemplateOutlet]="TABLE_FILTERS"
+      tableFilters
+    >
+    </ng-container>
+
+    <ng-container
+      matSort
+      matSortActive="boat_name"
+      matSortDirection="asc"
+      tableColumns
+    >
+      <ng-container matColumnDef="boat_name">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+        > Boat </th>
+        <td
+          mat-cell
+          tabindex="0"
+          *matCellDef="let element"
+        > {{element.boat_name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sails">
+        <th
+          *matHeaderCellDef
+          [disabled]="loading"
+          mat-header-cell
+          mat-sort-header
+          arrowPosition="before"
+        > # of sails </th>
+        <td
+          mat-cell
+          tabindex="0"
+          class="td-right"
+          *matCellDef="let element"
+        > {{element.sails}}</td>
+      </ng-container>
+
+    </ng-container>
+  </app-material-table>
+</ng-template>
+
+<ng-template #TABLE_FILTERS>
+</ng-template>

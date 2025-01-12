@@ -45,7 +45,7 @@ export class AdminPaymentViewPageComponent extends BasePageComponent implements 
     'created_at',
   ];
   public displayedColumnsMobile: string[] = ['product'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'created_at,ASC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'created_at,ASC' };
   public paginatedData: PaginatedSailPaymentClaim;
   public editPaymentRoute = (id: string) => `/${RootRoutes.ADMIN}/${SubRoutes.EDIT_ADMIN_PAYMENT}/${id}`;
 
@@ -105,7 +105,7 @@ export class AdminPaymentViewPageComponent extends BasePageComponent implements 
       await firstValueFrom(this.paymentCaptureService.deletePayment(this.paymentId))
         .finally(() => this.finishLoading());
       this.dispatchMessage(`Deleted payment: ${this.paymentId}`);
-      this.router.navigate([`/${RootRoutes.ADMIN}/${SubRoutes.ADMIN_PAYMENT_DASHBOARD}`],{ replaceUrl: true });
+      this.router.navigate([`/${RootRoutes.ADMIN}/${SubRoutes.ADMIN_PAYMENT_DASHBOARD}`], { replaceUrl: true });
     } catch (error) {
       this.dispatchError(`Failed to delete payment: ${error.message}`);
       throw error;
@@ -170,18 +170,20 @@ export class AdminPaymentViewPageComponent extends BasePageComponent implements 
     const query: any = { $and: [], 'product_purchase.payment_capture_id': this.paymentId };
 
     if (search) {
-      query.$and.push({ $or: [
-        { 'product_purchase.product_name': { $contL: search } },
-        { 'sail.name': { $contL: search } },
-        Number.isInteger(+search) ? { 'sail.entity_number': +search } : undefined,
-        { guest_name: { $contL: search } },
-        { guest_email: { $contL: search } },
-      ].filter(Boolean) });
+      query.$and.push({
+        $or: [
+          { 'product_purchase.product_name': { $contL: search } },
+          { 'sail.name': { $contL: search } },
+          Number.isInteger(+search) ? { 'sail.entity_number': +search } : undefined,
+          { guest_name: { $contL: search } },
+          { guest_email: { $contL: search } },
+        ].filter(Boolean)
+      });
     }
 
     this.startLoading();
 
-    const fetcher =  this.sailPaymentClaimService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.sailPaymentClaimService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 

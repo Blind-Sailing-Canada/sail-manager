@@ -12,6 +12,7 @@ import { Store } from '@ngrx/store';
 import {
   adminPaymentDashboardRoute,
   adminSailFeedbackRoute,
+  adminSailStatsRoute,
   editProfilePrivilegesRoute, FullRoutes, listSailCategoriesRoute, missingSailPaymentsRoute, viewGroupMembersRoute,
 } from '../../../routes/routes';
 import { ProfileService } from '../../../services/profile.service';
@@ -36,12 +37,13 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   public adminPaymentDashboardRoute = adminPaymentDashboardRoute;
   public adminSailFeedbackRoute = adminSailFeedbackRoute;
+  public adminSailStatsRoute = adminSailStatsRoute;
   public createUserDialogRef: MatDialogRef<CreateUserDialogComponent>;
   public dataSource = new MatTableDataSource<Profile>([]);
   public dbQueryRoute = FullRoutes.SAVED_QUERY;
   public displayedColumns: string[] = ['photo', 'name', 'roles', 'created_at', 'last_login', 'status', 'action'];
   public displayedColumnsMobile: string[] = ['name'];
-  public filterInfo: FilterInfo = { search: '', pagination: DEFAULT_PAGINATION, sort: 'name,ASC' };
+  public filterInfo: FilterInfo = { search: '', pagination: { ...DEFAULT_PAGINATION }, sort: 'name,ASC' };
   public listSailCategoriesRoute = listSailCategoriesRoute;
   public missingSailPaymentsRoute = missingSailPaymentsRoute;
   public paginatedData: PaginatedProfile;
@@ -77,7 +79,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
   public fetchPendingProfiles(): void {
     this.profileService
-      .fetchAllPaginated({ status:ProfileStatus.PendingApproval })
+      .fetchAllPaginated({ status: ProfileStatus.PendingApproval })
       .subscribe((result) => {
         this.pendingApproval = result.data;
         this.pendingApproval.sort((a, b) => a.name.localeCompare(b.name));
@@ -118,12 +120,14 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
     const query = { $and: [] };
 
     if (search) {
-      query.$and.push({ $or: [
-        { name: { $contL: search } },
-        { email: { $contL: search } },
-        { phone: { $contL: search } },
-        { bio: { $contL: search } },
-      ] });
+      query.$and.push({
+        $or: [
+          { name: { $contL: search } },
+          { email: { $contL: search } },
+          { phone: { $contL: search } },
+          { bio: { $contL: search } },
+        ]
+      });
     }
 
     if (this.profileStatus !== 'ANY') {
@@ -132,7 +136,7 @@ export class AdminDashboardPageComponent extends BasePageComponent implements On
 
     this.startLoading();
 
-    const fetcher =  this.profileService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
+    const fetcher = this.profileService.fetchAllPaginated(query, pagination.pageIndex + 1, pagination.pageSize, sort);
     this.paginatedData = await firstValueFrom(fetcher).finally(() => this.finishLoading());
     this.dataSource.data = this.paginatedData.data;
 
