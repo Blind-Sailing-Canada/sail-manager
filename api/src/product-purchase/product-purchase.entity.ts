@@ -19,90 +19,93 @@ export class ProductPurchaseEntity extends BaseModelEntity implements ProductPur
     eager: false,
     nullable: true,
   })
-    credited_by: Profile;
+  credited_by: Profile;
 
   @Column({
     nullable: true,
     default: null,
     type: 'uuid'
   })
-    credited_by_id: string;
+  credited_by_id: string;
 
   @Column({ default: false, })
-    is_exhausted: boolean;
+  is_exhausted: boolean;
 
   @Column({ default: false, })
-    is_unlimited_sails: boolean;
+  is_unlimited_sails: boolean;
 
   @Column({ default: false })
-    is_manual_credit: boolean;
+  is_manual_credit: boolean;
 
   @Column({
     length: 500,
     nullable: true
   })
-    note: string;
+  note: string;
 
   @Column({
     type: 'int',
     default: 0
   })
-    number_of_sails_included: number;
+  number_of_sails_included: number;
 
   @Column({
     type: 'int',
     default: 0
   })
-    number_of_sails_used: number;
+  number_of_sails_used: number;
 
   @Column({
     type: 'int',
     default: 0
   })
-    number_of_guest_sails_included: number;
+  number_of_guest_sails_included: number;
 
   @Column({
     type: 'int',
     default: 0
   })
-    number_of_guest_sails_used: number;
+  number_of_guest_sails_used: number;
 
   @OneToOne(() => PaymentCaptureEntity)
-    payment_capture: PaymentCapture;
+  payment_capture: PaymentCapture;
 
-  @Column({ type: 'uuid', })
-    payment_capture_id: string;
+  @Column({
+    type: 'uuid',
+    unique: true,
+  })
+  payment_capture_id: string;
 
   @Column({ length: 150 })
-    product_name: string;
+  product_name: string;
 
   @Column({
     enum: ProductType,
     type: 'enum',
     nullable: false,
   })
-    product_type: ProductType;
+  product_type: ProductType;
 
   @ManyToOne(() => ProfileEntity, {
     eager: false,
     nullable: true
   })
-    profile: Profile;
+  profile: Profile;
 
   @Column({
     type: 'uuid',
     nullable: true,
   })
-    profile_id: string;
+  profile_id: string;
 
   @Column({
     type: 'timestamptz',
     nullable: true,
     default: null,
   })
-    valid_until: Date;
+  valid_until: Date;
 
   @DeleteDateColumn()
-    deleted_at?: Date;
+  deleted_at?: Date;
 
 }
