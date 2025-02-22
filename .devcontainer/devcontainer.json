@@ -12,16 +12,5 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"dbaeumer.vscode-eslint",
-		"aeschli.vscode-css-formatter",
-		"angular.ng-template",
-		"dbaeumer.vscode-eslint",
-		"eamodio.gitlens",
-		"mike-co.import-sorter",
-		"mongodb.mongodb-vscode",
-		"ms-azuretools.vscode-docker",
-		"ms-vscode.vscode-typescript-tslint-plugin",
-		"orta.vscode-jest",
-		"tyriar.sort-lines"
 	],
 }

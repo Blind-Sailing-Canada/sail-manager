@@ -28,7 +28,7 @@ services:
       - 8081:8081
 
   db:
-    image: postgres:13.5-alpine
+    image: postgres:14.13-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: password
