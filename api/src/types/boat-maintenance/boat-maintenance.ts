@@ -22,5 +22,7 @@ export interface BoatMaintenance extends Base {
   sail: Sail;
   sail_id: string;
   status: BoatMaintenanceStatus;
+  maintenance_sail_id: string;
+  maintenance_sail: Sail;
   pictures: Media[];
 }

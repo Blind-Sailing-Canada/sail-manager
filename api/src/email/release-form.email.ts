@@ -23,7 +23,7 @@ export class ReleaseFormEmail {
           <body>
             <p>Hello ${person_name},</p>
             <p>You are scheduled to go sailing on ${toLocalDate(sail.start_at)}.</p>
-            <p>Before you can go on the sail you must sign a relase form.</p>
+            <p>Before you can go on the sail you must sign a release form.</p>
             <a href="${RELEASE_FORM_URL}">Click here to go to the release form.</a>
           </body>
         </html>

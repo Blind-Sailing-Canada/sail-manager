@@ -477,7 +477,7 @@ export class GoogleCalendarService {
             <p><label>Attendants: </label> ${attendantNames.join(', ') || '-'}</p>
             <div><a href="${DOMAIN}/socials/view/${social.id}">View social</a></div>
             <br/>
-            <p>To cancel your reservation for this soicial event, you must go to the
+            <p>To cancel your reservation for this social event, you must go to the
             <a href="${DOMAIN}/socials/view/${social.id}">social page</a> and click the 'Leave' button.</p>
             <p>Cancelling/declining this calendar event will not remove you from the social event.</p>
           </body>

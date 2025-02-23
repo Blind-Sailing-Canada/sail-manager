@@ -182,6 +182,22 @@
         >{{sail.category}}</td>
       </tr>
       <tr
+        *ngIf="sail?.maintenance_id"
+        aria-label="Boat Maintenance"
+        title="Boat maintenance"
+        tabindex="0"
+        role="listitem"
+      >
+        <th
+          aria-hidden="true"
+          tabindex="-1"
+        >Boat Maintenance</th>
+        <td
+          aria-hidden="true"
+          tabindex="-1"
+        ><a [routerLink]="viewBoatMaintenanceLink">View boat maintenance</a></td>
+      </tr>
+      <tr
         aria-label="Sail start"
         title="This sail starts {{sail.start_at | humanDateWithTime}}"
         tabindex="0"

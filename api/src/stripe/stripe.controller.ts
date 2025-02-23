@@ -49,7 +49,7 @@ export class StripeController {
 
     switch (event.type) {
       case 'checkout.session.completed':
-        captureEntity = await this.storeSuccesfulCheckoutSession(session.id);
+        captureEntity = await this.storeSuccessfulCheckoutSession(session.id);
         break;
       default:
         break;
@@ -64,15 +64,17 @@ export class StripeController {
     return res.send();
   }
 
-  private async storeSuccesfulCheckoutSession(sessionId: string) {
+  private async storeSuccessfulCheckoutSession(sessionId: string) {
     const expandedSession = await stripe.checkout.sessions
       .retrieve(
         sessionId,
-        { expand: [
-          'line_items',
-          'line_items.data.price.product',
-          'payment_link',
-        ] }
+        {
+          expand: [
+            'line_items',
+            'line_items.data.price.product',
+            'payment_link',
+          ]
+        }
       );
 
     const paymentMetadata = expandedSession.metadata;

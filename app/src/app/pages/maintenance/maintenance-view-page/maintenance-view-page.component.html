@@ -37,6 +37,12 @@
     mat-raised-button
     [routerLink]="resolveMaintenanceLink"
   >Resolve</a>
+  <a
+    *ngIf="shouldEnableCreateSailButton"
+    mat-raised-button
+    [routerLink]="createMaintenanceSailLink"
+    [queryParams]="{'maintenance_id': boat_maintenance_id}"
+  >Create maintenance sail</a>
 </ng-template>
 
 <ng-template #TemplateRequest>
@@ -63,7 +69,9 @@
         role="listitem"
         tabindex="0"
         attr.aria-label="Requested on: {{maintenance.created_at | humanDateWithTime}}"
-      >{{maintenance.created_at| humanDateWithTime: true}}</td>
+      >
+        {{maintenance.created_at| humanDateWithTime: true}}
+      </td>
     </tr>
     <tr>
       <th
@@ -89,7 +97,32 @@
         role="listitem"
         tabindex="0"
         attr.aria-label="Request status: {{maintenance?.status}}"
-      >{{maintenance?.status}}</td>
+      >{{maintenance?.status}}
+      </td>
+    </tr>
+    <tr *ngIf="maintenance?.sail">
+      <th
+        tabindex="-1"
+        aria-hidden="true"
+      >Reporting Sail</th>
+      <td
+        role="listitem"
+        tabindex="0"
+        attr.aria-label="reporting sail: {{maintenance?.sail?.name}}"
+      ><a [routerLink]="viewReportingSailLink">{{maintenance?.sail?.entity_number}}
+          {{maintenance?.sail?.name}}</a></td>
+    </tr>
+    <tr *ngIf="maintenance?.maintenance_sail">
+      <th
+        tabindex="-1"
+        aria-hidden="true"
+      >Maintenance Sail</th>
+      <td
+        role="listitem"
+        tabindex="0"
+        attr.aria-label="maintenance sail: {{maintenance?.maintenance_sail.name}}"
+      ><a [routerLink]="viewMaintenanceSailLink">{{maintenance?.maintenance_sail.entity_number}}
+          {{maintenance?.maintenance_sail.name}}</a></td>
     </tr>
     <tr
       class="table-spacer"
@@ -151,7 +184,9 @@
           role="listitem"
           tabindex="0"
           attr.aria-label="Serviced on: {{maintenance.serviced_at | humanDateWithTime}}"
-        >{{maintenance.serviced_at | humanDateWithTime:true}}</td>
+        >
+          {{maintenance.serviced_at | humanDateWithTime:true}}
+        </td>
       </tr>
       <tr
         class="table-spacer"

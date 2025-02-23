@@ -13,11 +13,11 @@ export class FirebaseAdminService {
   private readonly logger = new Logger(FirebaseAdminService.name);
 
   constructor() {
-    const adminBase64Confirg = Buffer.from(process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_BASE64, 'base64');
-    const adminConfig = JSON.parse(adminBase64Confirg.toString('utf-8'));
+    const adminBase64Config = Buffer.from(process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_BASE64, 'base64');
+    const adminConfig = JSON.parse(adminBase64Config.toString('utf-8'));
 
-    const fireBaseBase64Confirg = Buffer.from(process.env.FIREBASE_CONFIG_BASE64, 'base64');
-    const fireBaseConfig = JSON.parse(fireBaseBase64Confirg.toString('utf-8'));
+    const fireBaseBase64Config = Buffer.from(process.env.FIREBASE_CONFIG_BASE64, 'base64');
+    const fireBaseConfig = JSON.parse(fireBaseBase64Config.toString('utf-8'));
 
     this.firebaseAdmin = admin.initializeApp({
       credential: admin.credential.cert(adminConfig),
@@ -135,7 +135,7 @@ export class FirebaseAdminService {
     const lastSlash = destination.lastIndexOf('/');
     const isProd = process.env.NODE_ENV === 'prod';
 
-    const prefix = `${isProd? '' : '/test'}${destination.substring(0, lastSlash).replace(/^cdn\/files\//, '')}/`;
+    const prefix = `${isProd ? '' : '/test'}${destination.substring(0, lastSlash).replace(/^cdn\/files\//, '')}/`;
 
     const storage: admin.storage.Storage = this.firebaseAdmin.storage();
     const bucket = storage.bucket();

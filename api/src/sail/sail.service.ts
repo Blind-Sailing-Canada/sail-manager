@@ -28,7 +28,8 @@ export class SailService extends BaseService<SailEntity> {
       where,
       relations: [
         'checklists',
-        'comments'
+        'comments',
+        'maintenance',
       ],
     });
   }

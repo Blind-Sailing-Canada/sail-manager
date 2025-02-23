@@ -10,7 +10,7 @@ import { ReleaseFormEmail } from '../email/release-form.email';
 import { SailEntity } from '../sail/sail.entity';
 
 @Processor('guest-release-form')
-export class SailManifestGuestRelaseFormProcessor extends BaseQueueProcessor {
+export class SailManifestGuestReleaseFormProcessor extends BaseQueueProcessor {
 
   constructor(
     private releaseFormEmail: ReleaseFormEmail,

@@ -16,5 +16,7 @@ module.exports = {
     'timestamptz',
     'typeorm',
     'uuidv',
+    'titleize',
+    'unflatten',
   ],
 };

@@ -23,7 +23,7 @@ export class SailRequestEmail {
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
       subject: `COMPANY_NAME_SHORT_HEADER: new sail request #${sail_request.entity_number}`,
-      content:  `
+      content: `
         <html>
           <body>
             <h3>Sail request details</h3>
@@ -38,7 +38,7 @@ export class SailRequestEmail {
     return emailInfo;
   }
 
-  async unschedledRequests(sailRequests: SailRequest[]): Promise<EmailInfo> {
+  async unscheduledRequests(sailRequests: SailRequest[]): Promise<EmailInfo> {
     if (!sailRequests?.length) {
       return;
     }
@@ -52,7 +52,7 @@ export class SailRequestEmail {
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
       subject: `COMPANY_NAME_SHORT_HEADER: sail requests as of ${toLocalDate(new Date())}`,
-      content:  `
+      content: `
         <html>
           <body>
             <h3>Here is a list of sail requests older than 2 days and which have not been scheduled</h3>
@@ -82,7 +82,7 @@ export class SailRequestEmail {
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
       subject: `COMPANY_NAME_SHORT_HEADER: sail request #${sail_request.entity_number} was cancelled`,
-      content:  `
+      content: `
         <html>
           <body>
             <p>Sail request ${sail_request.entity_number} was cancelled.</p>
@@ -113,7 +113,7 @@ export class SailRequestEmail {
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
       subject: `COMPANY_NAME_SHORT_HEADER: new interest in sail request #${sail_requestInterest.sail_request.entity_number}`,
-      content:  `
+      content: `
         <html>
           <body>
             <p>

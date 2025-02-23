@@ -50,8 +50,8 @@ export class AuthController {
 
   @Get('firebase-public-config')
   getFirebasePublicConfig() {
-    const base64Confirg = Buffer.from(process.env.FIREBASE_CONFIG_BASE64, 'base64');
-    const config = JSON.parse(base64Confirg.toString('utf-8'));
+    const base64Config = Buffer.from(process.env.FIREBASE_CONFIG_BASE64, 'base64');
+    const config = JSON.parse(base64Config.toString('utf-8'));
 
     return Promise.resolve(config);
   }
@@ -123,7 +123,7 @@ export class AuthController {
   async login(@User() user: JwtObject): Promise<ProfileEntity> {
     const profile_id = user.profile_id;
 
-    if  (!profile_id) {
+    if (!profile_id) {
       return null;
     }
 
@@ -141,7 +141,7 @@ export class AuthController {
     const user_id = user.user_id;
 
     const user_entity = await UserEntity.findOne({
-      where: { id: user_id } ,
+      where: { id: user_id },
       relations: ['profile']
     });
 

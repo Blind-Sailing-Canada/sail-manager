@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,  Get,  Param,  Patch,  Post,  Query, UnauthorizedException, UseGuards
+  Controller, Get, Param, Patch, Post, Query, UnauthorizedException, UseGuards
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -30,17 +30,20 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { SailUpdateJob } from '../types/sail/sail-update-job';
 import { PaginatedSail } from '../types/sail/paginated-sail';
-import  { unflatten } from 'flat';
+import { unflatten } from 'flat';
 import { UserAccessGuard } from '../guards/user-access.guard';
 import { ProfileRole } from '../types/profile/profile-role';
+import { BoatMaintenanceEntity } from '../boat-maintenance/boat-maintenance.entity';
 
 @Crud({
   model: { type: SailEntity },
-  params: { id: {
-    field: 'id',
-    type: 'uuid',
-    primary: true,
-  } },
+  params: {
+    id: {
+      field: 'id',
+      type: 'uuid',
+      primary: true,
+    }
+  },
   query: {
     alwaysPaginate: true,
     exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
@@ -50,6 +53,7 @@ import { ProfileRole } from '../types/profile/profile-role';
       'boat.instructions': { eager: true },
       cancelled_by: { eager: true },
       checklists: { eager: true },
+      maintenance: { eager: true },
       manifest: { eager: true },
       'manifest.profile': { eager: true },
       'manifest.guest_of': { eager: true },
@@ -69,10 +73,12 @@ import { ProfileRole } from '../types/profile/profile-role';
     },
   },
   routes: {
-    createOneBase: { decorators: [
-      UserAccess(UserAccessFields.CreateSail),
-      UseGuards(UserAccessGuard),
-    ] },
+    createOneBase: {
+      decorators: [
+        UserAccess(UserAccessFields.CreateSail),
+        UseGuards(UserAccessGuard),
+      ]
+    },
     only: [
       'createOneBase',
       'getOneBase',
@@ -95,10 +101,16 @@ export class SailController {
 
   @Override()
   @UserAccess(UserAccessFields.CreateSail)
-  createOne(@ParsedRequest() req: CrudRequest, @Body() dto: Sail, @User() user: JwtObject) {
+  async createOne(@ParsedRequest() req: CrudRequest, @Body() dto: Sail, @User() user: JwtObject) {
     dto.created_by_id = user.profile_id;
 
-    return this.base.createOneBase(req, dto);
+    const sail = await this.base.createOneBase(req, dto);
+
+    if (sail.maintenance_id) {
+      await BoatMaintenanceEntity.update({ id: sail.maintenance_id }, { maintenance_sail_id: sail.id });
+    }
+
+    return sail;
   }
 
   @Get('/number/:number')
@@ -142,7 +154,7 @@ export class SailController {
   }
 
   @Get('/available')
-  async availableSails(@User() user: JwtObject ) {
+  async availableSails(@User() user: JwtObject) {
     const futureSails = await SailEntity.find({
       relations: [
         'boat',
@@ -218,10 +230,10 @@ export class SailController {
       const result = await transactionalEntityManager
         .update(
           SailRequestEntity,
-          { id: sailInfo.sail_request_id },{
-            sail_id: sail.id,
-            status: SailRequestStatus.Scheduled,
-          });
+          { id: sailInfo.sail_request_id }, {
+          sail_id: sail.id,
+          status: SailRequestStatus.Scheduled,
+        });
 
       if (result.affected !== 1) {
         throw new Error(`SailRequest(${sailInfo.sail_request_id}) was not updated.`);
@@ -239,7 +251,7 @@ export class SailController {
       await transactionalEntityManager.save(manifest);
 
       return sail.id;
-    } );
+    });
 
     return this.service.getFullyResolvedSail(createdSailId);
   }
@@ -328,7 +340,7 @@ export class SailController {
     let sails = [];
 
     if (sail_ids.length) {
-      sails =  await SailEntity
+      sails = await SailEntity
         .find({
           order: unflatten(order),
           relations: ['boat'],
@@ -341,7 +353,7 @@ export class SailController {
       count: sail_ids.length,
       data: sails,
       page: pageIndex + 1,
-      pageCount: Math.ceil(total/perPage),
+      pageCount: Math.ceil(total / perPage),
       total,
     };
   }

@@ -52,6 +52,8 @@ import { toLocalDate } from '../utils/date.util';
       resolved_by: { eager: true },
       comments: { eager: true },
       pictures: { eager: true },
+      sail: { eager: true },
+      maintenance_sail: { eager: true },
       'pictures.posted_by': { eager: true },
       'comments.author': {
         eager: true,

@@ -19,8 +19,10 @@ import { UserAccessFields } from '../../../../../../api/src/types/user-access/us
 import { ICDNState } from '../../../models/cdn-state.interface';
 
 import {
+  createSailRoute,
   editMaintenanceRoute,
   resolveMaintenanceRoute,
+  viewSailRoute,
 } from '../../../routes/routes';
 import {
   deleteBoatMaintenanceComment,
@@ -31,6 +33,7 @@ import {
 import { CDN_ACTION_STATE, deleteFile, uploadBoatMaintenancePicture } from '../../../store/actions/cdn.actions';
 import { STORE_SLICES } from '../../../store/store';
 import { BasePageComponent } from '../../base-page/base-page.component';
+import { ProfileRole } from '../../../../../../api/src/types/profile/profile-role';
 
 @Component({
   selector: 'app-maintenance-view-page',
@@ -143,10 +146,24 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
       }
 
     });
+
+    this.fetchBoatMaintenance(this.boat_maintenance_id);
   }
 
   public get editMaintenanceLink(): string {
     return editMaintenanceRoute(this.boat_maintenance_id);
+  }
+
+  public get createMaintenanceSailLink(): string {
+    return createSailRoute.toString();
+  }
+
+  public get viewReportingSailLink(): string {
+    return viewSailRoute(this.maintenance.sail_id);
+  }
+
+  public get viewMaintenanceSailLink(): string {
+    return viewSailRoute(this.maintenance.maintenance_sail_id);
   }
 
   public get resolveMaintenanceLink(): string {
@@ -190,6 +207,10 @@ export class MaintenanceViewPageComponent extends BasePageComponent implements O
 
   public get shouldEnableResolveButton(): boolean {
     return !!this.user.access[UserAccessFields.ResolveMaintenanceRequest];
+  }
+
+  public get shouldEnableCreateSailButton(): boolean {
+    return !this.maintenance.maintenance_sail_id && this.user.roles.includes(ProfileRole.FleetManager);
   }
 
   public deleteCDNFile(formArrayIndex: number): void {

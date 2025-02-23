@@ -1,4 +1,4 @@
-import { titlize } from '../../utils/strings';
+import { titleize } from '../../utils/strings';
 
 export enum ProductType {
   GUEST_SAIL = 'guest_sail',
@@ -12,9 +12,9 @@ export enum ProductType {
 export const product_types = Object.values(ProductType).map(product_type => product_type.toString());
 export const product_names = product_types
   .map(product_type => product_type.replace(/_/g, ' '))
-  .map(product_name => titlize(product_name));
+  .map(product_name => titleize(product_name));
 
-export const  product_type_name: Record<string, string> = Object.values(ProductType).reduce((red, product_type) => {
-  red[product_type] = titlize(product_type.replace(/_/g, ' '));
+export const product_type_name: Record<string, string> = Object.values(ProductType).reduce((red, product_type) => {
+  red[product_type] = titleize(product_type.replace(/_/g, ' '));
   return red;
 }, {});

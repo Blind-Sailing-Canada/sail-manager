@@ -19,6 +19,14 @@
       You are creating a sail from a sail request. Description and sailors from the sail request will be copied over
       when saved.
     </mat-card-subtitle>
+    <mat-card-subtitle
+      *ngIf="isMaintenanceSail"
+      aria-level="2"
+      role="heading"
+      tabindex="0"
+    >
+      You are creating a sail for a boat maintenance {{maintenance_id}}: {{maintenance?.request_details}}.
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
     <button

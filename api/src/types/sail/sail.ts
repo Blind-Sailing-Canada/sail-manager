@@ -8,6 +8,7 @@ import { SailRequest } from '../sail-request/sail-request';
 import { Comment } from '../comment/comment';
 import { Media } from '../media/media';
 import { CreatedByBase } from '../base/created-by-base';
+import { BoatMaintenance } from '../boat-maintenance/boat-maintenance';
 
 export interface Sail extends CreatedByBase {
   boat_id: string;
@@ -28,6 +29,8 @@ export interface Sail extends CreatedByBase {
   feedback: SailFeedback[];
   is_payment_free: boolean;
   is_private: boolean;
+  maintenance_id: string;
+  maintenance: BoatMaintenance;
   manifest: SailManifest[];
   max_occupancy: number;
   name: string;

@@ -4,7 +4,8 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany
+  OneToMany,
+  OneToOne
 } from 'typeorm';
 import { BaseModelEntity } from '../base/base.entity';
 import { BoatEntity } from '../boat/boat.entity';
@@ -23,32 +24,32 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
     nullable: true,
     eager: true,
   })
-    comments: CommentEntity[];
+  comments: CommentEntity[];
 
   @Column({
     default: BoatMaintenanceEntity.name,
     nullable: false,
   })
-    entity_type: string;
+  entity_type: string;
 
   @Column()
-    request_details: string;
+  request_details: string;
 
   @Column({
     nullable: true,
     default: null,
   })
-    service_details: string;
+  service_details: string;
 
   @Column({
     nullable: true,
     default: null,
     type: 'timestamptz',
   })
-    serviced_at: Date;
+  serviced_at: Date;
 
   @Column({ type: 'uuid' })
-    requested_by_id: string;
+  requested_by_id: string;
 
   @Column(
     {
@@ -56,7 +57,7 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
       default: null,
     }
   )
-    resolution_details: string;
+  resolution_details: string;
 
   @Column(
     {
@@ -65,7 +66,7 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
       type: 'uuid'
     }
   )
-    resolved_by_id: string;
+  resolved_by_id: string;
 
   @Column({
     default: BoatMaintenanceStatus.New,
@@ -74,10 +75,10 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
     nullable: false,
   })
   @Index('boat_maintenance_status')
-    status: BoatMaintenanceStatus;
+  status: BoatMaintenanceStatus;
 
   @Column({ type: 'uuid' })
-    boat_id: string;
+  boat_id: string;
 
   @Column(
     {
@@ -86,7 +87,7 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
       type: 'uuid'
     }
   )
-    sail_id: string;
+  sail_id: string;
 
   @ManyToOne(() => SailEntity, {
     nullable: true,
@@ -96,34 +97,50 @@ export class BoatMaintenanceEntity extends BaseModelEntity implements BoatMainte
     name: 'sail_id',
     referencedColumnName: 'id',
   })
-    sail: SailEntity;
+  sail: SailEntity;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
   @JoinColumn({
     name: 'requested_by_id',
     referencedColumnName: 'id',
   })
-    requested_by: ProfileEntity;
+  requested_by: ProfileEntity;
 
   @ManyToOne(() => BoatEntity, { eager: true })
   @JoinColumn({
     name: 'boat_id',
     referencedColumnName: 'id',
   })
-    boat: BoatEntity;
+  boat: BoatEntity;
 
   @ManyToOne(() => ProfileEntity, { eager: true })
   @JoinColumn({
     name: 'resolved_by_id',
     referencedColumnName: 'id',
   })
-    resolved_by: Profile;
+  resolved_by: Profile;
 
   @OneToMany(() => MediaEntity, (picture) => picture.boatMaintenance, {
     createForeignKeyConstraints: false,
     nullable: true,
     eager: true,
   })
-    pictures: MediaEntity[];
+  pictures: MediaEntity[];
 
+  @Column(
+    {
+      nullable: true,
+      default: null,
+      type: 'uuid'
+    }
+  )
+  @Index()
+  maintenance_sail_id: string;
+
+  @OneToOne(() => SailEntity, sail => sail.maintenance, { eager: false, nullable: true })
+  @JoinColumn({
+    name: 'maintenance_sail_id',
+    referencedColumnName: 'id',
+  })
+  maintenance_sail: SailEntity;
 }

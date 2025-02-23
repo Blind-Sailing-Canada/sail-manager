@@ -48,6 +48,7 @@ import { Profile } from '../../../../../../api/src/types/profile/profile';
 import { SailCategory } from '../../../../../../api/src/types/sail/sail-category';
 import { fetchSailCategories } from '../../../store/actions/sail-category.actions';
 import { BoatStatus } from '../../../../../../api/src/types/boat/boat-status';
+import { BoatMaintenance } from '../../../../../../api/src/types/boat-maintenance/boat-maintenance';
 
 @Component({
   selector: 'app-sail-edit-page',
@@ -63,10 +64,13 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   public sailEndDateTimeForm: UntypedFormGroup;
   public sailForm: UntypedFormGroup;
   public sail_id: string;
+  public sail: Sail;
   public sail_request_id: string;
   public sailStartDateTimeForm: UntypedFormGroup;
   public sailCategories: SailCategory[] = [];
   public totalFormSteps = 12;
+  public maintenance_name: string;
+  public maintenance: BoatMaintenance;
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -87,11 +91,13 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   ngOnInit() {
     this.sail_request_id = this.route.snapshot.params.sail_request_id;
     this.sail_id = this.route.snapshot.params.id;
+
+    this.maintenance_name = this.route.snapshot.queryParams.maintenance_name;
     this.creatingNewSail = !this.sail_id;
 
-    this.dispatchAction(fetchSailCategories({ notify: false }));
-
     this.buildForm();
+
+    this.dispatchAction(fetchSailCategories({ notify: false }));
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
 
@@ -120,10 +126,22 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
         }
 
         this.sail_id = sail.id;
+        this.sail = sail;
         this.updateForm(sail);
 
       }
     });
+
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.BOAT_MAINTENANCES, (maintenances => {
+      this.maintenance = maintenances[this.maintenance_id];
+      if (this.maintenance) {
+        this.sailForm.controls.boat_id.setValue(this.maintenance.boat_id);
+      }
+    }));
+
+    if (this.maintenance_id) {
+      this.fetchBoatMaintenance(this.maintenance_id);
+    }
 
   }
 
@@ -144,6 +162,14 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.sailForm.controls.boat_id.setValue(id || null);
     this.sailForm.controls.boat_id.markAsDirty();
     this.sailForm.controls.boat_id.markAsTouched();
+  }
+
+  public get isMaintenanceSail(): boolean {
+    return !!this.maintenance_id || !!this.sail?.maintenance_id
+  }
+
+  public get maintenance_id(): string {
+    return this.route.snapshot.queryParams.maintenance_id || this.sail?.maintenance_id;
   }
 
   public get title(): string {
@@ -197,7 +223,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   public boatNotInServiceWarning(boatId?: string): string {
     const boat_id = boatId ?? this.sailForm.controls.boat_id.value;
     const boat = this.getBoat(boat_id);
-    return boat?.status !== BoatStatus.InService? 'Warning: this boat is not in service' : '';
+    return boat?.status !== BoatStatus.InService ? '(Warning: this boat is not in service)' : '';
   }
 
   public get skipperName(): string {
@@ -359,8 +385,11 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     const formValues = this.sailForm.getRawValue();
 
+    this.sailForm.controls.boat_id.setValue(this.maintenance?.boat_id || formValues.boat_id || sail.boat_id);
+
     this.sailForm.controls.category.setValue(sail.category);
     this.sailForm.controls.name.setValue(sail.name);
+    this.sailForm.controls.maintenance_id.setValue(sail.maintenance_id);
     this.sailForm.controls.description.setValue(sail.description);
     this.sailForm.controls.is_payment_free.setValue(sail.is_payment_free);
     this.sailForm.controls.is_private.setValue(sail.is_private);
@@ -385,8 +414,6 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
       month: end.getMonth(),
       year: end.getFullYear(),
     });
-
-    this.sailForm.controls.boat_id.setValue(formValues.boat_id || sail.boat_id);
 
     this.sailForm.markAsPristine();
   }
@@ -440,9 +467,10 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     });
 
     this.sailForm = this.fb.group({
-      category: this.fb.control(''),
-      is_payment_free: this.fb.control(false),
-      is_private: this.fb.control(false),
+      maintenance_id: this.fb.control(this.maintenance_id),
+      category: this.fb.control({ value: this.isMaintenanceSail ? 'Maintenance sail' : '', disabled: this.isMaintenanceSail }),
+      is_payment_free: this.fb.control({ value: this.isMaintenanceSail, disabled: this.isMaintenanceSail }),
+      is_private: this.fb.control(this.isMaintenanceSail),
       name: new UntypedFormControl('', [
         (control) => {
           const name = control.value.trim();

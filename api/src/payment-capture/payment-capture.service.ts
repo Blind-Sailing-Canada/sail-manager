@@ -18,7 +18,7 @@ export class PaymentCaptureService extends BaseService<PaymentCaptureEntity> {
   public dataSource: DataSource;
 
   constructor(
-  @InjectDataSource() dataSource: DataSource,
+    @InjectDataSource() dataSource: DataSource,
     @InjectRepository(PaymentCaptureEntity) repo: Repository<PaymentCaptureEntity>) {
     super(repo);
     this.dataSource = dataSource;
@@ -34,12 +34,12 @@ export class PaymentCaptureService extends BaseService<PaymentCaptureEntity> {
     return await this.repository.manager.transaction(async transactionalEntityManager => {
       let product: ProductPurchaseEntity;
 
-      switch(payment.payment_processor) {
+      switch (payment.payment_processor) {
         case 'stripe':
           product = this.getStripeProduct(payment);
           break;
         case 'manual':
-          product = this.getManulProduct(payment);
+          product = this.getManualProduct(payment);
           break;
       }
 
@@ -53,7 +53,7 @@ export class PaymentCaptureService extends BaseService<PaymentCaptureEntity> {
     });
   }
 
-  private getManulProduct(payment: PaymentCaptureEntity): ProductPurchaseEntity {
+  private getManualProduct(payment: PaymentCaptureEntity): ProductPurchaseEntity {
     const quantity = payment.product_quantity || 1;
     const data: ManualCredit = payment.data as ManualCredit;
 

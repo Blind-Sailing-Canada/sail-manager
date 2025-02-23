@@ -29,12 +29,14 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
   }
 
   async linkAllClaimsToProfile() {
-    const claims = await SailPaymentClaimEntity.find({ where: {
-      product_purchase_id: IsNull(),
-      deleted_at: IsNull(),
-    } });
+    const claims = await SailPaymentClaimEntity.find({
+      where: {
+        product_purchase_id: IsNull(),
+        deleted_at: IsNull(),
+      }
+    });
 
-    for(const claim of claims) {
+    for (const claim of claims) {
       try {
         if (claim.guest_email || claim.guest_name) {
           await this.claimGuestSail(claim);
@@ -78,7 +80,7 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
   private async claimMemberSail(claim: SailPaymentClaimEntity) {
     let product: ProductPurchaseEntity;
 
-    const expiringPoduct = await ProductPurchaseEntity
+    const expiringProduct = await ProductPurchaseEntity
       .getRepository()
       .createQueryBuilder()
       .where({
@@ -91,9 +93,9 @@ export class SailPaymentClaimService extends BaseService<SailPaymentClaimEntity>
       .cache(false)
       .getOne();
 
-    product = expiringPoduct;
+    product = expiringProduct;
 
-    if (!expiringPoduct) {
+    if (!expiringProduct) {
       const unlimitedProduct = await ProductPurchaseEntity
         .getRepository()
         .createQueryBuilder()

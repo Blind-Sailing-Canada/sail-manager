@@ -5,7 +5,7 @@ import { GoogleApiModule } from '../google-api/google-api.module';
 import { Module } from '@nestjs/common';
 import { SailManifestController } from './sail-manifest.controller';
 import { SailManifestEntity } from './sail-manifest.entity';
-import { SailManifestGuestRelaseFormProcessor } from './sail-manifest-guest-release-form.processor';
+import { SailManifestGuestReleaseFormProcessor } from './sail-manifest-guest-release-form.processor';
 import { SailManifestService } from './sail-manifest.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SailModule } from '../sail/sail.module';
@@ -23,7 +23,7 @@ import { SailModule } from '../sail/sail.module';
   controllers: [SailManifestController],
   providers: [
     SailManifestService,
-    SailManifestGuestRelaseFormProcessor
+    SailManifestGuestReleaseFormProcessor
   ],
 })
 export class SailManifestModule { }

@@ -14,7 +14,7 @@ export class ProfileEmail {
 
     const emailInfo: EmailInfo = {
       subject: `COMPANY_NAME_SHORT_HEADER: New profile (${profile.name}) is awaiting approval.`,
-      content:  `
+      content: `
         <html>
           <body>
             <h2>New profile ${profile.name} (${profile.email}) is awaiting approval.</h2>
@@ -35,7 +35,7 @@ export class ProfileEmail {
     const emailInfo: EmailInfo = {
       to: [profile.email],
       subject: 'COMPANY_NAME_SHORT_HEADER: your account has been approved.',
-      content:  `
+      content: `
         <html>
           <body>
             <p>Your profile ${profile.name} (${profile.email}) was approved.</p>
@@ -55,10 +55,10 @@ export class ProfileEmail {
 
     const emailInfo: EmailInfo = {
       subject: `COMPANY_NAME_SHORT_HEADER: profiles awaiting approvals as of ${toLocalDate(new Date())}`,
-      content:  `
+      content: `
         <html>
           <body>
-            <h3>Here is a list of profiles wating to be reviewed</h3>
+            <h3>Here is a list of profiles waiting to be reviewed</h3>
             <div>
               <ol>${this.profileList(profiles)}</ol>
             </div>

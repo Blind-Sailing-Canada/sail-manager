@@ -36,7 +36,7 @@ export class SocialActionsController {
 
   constructor(
     private service: SocialService,
-    @InjectQueue('social') private readonly socialQueue: Queue) {}
+    @InjectQueue('social') private readonly socialQueue: Queue) { }
 
   @Post('/:social_id/new-social-notification')
   sendNewSocialEmail(@Param('social_id') social_id: string, @Body('message') message: string) {
@@ -55,7 +55,7 @@ export class SocialActionsController {
       social_id,
     };
 
-    this.socialQueue.add('update-social',job);
+    this.socialQueue.add('update-social', job);
   }
 
   @Put(':id/join')
@@ -69,15 +69,15 @@ export class SocialActionsController {
     const profile = await ProfileEntity.findOneOrFail({ where: { id: user.profile_id } });
 
     await this.service.repository.manager.transaction(async transactionalEntityManager => {
-      const socialor = new SocialManifestEntity();
+      const sailor = new SocialManifestEntity();
 
-      socialor.person_name = profile.name;
-      socialor.profile_id = user.profile_id;
-      socialor.social_id = social.id;
+      sailor.person_name = profile.name;
+      sailor.profile_id = user.profile_id;
+      sailor.social_id = social.id;
 
-      await transactionalEntityManager.save(socialor);
+      await transactionalEntityManager.save(sailor);
 
-      social.manifest.push(socialor);
+      social.manifest.push(sailor);
 
       await transactionalEntityManager.save(social);
 
@@ -145,7 +145,7 @@ export class SocialActionsController {
 
     this.socialQueue.add('cancel-social', job);
 
-    return SocialEntity.findOne( {
+    return SocialEntity.findOne({
       where: { id },
       relations: ['manifest'],
     });

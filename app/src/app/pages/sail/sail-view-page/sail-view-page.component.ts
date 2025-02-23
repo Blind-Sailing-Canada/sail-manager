@@ -17,6 +17,7 @@ import {
   listFeedbackRoute,
   listSailPathsRoute,
   maintenanceRoute,
+  viewMaintenanceRoute,
   viewSailChecklistRoute,
   viewSailPicturesRoute,
 } from '../../../routes/routes';
@@ -101,7 +102,7 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
       this.fetchBoatMaintenanceCount();
 
       this.sail.manifest.forEach((sailor) => {
-        switch(sailor.sailor_role) {
+        switch (sailor.sailor_role) {
           case SailorRole.Skipper:
             this.sailSkippers.push(sailor);
             break;
@@ -234,6 +235,10 @@ export class SailViewPageComponent extends BasePageComponent implements OnInit {
 
   public get viewSailPathsRouteLink(): string {
     return listSailPathsRoute(this.sail_id);
+  }
+
+  public get viewBoatMaintenanceLink(): string {
+    return viewMaintenanceRoute(this.sail.maintenance_id);
   }
 
   public get canEditSail(): boolean {

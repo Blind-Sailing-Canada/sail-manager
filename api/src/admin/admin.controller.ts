@@ -21,7 +21,7 @@ import { GoogleGroupService } from '../google-api/google-group.service';
 @UseGuards(JwtGuard, LoginGuard, ApprovedUserGuard, RolesGuard)
 @UserRoles(ProfileRole.Admin)
 export class AdminController {
-  constructor (
+  constructor(
     public service: AdminService,
     private readonly groupService: GoogleGroupService
   ) { }
@@ -106,7 +106,6 @@ export class AdminController {
       return;
     }
 
-    console.log('emailemailemailemailemailemailemail', email, group);
     return this.groupService.removeGroupMember(group, email);
   }
 

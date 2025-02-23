@@ -12,25 +12,27 @@ export class SailRequestJob {
   constructor(
     private sailRequestEmail: SailRequestEmail,
     private emailService: GoogleEmailService
-  ) {}
+  ) { }
 
   @Cron('0 0 1-31/2 * *') // Every second day at noon.
-  async unschedledRequests() {
+  async unscheduledRequests() {
 
     const twoDaysAgo = new Date();
 
     twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
-    const requests = await SailRequestEntity.find({ where: {
-      created_at: LessThan(twoDaysAgo),
-      status: SailRequestStatus.New
-    } });
+    const requests = await SailRequestEntity.find({
+      where: {
+        created_at: LessThan(twoDaysAgo),
+        status: SailRequestStatus.New
+      }
+    });
 
     if (!requests.length) {
       return;
     }
 
-    const emailInfo = await this.sailRequestEmail.unschedledRequests(requests);
+    const emailInfo = await this.sailRequestEmail.unscheduledRequests(requests);
 
     await this.emailService.sendBccEmail(emailInfo);
   }
