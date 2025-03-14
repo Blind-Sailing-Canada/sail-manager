@@ -104,8 +104,9 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.SAIL_CATEGORIES, (categories: SailCategoryState) => {
-      this.sailCategories = Object.values(categories || {});
       if (this.maintenance_id) {
+        this.sailCategories = Object.values(categories || {}).filter(category => category.category === this.MAINTENANCE_SAIL);
+      } else {
         this.sailCategories = Object.values(categories || {}).filter(category => category.category !== this.MAINTENANCE_SAIL);
       }
     });
