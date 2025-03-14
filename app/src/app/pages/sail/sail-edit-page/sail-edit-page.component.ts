@@ -49,6 +49,7 @@ import { SailCategory } from '../../../../../../api/src/types/sail/sail-category
 import { fetchSailCategories } from '../../../store/actions/sail-category.actions';
 import { BoatStatus } from '../../../../../../api/src/types/boat/boat-status';
 import { BoatMaintenance } from '../../../../../../api/src/types/boat-maintenance/boat-maintenance';
+import { SailCategoryState } from '../../../models/sail-category-state.interface';
 
 @Component({
   selector: 'app-sail-edit-page',
@@ -71,6 +72,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
   public totalFormSteps = 12;
   public maintenance_name: string;
   public maintenance: BoatMaintenance;
+  public MAINTENANCE_SAIL = 'Maintenance sail';
 
   constructor(
     @Inject(Store) store: Store<any>,
@@ -101,8 +103,11 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES);
 
-    this.subscribeToStoreSliceWithUser(STORE_SLICES.SAIL_CATEGORIES, (categories) => {
+    this.subscribeToStoreSliceWithUser(STORE_SLICES.SAIL_CATEGORIES, (categories: SailCategoryState) => {
       this.sailCategories = Object.values(categories || {});
+      if (this.maintenance_id) {
+        this.sailCategories = Object.values(categories || {}).filter(category => category.category !== this.MAINTENANCE_SAIL);
+      }
     });
 
     this.subscribeToStoreSliceWithUser(STORE_SLICES.BOATS, () => {
@@ -468,7 +473,7 @@ export class SailEditPageComponent extends BasePageComponent implements OnInit, 
 
     this.sailForm = this.fb.group({
       maintenance_id: this.fb.control(this.maintenance_id),
-      category: this.fb.control({ value: this.isMaintenanceSail ? 'Maintenance sail' : '', disabled: this.isMaintenanceSail }),
+      category: this.fb.control({ value: this.isMaintenanceSail ? this.MAINTENANCE_SAIL : '', disabled: this.isMaintenanceSail }),
       is_payment_free: this.fb.control({ value: this.isMaintenanceSail, disabled: this.isMaintenanceSail }),
       is_private: this.fb.control(this.isMaintenanceSail),
       name: new UntypedFormControl('', [

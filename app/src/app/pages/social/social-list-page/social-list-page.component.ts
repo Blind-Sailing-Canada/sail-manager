@@ -73,6 +73,10 @@ export class SocialListPageComponent extends BasePageComponent implements OnInit
     this.viewSocial(id);
   }
 
+  public get allowCreateMany(): boolean {
+    return false;
+  }
+
   public get allowCreation(): boolean {
     const user = this.user;
 
