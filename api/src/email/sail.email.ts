@@ -49,7 +49,7 @@ export class SailEmail {
 
     const admins = await ProfileEntity.admins();
     const fleetManagers = await ProfileEntity.fleetManagers();
-    const sailCoordinators  = await ProfileEntity.coordinators();
+    const sailCoordinators = await ProfileEntity.coordinators();
 
     admins?.forEach(admin => sendTo.add(admin.email));
     fleetManagers?.forEach(manager => sendTo.add(manager.email));
@@ -100,7 +100,7 @@ export class SailEmail {
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),
       subject: `COMPANY_NAME_SHORT_HEADER: Sail #${sail.entity_number} was cancelled`,
-      content:  `
+      content: `
         <html>
           <body>
             <h2>Your sail "${sail.name}" (#${sail.entity_number}) was cancelled.</h2>
@@ -168,9 +168,9 @@ export class SailEmail {
           <body>
             <h3>Here are some upcoming sails</h3>
             <div>
-              <ol>
+              <dl>
               ${this.sailList(sails)}
-              </ol>
+              </dl>
             </div>
             <div>
               <p>You can change your notifications settings from the <a href="${DOMAIN}/profiles/settings">settings page</a>.
@@ -202,7 +202,8 @@ export class SailEmail {
     return sails.reduce((red, sail) => {
       return `
       ${red}
-      <li><a href="${DOMAIN}/sails/view/${sail.id}">${toLocalDate(sail.start_at)} - ${sail.name} on ${sail.boat?.name}</a></li>
+      <dt><a href="${DOMAIN}/sails/view/${sail.id}">${toLocalDate(sail.start_at)} - ${sail.name} on ${sail.boat?.name}</a></dt>
+      <dd>${sail.description}</dd>
       `.trim();
     }, '');
   }
