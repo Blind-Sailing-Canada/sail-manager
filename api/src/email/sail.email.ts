@@ -203,7 +203,7 @@ export class SailEmail {
       return `
       ${red}
       <dt><a href="${DOMAIN}/sails/view/${sail.id}">${toLocalDate(sail.start_at)} - ${sail.name} on ${sail.boat?.name}</a></dt>
-      <dd>${sail.description}</dd>
+      <dd>${sail.description || ""}</dd>
       `.trim();
     }, '');
   }
