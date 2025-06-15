@@ -170,7 +170,7 @@
   <mat-error
     tabindex="0"
     *ngFor="let error of (profileForm.pristine ? []: formErrors('photo'))"
-  >{{error}}. Supported image formats: PNG, JPG, JPG, and GIF. Leave blank for no photo.</mat-error>
+  >{{error}}</mat-error>
   <app-file-select
     (action)="uploadFileToCDN($event)"
     *ngIf="profile.status === ProfileStatus.Approved"

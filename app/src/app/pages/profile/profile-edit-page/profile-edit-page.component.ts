@@ -135,6 +135,8 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
       .map((errorKey) => {
         if (controlName === 'phone' && errorKey === 'pattern') {
           return 'Invalid phone number: must be 10 digits only.';
+        } if (controlName === 'photo' && errorKey === 'pattern') {
+          return 'Supported image formats: PNG, JPG, JPG, and GIF. Leave blank for no photo.'
         }
 
         const error = this.profileForm.controls[controlName].errors[errorKey];
@@ -240,7 +242,8 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
       name: new UntypedFormControl(null, [Validators.required, Validators.maxLength(100)]),
       email: new UntypedFormControl(null, [Validators.required, Validators.maxLength(150)]),
       phone: new UntypedFormControl(null, [Validators.pattern(/^\d{0,10}$/)]),
-      photo: new UntypedFormControl(null, [Validators.pattern(/((?:https?:\/\/|cdn\/files\/images\/profiles).*\.(?:png|jpg|jpeg|gif))?/i)]),
+      // Allow empty or a url that ends with valid image formats.
+      photo: new UntypedFormControl(null, [Validators.pattern(/(^$)|((?:https?:\/\/|cdn\/files\/images\/profiles).*\.(?:png|jpg|jpeg|gif)$)/i)]),
       bio: new UntypedFormControl(null, Validators.maxLength(500)),
     });
   }
