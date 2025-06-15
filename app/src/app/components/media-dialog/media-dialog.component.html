@@ -13,6 +13,13 @@
       <p>{{data.media.description}}</p>
       <p>Posted by {{data.media.posted_by?.name || 'unknown'}}</p>
       <p>Posted on {{data.media.created_at | humanDateWithTime}}</p>
+      <div *ngIf="data.media.tags?.length > 0">
+        <h3>Sailors:</h3>
+        <app-profile-bullet
+          *ngFor="let tag of data.media.tags"
+          [profile]="tag.profile"
+        ></app-profile-bullet>
+      </div>
     </mat-card-footer>
   </mat-card>
 </mat-dialog-content>

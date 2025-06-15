@@ -4,6 +4,7 @@ import { MediaDialogComponent } from './media-dialog.component';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { MediaDisplayModule } from '../media-display/media.module';
 import { PipesModule } from '../../pipes/pipes.module';
+import { ProfileBulletModule } from "../profile-bullet/profile-bullet.module";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { PipesModule } from '../../pipes/pipes.module';
     AngularMaterialModule,
     CommonModule,
     MediaDisplayModule,
-    PipesModule
+    PipesModule,
+    ProfileBulletModule
   ]
 })
 export class MediaDialogModule { }

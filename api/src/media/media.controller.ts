@@ -20,17 +20,18 @@ import { MediaService } from './media.service';
 @Crud({
   model: { type: MediaEntity },
   routes: { only: ['getManyBase',], },
-  params: { id: {
-    field: 'id',
-    type: 'uuid',
-    primary: true,
-  } },
+  params: {
+    id: {
+      field: 'id',
+      type: 'uuid',
+      primary: true,
+    }
+  },
   query: {
     alwaysPaginate: true,
     exclude: ['id'], // https://github.com/nestjsx/crud/issues/788
     join: {
       posted_by: {},
-      tags: {}
     },
     sort: [
       {
@@ -48,7 +49,7 @@ export class MediaController {
 
   @Delete('/:media_id')
   async delete(
-  @User() user: JwtObject, @Param('media_id') media_id) {
+    @User() user: JwtObject, @Param('media_id') media_id) {
     if (!media_id) {
       throw new BadRequestException('must provide media id');
     }
@@ -56,12 +57,14 @@ export class MediaController {
     let media: MediaEntity;
 
     if (user.roles.includes(ProfileRole.Admin)) {
-      media = await MediaEntity.findOneOrFail({ where: { id:  media_id } });
+      media = await MediaEntity.findOneOrFail({ where: { id: media_id } });
     } else {
-      media = await MediaEntity.findOneOrFail({ where: {
-        id:  media_id,
-        posted_by_id: user.profile_id
-      } });
+      media = await MediaEntity.findOneOrFail({
+        where: {
+          id: media_id,
+          posted_by_id: user.profile_id
+        }
+      });
     }
 
     if (media.url.startsWith('cdn/')) {
@@ -73,6 +76,9 @@ export class MediaController {
 
   @Patch('/:media_id')
   async patch(@User() user: JwtObject, @Param('media_id') media_id, @Body() body: Partial<Media>) {
+    if (media_id === null || media_id === undefined) {
+      throw new BadRequestException('media not found');
+    }
     const update_data: Partial<Media> = {
       description: body.description,
       title: body.title,
@@ -102,9 +108,10 @@ export class MediaController {
 
   @Get('/:media_id')
   async get(@Param('media_id') media_id) {
-    return MediaEntity.findOneOrFail({
-      where: { id: media_id },
-      relations: ['tags',]
-    });
+    if (media_id === null || media_id === undefined) {
+      throw new BadRequestException('media not found');
+    }
+    const media = await MediaEntity.findOneOrFail({ where: { id: media_id }, relations: ["tags", "tags.profile"] });
+    return media;
   }
 }

@@ -462,13 +462,19 @@ export class BasePageComponent implements OnDestroy, AfterViewInit {
       });
   }
 
-  public showMediaDialog(media: Media, type?: string) {
+  public async showMediaDialog(media: Media, type?: string) {
     if (!media) {
       return;
     }
 
+    const resolvedMedia = await firstValueFrom(this.mediaService.fetchOne(media.id))
+      .catch((error) => {
+        console.error(error);
+        return media;
+      });
+
     const dialogData: MediaDialogData = {
-      media,
+      media: resolvedMedia,
       type,
       tag_me: this.mediaService ? () => this.tagProfile(this.user.profile.id, media.id) : null,
       untag_me: this.mediaService ? () => this.untagProfile(this.user.profile.id, media.id) : null,
