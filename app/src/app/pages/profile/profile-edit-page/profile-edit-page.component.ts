@@ -160,7 +160,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
     if (this.profile.status === ProfileStatus.Registration) {
       const profile = this.profileForm.getRawValue();
 
-      profile.phone = profile.phone.replace(/\+1/g, '').replace(/[^\d]/g,'').substring(0, 10);
+      profile.phone = profile.phone.replace(/\+1/g, '').replace(/[^\d]/g, '').substring(0, 10);
       profile.email = profile.email.toLowerCase().trim();
 
       this.startLoading();
@@ -204,7 +204,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
         (red, key) => {
           red[key] = formControls[key].value ? formControls[key].value.trim() : null;
           if (key === 'phone') {
-            red[key] = formControls[key].value.replace(/\+1/g, '').replace(/[^\d]/g,'').substring(0, 10);
+            red[key] = formControls[key].value.replace(/\+1/g, '').replace(/[^\d]/g, '').substring(0, 10);
           }
           return red;
         },
@@ -240,7 +240,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
       name: new UntypedFormControl(null, [Validators.required, Validators.maxLength(100)]),
       email: new UntypedFormControl(null, [Validators.required, Validators.maxLength(150)]),
       phone: new UntypedFormControl(null, [Validators.pattern(/^\d{0,10}$/)]),
-      photo: new UntypedFormControl(null),
+      photo: new UntypedFormControl(null, [Validators.pattern(/((?:https?:\/\/|cdn\/files\/images\/profiles).*\.(?:png|jpg|jpeg|gif))?/i)]),
       bio: new UntypedFormControl(null, Validators.maxLength(500)),
     });
   }
