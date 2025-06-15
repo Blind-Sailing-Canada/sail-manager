@@ -127,6 +127,8 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
         this.updateForm();
       }
     });
+
+    this.getProfile(this.profile_id);
   }
 
   public formErrors(controlName: string): string[] {
