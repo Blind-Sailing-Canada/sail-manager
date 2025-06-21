@@ -46,6 +46,9 @@
     *ngIf="shouldEnableSubmitButton"
     (click)="submitPictures()"
   >Submit</button>
+  <div *ngIf="!form.valid">
+    You must fill out all required fields before you can submit pictures.
+  </div>
 </ng-template>
 
 <ng-template #PICTURES_TEMPLATE>
@@ -66,6 +69,7 @@
     [allowDescription]="true"
     [allowTitle]="true"
     [allowDelete]="true"
+    [allowEditUrl]="false"
     [form]="form"
     controlArrayName="pictures"
     (deleteClick)="deleteCDNFile($event)"

@@ -11,6 +11,7 @@ import {
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormGroup,
+  Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -105,9 +106,9 @@ export class SocialPicturesPageComponent extends BasePageComponent implements On
 
           picturesForm
             .push(this.fb.group({
-              description: this.fb.control(undefined),
+              description: this.fb.control(undefined, [Validators.required]),
               media_type: this.fb.control(mediaType),
-              title: this.fb.control(undefined),
+              title: this.fb.control(undefined, [Validators.required]),
               url: this.fb.control(cdn[fileName].url),
             }));
 
@@ -178,7 +179,7 @@ export class SocialPicturesPageComponent extends BasePageComponent implements On
   }
 
   public get shouldEnableSubmitButton(): boolean {
-    return this.form && this.form.dirty;
+    return this.form && this.form.dirty && this.form.valid;
   }
 
   public submitPictures(): void {
