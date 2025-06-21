@@ -14,6 +14,8 @@ import { SocialEntity } from '../social/social.entity';
 import { ProfileStatus } from '../types/profile/profile-status';
 import { FutureSailsSubscription } from '../types/settings/future-sails-subscription';
 import { SettingEntity } from './setting.entity';
+import { SailStatus } from '../types/sail/sail-status';
+import { SocialStatus } from '../types/social/social-status';
 
 @Injectable()
 export class SettingJob {
@@ -22,11 +24,14 @@ export class SettingJob {
     private sailEmail: SailEmail,
     private socialEmail: SocialEmail,
     private emailService: GoogleEmailService,
-  ) {}
+  ) { }
 
   private async get_future_non_full_socials(): Promise<SocialEntity[]> {
     return SocialEntity.find({
-      where: { start_at: MoreThan(new Date()) },
+      where: {
+        start_at: MoreThan(new Date()),
+        status: SocialStatus.New,
+      },
       order: { start_at: 'ASC' },
       take: 10,
     }).then(socials => socials.filter(social => social.max_attendants === -1 || social.manifest.length < social.max_attendants));
@@ -55,7 +60,8 @@ export class SettingJob {
     return SailEntity.find({
       where: {
         start_at: MoreThan(new Date()),
-        is_private: Not<true>(true)
+        is_private: Not<true>(true),
+        status: SailStatus.New
       },
       order: { start_at: 'ASC' },
       take: 10,
