@@ -139,7 +139,7 @@ export class AuthService {
       case 'firebase':
         providerUser = {
           id: (user as FirebaseUser).user_id,
-          name:  (user as FirebaseUser).email.split('@')[0],
+          name: (user as FirebaseUser).email.split('@')[0],
           email: (user as FirebaseUser).email,
           photo: '',
           provider,
@@ -167,7 +167,7 @@ export class AuthService {
     delete this.tokens[user_id];
 
     return TokenEntity
-      .delete({ user_id: user_id } )
+      .delete({ user_id: user_id })
       .catch(error => {
         this.logger.error(error);
         return null;
@@ -213,7 +213,7 @@ export class AuthService {
     if (!cachedToken) {
       // this is skipped if cached token is expired
       // try db stored token
-      const dbToken:TokenEntity = await TokenEntity.findOne({ where: { user_id: user.id } });
+      const dbToken: TokenEntity = await TokenEntity.findOne({ where: { user_id: user.id } });
 
       if (dbToken && dbToken.expire_at.getTime() > Date.now()) {
         this.cacheToken(user.profile_id, dbToken.token, dbToken.expire_at);
@@ -297,7 +297,7 @@ export class AuthService {
         id: uuidv4(),
         name: user.name,
         phone: user.phone,
-        photo: user.photo,
+        photo: '',
         roles: user.roles || [],
         status: user.status || ProfileStatus.Registration,
       });

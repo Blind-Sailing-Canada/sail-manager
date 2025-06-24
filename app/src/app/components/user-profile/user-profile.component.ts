@@ -40,4 +40,16 @@ export class UserProfileComponent implements OnChanges {
     this.viewClinic.emit(clinic_id);
   }
 
+  public getPhotoUrl(): string {
+    if (this.profile.photo) {
+      if (this.profile.photo.startsWith('cdn/files/images/profiles')) {
+        return `${this.profile.photo}?width=128`
+      } else {
+        return this.profile.photo;
+      }
+    } else {
+      return 'assets/icons/icon-person.png';
+    }
+  }
+
 }

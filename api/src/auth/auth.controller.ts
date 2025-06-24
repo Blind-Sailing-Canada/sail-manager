@@ -159,7 +159,7 @@ export class AuthController {
       id: user.provider_user.id,
       name: (profile_data.name || '').trim(),
       phone: (profile_data.phone || '').trim(),
-      photo: (profile_data.photo || '').trim(),
+      photo: '',
       provider: user.provider,
       status: ProfileStatus.PendingApproval,
     };
@@ -190,7 +190,7 @@ export class AuthController {
       email: firebase_user.email,
       id: firebase_user.uid,
       name: firebase_user.displayName,
-      photo: firebase_user.photoURL,
+      photo: '',
       phone: firebase_user.phoneNumber,
       provider: 'firebase'
     };

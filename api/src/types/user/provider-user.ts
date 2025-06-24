@@ -9,7 +9,7 @@ export interface ProviderUser {
   id: string
   name: string;
   phone?: string;
-  photo: string;
+  photo?: string;
   provider: string;
   roles?: ProfileRole[];
   status?: ProfileStatus;

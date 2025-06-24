@@ -5,10 +5,7 @@
   (captionAction)="actionClicked($event)"
 >
   <tbody role="list">
-    <tr
-      *ngIf="profile.photo"
-      aria-hidden="true"
-    >
+    <tr aria-hidden="true">
       <td
         colspan="2"
         aria-hidden="true"
@@ -16,13 +13,13 @@
         <div class="user-profile-picture">
           <a
             target="_blank"
-            href="{{profile.photo}}"
+            href="{{getPhotoUrl()}}"
           >
             <img
               aria-hidden="true"
               async
               height="128px"
-              src="{{profile.photo}}?width=128"
+              src="{{getPhotoUrl()}}"
               width="128px"
             >
           </a>

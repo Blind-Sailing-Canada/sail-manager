@@ -49,6 +49,8 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   public saveError = '';
   public existingAccount = false;
 
+  private ACCOUNT_PHOTO_URL_REGEX = /(^$)|((?:https?:\/\/|cdn\/files\/images\/profiles).*\.(?:png|jpg|jpeg|gif)$)/i
+
   constructor(
     @Inject(Store) store: Store<any>,
     @Inject(ActivatedRoute) route: ActivatedRoute,
@@ -74,7 +76,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
         email: login.tokenData?.provider_user.email || '',
         name: login.tokenData?.provider_user.name || '',
         phone: login.tokenData?.provider_user.phone || '',
-        photo: login.tokenData?.provider_user.photo || '',
+        photo: '',
         status: login.tokenData?.status,
       };
 
@@ -121,7 +123,10 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
     this.subscribeToStoreSliceWithUser(STORE_SLICES.PROFILES, (profilesState) => {
       this.profile = profilesState?.profiles[this.profile_id];
       if (this.profile) {
-        if (this.profile.status !== ProfileStatus.Registration && this.profile.status !== ProfileStatus.Approved) {
+        const isOwnProfile = this.user.profile.id === this.profile.id;
+        const isApproved = this.profile.status === ProfileStatus.Approved;
+        const isRegistration = this.profile.status == ProfileStatus.Registration
+        if (isOwnProfile && !isRegistration && !isApproved) {
           this.goTo([FullRoutes.ACCOUNT_REVIEW], undefined);
         }
         this.updateForm();
@@ -155,7 +160,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   }
 
   public get shouldHideUpdateButton(): boolean {
-    const should = !this.profileForm || !this.profileForm.valid;
+    const should = !this.profileForm || !this.profileForm.valid || !this.profileForm.dirty;
 
     return should;
   }
@@ -245,7 +250,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
       email: new UntypedFormControl(null, [Validators.required, Validators.maxLength(150)]),
       phone: new UntypedFormControl(null, [Validators.pattern(/^\d{0,10}$/)]),
       // Allow empty or a url that ends with valid image formats.
-      photo: new UntypedFormControl(null, [Validators.pattern(/(^$)|((?:https?:\/\/|cdn\/files\/images\/profiles).*\.(?:png|jpg|jpeg|gif)$)/i)]),
+      photo: new UntypedFormControl(null, [Validators.pattern(this.ACCOUNT_PHOTO_URL_REGEX)]),
       bio: new UntypedFormControl(null, Validators.maxLength(500)),
     });
   }
@@ -253,6 +258,7 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
   private updateForm(): void {
     const profile = this.profile;
     const controls = Object.keys(this.profileForm.controls);
+    let isDirty = false;
 
     controls
       .forEach(control => this.profileForm
@@ -262,8 +268,19 @@ export class ProfileEditPageComponent extends BasePageComponent implements OnIni
     if (this.profile.status === ProfileStatus.Registration) {
       this.profileForm.controls.photo.disable();
       this.totalFormSteps = 4;
+    } else {
+      if (profile.photo && !profile.photo?.match(this.ACCOUNT_PHOTO_URL_REGEX)) {
+        console.log('invalid profile photo', profile.photo);
+        this.profileForm.controls.photo.patchValue('');
+        this.profileForm.controls.photo.markAsDirty();
+        isDirty = true;
+      }
     }
 
-    this.profileForm.markAsPristine();
+    if (!isDirty) {
+      this.profileForm.markAsPristine();
+    } else {
+      this.profileForm.markAsDirty();
+    }
   }
 }
