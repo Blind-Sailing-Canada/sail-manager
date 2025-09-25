@@ -38,5 +38,7 @@ mat-toolbar {
 
   .header-controls {
     width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 }
