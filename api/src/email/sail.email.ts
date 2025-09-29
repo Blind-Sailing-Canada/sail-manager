@@ -126,13 +126,18 @@ export class SailEmail {
   newCommentEmail(sail: Sail, comment: Comment, coordinators: Profile[]): EmailInfo {
     const sendTo: Set<string> = new Set<string>();
 
-    coordinators.forEach(coordinator => sendTo.add(coordinator.email));
+    coordinators.forEach(coordinator => sendTo.add(coordinator.email.toLowerCase()));
 
     sail
       .manifest
       .filter(sailor => sailor.profile_id)
       .filter(sailor => sailor.profile)
       .forEach(sailor => sendTo.add(sailor.profile.email));
+
+    sail.comments?.map(sailComment => sailComment.author?.email)
+      .filter(Boolean).forEach(email => sendTo.add(email.toLowerCase()));
+
+    sendTo.delete(comment.author?.email.toLowerCase());
 
     const emailInfo: EmailInfo = {
       bcc: Array.from(sendTo),

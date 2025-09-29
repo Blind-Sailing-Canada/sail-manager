@@ -92,7 +92,10 @@ export class SailProcessor extends BaseQueueProcessor {
   @Process('new-comment')
   async sendNewCommentEmail(job: Job<SailNewCommentJob>) {
     try {
-      const sail = await SailEntity.findOneOrFail({ where: { id: job.data.sail_id } });
+      const sail = await SailEntity.findOneOrFail({
+        where: { id: job.data.sail_id },
+        relations: ['comments', 'comments.author']
+      });
       const comment = await CommentEntity.findOneOrFail({ where: { id: job.data.comment_id } });
       const sailCoordinators = await ProfileEntity.coordinators();
 
