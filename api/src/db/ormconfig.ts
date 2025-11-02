@@ -5,23 +5,25 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 dotenv.config();
 
+const DB_URL = process.env.USE_DEV_DB_URL == 'true' ? process.env.DEV_DB_URL : process.env.DATABASE_URL;
+
 const devConfig: PostgresConnectionOptions = {
   entities: ['src/**/*.entity.ts'],
   migrations: ['src/db/migrations/*.ts'],
   migrationsTableName: 'migrations',
   namingStrategy: new SnakeNamingStrategy(),
   type: 'postgres',
-  url: process.env.DATABASE_URL,
+  url: DB_URL,
 };
 
 const prodConfig: PostgresConnectionOptions = {
-  extra:  { ssl: { rejectUnauthorized: false } },
+  extra: { ssl: { rejectUnauthorized: false } },
   migrations: ['./db/migrations/*.js'],
   migrationsTableName: 'migrations',
   namingStrategy: new SnakeNamingStrategy(),
   ssl: true,
   type: 'postgres',
-  url: process.env.DATABASE_URL,
+  url: DB_URL,
 };
 
 const config = process.env.NODE_ENV === 'prod' ? prodConfig : devConfig;

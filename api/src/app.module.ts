@@ -44,12 +44,14 @@ import { UserModule } from './user/user.module';
 
 const DB_LOGGING = [];
 
-if (process.env.NODE_ENV !== 'prod'){
+if (process.env.NODE_ENV !== 'prod') {
   DB_LOGGING.push('query');
   DB_LOGGING.push('error');
 }
 
 const DB_SSL = {} as any;
+
+const DB_URL = process.env.USE_DEV_DB_URL == 'true' ? process.env.DEV_DB_URL : process.env.DATABASE_URL;
 
 if (process.env.DB_SSL === 'true') {
   DB_SSL.ssl = process.env.NODE_ENV === 'prod';
@@ -58,7 +60,7 @@ if (process.env.DB_SSL === 'true') {
 
 const DB_CONNECTION_META: ConnectionOptions = {
   type: process.env.DB_TYPE as any,
-  url: process.env.DATABASE_URL.replace(/\\n/gm, '\n'),
+  url: DB_URL.replace(/\\n/gm, '\n'),
   logging: DB_LOGGING,
   entities: [
     // '**/*.entity.ts', // when debugging
